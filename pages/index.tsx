@@ -29,7 +29,7 @@ const Home: NextPage = () => {
       >
         <Box
           animation={`${spin} infinite 15s linear`}
-          width={{ base: '20vw', md: '8vw' }}
+          width={{ base: '23vw', md: '8vw' }}
         >
           <AnimatedLogo />
         </Box>
@@ -41,8 +41,9 @@ const Home: NextPage = () => {
         </motion.div>
 
         <Box
+          display={{ base: 'none', md: 'block' }}
           animation={`${spin} infinite 15s linear reverse`}
-          width={{ base: '20vw', md: '8vw' }}
+          width={{ base: '23vw', md: '8vw' }}
         >
           <AnimatedLogo />
         </Box>
