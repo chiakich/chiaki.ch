@@ -57,7 +57,7 @@ const Detail = () => {
             >
               <BlackoutText progress={wrapperY}>
                 <Box fontWeight="600" fontSize="40px">
-                  千秋稲荷社とは
+                  千秋のご挨拶
                 </Box>
               </BlackoutText>
               <BlackoutText progress={wrapperY}>
