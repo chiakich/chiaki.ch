@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Box, Center, keyframes } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import Image from 'next/image'
+import Image from 'next-image-export-optimizer'
 import DotBackground from 'components/index/DotBackground'
 import AnimatedLogo from 'components/index/AnimatedLogo'
 import BgImg from '@img/takuzosu-inari-shrine.jpg'

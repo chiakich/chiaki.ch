@@ -1,12 +1,7 @@
-import { useRef, useEffect } from 'react'
-import { Box, Image, Flex } from '@chakra-ui/react'
-import {
-  motion,
-  useScroll,
-  useSpring,
-  useTransform,
-  MotionValue,
-} from 'framer-motion'
+import { useRef } from 'react'
+import { Box, Flex } from '@chakra-ui/react'
+import { motion, useScroll, useTransform, MotionValue } from 'framer-motion'
+import Image from 'next-image-export-optimizer'
 import { useParallax } from 'utils/hooks'
 import ChiakiImg from '@img/shone.png'
 
@@ -87,7 +82,12 @@ const Detail = () => {
             }}
           >
             <motion.div style={{ y }}>
-              <Image src={ChiakiImg.src} alt="Chiaki" />
+              <Image
+                src={ChiakiImg.src}
+                alt="Chiaki"
+                width="1240px"
+                height="2000px"
+              />
             </motion.div>
           </Box>
         </Box>

@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "export": "next build && next export && next-image-export-optimizer"
   },
   "dependencies": {
     "@babel/core": "^7.18.13",
@@ -15,6 +16,7 @@
     "@emotion/styled": "^11",
     "framer-motion": "^6",
     "next": "12.2.5",
+    "next-image-export-optimizer": "^0.12.2",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
