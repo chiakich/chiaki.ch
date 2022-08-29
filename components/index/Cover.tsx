@@ -4,7 +4,6 @@ import { motion } from 'framer-motion'
 import Image from 'next-image-export-optimizer'
 import DotBackground from 'components/index/DotBackground'
 import AnimatedLogo from 'components/index/AnimatedLogo'
-import BgImg from '@img/takuzosu-inari-shrine.jpg'
 import LogoText from '@icon/logo_text_light.svg'
 
 const spin = keyframes`
@@ -32,7 +31,7 @@ const Cover = () => {
         transition="opacity 1.5s ease-in-out, transform 2s ease-in-out"
       >
         <Image
-          src={BgImg.src}
+          src="/assets/img/takuzosu-inari-shrine.jpg"
           alt="bg"
           objectFit="cover"
           layout="fill"
@@ -80,7 +79,7 @@ const Cover = () => {
 
         <motion.div
           initial={{ opacity: 0, scale: 0.93 }}
-          whileInView={{ opacity: 1, scale: 1 }}
+          animate={{ opacity: 1, scale: 1 }}
           transition={{
             opacity: { duration: 1, ease: 'easeInOut' },
             scale: { duration: 10, ease: 'easeOut' },
