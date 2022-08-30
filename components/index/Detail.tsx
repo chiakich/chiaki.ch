@@ -55,7 +55,7 @@ const Detail = () => {
               alignSelf={{ base: 'flex-start', sm: 'center' }}
             >
               <BlackoutText progress={wrapperY}>
-                <Box fontWeight="900" fontSize="40px">
+                <Box fontWeight="900" fontSize="40px" fontFamily="creamfont">
                   千秋のご挨拶
                 </Box>
               </BlackoutText>
