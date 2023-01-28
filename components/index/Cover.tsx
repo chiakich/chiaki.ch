@@ -13,15 +13,7 @@ const spin = keyframes`
 const Cover = () => {
   const [isBgLoaded, setBgLoaded] = useState(false)
   return (
-    <Box
-      backgroundColor="black"
-      backgroundSize="cover"
-      width="100vw"
-      height="100vh"
-      position="absolute"
-      zIndex="10"
-      overflow="hidden"
-    >
+    <Box backgroundColor="black" backgroundSize="cover" width="100%" height="100%">
       <Box
         width="100%"
         height="100%"
@@ -82,7 +74,7 @@ const Cover = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{
             opacity: { duration: 1, ease: 'easeInOut' },
-            scale: { duration: 10, ease: 'easeOut' },
+            scale: { duration: 3, ease: 'easeOut' },
           }}
         >
           <Box width={{ base: '85vw', md: '50vw' }} maxWidth="700px" m="30px 20px">

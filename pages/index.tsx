@@ -6,7 +6,16 @@ import DetailSection from 'components/index/Detail'
 const Home: NextPage = () => {
   return (
     <Box backgroundColor="black" width="100%" height="100%">
-      <CoverSection />
+      <Box
+        width="100vw"
+        height="100vh"
+        position="absolute"
+        zIndex="10"
+        overflow="hidden"
+      >
+        <CoverSection />
+      </Box>
+
       <DetailSection />
     </Box>
   )
