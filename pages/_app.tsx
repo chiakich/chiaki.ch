@@ -15,6 +15,32 @@ const theme = extendTheme({
       },
     },
   },
+  components: {
+    Button: {
+      baseStyle: {
+        WebkitTapHighlightColor: 'transparent',
+        border: '1px solid white',
+        borderRadius: '100px',
+        backdropFilter: 'blur(10px)',
+        bgColor: 'rgba(100, 100, 100, 0.5)',
+        _hover: {
+          bgColor: 'rgba(80, 80, 80, 0.5)',
+        },
+        _active: {
+          bgColor: 'rgba(100, 100, 100, 0.5)',
+        },
+      },
+      defaultProps: {
+        variant: 'unstyle',
+        size: 'lg',
+      },
+    },
+    Link: {
+      baseStyle: {
+        _hover: { textDecoration: 'none' },
+      },
+    },
+  },
 })
 
 function MyApp({ Component, pageProps }: AppProps) {

@@ -5,8 +5,8 @@ const DotBackground = () => (
     position="absolute"
     top="0"
     left="0"
-    width="100vw"
-    height="100vh"
+    width="100%"
+    height="100%"
     backgroundSize="auto auto, calc(3 / 16 * 1rem) calc(3 / 16 * 1rem)"
     backgroundImage="linear-gradient(to bottom,hsl(72deg 5% 5% / 0.5) 0%,
     hsl(72deg 5% 5% / 0) 100%),

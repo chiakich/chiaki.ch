@@ -11,7 +11,7 @@ const icon = {
   },
 }
 
-const AnimatedLogo = () => (
+const AnimatedLogo = ({ fastAni }: { fastAni?: boolean }) => (
   <motion.svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 123 123"
@@ -24,8 +24,8 @@ const AnimatedLogo = () => (
       initial="hidden"
       animate="visible"
       transition={{
-        default: { duration: 6, ease: 'easeInOut' },
-        fill: { duration: 4, ease: [1, 0, 0.5, 1] },
+        default: { duration: fastAni ? 3 : 6, ease: 'easeInOut' },
+        fill: { duration: fastAni ? 2 : 4, ease: [1, 0, 0.5, 1] },
       }}
       stroke="#fff"
       strokeWidth="0.5"
