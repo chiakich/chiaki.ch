@@ -19,15 +19,14 @@ const theme = extendTheme({
     Button: {
       baseStyle: {
         WebkitTapHighlightColor: 'transparent',
-        border: '1px solid white',
         borderRadius: '100px',
-        backdropFilter: 'blur(10px)',
         bgColor: 'rgba(100, 100, 100, 0.5)',
+        transition: 'filter .2s',
         _hover: {
-          bgColor: 'rgba(80, 80, 80, 0.5)',
+          filter: 'brightness(1.3)',
         },
         _active: {
-          bgColor: 'rgba(100, 100, 100, 0.5)',
+          filter: 'brightness(1.5)',
         },
       },
       defaultProps: {

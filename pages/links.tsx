@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import React, { useState } from 'react'
-import { Box, VStack, Button, Center, keyframes, Link } from '@chakra-ui/react'
+import { Box, Flex, Button, Center, keyframes, Link } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import Image from 'next-image-export-optimizer'
 import DotBackground from 'components/index/DotBackground'
@@ -60,7 +60,7 @@ const Links: NextPage = () => {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1.5, duration: 3, ease: 'easeOut' }}
+            transition={{ delay: 1.2, duration: 2, ease: 'easeOut' }}
           >
             <Center mb="30px" position="relative" flexDirection="column">
               <Image
@@ -81,7 +81,7 @@ const Links: NextPage = () => {
           <motion.div
             initial={{ height: 0 }}
             animate={{ height: 'auto' }}
-            transition={{ delay: 1.5, duration: 1.5, ease: 'easeOut' }}
+            transition={{ delay: 1.2, duration: 0.7, ease: 'easeInOut' }}
             style={{ overflow: 'hidden', width: '100%' }}
           >
             <Box
@@ -90,11 +90,18 @@ const Links: NextPage = () => {
               borderTop="1px solid white"
               borderBottom="1px solid white"
             >
-              <VStack m="20px" gap="15px">
+              <Center
+                m="20px"
+                gap="15px"
+                fontWeight={700}
+                flexDirection={{ base: 'column', lg: 'row' }}
+              >
                 <Button
                   as={Link}
                   width="100%"
+                  maxWidth="300px"
                   href="https://www.plurk.com/akira02"
+                  bgColor="#FF574D"
                   isExternal
                 >
                   Plurk
@@ -103,16 +110,26 @@ const Links: NextPage = () => {
                 <Button
                   as={Link}
                   width="100%"
+                  maxWidth="300px"
                   href="https://instagram.com/akisakuya"
+                  background="linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%)"
                   isExternal
                 >
                   Instagram
                 </Button>
 
-                <Button as={Link} width="100%" href="/">
+                <Button
+                  as={Link}
+                  border="1px solid white"
+                  width="100%"
+                  maxWidth="300px"
+                  backdropFilter="blur(10px)"
+                  bgColor="rgba(50, 50, 50, 0.5)"
+                  href="/"
+                >
                   Website
                 </Button>
-              </VStack>
+              </Center>
             </Box>
           </motion.div>
         </Center>
