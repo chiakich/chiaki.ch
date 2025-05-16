@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Box, Center } from '@chakra-ui/react'
-import Image from 'next-image-export-optimizer'
+import Image from 'next/image'
 import DotBackground from 'components/index/DotBackground'
 import MainLogo from './MainLogo'
 
@@ -19,9 +19,9 @@ const Cover = () => {
         <Image
           src="/assets/img/takuzosu-inari-shrine.jpg"
           alt="bg"
-          objectFit="cover"
-          layout="fill"
-          onLoadingComplete={() => {
+          fill
+          style={{ objectFit: 'cover' }}
+          onLoad={() => {
             setBgLoaded(true)
           }}
         />

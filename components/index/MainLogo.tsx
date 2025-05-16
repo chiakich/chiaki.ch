@@ -1,4 +1,5 @@
-import { Box, Center, keyframes } from '@chakra-ui/react'
+import { Box, Center } from '@chakra-ui/react'
+import { keyframes } from '@emotion/react'
 import { motion } from 'framer-motion'
 import AnimatedLogo from 'components/index/AnimatedLogo'
 import LogoText from '@icon/logo_text_light.svg'

@@ -1,10 +1,11 @@
 import type { NextPage } from 'next'
 import React, { useState } from 'react'
-import { Box, Flex, Button, Center, keyframes, Link } from '@chakra-ui/react'
+import { Box, Flex, Button, Center, Link } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import Image from 'next-image-export-optimizer'
+import Image from 'next/image'
 import DotBackground from 'components/index/DotBackground'
 import AnimatedLogo from 'components/index/AnimatedLogo'
+import { keyframes } from '@emotion/react'
 
 const spin = keyframes`
   from {transform: rotate(0deg);}
@@ -25,14 +26,14 @@ const Links: NextPage = () => {
         <Image
           src="/assets/img/takuzosu-inari-shrine.jpg"
           alt="bg"
-          objectFit="cover"
-          layout="fill"
-          onLoadingComplete={() => {
-            setBgLoaded(true)
-          }}
+          fill
           style={{
+            objectFit: 'cover',
             transform: `scale(${isBgLoaded ? '1.01' : '1'})`,
             transition: 'transform 2s ease-in-out',
+          }}
+          onLoad={() => {
+            setBgLoaded(true)
           }}
         />
       </Box>

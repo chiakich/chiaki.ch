@@ -15,10 +15,9 @@
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "framer-motion": "^6",
-    "next": "12.2.5",
-    "next-image-export-optimizer": "^0.12.2",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "next": "^15.3.2",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
     "@chakra-ui/styled-system": "^2.2.8",
@@ -26,8 +25,8 @@
     "@types/node": "18.7.13",
     "@types/react": "18.0.17",
     "@types/react-dom": "18.0.6",
-    "eslint": "8.23.0",
-    "eslint-config-next": "12.2.5",
-    "typescript": "4.8.2"
+    "eslint": "^9.26.0",
+    "eslint-config-next": "^15.3.2",
+    "typescript": "^5.8.3"
   }
 }
