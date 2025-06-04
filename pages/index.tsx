@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 import { Box } from '@chakra-ui/react'
 import CoverSection from 'components/index/Cover'
 import DetailSection from 'components/index/Detail'
+import TopBar from 'components/TopBar'
 
 const Home: NextPage = () => {
   return (
@@ -15,6 +16,8 @@ const Home: NextPage = () => {
       >
         <CoverSection />
       </Box>
+
+      <TopBar />
 
       <DetailSection />
     </Box>
