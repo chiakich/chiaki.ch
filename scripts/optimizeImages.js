@@ -13,17 +13,37 @@ function isImageFile(filename) {
 
 async function optimizeImage(filePath) {
   const stat = fs.statSync(filePath)
-  if (stat.size <= MAX_SIZE) return false
   const ext = path.extname(filePath).toLowerCase()
-  const tempPath = filePath + '.tmpopt'
-  let quality = 80
+  if (stat.size <= MAX_SIZE) return false
+
+  // PNG > 2MB 轉成 JPEG
+  if (ext === '.png' && stat.size > 2 * 1024 * 1024) {
+    const buffer = fs.readFileSync(filePath)
+    let output = null
+    for (let q = 80; q >= 40; q -= 10) {
+      output = await sharp(buffer).jpeg({ quality: q }).toBuffer()
+      if (output.length <= MAX_SIZE) break
+    }
+    if (output) {
+      const newPath = filePath.replace(/\.png$/i, '.jpg')
+      fs.writeFileSync(newPath, output)
+      fs.unlinkSync(filePath)
+      console.log(
+        `🟡 PNG >2MB: ${path.basename(filePath)} → ${path.basename(newPath)} (${(
+          output.length / 1024
+        ).toFixed(1)} KB)`
+      )
+      return true
+    }
+    return false
+  }
+
+  // 其他圖片大於1MB只壓縮不轉格式
   let buffer = fs.readFileSync(filePath)
   let optimized = false
-
   for (let q = 80; q >= 40; q -= 10) {
     let output
     if (ext === '.png') {
-      // PNG 只壓縮不轉格式
       output = await sharp(buffer).png({ quality: q }).toBuffer()
     } else if (ext === '.jpg' || ext === '.jpeg') {
       output = await sharp(buffer).jpeg({ quality: q }).toBuffer()
@@ -31,8 +51,7 @@ async function optimizeImage(filePath) {
       output = await sharp(buffer).webp({ quality: q }).toBuffer()
     }
     if (output && output.length <= MAX_SIZE) {
-      fs.writeFileSync(tempPath, output)
-      fs.renameSync(tempPath, filePath)
+      fs.writeFileSync(filePath, output)
       console.log(
         `✅ Optimized: ${path.basename(filePath)} (${(output.length / 1024).toFixed(
           1
