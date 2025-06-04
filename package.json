@@ -4,10 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/generateThumbnails.js && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "export": "next export",
     "generate-thumbnails": "node scripts/generateThumbnails.js",
     "update-projects": "node scripts/generateProjectIndex.js",
     "update-character": "npm run generate-thumbnails && npm run update-projects"

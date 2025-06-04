@@ -280,21 +280,21 @@ export const PROJECTS: Project[] = [
     images: [
       {
         name: '1.png',
-        path: '/assets/character/20240601_ 瀬世ナギ_泳裝/1.png',
+        path: '/assets/character/20240601_瀬世ナギ_泳裝/1.png',
         type: 'image',
         extension: '.png',
         cropPosition: 'top',
       },
       {
         name: '2.png',
-        path: '/assets/character/20240601_ 瀬世ナギ_泳裝/2.png',
+        path: '/assets/character/20240601_瀬世ナギ_泳裝/2.png',
         type: 'image',
         extension: '.png',
         cropPosition: 'top',
       },
       {
         name: '3.png',
-        path: '/assets/character/20240601_ 瀬世ナギ_泳裝/3.png',
+        path: '/assets/character/20240601_瀬世ナギ_泳裝/3.png',
         type: 'image',
         extension: '.png',
         cropPosition: 'top',

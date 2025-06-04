@@ -27,9 +27,10 @@ import Lightbox from 'yet-another-react-lightbox'
 import Download from 'yet-another-react-lightbox/plugins/download'
 import Zoom from 'yet-another-react-lightbox/plugins/zoom'
 import 'yet-another-react-lightbox/styles.css'
-import { Project } from 'utils/characterAssetsIndex'
+import { Project } from 'components/character/characterAssetsIndex'
 import R18Dialog from './R18Dialog'
 import { useR18Dialog } from './useR18Dialog'
+import NextImage from 'next/image'
 
 interface ProjectCardProps {
   project: Project
@@ -51,21 +52,6 @@ interface SlideType {
   src: string
   alt: string
   download: string
-}
-
-// Helper function to get thumbnail path
-const getThumbnailPath = (imagePath: string, isLarge: boolean = false): string => {
-  // For SVGs, GIFs，直接用原圖
-  if (
-    imagePath.toLowerCase().endsWith('.svg') ||
-    imagePath.toLowerCase().endsWith('.gif')
-  ) {
-    return imagePath
-  }
-  const nameWithoutExt = imagePath.substring(0, imagePath.lastIndexOf('.'))
-  const thumbType = isLarge ? '_thumb_large' : '_thumb_small'
-  const thumbnailPath = `${nameWithoutExt}${thumbType}.jpg`
-  return thumbnailPath
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({
@@ -165,6 +151,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           height: 'auto',
           maxHeight: '510px',
           objectFit: 'contain',
+          objectPosition: image.cropPosition === 'top' ? 'top' : 'center',
         }
 
         if (image.r18 && !showR18) {
@@ -200,6 +187,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       width: '100%',
       height: '100%',
       objectFit: isLandscapeImage ? 'contain' : 'cover',
+      objectPosition: image.cropPosition === 'top' ? 'top' : 'center',
     }
 
     if (image.r18 && !showR18) {
@@ -228,11 +216,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           overflow="hidden"
           borderRadius="12px"
         >
-          <Image
-            src={getThumbnailPath(images[0].path, true)}
+          <NextImage
+            src={images[0].path}
             alt={`${project.title} - ${images[0].name}`}
-            loading="lazy"
-            fallbackSrc={images[0].path}
+            width={383}
+            height={510}
             style={{
               ...getImageStyle(images[0], 0, totalImages),
               borderRadius: '12px',
@@ -274,11 +262,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             overflow="hidden"
             borderRadius="12px"
           >
-            <Image
-              src={getThumbnailPath(images[0].path, true)}
+            <NextImage
+              src={images[0].path}
               alt={`${project.title} - ${images[0].name}`}
-              loading="lazy"
-              fallbackSrc={images[0].path}
+              width={383}
+              height={510}
               style={{
                 ...getImageStyle(images[0], 0, totalImages),
                 width: '100%',
@@ -320,11 +308,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                 flex={1}
                 minHeight={0}
               >
-                <Image
-                  src={getThumbnailPath(image.path, false)}
+                <NextImage
+                  src={image.path}
                   alt={`${project.title} - ${image.name}`}
-                  loading="lazy"
-                  fallbackSrc={image.path}
+                  width={383}
+                  height={510}
                   style={{
                     ...getImageStyle(image, index + 1, totalImages),
                     width: '100%',
@@ -398,11 +386,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                   minWidth={0}
                   minHeight={0}
                 >
-                  <Image
-                    src={getThumbnailPath(image.path, false)}
+                  <NextImage
+                    src={image.path}
                     alt={`${project.title} - ${image.name}`}
-                    loading="lazy"
-                    fallbackSrc={image.path}
+                    width={383}
+                    height={170}
                     style={{
                       ...getImageStyle(image, rowIndex * 3 + colIndex, totalImages),
                       width: '100%',
@@ -449,11 +437,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             overflow="hidden"
             borderRadius="12px"
           >
-            <Image
-              src={getThumbnailPath(images[0].path, true)}
+            <NextImage
+              src={images[0].path}
               alt={`${project.title} - ${images[0].name}`}
-              loading="lazy"
-              fallbackSrc={images[0].path}
+              width={383}
+              height={510}
               style={{
                 ...getImageStyle(images[0], 0, totalImages),
                 width: '100%',
@@ -493,11 +481,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                 width="100%"
                 height="170px"
               >
-                <Image
-                  src={getThumbnailPath(image.path, false)}
+                <NextImage
+                  src={image.path}
                   alt={`${project.title} - ${image.name}`}
-                  loading="lazy"
-                  fallbackSrc={image.path}
+                  width={383}
+                  height={170}
                   style={{
                     ...getImageStyle(image, index + 1, totalImages),
                     width: '100%',

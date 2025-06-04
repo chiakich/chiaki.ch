@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box, Switch, FormControl, FormLabel, Text, VStack } from '@chakra-ui/react'
-import { getAllProjects } from 'utils/characterAssetsIndex'
+import { getAllProjects } from 'components/character/characterAssetsIndex'
 import ProjectCard from './ProjectCard'
 
 interface ProjectGalleryProps {
