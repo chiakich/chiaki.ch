@@ -41,3 +41,7 @@ yarn-error.log*
 # export images
 nextImageExportOptimizer
 next-image-export-optimizer-hashes.json
+
+# new rules
+public/assets/character/*/*_thumb_large.jpg
+public/assets/character/*/*_thumb_small.jpg

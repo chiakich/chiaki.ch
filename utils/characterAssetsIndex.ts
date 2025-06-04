@@ -4,6 +4,7 @@ export interface ProjectFile {
   type: 'image' | 'download'
   extension: string
   r18?: boolean
+  cropPosition?: 'top' | 'center'
 }
 
 export interface Project {
@@ -14,6 +15,7 @@ export interface Project {
   folderName: string
   images: ProjectFile[]
   downloadFiles: ProjectFile[]
+  layout?: 'vertical' | 'horizontal' | 'all'
 }
 
 // Static project data - automatically generated from assets directory
@@ -34,6 +36,7 @@ export const PROJECTS: Project[] = [
       },
     ],
     downloadFiles: [],
+    layout: 'horizontal',
   },
   {
     id: '20250326_廢墟桌布',
@@ -50,6 +53,7 @@ export const PROJECTS: Project[] = [
       },
     ],
     downloadFiles: [],
+    layout: 'horizontal',
   },
   {
     id: '20250325_黑白小漫畫',
@@ -66,6 +70,7 @@ export const PROJECTS: Project[] = [
       },
     ],
     downloadFiles: [],
+    layout: 'horizontal',
   },
   {
     id: '20250322_油畫桌布',
@@ -88,6 +93,7 @@ export const PROJECTS: Project[] = [
       },
     ],
     downloadFiles: [],
+    layout: 'horizontal',
   },
   {
     id: '20250127_抱枕',
@@ -101,33 +107,39 @@ export const PROJECTS: Project[] = [
         path: '/assets/character/20250127_抱枕/冬天1 成图0.png',
         type: 'image',
         extension: '.png',
+        cropPosition: 'top',
       },
       {
         name: '冬天1改.png',
         path: '/assets/character/20250127_抱枕/冬天1改.png',
         type: 'image',
         extension: '.png',
+        cropPosition: 'top',
       },
       {
         name: '冬天2 成图.png',
         path: '/assets/character/20250127_抱枕/冬天2 成图.png',
         type: 'image',
         extension: '.png',
+        cropPosition: 'top',
       },
       {
         name: '冬天2 成图00.png',
         path: '/assets/character/20250127_抱枕/冬天2 成图00.png',
         type: 'image',
         extension: '.png',
+        cropPosition: 'top',
       },
       {
         name: '冬天2改.png',
         path: '/assets/character/20250127_抱枕/冬天2改.png',
         type: 'image',
         extension: '.png',
+        cropPosition: 'top',
       },
     ],
     downloadFiles: [],
+    layout: 'vertical',
   },
   {
     id: '20250123_废墟',
@@ -144,6 +156,7 @@ export const PROJECTS: Project[] = [
       },
     ],
     downloadFiles: [],
+    layout: 'horizontal',
   },
   {
     id: '20250123_テトリス',
@@ -232,6 +245,7 @@ export const PROJECTS: Project[] = [
       },
     ],
     downloadFiles: [],
+    layout: 'horizontal',
   },
   {
     id: '20250120_Minecraft',
@@ -255,34 +269,39 @@ export const PROJECTS: Project[] = [
         extension: '.png',
       },
     ],
+    layout: 'horizontal',
   },
   {
     id: '20240601_ 瀬世ナギ_泳裝',
     title: '泳裝',
-    author: ' 瀬世ナギ',
+    author: '瀬世ナギ',
     date: '2024/06/01',
-    folderName: '20240601_ 瀬世ナギ_泳裝',
+    folderName: '20240601_瀬世ナギ_泳裝',
     images: [
       {
         name: '1.png',
         path: '/assets/character/20240601_ 瀬世ナギ_泳裝/1.png',
         type: 'image',
         extension: '.png',
+        cropPosition: 'top',
       },
       {
         name: '2.png',
         path: '/assets/character/20240601_ 瀬世ナギ_泳裝/2.png',
         type: 'image',
         extension: '.png',
+        cropPosition: 'top',
       },
       {
         name: '3.png',
         path: '/assets/character/20240601_ 瀬世ナギ_泳裝/3.png',
         type: 'image',
         extension: '.png',
+        cropPosition: 'top',
       },
     ],
     downloadFiles: [],
+    layout: 'vertical',
   },
   {
     id: '20240329_SinnraArt_平塗立繪',
@@ -305,6 +324,7 @@ export const PROJECTS: Project[] = [
       },
     ],
     downloadFiles: [],
+    layout: 'vertical',
   },
   {
     id: '20231226_動態貼圖',
@@ -465,6 +485,7 @@ export const PROJECTS: Project[] = [
       },
     ],
     downloadFiles: [],
+    layout: 'horizontal',
   },
   {
     id: '20231214_亞莓生日賀圖',
@@ -505,6 +526,7 @@ export const PROJECTS: Project[] = [
       },
     ],
     downloadFiles: [],
+    layout: 'horizontal',
   },
   {
     id: '20231128_游標像素',
@@ -557,6 +579,7 @@ export const PROJECTS: Project[] = [
       },
     ],
     downloadFiles: [],
+    layout: 'horizontal',
   },
   {
     id: '20230906_飄貓_迷你像素gif',
@@ -585,6 +608,7 @@ export const PROJECTS: Project[] = [
       },
     ],
     downloadFiles: [],
+    layout: 'horizontal',
   },
   {
     id: '20230726_鳳梨_黏土人',
@@ -649,6 +673,7 @@ export const PROJECTS: Project[] = [
       },
     ],
     downloadFiles: [],
+    layout: 'horizontal',
   },
   {
     id: '20230614_shONe',
@@ -671,6 +696,7 @@ export const PROJECTS: Project[] = [
       },
     ],
     downloadFiles: [],
+    layout: 'vertical',
   },
   {
     id: '20230215_NAiK_NSFW',
@@ -695,6 +721,7 @@ export const PROJECTS: Project[] = [
       },
     ],
     downloadFiles: [],
+    layout: 'horizontal',
   },
   {
     id: '20221022_庸庸系_卡面圖',
@@ -711,6 +738,7 @@ export const PROJECTS: Project[] = [
       },
     ],
     downloadFiles: [],
+    layout: 'horizontal',
   },
   {
     id: '20220920_ELLu_Q版',
@@ -763,6 +791,7 @@ export const PROJECTS: Project[] = [
       },
     ],
     downloadFiles: [],
+    layout: 'horizontal',
   },
   {
     id: '20220916_BYO',
@@ -787,6 +816,7 @@ export const PROJECTS: Project[] = [
       },
     ],
     downloadFiles: [],
+    layout: 'horizontal',
   },
   {
     id: '20220812_shONe',
@@ -796,14 +826,15 @@ export const PROJECTS: Project[] = [
     folderName: '20220812_shONe',
     images: [
       {
-        name: '202208012129_step3_fix202209112338_v1.png',
-        path: '/assets/character/20220812_shONe/202208012129_step3_fix202209112338_v1.png',
-        type: 'image',
-        extension: '.png',
-      },
-      {
         name: '202208012129_step3_fix202209112338_v2.png',
         path: '/assets/character/20220812_shONe/202208012129_step3_fix202209112338_v2.png',
+        type: 'image',
+        extension: '.png',
+        cropPosition: 'top',
+      },
+      {
+        name: '202208012129_step3_fix202209112338_v1.png',
+        path: '/assets/character/20220812_shONe/202208012129_step3_fix202209112338_v1.png',
         type: 'image',
         extension: '.png',
       },
@@ -837,6 +868,7 @@ export const PROJECTS: Project[] = [
       },
     ],
     downloadFiles: [],
+    layout: 'vertical',
   },
   {
     id: '20220810_夏伊',
@@ -853,6 +885,7 @@ export const PROJECTS: Project[] = [
       },
     ],
     downloadFiles: [],
+    layout: 'horizontal',
   },
   {
     id: '20220703_rizu_頭貼',
@@ -875,6 +908,7 @@ export const PROJECTS: Project[] = [
       },
     ],
     downloadFiles: [],
+    layout: 'horizontal',
   },
   {
     id: '20200622_咩替_打歌服設計',
@@ -891,6 +925,7 @@ export const PROJECTS: Project[] = [
       },
     ],
     downloadFiles: [],
+    layout: 'horizontal',
   },
   {
     id: '0_亞莓官方圖',
@@ -913,6 +948,7 @@ export const PROJECTS: Project[] = [
       },
     ],
     downloadFiles: [],
+    layout: 'horizontal',
   },
 ]
 

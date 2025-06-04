@@ -9,6 +9,10 @@ const THUMBNAIL_SIZE = 150 // Size for thumbnails
 const THUMBNAIL_QUALITY = 80 // JPEG quality for thumbnails
 const MAX_FILE_SIZE = 500 * 1024 // Skip thumbnail generation for files smaller than 500KB
 const IMAGE_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.bmp'] // Removed .gif and .svg
+const THUMBNAIL_LARGE_SUFFIX = '_thumb_large'
+const THUMBNAIL_LARGE_SIZE = 800
+const THUMBNAIL_SMALL_SUFFIX = '_thumb_small'
+const THUMBNAIL_SMALL_SIZE = 340
 
 /**
  * Check if file is an image
@@ -33,18 +37,18 @@ function shouldSkipThumbnail(imagePath) {
 /**
  * Check if thumbnail already exists
  */
-function thumbnailExists(imagePath) {
+function thumbnailExists(imagePath, suffix) {
   const ext = path.extname(imagePath)
   const nameWithoutExt = path.basename(imagePath, ext)
   const dir = path.dirname(imagePath)
-  const thumbnailPath = path.join(dir, `${nameWithoutExt}${THUMBNAIL_SUFFIX}.jpg`)
+  const thumbnailPath = path.join(dir, `${nameWithoutExt}${suffix}.jpg`)
   return fs.existsSync(thumbnailPath)
 }
 
 /**
  * Generate thumbnail for an image
  */
-async function generateThumbnail(imagePath) {
+async function generateThumbnail(imagePath, suffix, size) {
   try {
     // Skip if file should not have thumbnail
     if (shouldSkipThumbnail(imagePath)) {
@@ -59,10 +63,10 @@ async function generateThumbnail(imagePath) {
     const ext = path.extname(imagePath)
     const nameWithoutExt = path.basename(imagePath, ext)
     const dir = path.dirname(imagePath)
-    const thumbnailPath = path.join(dir, `${nameWithoutExt}${THUMBNAIL_SUFFIX}.jpg`)
+    const thumbnailPath = path.join(dir, `${nameWithoutExt}${suffix}.jpg`)
 
     // Skip if thumbnail already exists
-    if (thumbnailExists(imagePath)) {
+    if (thumbnailExists(imagePath, suffix)) {
       console.log(`  ⏭️  Thumbnail exists: ${path.basename(thumbnailPath)}`)
       return thumbnailPath
     }
@@ -70,10 +74,7 @@ async function generateThumbnail(imagePath) {
     console.log(`  🖼️  Generating: ${path.basename(thumbnailPath)}`)
 
     await sharp(imagePath)
-      .resize(THUMBNAIL_SIZE, THUMBNAIL_SIZE, {
-        fit: 'cover',
-        position: 'center',
-      })
+      .resize({ width: size })
       .jpeg({
         quality: THUMBNAIL_QUALITY,
         progressive: true,
@@ -111,11 +112,27 @@ async function processProjectFolder(projectPath, projectName) {
 
     for (const imageFile of imageFiles) {
       const imagePath = path.join(projectPath, imageFile)
-      if (thumbnailExists(imagePath)) {
-        skipped++
-      } else {
-        await generateThumbnail(imagePath)
+      // Large thumbnail
+      if (!thumbnailExists(imagePath, THUMBNAIL_LARGE_SUFFIX)) {
+        await generateThumbnail(
+          imagePath,
+          THUMBNAIL_LARGE_SUFFIX,
+          THUMBNAIL_LARGE_SIZE
+        )
         generated++
+      } else {
+        skipped++
+      }
+      // Small thumbnail
+      if (!thumbnailExists(imagePath, THUMBNAIL_SMALL_SUFFIX)) {
+        await generateThumbnail(
+          imagePath,
+          THUMBNAIL_SMALL_SUFFIX,
+          THUMBNAIL_SMALL_SIZE
+        )
+        generated++
+      } else {
+        skipped++
       }
     }
 
@@ -134,7 +151,11 @@ function cleanupAllThumbnails(directory) {
     let cleaned = 0
 
     files.forEach((file) => {
-      if (file.includes(THUMBNAIL_SUFFIX)) {
+      if (
+        file.includes(THUMBNAIL_LARGE_SUFFIX) ||
+        file.includes(THUMBNAIL_SMALL_SUFFIX) ||
+        file.includes(THUMBNAIL_SUFFIX)
+      ) {
         const filePath = path.join(directory, file)
         fs.unlinkSync(filePath)
         console.log(`  🗑️  Removed thumbnail: ${file}`)
@@ -175,48 +196,29 @@ async function main() {
 
     console.log(`\n📂 Found ${folders.length} project folders`)
 
-    // Ask user if they want to clean up all thumbnails first
-    const readline = require('readline').createInterface({
-      input: process.stdin,
-      output: process.stdout,
+    console.log('\n🧹 Cleaning up all existing thumbnails...')
+    folders.forEach((folderName) => {
+      const projectPath = path.join(ASSETS_PATH, folderName)
+      cleanupAllThumbnails(projectPath)
     })
 
-    readline.question(
-      '\nDo you want to clean up all existing thumbnails first? (y/N) ',
-      async (answer) => {
-        if (answer.toLowerCase() === 'y') {
-          console.log('\n🧹 Cleaning up all existing thumbnails...')
-          folders.forEach((folderName) => {
-            const projectPath = path.join(ASSETS_PATH, folderName)
-            cleanupAllThumbnails(projectPath)
-          })
-        }
+    for (const folderName of folders) {
+      const projectPath = path.join(ASSETS_PATH, folderName)
+      await processProjectFolder(projectPath, folderName)
+    }
 
-        let totalGenerated = 0
-        let totalSkipped = 0
+    console.log('\n🎉 Thumbnail generation completed!')
+    console.log(`📊 Summary:`)
+    console.log(`   Projects processed: ${folders.length}`)
 
-        for (const folderName of folders) {
-          const projectPath = path.join(ASSETS_PATH, folderName)
-          await processProjectFolder(projectPath, folderName)
-        }
+    // Count total thumbnails
+    const totalThumbnails = folders.reduce((count, folderName) => {
+      const projectPath = path.join(ASSETS_PATH, folderName)
+      const files = fs.readdirSync(projectPath)
+      return count + files.filter((file) => file.includes(THUMBNAIL_SUFFIX)).length
+    }, 0)
 
-        console.log('\n🎉 Thumbnail generation completed!')
-        console.log(`📊 Summary:`)
-        console.log(`   Projects processed: ${folders.length}`)
-
-        // Count total thumbnails
-        const totalThumbnails = folders.reduce((count, folderName) => {
-          const projectPath = path.join(ASSETS_PATH, folderName)
-          const files = fs.readdirSync(projectPath)
-          return (
-            count + files.filter((file) => file.includes(THUMBNAIL_SUFFIX)).length
-          )
-        }, 0)
-
-        console.log(`   Total thumbnails: ${totalThumbnails}`)
-        readline.close()
-      }
-    )
+    console.log(`   Total thumbnails: ${totalThumbnails}`)
   } catch (error) {
     console.error('❌ Fatal error:', error.message)
     process.exit(1)

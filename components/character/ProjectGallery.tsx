@@ -17,7 +17,7 @@ const ProjectGallery: React.FC<ProjectGalleryProps> = ({
   const projects = getAllProjects()
 
   return (
-    <Box maxWidth="1024px" width="100%" margin="0 auto">
+    <Box maxWidth="800px" width="100%" margin="0 auto">
       {/* R18 Toggle */}
       <Box marginBottom={6}>
         <FormControl display="flex" alignItems="center" justifyContent="center">
