@@ -46,6 +46,7 @@ const TopBar: React.FC = () => {
 
           <HStack spacing={5} display={{ base: 'none', md: 'flex' }} color="white">
             <Link href="/">Home</Link>
+            <Link href="/character">Character</Link>
             <Link href="/fonts">Fonts</Link>
           </HStack>
         </HStack>

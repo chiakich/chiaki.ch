@@ -7,7 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "export": "next build && next export && next-image-export-optimizer"
+    "export": "next build && next export && next-image-export-optimizer",
+    "generate-thumbnails": "node scripts/generateThumbnails.js",
+    "update-projects": "node scripts/generateProjectIndex.js",
+    "update-character": "npm run generate-thumbnails && npm run update-projects"
   },
   "dependencies": {
     "@babel/core": "^7.18.13",
@@ -18,7 +21,10 @@
     "framer-motion": "^6",
     "next": "^15.3.2",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "react-window": "^1.8.11",
+    "react-window-infinite-loader": "^1.0.10",
+    "yet-another-react-lightbox": "^3.23.2"
   },
   "devDependencies": {
     "@chakra-ui/styled-system": "^2.2.8",
@@ -26,8 +32,10 @@
     "@types/node": "18.7.13",
     "@types/react": "18.0.17",
     "@types/react-dom": "18.0.6",
+    "@types/react-window": "^1.8.8",
     "eslint": "^9.26.0",
     "eslint-config-next": "^15.3.2",
+    "sharp": "^0.34.2",
     "typescript": "^5.8.3"
   }
 }
