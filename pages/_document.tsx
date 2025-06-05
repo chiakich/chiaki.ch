@@ -7,11 +7,7 @@ class MyDocument extends Document {
         <Head>
           {/* Basic meta tags */}
           <meta charSet="utf-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <meta
-            name="description"
-            content="千秋稻荷社 - Chiaki Inari Shrine，千秋的個人網站與作品展示"
-          />
+          <meta name="description" content="千秋的個人網站與作品展示" />
           <meta name="keywords" content="千秋,稻荷社,Chiaki,個人網站,作品集" />
           <meta name="author" content="千秋" />
           <meta name="robots" content="index, follow" />
@@ -20,10 +16,7 @@ class MyDocument extends Document {
           <meta property="og:type" content="website" />
           <meta property="og:url" content="https://chiaki.ch/" />
           <meta property="og:title" content="千秋稻荷社 - Chiaki Inari Shrine" />
-          <meta
-            property="og:description"
-            content="千秋稻荷社 - Chiaki Inari Shrine，千秋的個人網站與作品展示"
-          />
+          <meta property="og:description" content="千秋的個人網站與作品展示" />
           <meta property="og:image" content="https://chiaki.ch/thumbnail.jpeg" />
           <meta property="og:image:width" content="1200" />
           <meta property="og:image:height" content="630" />
@@ -37,10 +30,7 @@ class MyDocument extends Document {
             property="twitter:title"
             content="千秋稻荷社 - Chiaki Inari Shrine"
           />
-          <meta
-            property="twitter:description"
-            content="千秋稻荷社 - Chiaki Inari Shrine，千秋的個人網站與作品展示"
-          />
+          <meta property="twitter:description" content="千秋的個人網站與作品展示" />
           <meta
             property="twitter:image"
             content="https://chiaki.ch/thumbnail.jpeg"
@@ -52,8 +42,6 @@ class MyDocument extends Document {
           <meta name="apple-mobile-web-app-title" content="千秋稻荷社" />
           <meta name="apple-mobile-web-app-capable" content="yes" />
           <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-
-          <title>千秋稻荷社 - Chiaki Inari Shrine</title>
 
           <link rel="preconnect" href="https://s3-ap-northeast-1.amazonaws.com" />
           <script

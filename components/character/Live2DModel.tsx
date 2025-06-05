@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import dynamic from 'next/dynamic'
-import { Box, Spinner, Text } from '@chakra-ui/react'
+import { Box, Center, Spinner, Text } from '@chakra-ui/react'
 
 // Dynamically import the Live2D model component with no SSR
 const Live2DModelClient = dynamic(() => import('./Live2DModelClient'), {
@@ -55,9 +55,23 @@ const Live2DModel: React.FC<Live2DModelProps> = ({ width, height }) => {
   }
 
   return (
-    <Box position="relative">
-      <Live2DModelClient width={width} height={height} />
-    </Box>
+    <>
+      <Box maxWidth="1200px" margin="0 auto" position="relative">
+        <Text
+          position="absolute"
+          color="white"
+          marginX={{ base: '20px', md: '40px', lg: '60px' }}
+          fontSize={{ base: '2xl', md: '3xl', lg: '4xl' }}
+          fontWeight="bold"
+          marginBottom="20px"
+        >
+          Live2D
+        </Text>
+      </Box>
+      <Center>
+        <Live2DModelClient width={width} height={height} />
+      </Center>
+    </>
   )
 }
 

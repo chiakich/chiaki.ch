@@ -46,8 +46,9 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider theme={theme}>
       <Head>
-        <title>Chiaki Inari</title>
-        <meta name="description" content="Chiaki Inari" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>千秋稻荷社 - Chiaki Inari Shrine</title>
+        <meta name="description" content="千秋的個人網站與作品展示" />
       </Head>
       <Component {...pageProps} />
     </ChakraProvider>

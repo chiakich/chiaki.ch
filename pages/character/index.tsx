@@ -3,31 +3,22 @@ import { Box, VStack } from '@chakra-ui/react'
 import TopBar from 'components/TopBar'
 import CharacterSubNav from 'components/character/CharacterSubNav'
 import CharacterIntroduction from 'components/character/CharacterIntroduction'
+import CharacterConceptArt from 'components/character/CharacterConceptArt'
 import Live2DModelComponent from 'components/character/Live2DModel'
+import IntroBackground from 'components/character/IntroBackground'
 
 const CharacterOverviewPage: NextPage = () => {
   return (
     <Box backgroundColor="black" width="100%" minHeight="100vh">
       <TopBar />
       <CharacterSubNav />
-
-      <VStack spacing={8} paddingTop="88px" paddingBottom="40px">
-        <Box width="100%">
+      <Box paddingTop="88px" paddingBottom="40px">
+        <IntroBackground>
           <CharacterIntroduction />
-        </Box>
-
-        <Box
-          width="100%"
-          maxWidth="1200px"
-          paddingX={{ base: '20px', md: '40px', lg: '60px' }}
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          minHeight={{ base: '50vh', md: '60vh', lg: '600px' }}
-        >
-          <Live2DModelComponent />
-        </Box>
-      </VStack>
+          <CharacterConceptArt />
+        </IntroBackground>
+      </Box>
+      <Live2DModelComponent />
     </Box>
   )
 }
