@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Box } from '@chakra-ui/react'
+import DotBackground from '../index/DotBackground'
 
 // Add type definition for window.PIXI
 declare global {

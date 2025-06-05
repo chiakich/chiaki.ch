@@ -155,30 +155,6 @@ export const PROJECTS: Project[] = [
     layout: 'horizontal',
   },
   {
-    id: '20250120_Minecraft',
-    title: 'Minecraft',
-    author: '涼風千秋',
-    date: '2025/01/20',
-    folderName: '20250120_Minecraft',
-    images: [
-      {
-        name: 'Screenshot_2025-01-20-01-40-04-362_com.africasunrise.skinseed.jpg',
-        path: '/assets/character/20250120_Minecraft/Screenshot_2025-01-20-01-40-04-362_com.africasunrise.skinseed.jpg',
-        type: 'image',
-        extension: '.jpg',
-      },
-    ],
-    downloadFiles: [
-      {
-        name: 'SkinseedSkin_1737430172350.png',
-        path: '/assets/character/20250120_Minecraft/SkinseedSkin_1737430172350.png',
-        type: 'image',
-        extension: '.png',
-      },
-    ],
-    layout: 'horizontal',
-  },
-  {
     id: '20240601_ 瀬世ナギ_泳裝',
     title: '泳裝',
     author: '瀬世ナギ',

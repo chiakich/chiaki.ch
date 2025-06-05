@@ -4,8 +4,9 @@ import TopBar from 'components/TopBar'
 import CharacterSubNav from 'components/character/CharacterSubNav'
 import CharacterIntroduction from 'components/character/CharacterIntroduction'
 import CharacterConceptArt from 'components/character/CharacterConceptArt'
-import Live2DModelComponent from 'components/character/Live2DModel'
+import Live2DModel from 'components/character/Live2DModel'
 import IntroBackground from 'components/character/IntroBackground'
+import MinecraftSkin from 'components/character/MinecraftSkin'
 
 const CharacterOverviewPage: NextPage = () => {
   return (
@@ -18,7 +19,8 @@ const CharacterOverviewPage: NextPage = () => {
           <CharacterConceptArt />
         </IntroBackground>
       </Box>
-      <Live2DModelComponent />
+      <Live2DModel />
+      <MinecraftSkin />
     </Box>
   )
 }
