@@ -149,7 +149,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         const baseStyle: React.CSSProperties = {
           width: '100%',
           height: 'auto',
-          maxHeight: '510px',
           objectFit: 'contain',
           objectPosition: image.cropPosition === 'top' ? 'top' : 'center',
         }
@@ -215,6 +214,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           onClick={() => handleImageClick(0)}
           overflow="hidden"
           borderRadius="12px"
+          width="100%"
         >
           <NextImage
             src={images[0].path}
@@ -223,6 +223,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             height={510}
             style={{
               ...getImageStyle(images[0], 0, totalImages),
+              width: '100%',
+              height: 'auto',
               borderRadius: '12px',
             }}
             onLoad={(e) => handleImageLoad(images[0].path, e)}
@@ -366,61 +368,53 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
     // all：全部圖片都展示，每行最多3張
     if (layout === 'all') {
-      const rows = []
-      for (let i = 0; i < images.length; i += 3) {
-        rows.push(images.slice(i, i + 3))
-      }
       return (
-        <VStack spacing={2} align="stretch">
-          {rows.map((row, rowIndex) => (
-            <HStack key={rowIndex} spacing={2} align="stretch">
-              {row.map((image, colIndex) => (
+        <Grid templateColumns="repeat(3, 1fr)" gap={2}>
+          {images.map((image, index) => (
+            <Box
+              key={`${project.id}-${image.name}-${index}`}
+              position="relative"
+              cursor="pointer"
+              onClick={() => handleImageClick(index)}
+              overflow="hidden"
+              borderRadius="12px"
+              flex={1}
+              minWidth={0}
+              minHeight={0}
+            >
+              <NextImage
+                src={image.path}
+                alt={`${project.title} - ${image.name}`}
+                width={383}
+                height={170}
+                style={{
+                  ...getImageStyle(image, index, totalImages),
+                  width: '100%',
+                  height: 'auto',
+                  objectFit: 'cover',
+                  borderRadius: '12px',
+                }}
+                onLoad={(e) => handleImageLoad(image.path, e)}
+              />
+              {image.r18 && (
                 <Box
-                  key={`${project.id}-${image.name}-${rowIndex * 3 + colIndex}`}
-                  position="relative"
-                  cursor="pointer"
-                  onClick={() => handleImageClick(rowIndex * 3 + colIndex)}
-                  overflow="hidden"
-                  borderRadius="12px"
-                  flex={1}
-                  minWidth={0}
-                  minHeight={0}
+                  position="absolute"
+                  top="2px"
+                  right="2px"
+                  backgroundColor="red.500"
+                  color="white"
+                  fontSize="8px"
+                  fontWeight="bold"
+                  padding="2px 4px"
+                  borderRadius="4px"
+                  zIndex={2}
                 >
-                  <NextImage
-                    src={image.path}
-                    alt={`${project.title} - ${image.name}`}
-                    width={383}
-                    height={170}
-                    style={{
-                      ...getImageStyle(image, rowIndex * 3 + colIndex, totalImages),
-                      width: '100%',
-                      height: '170px',
-                      objectFit: 'cover',
-                      borderRadius: '12px',
-                    }}
-                    onLoad={(e) => handleImageLoad(image.path, e)}
-                  />
-                  {image.r18 && (
-                    <Box
-                      position="absolute"
-                      top="2px"
-                      right="2px"
-                      backgroundColor="red.500"
-                      color="white"
-                      fontSize="8px"
-                      fontWeight="bold"
-                      padding="2px 4px"
-                      borderRadius="4px"
-                      zIndex={2}
-                    >
-                      R18
-                    </Box>
-                  )}
+                  R18
                 </Box>
-              ))}
-            </HStack>
+              )}
+            </Box>
           ))}
-        </VStack>
+        </Grid>
       )
     }
 
@@ -436,15 +430,18 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             onClick={() => handleImageClick(0)}
             overflow="hidden"
             borderRadius="12px"
+            width="100%"
+            height="auto"
           >
             <NextImage
               src={images[0].path}
               alt={`${project.title} - ${images[0].name}`}
-              width={383}
+              width={766}
               height={510}
               style={{
                 ...getImageStyle(images[0], 0, totalImages),
                 width: '100%',
+                height: 'auto',
                 borderRadius: '12px',
               }}
               onLoad={(e) => handleImageLoad(images[0].path, e)}
@@ -479,7 +476,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                 overflow="hidden"
                 borderRadius="12px"
                 width="100%"
-                height="170px"
+                height="auto"
               >
                 <NextImage
                   src={image.path}
@@ -489,7 +486,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                   style={{
                     ...getImageStyle(image, index + 1, totalImages),
                     width: '100%',
-                    height: '100%',
+                    height: 'auto',
                     objectFit: 'cover',
                     borderRadius: '12px',
                   }}

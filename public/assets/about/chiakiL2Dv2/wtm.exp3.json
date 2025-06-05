@@ -1,0 +1,10 @@
+{
+	"Type": "Live2D Expression",
+	"Parameters": [
+		{
+			"Id": "face7",
+			"Value": 0.723,
+			"Blend": "Add"
+		}
+	]
+}
