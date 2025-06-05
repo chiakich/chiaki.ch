@@ -4714,15 +4714,6 @@ react-remove-scroll@^2.5.7:
     use-callback-ref "^1.3.3"
     use-sidecar "^1.1.3"
 
-react-skinview3d@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/react-skinview3d/-/react-skinview3d-6.0.0.tgz#263a129306d6b3179a76f4b4b8e48eae18e1553b"
-  integrity sha512-tFNXBHNLg7ovt+IZyX6iLHp0zFSAS7ME4UDD6/JNKUhRvBwzAzt4xrFq6BymfwuzD/W2HgBw6LWUqpX3Tc4BAQ==
-  dependencies:
-    react "^19.1.0"
-    react-dom "^19.1.0"
-    skinview3d "^3.3.0"
-
 react-style-singleton@^2.2.2, react-style-singleton@^2.2.3:
   version "2.2.3"
   resolved "https://registry.npmjs.org/react-style-singleton/-/react-style-singleton-2.2.3.tgz"
@@ -5103,7 +5094,7 @@ skinview-utils@^0.7.1:
   resolved "https://registry.yarnpkg.com/skinview-utils/-/skinview-utils-0.7.1.tgz#925cc144a6d359be2bea6b4c023a5a88656af2df"
   integrity sha512-4eLrMqR526ehlZbsd8SuZ/CHpS9GiH0xUMoV+PYlJVi95ZFz5HJu7Spt5XYa72DRS7wgt5qquvHZf0XZJgmu9Q==
 
-skinview3d@^3.3.0, skinview3d@^3.4.1:
+skinview3d@^3.4.1:
   version "3.4.1"
   resolved "https://registry.yarnpkg.com/skinview3d/-/skinview3d-3.4.1.tgz#41dfd8d797b517d3a840645b074d0353b7e7aac1"
   integrity sha512-WVN1selfDSAoQB7msLs3ueJjW/pge3nsmbqxJeXPnN/qIJ1GJKpMZO8mavSvMojaMrmpSgOJWfYUkK9B34ts2g==

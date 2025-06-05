@@ -1,39 +1,48 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { Box, Text, VStack, Center, Spinner, HStack, Button } from '@chakra-ui/react'
-import dynamic from 'next/dynamic'
+import React, { useEffect, useRef } from 'react'
+import { Box, Text, VStack, Center } from '@chakra-ui/react'
 import { WalkingAnimation } from 'skinview3d'
 
-// Dynamically import ReactSkinview3d to avoid SSR issues
-const ReactSkinview3d = dynamic(() => import('react-skinview3d'), {
-  ssr: false,
-  loading: () => (
-    <Center height="400px">
-      <Spinner color="#df8a42" size="xl" />
-    </Center>
-  ),
-})
-
 const MinecraftSkin: React.FC = () => {
-  const grassBlockStyles = {
-    backgroundImage: `
-      url('/assets/img/Grass_Block.png'),
-      url('/assets/img/Grass_Block.png')
-    `,
-    backgroundSize: '120px',
-    backgroundPosition: '0 0, 60px 103px',
-    backgroundRepeat: 'repeat, repeat',
-    imageRendering: 'pixelated',
-  }
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+
+  useEffect(() => {
+    // Use dynamic import to avoid SSR issues
+    if (typeof window !== 'undefined' && canvasRef.current) {
+      import('skinview3d')
+        .then((skinview3d) => {
+          const canvas = canvasRef.current
+          if (!canvas) return
+
+          const viewer = new skinview3d.SkinViewer({
+            canvas: canvas,
+            width: 500,
+            height: 500,
+          })
+
+          // Load the skin
+          viewer.loadSkin('/assets/about/mc_skin.png')
+
+          // Set up controls
+          viewer.controls.enableRotate = true
+          viewer.controls.enableZoom = true
+          viewer.controls.enablePan = false
+
+          // set animation
+          viewer.animation = new WalkingAnimation()
+
+          // Cleanup function
+          return () => {
+            viewer.dispose?.()
+          }
+        })
+        .catch((error) => {
+          console.error('Failed to load skinview3d:', error)
+        })
+    }
+  }, [])
 
   return (
-    <Box
-      backgroundColor="white"
-      position="relative"
-      paddingY="60px"
-      sx={{
-        ...grassBlockStyles,
-      }}
-    >
+    <Box position="relative" paddingY="60px">
       <Box
         width="100%"
         maxWidth="1200px"
@@ -51,21 +60,9 @@ const MinecraftSkin: React.FC = () => {
         </VStack>
 
         {/* Minecraft Skin Viewer */}
-        <HStack spacing={10} justifyContent="center">
-          <ReactSkinview3d
-            skinUrl="/assets/about/mc_skin.png"
-            height={500}
-            width={500}
-            onReady={(instance) => {
-              instance.viewer.camera.position.set(-140, 130, 100)
-              instance.viewer.camera.lookAt(0, 0, 0)
-            }}
-            options={{
-              fov: 10,
-              animation: new WalkingAnimation(),
-            }}
-          />
-        </HStack>
+        <Center>
+          <canvas ref={canvasRef} width={500} height={500} />
+        </Center>
       </Box>
     </Box>
   )
