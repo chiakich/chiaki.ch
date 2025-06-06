@@ -15,9 +15,11 @@ import {
 import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons'
 import Link from 'next/link'
 import React, { useState } from 'react'
+import { usePathname } from 'next/navigation'
 
 const TopBar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const currentPath = usePathname()
 
   return (
     <Box
@@ -63,10 +65,26 @@ const TopBar: React.FC = () => {
             </HStack>
           </Link>
 
-          <HStack spacing={5} display={{ base: 'none', md: 'flex' }} color="white">
-            <Link href="/">Home</Link>
-            <Link href="/character">Character</Link>
-            <Link href="/fonts">Fonts</Link>
+          <HStack spacing={5} display={{ base: 'none', md: 'flex' }} color="#F5F5F7">
+            <Link href="/" style={{ opacity: currentPath === '/' ? 1 : 0.5 }}>
+              Home
+            </Link>
+            <Link
+              href="/character"
+              style={{
+                opacity: currentPath === '/character' ? 1 : 0.5,
+              }}
+            >
+              Character
+            </Link>
+            <Link
+              href="/fonts"
+              style={{
+                opacity: currentPath === '/fonts' ? 1 : 0.5,
+              }}
+            >
+              Fonts
+            </Link>
           </HStack>
         </HStack>
 

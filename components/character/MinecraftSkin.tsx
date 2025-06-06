@@ -24,7 +24,7 @@ const MinecraftSkin: React.FC = () => {
 
           // Set up controls
           viewer.controls.enableRotate = true
-          viewer.controls.enableZoom = true
+          viewer.controls.enableZoom = false
           viewer.controls.enablePan = false
 
           // set animation

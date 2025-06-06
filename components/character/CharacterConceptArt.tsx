@@ -67,7 +67,7 @@ const CharacterConceptArt: React.FC = () => {
             src={conceptArts[currentConceptIndex]}
             alt={conceptTitles[currentConceptIndex]}
             width="100%"
-            height="650px"
+            height={{ base: '300px', md: '650px' }}
             objectFit="contain"
             backgroundColor="rgba(255, 255, 255, 0.9)"
           />
