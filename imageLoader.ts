@@ -11,7 +11,7 @@ export default function cloudflareLoader({
   width: number
   quality?: number
 }) {
-  const params = [`width=${width}`]
+  const params = [`width=${width}`, `onerror=redirect`]
   if (quality) {
     params.push(`quality=${quality}`)
   }
