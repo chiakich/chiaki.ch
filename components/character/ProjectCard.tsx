@@ -4,21 +4,13 @@ import {
   Text,
   VStack,
   HStack,
-  Image,
   Button,
   Link,
   Grid,
   GridItem,
   useDisclosure,
   Flex,
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogContent,
-  AlertDialogOverlay,
   Avatar,
-  IconButton,
   Tooltip,
   Divider,
 } from '@chakra-ui/react'
@@ -34,7 +26,6 @@ import NextImage from 'next/image'
 
 interface ProjectCardProps {
   project: Project
-  isHorizontal?: boolean
   showR18?: boolean
   ageConfirmed?: boolean
 }
@@ -56,7 +47,6 @@ interface SlideType {
 
 const ProjectCard: React.FC<ProjectCardProps> = ({
   project,
-  isHorizontal = false,
   showR18 = false,
   ageConfirmed = false,
 }): React.ReactElement => {
@@ -68,16 +58,23 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     onClose: closeLightbox,
   } = useDisclosure()
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
-  const [imageDimensions, setImageDimensions] = useState<
-    Record<string, { width: number; height: number }>
-  >({})
+  const [localAgeConfirmed, setLocalAgeConfirmed] = useState(false)
+
+  // Check localStorage on mount and update state
+  React.useEffect(() => {
+    const confirmed = localStorage.getItem('ageConfirmed') === 'true'
+    setLocalAgeConfirmed(confirmed)
+  }, [])
+
+  // Use local state or props, prioritizing localStorage
+  const isAgeConfirmed = localAgeConfirmed || ageConfirmed
 
   // Show all images, but apply blur to R18 images when showR18 is false
   const displayImages: ImageType[] = project.images
 
   // Prepare slides for lightbox (only include non-R18 or visible R18 images)
   const slides: SlideType[] = displayImages
-    .filter((image: ImageType) => !image.r18 || showR18)
+    .filter((image: ImageType) => !image.r18 || showR18 || isAgeConfirmed)
     .map((image: ImageType) => ({
       src: image.path,
       alt: `${project.title} - ${image.name}`,
@@ -86,9 +83,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
   const handleImageClick = (imageIndex: number): void => {
     const image = displayImages[imageIndex]
-    if (image.r18 && !ageConfirmed) {
+    if (image.r18 && !isAgeConfirmed) {
       openDialog(imageIndex)
-    } else if (!image.r18 || showR18) {
+    } else if (!image.r18 || showR18 || isAgeConfirmed) {
       const slideIndex = slides.findIndex(
         (slide: SlideType) => slide.src === image.path
       )
@@ -101,91 +98,38 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
   const handleR18Confirm = () => {
     localStorage.setItem('ageConfirmed', 'true')
+    setLocalAgeConfirmed(true)
+
     if (imageIndex !== null) {
       const image = displayImages[imageIndex]
-      const slideIndex = slides.findIndex(
-        (slide: SlideType) => slide.src === image.path
-      )
-      if (slideIndex !== -1) {
-        setCurrentImageIndex(slideIndex)
-        closeDialog()
-        openLightbox()
-      }
+      closeDialog()
+
+      // Use setTimeout to ensure state updates and dialog closes before lightbox opens
+      setTimeout(() => {
+        // Recalculate slides with updated age confirmation
+        const updatedSlides = displayImages
+          .filter((img: ImageType) => !img.r18 || showR18 || true) // Now all R18 images are included
+          .map((img: ImageType) => ({
+            src: img.path,
+            alt: `${project.title} - ${img.name}`,
+            download: img.path,
+          }))
+
+        const slideIndex = updatedSlides.findIndex(
+          (slide: SlideType) => slide.src === image.path
+        )
+
+        if (slideIndex !== -1) {
+          setCurrentImageIndex(slideIndex)
+          openLightbox()
+        }
+      }, 100)
     }
   }
 
-  // Add image load handler
-  const handleImageLoad = (
-    imagePath: string,
-    event: React.SyntheticEvent<HTMLImageElement>
-  ) => {
-    const img = event.target as HTMLImageElement
-    setImageDimensions((prev) => ({
-      ...prev,
-      [imagePath]: {
-        width: img.naturalWidth,
-        height: img.naturalHeight,
-      },
-    }))
-  }
-
-  const isLandscape = (imagePath: string): boolean => {
-    const dimensions = imageDimensions[imagePath]
-    if (!dimensions) return false
-    return dimensions.width >= dimensions.height
-  }
-
-  const getImageStyle = (
-    image: ImageType,
-    index: number,
-    totalImages: number
-  ): React.CSSProperties => {
-    const isLandscapeImage = isLandscape(image.path)
-
-    // First image with special handling for landscape
-    if (index === 0) {
-      if (isLandscapeImage) {
-        // For landscape images, use full width and auto height
-        const baseStyle: React.CSSProperties = {
-          width: '100%',
-          height: 'auto',
-          objectFit: 'contain',
-          objectPosition: image.cropPosition === 'top' ? 'top' : 'center',
-        }
-
-        if (image.r18 && !showR18) {
-          return {
-            ...baseStyle,
-            filter: 'blur(20px)',
-            opacity: 0.6,
-          }
-        }
-        return baseStyle
-      }
-
-      // For portrait images, use fixed dimensions
-      const baseStyle: React.CSSProperties = {
-        width: '383px',
-        height: '510px',
-        objectFit: 'cover',
-        objectPosition: image.cropPosition === 'top' ? 'top' : 'center',
-      }
-
-      if (image.r18 && !showR18) {
-        return {
-          ...baseStyle,
-          filter: 'blur(20px)',
-          opacity: 0.6,
-        }
-      }
-      return baseStyle
-    }
-
-    // For other images
+  const getImageStyle = (image: ImageType): React.CSSProperties => {
     const baseStyle: React.CSSProperties = {
-      width: '100%',
-      height: '100%',
-      objectFit: isLandscapeImage ? 'contain' : 'cover',
+      objectFit: 'cover',
       objectPosition: image.cropPosition === 'top' ? 'top' : 'center',
     }
 
@@ -203,9 +147,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     const images = displayImages
     const totalImages = images.length
     const layout = project.layout || 'horizontal'
+
     if (totalImages === 0) return <></>
 
-    // 單張圖，正確套用圓角
+    // Single image
     if (totalImages === 1) {
       return (
         <Box
@@ -219,15 +164,15 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           <NextImage
             src={images[0].path}
             alt={`${project.title} - ${images[0].name}`}
-            width={383}
-            height={510}
+            width={images[0].width || 383}
+            height={images[0].height || 510}
             style={{
-              ...getImageStyle(images[0], 0, totalImages),
+              ...getImageStyle(images[0]),
               width: '100%',
               height: 'auto',
               borderRadius: '12px',
+              imageRendering: project.isPixelArt ? 'pixelated' : 'auto',
             }}
-            onLoad={(e) => handleImageLoad(images[0].path, e)}
           />
           {images[0].r18 && (
             <Box
@@ -249,11 +194,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       )
     }
 
-    // vertical：左一大直圖，右2小圖，第二張顯示+N
+    // Vertical layout: Left large image, right 2 small images, second shows +N
     if (layout === 'vertical') {
       return (
         <Flex direction="row" gap={2} align="stretch">
-          {/* 大圖 */}
+          {/* Large image */}
           <Box
             flexShrink={0}
             width="383px"
@@ -267,16 +212,13 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             <NextImage
               src={images[0].path}
               alt={`${project.title} - ${images[0].name}`}
-              width={383}
-              height={510}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 510px"
               style={{
-                ...getImageStyle(images[0], 0, totalImages),
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
+                ...getImageStyle(images[0]),
                 borderRadius: '12px',
+                imageRendering: project.isPixelArt ? 'pixelated' : 'auto',
               }}
-              onLoad={(e) => handleImageLoad(images[0].path, e)}
             />
             {images[0].r18 && (
               <Box
@@ -295,7 +237,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               </Box>
             )}
           </Box>
-          {/* 右側2小圖 */}
+          {/* Right side 2 small images */}
           <VStack spacing={2} flex={1} height="510px">
             {images.slice(1, 3).map((image, index) => (
               <Box
@@ -316,13 +258,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                   width={383}
                   height={510}
                   style={{
-                    ...getImageStyle(image, index + 1, totalImages),
+                    ...getImageStyle(image),
                     width: '100%',
                     height: '100%',
-                    objectFit: 'cover',
                     borderRadius: '12px',
+                    imageRendering: project.isPixelArt ? 'pixelated' : 'auto',
                   }}
-                  onLoad={(e) => handleImageLoad(image.path, e)}
                 />
                 {image.r18 && (
                   <Box
@@ -340,7 +281,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                     R18
                   </Box>
                 )}
-                {/* 第二張顯示+N */}
+                {/* Second image shows +N */}
                 {index === 1 && totalImages > 3 && (
                   <Box
                     position="absolute"
@@ -366,7 +307,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       )
     }
 
-    // all：全部圖片都展示，每行最多3張
+    // All layout: Display all images, max 3 per row
     if (layout === 'all') {
       return (
         <Grid templateColumns="repeat(3, 1fr)" gap={2}>
@@ -388,13 +329,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                 width={383}
                 height={170}
                 style={{
-                  ...getImageStyle(image, index, totalImages),
-                  width: '100%',
-                  height: 'auto',
-                  objectFit: 'cover',
+                  ...getImageStyle(image),
                   borderRadius: '12px',
+                  imageRendering: project.isPixelArt ? 'pixelated' : 'auto',
                 }}
-                onLoad={(e) => handleImageLoad(image.path, e)}
               />
               {image.r18 && (
                 <Box
@@ -418,11 +356,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       )
     }
 
-    // horizontal：上大圖，下最多3小圖，第三張顯示+N
-    // 預設
+    // Horizontal layout (default): Top large image, bottom max 3 small images, third shows +N
     return (
       <Grid templateRows="auto 1fr" gap={2}>
-        {/* 大圖在上 */}
+        {/* Large image on top */}
         <GridItem>
           <Box
             position="relative"
@@ -431,20 +368,17 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             overflow="hidden"
             borderRadius="12px"
             width="100%"
-            height="auto"
+            height="400px"
           >
             <NextImage
               src={images[0].path}
               alt={`${project.title} - ${images[0].name}`}
-              width={766}
-              height={510}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
               style={{
-                ...getImageStyle(images[0], 0, totalImages),
-                width: '100%',
-                height: 'auto',
+                ...getImageStyle(images[0]),
                 borderRadius: '12px',
               }}
-              onLoad={(e) => handleImageLoad(images[0].path, e)}
             />
             {images[0].r18 && (
               <Box
@@ -464,9 +398,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             )}
           </Box>
         </GridItem>
-        {/* 下方三小圖 */}
+        {/* Bottom small images */}
         <GridItem>
-          <Grid templateColumns="repeat(3, 1fr)" gap={1}>
+          <Grid
+            templateColumns={`repeat(${Math.min(totalImages - 1, 3)}, 1fr)`}
+            gap={1}
+          >
             {images.slice(1, 4).map((image, index) => (
               <Box
                 key={`${project.id}-${image.name}-${index + 1}`}
@@ -476,21 +413,18 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                 overflow="hidden"
                 borderRadius="12px"
                 width="100%"
-                height="auto"
+                height={images.length > 3 ? '170px' : '430px'}
               >
                 <NextImage
                   src={image.path}
                   alt={`${project.title} - ${image.name}`}
-                  width={383}
-                  height={170}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 510px"
                   style={{
-                    ...getImageStyle(image, index + 1, totalImages),
-                    width: '100%',
-                    height: 'auto',
-                    objectFit: 'cover',
+                    ...getImageStyle(image),
                     borderRadius: '12px',
+                    imageRendering: project.isPixelArt ? 'pixelated' : 'auto',
                   }}
-                  onLoad={(e) => handleImageLoad(image.path, e)}
                 />
                 {image.r18 && (
                   <Box
@@ -508,7 +442,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                     R18
                   </Box>
                 )}
-                {/* 第三張顯示+N */}
+                {/* Third image shows +N */}
                 {index === 2 && totalImages > 4 && (
                   <Box
                     position="absolute"

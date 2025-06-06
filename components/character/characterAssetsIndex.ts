@@ -16,6 +16,7 @@ export interface Project {
   images: ProjectFile[]
   downloadFiles: ProjectFile[]
   layout?: 'vertical' | 'horizontal' | 'all'
+  isPixelArt?: boolean
 }
 
 // Static project data - automatically generated from assets directory
@@ -24,7 +25,7 @@ export const PROJECTS: Project[] = [
   {
     id: '20250505_眼睛條',
     title: '眼睛條',
-    author: '涼風千秋',
+    author: '聚幣招財貓',
     date: '2025/05/05',
     folderName: '20250505_眼睛條',
     images: [
@@ -40,7 +41,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: '20250326_廢墟桌布',
-    title: '廢墟桌布',
+    title: '模擬遊戲場景',
     author: '涼風千秋',
     date: '2025/03/26',
     folderName: '20250326_廢墟桌布',
@@ -57,8 +58,8 @@ export const PROJECTS: Project[] = [
   },
   {
     id: '20250325_黑白小漫畫',
-    title: '黑白小漫畫',
-    author: '涼風千秋',
+    title: '野外溫泉！',
+    author: '煎餅三三',
     date: '2025/03/25',
     folderName: '20250325_黑白小漫畫',
     images: [
@@ -74,8 +75,8 @@ export const PROJECTS: Project[] = [
   },
   {
     id: '20250322_油畫桌布',
-    title: '油畫桌布',
-    author: '涼風千秋',
+    title: '戰後',
+    author: '小八太難了',
     date: '2025/03/22',
     folderName: '20250322_油畫桌布',
     images: [
@@ -98,7 +99,7 @@ export const PROJECTS: Project[] = [
   {
     id: '20250127_抱枕',
     title: '抱枕',
-    author: '涼風千秋',
+    author: 'fa漠',
     date: '2025/01/27',
     folderName: '20250127_抱枕',
     images: [
@@ -122,8 +123,8 @@ export const PROJECTS: Project[] = [
   },
   {
     id: '20250123_废墟',
-    title: '废墟',
-    author: '涼風千秋',
+    title: '少女終末旅行',
+    author: '盲目吃鱼Asa',
     date: '2025/01/23',
     folderName: '20250123_废墟',
     images: [
@@ -372,8 +373,8 @@ export const PROJECTS: Project[] = [
   },
   {
     id: '20231214_亞莓生日賀圖',
-    title: '亞莓生日賀圖',
-    author: '涼風千秋',
+    title: '生日賀圖',
+    author: '亞莓',
     date: '2023/12/14',
     folderName: '20231214_亞莓生日賀圖',
     images: [
@@ -413,7 +414,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: '20231128_游標像素',
-    title: '游標像素',
+    title: '游標用像素圖',
     author: '涼風千秋',
     date: '2023/11/28',
     folderName: '20231128_游標像素',
@@ -463,11 +464,12 @@ export const PROJECTS: Project[] = [
     ],
     downloadFiles: [],
     layout: 'all',
+    isPixelArt: true,
   },
   {
-    id: '20230906_飄貓_迷你像素gif',
-    title: '迷你像素gif',
-    author: '飄貓',
+    id: '20230906_迷你像素gif',
+    title: '像素風待機動作',
+    author: '涼風千秋',
     date: '2023/09/06',
     folderName: '20230906_飄貓_迷你像素gif',
     images: [
@@ -486,11 +488,12 @@ export const PROJECTS: Project[] = [
     ],
     downloadFiles: [],
     layout: 'vertical',
+    isPixelArt: true,
   },
   {
     id: '20230726_鳳梨_黏土人',
-    title: '黏土人',
-    author: '鳳梨',
+    title: '做了黏土人！',
+    author: '涼風千秋',
     date: '2023/07/26',
     folderName: '20230726_鳳梨_黏土人',
     images: [
@@ -554,8 +557,8 @@ export const PROJECTS: Project[] = [
   },
   {
     id: '20230614_shONe',
-    title: 'shONe',
-    author: '涼風千秋',
+    title: '耶',
+    author: 'shONe',
     date: '2023/06/14',
     folderName: '20230614_shONe',
     images: [
@@ -577,7 +580,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: '20230215_NAiK_NSFW',
-    title: 'NSFW',
+    title: 'O道Play',
     author: 'NAiK',
     date: '2023/02/15',
     folderName: '20230215_NAiK_NSFW',
@@ -618,9 +621,9 @@ export const PROJECTS: Project[] = [
     layout: 'horizontal',
   },
   {
-    id: '20220920_ELLu_Q版',
+    id: '20220920_Q版',
     title: 'Q版',
-    author: 'ELLu',
+    author: '涼風千秋',
     date: '2022/09/20',
     folderName: '20220920_ELLu_Q版',
     images: [
@@ -672,8 +675,8 @@ export const PROJECTS: Project[] = [
   },
   {
     id: '20220916_BYO',
-    title: 'BYO',
-    author: '涼風千秋',
+    title: '車圖組合包',
+    author: 'BYO',
     date: '2022/09/16',
     folderName: '20220916_BYO',
     images: [
@@ -697,8 +700,8 @@ export const PROJECTS: Project[] = [
   },
   {
     id: '20220812_shONe',
-    title: 'shONe',
-    author: '涼風千秋',
+    title: '立繪',
+    author: 'shONe',
     date: '2022/08/12',
     folderName: '20220812_shONe',
     images: [
@@ -714,12 +717,14 @@ export const PROJECTS: Project[] = [
         path: '/assets/character/20220812_shONe/202208012129_step3_fix202209112338_v1.png',
         type: 'image',
         extension: '.png',
+        cropPosition: 'top',
       },
       {
         name: '202208012129_step3_version2_v1_R18.png',
         path: '/assets/character/20220812_shONe/202208012129_step3_version2_v1_R18.png',
         type: 'image',
         extension: '.png',
+        cropPosition: 'top',
         r18: true,
       },
       {
@@ -749,8 +754,8 @@ export const PROJECTS: Project[] = [
   },
   {
     id: '20220810_夏伊',
-    title: '夏伊',
-    author: '涼風千秋',
+    title: '夏伊花花頭貼',
+    author: '夏伊',
     date: '2022/08/10',
     folderName: '20220810_夏伊',
     images: [
@@ -805,10 +810,10 @@ export const PROJECTS: Project[] = [
     layout: 'horizontal',
   },
   {
-    id: '0_亞莓官方圖',
-    title: '亞莓官方圖',
-    author: '涼風千秋',
-    date: '0',
+    id: '20180329_亞莓頭貼',
+    title: '亞莓頭貼',
+    author: '亞莓',
+    date: '2018/03/29',
     folderName: '0_亞莓官方圖',
     images: [
       {
@@ -825,7 +830,7 @@ export const PROJECTS: Project[] = [
       },
     ],
     downloadFiles: [],
-    layout: 'horizontal',
+    layout: 'vertical',
   },
 ]
 
