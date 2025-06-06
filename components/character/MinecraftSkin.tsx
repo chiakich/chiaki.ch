@@ -42,7 +42,7 @@ const MinecraftSkin: React.FC = () => {
   }, [])
 
   return (
-    <Box position="relative" paddingY="60px">
+    <Box position="relative">
       <Box
         width="100%"
         maxWidth="1200px"
@@ -60,7 +60,7 @@ const MinecraftSkin: React.FC = () => {
         </VStack>
 
         {/* Minecraft Skin Viewer */}
-        <Center>
+        <Center width="100%" overflow="hidden">
           <canvas ref={canvasRef} width={500} height={500} />
         </Center>
       </Box>
