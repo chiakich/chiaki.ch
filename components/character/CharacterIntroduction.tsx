@@ -47,7 +47,7 @@ const CharacterIntroduction: React.FC = () => {
       templateColumns={{ base: '1fr', md: '1fr 1fr' }}
       gap={{ base: 8, md: 12 }}
       width="100%"
-      maxWidth="1200px"
+      maxWidth="width.section"
       margin="0 auto"
       paddingX={{ base: '20px', md: '40px', lg: '60px' }}
       paddingY="40px"
@@ -84,6 +84,14 @@ const CharacterIntroduction: React.FC = () => {
             <br />
             喜歡的東西：獸耳、女僕裝、水手領、蘿莉塔
           </Text>
+          <Image
+            src="/assets/about/signv2_animated.svg"
+            alt="Chiaki Sign"
+            width="50%"
+            mt="20px"
+            alignSelf="flex-end"
+            transform="rotate(4deg)"
+          />
         </VStack>
       </GridItem>
 

@@ -56,7 +56,7 @@ const Live2DModel: React.FC<Live2DModelProps> = ({ width, height }) => {
 
   return (
     <>
-      <Box maxWidth="1200px" margin="0 auto" position="relative">
+      <Box maxWidth="width.section" margin="0 auto" position="relative">
         <Text
           position="absolute"
           color="white"

@@ -57,7 +57,6 @@ const ProjectGallery: React.FC<ProjectGalleryProps> = ({
           <ProjectCard
             key={project.id}
             project={project}
-            isHorizontal
             showR18={showR18}
             ageConfirmed={ageConfirmed}
           />

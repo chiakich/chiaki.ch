@@ -45,7 +45,7 @@ const MinecraftSkin: React.FC = () => {
     <Box position="relative">
       <Box
         width="100%"
-        maxWidth="1200px"
+        maxWidth="width.section"
         margin="0 auto"
         paddingX={{ base: '20px', md: '40px', lg: '60px' }}
         position="relative"

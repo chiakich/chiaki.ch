@@ -34,20 +34,20 @@ const SubNav = ({
       backdropFilter="saturate(180%) blur(20px)"
       borderBottom="1px solid"
       borderColor={borderColor}
-      height="44px"
+      height="52px"
     >
       <Flex
-        maxW="1200px"
+        maxW="width.section"
         mx="auto"
-        px={4}
+        px={{ base: '20px', md: '40px', lg: '60px' }}
         height="100%"
         align="center"
         justify="space-between"
         color="white"
       >
-        <Text fontSize="sm">{title}</Text>
+        <Text fontSize="lg">{title}</Text>
 
-        <HStack spacing={8}>
+        <HStack spacing={8} height="100%">
           {items.map((item) => (
             <Link
               as={NextLink}
@@ -55,13 +55,20 @@ const SubNav = ({
               href={item.path}
               fontSize="sm"
               fontWeight="medium"
-              color={router.pathname === item.path ? 'gray.100' : 'gray.400'}
+              height="100%"
+              display="flex"
+              alignItems="center"
+              color={
+                router.pathname === item.path
+                  ? 'gray.100'
+                  : 'rgba(255, 255, 255, 0.56)'
+              }
               _hover={{
-                color: 'gray.400',
+                color: 'gray.100',
               }}
-              px={3}
-              py={1}
-              borderRadius="md"
+              borderBottom={router.pathname === item.path ? '1px solid' : 'none'}
+              borderColor="white"
+              px="5px"
               transition="all 0.2s"
             >
               {item.title}

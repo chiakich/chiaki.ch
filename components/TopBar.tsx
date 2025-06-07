@@ -32,9 +32,9 @@ const TopBar: React.FC = () => {
       borderColor="gray.800"
     >
       <Flex
-        maxW="1200px"
+        maxW="width.section"
         mx="auto"
-        px={4}
+        px={{ base: '20px', md: '40px', lg: '60px' }}
         height="44px"
         align="center"
         justify="space-between"

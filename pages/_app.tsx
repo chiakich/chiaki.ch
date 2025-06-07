@@ -6,6 +6,11 @@ const theme = extendTheme({
   config: {
     cssVarPrefix: 'c',
   },
+  sizes: {
+    width: {
+      section: '1080px',
+    },
+  },
   styles: {
     global: {
       body: {
