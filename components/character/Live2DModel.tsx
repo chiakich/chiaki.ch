@@ -58,14 +58,19 @@ const Live2DModel: React.FC<Live2DModelProps> = ({ width, height }) => {
     <>
       <Box maxWidth="width.section" margin="0 auto" position="relative">
         <Text
-          position="absolute"
           color="white"
           marginX={{ base: '20px', md: '40px', lg: '60px' }}
           fontSize={{ base: '2xl', md: '3xl', lg: '4xl' }}
           fontWeight="bold"
-          marginBottom="20px"
         >
           Live2D
+        </Text>
+        <Text
+          color="white"
+          marginX={{ base: '20px', md: '40px', lg: '60px' }}
+          fontSize="14px"
+        >
+          嘗試自己做了Live2D模型，移動滑鼠的話，眼睛會跟著動喔！
         </Text>
       </Box>
       <Center>

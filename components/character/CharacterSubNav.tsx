@@ -3,7 +3,7 @@ import SubNav, { SubNavItem } from '../SubNav'
 const characterItems: SubNavItem[] = [
   {
     id: 'overview',
-    title: '角色概覽',
+    title: '介紹',
     path: '/character',
   },
   {
