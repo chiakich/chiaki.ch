@@ -3,6 +3,7 @@ import { Box } from '@chakra-ui/react'
 import CoverSection from 'components/index/Cover'
 import DepthScrollSection from 'components/index/DepthScrollSection'
 import SeedGrowthSection from 'components/index/SeedGrowthSection'
+import ProjectSection from 'components/index/ProjectSection'
 import TopBar from 'components/TopBar'
 
 const Home: NextPage = () => {
@@ -21,12 +22,7 @@ const Home: NextPage = () => {
 
       <DepthScrollSection />
       <SeedGrowthSection />
-      <Box
-        height="100vh"
-        width="100vw"
-        backgroundColor="black"
-        position="relative"
-      />
+      <ProjectSection />
     </Box>
   )
 }
