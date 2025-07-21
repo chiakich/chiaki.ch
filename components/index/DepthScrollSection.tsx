@@ -12,7 +12,11 @@ import {
   ShaderMaterial,
 } from 'three'
 import { Box, Text } from '@chakra-ui/react'
-import { motion } from 'framer-motion'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
+
+// Register ScrollTrigger plugin
+gsap.registerPlugin(ScrollTrigger)
 
 const vertexShader = `
   varying vec2 vUv;
@@ -280,28 +284,29 @@ function DepthImage() {
   )
 }
 
+const textLines = [
+  '……那場戰爭之後，世界靜了下來。',
+  ' ',
+  ' ',
+  '神明在一夜之間消失，',
+  '信仰如同廢墟一般崩塌。',
+  '城市成了空殼，',
+  '泥土染上毒素，',
+  '文明早已斷絕於風中。',
+  ' ',
+  ' ',
+  '但如同掙扎著倖存下來的人們一樣，',
+  '故事並沒有完全終結。',
+  '一位仍記得如何耕作的少女，',
+  '在神社廢墟中種下了一株植株。',
+]
+
 const DepthScrollSection = () => {
   const containerRef = useRef<HTMLDivElement>(null!)
   const viewRef = useRef<HTMLDivElement>(null!)
   const scrollSectionRef = useRef<HTMLDivElement>(null)
-  const [darkOverlayOpacity, setDarkOverlayOpacity] = useState(0)
-
-  const textLines = [
-    '……那場戰爭之後，世界靜了下來。',
-    ' ',
-    ' ',
-    '神明在一夜之間消失，',
-    '信仰如同廢墟一般崩塌。',
-    '城市成了空殼，',
-    '泥土染上毒素，',
-    '文明早已斷絕於風中。',
-    ' ',
-    ' ',
-    '但如同掙扎著倖存下來的人們一樣，',
-    '故事並沒有完全終結。',
-    '一位仍記得如何耕作的少女，',
-    '在神社廢墟中種下了第一株植株。',
-  ]
+  const textLinesRef = useRef<HTMLDivElement[]>([])
+  const [canvasBrightness, setCanvasBrightness] = useState(1)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -317,10 +322,11 @@ const DepthScrollSection = () => {
       )
       const visibilityRatio = Math.max(0, visibleHeight / windowHeight)
 
-      // Delay the overlay appearance - only start fading in after 30% of the section is visible
+      // Delay the darkening - only start fading after 30% of the section is visible
       const delayedRatio = Math.max(0, (visibilityRatio - 0.6) / 0.4)
-      const opacity = Math.min(0.8, delayedRatio * 1.2)
-      setDarkOverlayOpacity(opacity)
+      const darknessRatio = Math.min(0.8, delayedRatio * 1.2)
+      const brightness = 1 - darknessRatio * 0.8 // Keep some brightness (0.2 minimum)
+      setCanvasBrightness(brightness)
     }
 
     window.addEventListener('scroll', handleScroll)
@@ -329,8 +335,48 @@ const DepthScrollSection = () => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  // GSAP text animation
+  useEffect(() => {
+    const textElements = textLinesRef.current.filter(Boolean)
+
+    // Set initial states
+    gsap.set(textElements, {
+      opacity: 0,
+      y: 50,
+    })
+
+    // Create ScrollTrigger for each text line
+    textElements.forEach((element, index) => {
+      gsap.to(element, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power2.out',
+        delay: index === 0 ? 0.2 : 0.6, // First line appears faster
+        scrollTrigger: {
+          trigger: element,
+          start: index === 0 ? 'top 90%' : 'top 80%', // First line triggers earlier
+          end: 'bottom 20%',
+          toggleActions: 'play none none reverse',
+        },
+      })
+    })
+
+    // Cleanup function
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => {
+        if (
+          trigger.trigger &&
+          textElements.includes(trigger.trigger as HTMLDivElement)
+        ) {
+          trigger.kill()
+        }
+      })
+    }
+  }, [textLines])
+
   return (
-    <Box ref={containerRef} position="relative" height="500vh" width="100%">
+    <Box ref={containerRef} position="relative" height="450vh" width="100%">
       {/* Fixed DepthPhotoViewer - First 200vh */}
       <Box
         ref={viewRef}
@@ -351,6 +397,8 @@ const DepthScrollSection = () => {
           height: '100vh',
           pointerEvents: 'none',
           zIndex: 1,
+          filter: `brightness(${canvasBrightness})`,
+          transition: 'filter 0.1s ease-out',
         }}
         eventSource={containerRef}
       >
@@ -362,27 +410,13 @@ const DepthScrollSection = () => {
         </View>
       </Canvas>
 
-      {/* Dark overlay */}
-      <Box
-        position="fixed"
-        top="0"
-        left="0"
-        width="100vw"
-        height="100vh"
-        backgroundColor="black"
-        opacity={darkOverlayOpacity}
-        pointerEvents="none"
-        zIndex="2"
-        transition="opacity 0.1s ease-out"
-      />
-
       {/* Scrolling text section - Last 200vh */}
       <Box
         ref={scrollSectionRef}
         height="200vh"
         width="100%"
         position="absolute"
-        top="250vh"
+        top="200vh"
         backgroundColor="transparent"
         display="flex"
         alignItems="center"
@@ -399,19 +433,16 @@ const DepthScrollSection = () => {
           height="auto"
         >
           {textLines.map((line, index) => (
-            <motion.div
+            <Box
               key={index}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.8,
-                ease: 'easeOut',
-                delay: 0.8,
+              ref={(el) => {
+                if (el) textLinesRef.current[index] = el
               }}
-              style={{ marginBottom: '50px', minHeight: '30px' }}
+              marginBottom="50px"
+              minHeight="30px"
             >
               {line}
-            </motion.div>
+            </Box>
           ))}
         </Box>
       </Box>
