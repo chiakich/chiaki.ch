@@ -23,6 +23,8 @@
     "@pixi/math": "6.5.10",
     "@pixi/sprite": "6.5.10",
     "@pixi/utils": "6.5.10",
+    "@react-three/drei": "^10.5.1",
+    "@react-three/fiber": "^9.2.0",
     "framer-motion": "^6",
     "next": "^15.3.2",
     "pixi-live2d-display": "^0.4.0",
@@ -32,7 +34,7 @@
     "react-window": "^1.8.11",
     "react-window-infinite-loader": "^1.0.10",
     "skinview3d": "^3.4.1",
-    "three": "^0.177.0",
+    "three": "^0.178.0",
     "yet-another-react-lightbox": "^3.23.2"
   },
   "devDependencies": {
