@@ -12,6 +12,7 @@ import {
   ShaderMaterial,
 } from 'three'
 import { Box, Text } from '@chakra-ui/react'
+import { motion } from 'framer-motion'
 
 const vertexShader = `
   varying vec2 vUv;
@@ -287,13 +288,15 @@ const DepthScrollSection = () => {
 
   const textLines = [
     '……那場戰爭之後，世界靜了下來。',
-    '…',
+    ' ',
+    ' ',
     '神明在一夜之間消失，',
     '信仰如同廢墟一般崩塌。',
     '城市成了空殼，',
     '泥土染上毒素，',
     '文明早已斷絕於風中。',
-    '…',
+    ' ',
+    ' ',
     '但如同掙扎著倖存下來的人們一樣，',
     '故事並沒有完全終結。',
     '一位仍記得如何耕作的少女，',
@@ -373,48 +376,42 @@ const DepthScrollSection = () => {
         transition="opacity 0.1s ease-out"
       />
 
-      {/* Scrolling text section - Last 300vh */}
+      {/* Scrolling text section - Last 200vh */}
       <Box
         ref={scrollSectionRef}
-        height="300vh"
+        height="200vh"
         width="100%"
         position="absolute"
-        top="200vh"
+        top="250vh"
         backgroundColor="transparent"
         display="flex"
         alignItems="center"
         justifyContent="center"
-        overflow="hidden"
         zIndex="3"
       >
         <Box
           position="sticky"
-          top="300vh"
-          transform="translateY(-50%)"
           textAlign="center"
           color="white"
           fontSize={{ base: '2xl', md: '4xl', lg: '5xl' }}
           fontFamily="creamfont"
           lineHeight="1.5"
+          height="auto"
         >
           {textLines.map((line, index) => (
-            <Text
+            <motion.div
               key={index}
-              mb="80px"
-              opacity="0"
-              transform="translateY(50px)"
-              animation={`fadeInUp 0.8s ease-out ${index * 0.3}s forwards`}
-              sx={{
-                '@keyframes fadeInUp': {
-                  to: {
-                    opacity: 1,
-                    transform: 'translateY(0)',
-                  },
-                },
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.8,
+                ease: 'easeOut',
+                delay: 0.8,
               }}
+              style={{ marginBottom: '50px', minHeight: '30px' }}
             >
               {line}
-            </Text>
+            </motion.div>
           ))}
         </Box>
       </Box>
