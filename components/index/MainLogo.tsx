@@ -22,7 +22,6 @@ const MainLogo = () => {
       flexDirection={{ base: 'column', md: 'row' }}
       filter="drop-shadow(5px 5px 15px #000)"
       opacity={0.9}
-      backdropFilter="blur(1px)"
     >
       <motion.div
         initial={{ x: 70 }}
