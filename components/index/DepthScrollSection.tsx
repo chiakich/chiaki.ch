@@ -193,7 +193,7 @@ function DepthImage() {
   imageTexture.wrapS = imageTexture.wrapT = ClampToEdgeWrapping
   depthTexture.wrapS = depthTexture.wrapT = ClampToEdgeWrapping
 
-  const shaderRef = useRef<any>()
+  const shaderRef = useRef<any>(null)
   const meshRef = useRef<Mesh>(null!)
 
   const [isMobile, setIsMobile] = useState(false)
