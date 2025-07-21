@@ -1,7 +1,16 @@
 import { Canvas, useFrame, useLoader } from '@react-three/fiber'
 import { View } from '@react-three/drei'
-import { useRef, Suspense, useState, useEffect } from 'react'
-import { TextureLoader, Vector2, Mesh, ClampToEdgeWrapping } from 'three'
+import { useRef, Suspense, useState, useEffect, useMemo } from 'react'
+import {
+  TextureLoader,
+  Vector2,
+  Mesh,
+  ClampToEdgeWrapping,
+  Float32BufferAttribute,
+  Points,
+  BufferGeometry,
+  ShaderMaterial,
+} from 'three'
 import { Box } from '@chakra-ui/react'
 
 const vertexShader = `
@@ -31,6 +40,150 @@ const fragmentShader = `
     gl_FragColor = color;
   }
 `
+const snowVertexShader = `
+  uniform float uTime;
+  uniform vec2 uMouse;
+  attribute float aScale;
+  attribute float aSpeed;
+  attribute float aOpacity;
+  varying float vOpacity;
+  void main() {
+    vec3 pos = position;
+    // Animate falling
+    pos.y = mod(pos.y - uTime * aSpeed, 20.0) - 10.0;
+    // Add parallax effect based on depth (z)
+    pos.xy += uMouse * pos.z * 2.0;
+    vec4 modelViewPosition = modelViewMatrix * vec4(pos, 1.0);
+    gl_Position = projectionMatrix * modelViewPosition;
+    gl_PointSize = aScale * (200.0 / -modelViewPosition.z);
+    vOpacity = aOpacity;
+  }
+`
+
+const snowFragmentShader = `
+  varying float vOpacity;
+  void main() {
+    float distanceToCenter = distance(gl_PointCoord, vec2(0.5));
+    // A wider range in smoothstep creates a blurrier edge
+    float strength = 1.0 - smoothstep(0.1, 0.5, distanceToCenter);
+    gl_FragColor = vec4(1.0, 1.0, 1.0, strength * vOpacity);
+  }
+`
+
+function Snow() {
+  const pointsRef = useRef<Points>(null!)
+  const materialRef = useRef<ShaderMaterial>(null!)
+
+  const [isMobile, setIsMobile] = useState(false)
+  const orientation = useRef({ x: 0, y: 0 })
+
+  useEffect(() => {
+    const checkMobile = /Mobi|Android/i.test(navigator.userAgent)
+    if (checkMobile) {
+      setIsMobile(true)
+      const handleOrientation = (event: DeviceOrientationEvent) => {
+        if (event.gamma === null || event.beta === null) return
+
+        const gamma = Math.max(-45, Math.min(45, event.gamma)) // left-to-right tilt
+        const beta = Math.max(-45, Math.min(45, event.beta)) // front-to-back tilt
+
+        const isPortrait = window.innerHeight > window.innerWidth
+
+        // Remap tilt to camera offset
+        if (isPortrait) {
+          orientation.current.x = -gamma / 45
+          orientation.current.y = -beta / 45
+        } else {
+          orientation.current.x = -beta / 45
+          orientation.current.y = -gamma / 45
+        }
+      }
+      window.addEventListener('deviceorientation', handleOrientation)
+      return () => {
+        window.removeEventListener('deviceorientation', handleOrientation)
+      }
+    }
+  }, [])
+
+  const particles = useMemo(() => {
+    const count = 5000
+    const positions = new Float32Array(count * 3)
+    const attributes = new Float32Array(count * 3) // scale, speed, opacity
+
+    for (let i = 0; i < count; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 40
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 20
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 20
+
+      attributes[i * 3] = Math.random() * 0.5 + 0.2 // scale
+      attributes[i * 3 + 1] = Math.random() * 0.4 + 0.2 // speed
+      attributes[i * 3 + 2] = Math.random() * 0.5 + 0.2 // opacity
+    }
+
+    const geometry = new BufferGeometry()
+    geometry.setAttribute('position', new Float32BufferAttribute(positions, 3))
+    geometry.setAttribute(
+      'aScale',
+      new Float32BufferAttribute(
+        attributes.filter((_, i) => i % 3 === 0),
+        1
+      )
+    )
+    geometry.setAttribute(
+      'aSpeed',
+      new Float32BufferAttribute(
+        attributes.filter((_, i) => i % 3 === 1),
+        1
+      )
+    )
+    geometry.setAttribute(
+      'aOpacity',
+      new Float32BufferAttribute(
+        attributes.filter((_, i) => i % 3 === 2),
+        1
+      )
+    )
+    return geometry
+  }, [])
+
+  useFrame(({ clock, mouse }) => {
+    if (materialRef.current) {
+      materialRef.current.uniforms.uTime.value = clock.getElapsedTime()
+
+      const uniform = materialRef.current.uniforms.uMouse.value
+      const intensity = 0.05
+      let targetX, targetY
+
+      if (isMobile) {
+        targetX = orientation.current.x * intensity
+        targetY = orientation.current.y * intensity
+      } else {
+        targetX = mouse.x * intensity
+        targetY = mouse.y * intensity
+      }
+      // Ease the movement
+      const easeFactor = 0.1
+      uniform.x += (targetX - uniform.x) * easeFactor
+      uniform.y += (targetY - uniform.y) * easeFactor
+    }
+  })
+
+  return (
+    <points ref={pointsRef} geometry={particles}>
+      <shaderMaterial
+        ref={materialRef}
+        vertexShader={snowVertexShader}
+        fragmentShader={snowFragmentShader}
+        uniforms={{
+          uTime: { value: 0 },
+          uMouse: { value: new Vector2(0, 0) },
+        }}
+        transparent
+        depthWrite={false}
+      />
+    </points>
+  )
+}
 
 function DepthImage() {
   const [imageTexture, depthTexture] = useLoader(TextureLoader, [
@@ -153,6 +306,7 @@ const DepthPhotoViewer = () => {
         <View track={viewRef}>
           <Suspense fallback={null}>
             <DepthImage />
+            <Snow />
           </Suspense>
         </View>
       </Canvas>
