@@ -16,7 +16,6 @@ const theme = extendTheme({
       body: {
         bg: 'black',
         fontFamily: '"xingothic-tc","Noto Sans TC", sans-serif',
-        fontWeight: '700',
       },
     },
   },
