@@ -13,7 +13,7 @@ interface R18DialogProps {
   isOpen: boolean
   onClose: () => void
   onConfirm: () => void
-  cancelRef: React.RefObject<HTMLButtonElement>
+  cancelRef: React.RefObject<HTMLButtonElement | null>
 }
 
 const R18Dialog: React.FC<R18DialogProps> = ({
