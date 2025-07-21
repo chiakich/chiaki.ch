@@ -11,7 +11,7 @@ import {
   BufferGeometry,
   ShaderMaterial,
 } from 'three'
-import { Box } from '@chakra-ui/react'
+import { Box, Text } from '@chakra-ui/react'
 
 const vertexShader = `
   varying vec2 vUv;
@@ -40,6 +40,7 @@ const fragmentShader = `
     gl_FragColor = color;
   }
 `
+
 const snowVertexShader = `
   uniform float uTime;
   uniform vec2 uMouse;
@@ -84,12 +85,11 @@ function Snow() {
       const handleOrientation = (event: DeviceOrientationEvent) => {
         if (event.gamma === null || event.beta === null) return
 
-        const gamma = Math.max(-45, Math.min(45, event.gamma)) // left-to-right tilt
-        const beta = Math.max(-45, Math.min(45, event.beta)) // front-to-back tilt
+        const gamma = Math.max(-45, Math.min(45, event.gamma))
+        const beta = Math.max(-45, Math.min(45, event.beta))
 
         const isPortrait = window.innerHeight > window.innerWidth
 
-        // Remap tilt to camera offset
         if (isPortrait) {
           orientation.current.x = -gamma / 45
           orientation.current.y = -beta / 45
@@ -108,7 +108,7 @@ function Snow() {
   const particles = useMemo(() => {
     const count = 5000
     const positions = new Float32Array(count * 3)
-    const attributes = new Float32Array(count * 3) // scale, speed, opacity
+    const attributes = new Float32Array(count * 3)
 
     for (let i = 0; i < count; i++) {
       positions[i * 3] = (Math.random() - 0.5) * 40
@@ -161,7 +161,6 @@ function Snow() {
         targetX = mouse.x * intensity
         targetY = mouse.y * intensity
       }
-      // Ease the movement
       const easeFactor = 0.1
       uniform.x += (targetX - uniform.x) * easeFactor
       uniform.y += (targetY - uniform.y) * easeFactor
@@ -191,7 +190,6 @@ function DepthImage() {
     '/assets/index/2x-2-depthmap.jpg',
   ])
 
-  // Set textures to clamp to edge to prevent artifacts from displacement
   imageTexture.wrapS = imageTexture.wrapT = ClampToEdgeWrapping
   depthTexture.wrapS = depthTexture.wrapT = ClampToEdgeWrapping
 
@@ -208,12 +206,11 @@ function DepthImage() {
       const handleOrientation = (event: DeviceOrientationEvent) => {
         if (event.gamma === null || event.beta === null) return
 
-        const gamma = Math.max(-45, Math.min(45, event.gamma)) // left-to-right tilt
-        const beta = Math.max(-45, Math.min(45, event.beta)) // front-to-back tilt
+        const gamma = Math.max(-45, Math.min(45, event.gamma))
+        const beta = Math.max(-45, Math.min(45, event.beta))
 
         const isPortrait = window.innerHeight > window.innerWidth
 
-        // Remap tilt to camera offset
         if (isPortrait) {
           orientation.current.x = -gamma / 45
           orientation.current.y = -beta / 45
@@ -244,23 +241,19 @@ function DepthImage() {
         targetY = mouse.y * intensity
       }
 
-      // Ease the movement
       const easeFactor = 0.1
       uniform.x += (targetX - uniform.x) * easeFactor
       uniform.y += (targetY - uniform.y) * easeFactor
     }
 
-    // Calculate scale to cover viewport while maintaining aspect ratio
     const imageAspect = imageTexture.image.width / imageTexture.image.height
     const viewportAspect = width / height
 
     let scaleX, scaleY
     if (viewportAspect > imageAspect) {
-      // Viewport is wider, scale to fit width
       scaleX = width
       scaleY = width / imageAspect
     } else {
-      // Viewport is taller, scale to fit height
       scaleX = height * imageAspect
       scaleY = height
     }
@@ -286,12 +279,66 @@ function DepthImage() {
   )
 }
 
-const DepthPhotoViewer = () => {
+const DepthScrollSection = () => {
+  const containerRef = useRef<HTMLDivElement>(null!)
   const viewRef = useRef<HTMLDivElement>(null!)
+  const scrollSectionRef = useRef<HTMLDivElement>(null)
+  const [darkOverlayOpacity, setDarkOverlayOpacity] = useState(0)
+
+  const textLines = [
+    '……那場戰爭之後，世界靜了下來。',
+    '…',
+    '神明在一夜之間消失，',
+    '信仰如同廢墟一般崩塌。',
+    '城市成了空殼，',
+    '泥土染上毒素，',
+    '文明早已斷絕於風中。',
+    '…',
+    '但如同掙扎著倖存下來的人們一樣，',
+    '故事並沒有完全終結。',
+    '一位仍記得如何耕作的少女，',
+    '在神社廢墟中種下了第一株植株。',
+  ]
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!scrollSectionRef.current) return
+
+      const rect = scrollSectionRef.current.getBoundingClientRect()
+      const windowHeight = window.innerHeight
+
+      // Calculate how much of the scroll section is visible
+      const visibleHeight = Math.min(
+        rect.height,
+        windowHeight - Math.max(0, rect.top)
+      )
+      const visibilityRatio = Math.max(0, visibleHeight / windowHeight)
+
+      // Delay the overlay appearance - only start fading in after 30% of the section is visible
+      const delayedRatio = Math.max(0, (visibilityRatio - 0.6) / 0.4)
+      const opacity = Math.min(0.8, delayedRatio * 1.2)
+      setDarkOverlayOpacity(opacity)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    handleScroll()
+
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   return (
-    <Box position="relative" height="200vh" width="100%">
-      <Box ref={viewRef} position="sticky" top="0" height="100vh" width="100%" />
+    <Box ref={containerRef} position="relative" height="500vh" width="100%">
+      {/* Fixed DepthPhotoViewer - First 200vh */}
+      <Box
+        ref={viewRef}
+        position="sticky"
+        top="0"
+        height="100vh"
+        width="100%"
+        zIndex="1"
+      />
+
+      {/* Fixed Canvas */}
       <Canvas
         style={{
           position: 'fixed',
@@ -300,8 +347,9 @@ const DepthPhotoViewer = () => {
           width: '100vw',
           height: '100vh',
           pointerEvents: 'none',
+          zIndex: 1,
         }}
-        eventSource={viewRef}
+        eventSource={containerRef}
       >
         <View track={viewRef}>
           <Suspense fallback={null}>
@@ -310,8 +358,68 @@ const DepthPhotoViewer = () => {
           </Suspense>
         </View>
       </Canvas>
+
+      {/* Dark overlay */}
+      <Box
+        position="fixed"
+        top="0"
+        left="0"
+        width="100vw"
+        height="100vh"
+        backgroundColor="black"
+        opacity={darkOverlayOpacity}
+        pointerEvents="none"
+        zIndex="2"
+        transition="opacity 0.1s ease-out"
+      />
+
+      {/* Scrolling text section - Last 300vh */}
+      <Box
+        ref={scrollSectionRef}
+        height="300vh"
+        width="100%"
+        position="absolute"
+        top="200vh"
+        backgroundColor="transparent"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        overflow="hidden"
+        zIndex="3"
+      >
+        <Box
+          position="sticky"
+          top="300vh"
+          transform="translateY(-50%)"
+          textAlign="center"
+          color="white"
+          fontSize={{ base: '2xl', md: '4xl', lg: '5xl' }}
+          fontFamily="creamfont"
+          lineHeight="1.5"
+        >
+          {textLines.map((line, index) => (
+            <Text
+              key={index}
+              mb="80px"
+              opacity="0"
+              transform="translateY(50px)"
+              animation={`fadeInUp 0.8s ease-out ${index * 0.3}s forwards`}
+              sx={{
+                '@keyframes fadeInUp': {
+                  to: {
+                    opacity: 1,
+                    transform: 'translateY(0)',
+                  },
+                },
+              }}
+            >
+              {line}
+            </Text>
+          ))}
+        </Box>
+      </Box>
     </Box>
   )
 }
 
-export default DepthPhotoViewer
+export default DepthScrollSection
