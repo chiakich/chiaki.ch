@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import { Box } from '@chakra-ui/react'
 import TopBar from 'components/TopBar'
-import CharacterSubNav from 'components/character/CharacterSubNav'
+import StorySubNav from 'components/StorySubNav'
 import CharacterIntroduction from 'components/character/CharacterIntroduction'
 import ProjectGallery from 'components/character/ProjectGallery'
 import { useState, useEffect } from 'react'
@@ -37,7 +37,7 @@ const CharacterArtPage: NextPage = () => {
   return (
     <Box backgroundColor="black" width="100%" minHeight="100vh">
       <TopBar />
-      <CharacterSubNav />
+      <StorySubNav />
 
       <Box
         paddingTop="128px" // Account for fixed TopBar and SubNav

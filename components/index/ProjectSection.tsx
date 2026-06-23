@@ -25,7 +25,7 @@ const ProjectSection = () => {
         Project 千秋稻荷社
       </Heading>
 
-      <Link href="/character">
+      <Link href="/story/character">
         <Button
           size="lg"
           colorScheme="whiteAlpha"

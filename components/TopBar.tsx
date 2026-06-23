@@ -70,20 +70,22 @@ const TopBar: React.FC = () => {
               Home
             </Link>
             <Link
-              href="/character"
-              style={{
-                opacity: currentPath === '/character' ? 1 : 0.5,
-              }}
+              href="/about"
+              style={{ opacity: currentPath === '/about' ? 1 : 0.5 }}
             >
-              Character
+              About
             </Link>
             <Link
-              href="/fonts"
-              style={{
-                opacity: currentPath === '/fonts' ? 1 : 0.5,
-              }}
+              href="/story"
+              style={{ opacity: currentPath?.startsWith('/story') ? 1 : 0.5 }}
             >
-              Fonts
+              Story
+            </Link>
+            <Link
+              href="/works"
+              style={{ opacity: currentPath?.startsWith('/works') ? 1 : 0.5 }}
+            >
+              Works
             </Link>
           </HStack>
         </HStack>
@@ -107,8 +109,9 @@ const TopBar: React.FC = () => {
             <DrawerBody>
               <VStack spacing={5} align="start">
                 <Link href="/">Home</Link>
-                <Link href="/character">Character</Link>
-                <Link href="/fonts">Fonts</Link>
+                <Link href="/about">About</Link>
+                <Link href="/story">Story</Link>
+                <Link href="/works">Works</Link>
               </VStack>
             </DrawerBody>
           </DrawerContent>

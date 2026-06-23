@@ -2,24 +2,29 @@ import SubNav, { SubNavItem } from './SubNav'
 
 const fonts: SubNavItem[] = [
   {
+    id: 'works',
+    title: '作品集',
+    path: '/works',
+  },
+  {
     id: 'akitra',
     title: '台鐵客貨車字體',
-    path: '/fonts/akitra',
+    path: '/works/akitra',
   },
   {
     id: 'nixie',
     title: 'Nixie 字體',
-    path: '/fonts/nixie',
+    path: '/works/nixie',
   },
   {
     id: 'huninn',
     title: '粉圓字體',
-    path: '/fonts/huninn',
+    path: '/works/huninn',
   },
 ]
 
 const FontsSubNav = () => {
-  return <SubNav title="字體作品" items={fonts} />
+  return <SubNav title="作品" items={fonts} />
 }
 
 export default FontsSubNav

@@ -20,21 +20,21 @@ const FontsIndex: NextPage = () => {
       id: 'akitra',
       title: '台鐵客貨車字體',
       description: '基於台鐵客貨車表記文字設計的字體，重現台灣鐵道文化之美。',
-      link: '/fonts/akitra',
+      link: '/works/akitra',
       image: '/images/fonts/akitra-preview.png',
     },
     {
       id: 'nixie',
       title: 'Nixie 字體',
       description: '靈感來自輝光管顯示器的數位字體，包含數字與特殊符號。',
-      link: '/fonts/nixie',
+      link: '/works/nixie',
       image: '/images/fonts/nixie-preview.png',
     },
     {
       id: 'huninn',
       title: '粉圓字體',
       description: '在 justfont 期間製作的開源圓體字型，為台灣使用者優化設計。',
-      link: '/fonts/huninn',
+      link: '/works/huninn',
       image: '/images/fonts/huninn-preview.png',
     },
   ]
@@ -51,10 +51,10 @@ const FontsIndex: NextPage = () => {
         <Container maxW="container.xl" py={8}>
           <Stack spacing={8} align="center" mb={12} color="white">
             <Heading as="h1" size="2xl" textAlign="center">
-              字體作品集
+              作品集
             </Heading>
             <Text fontSize="xl" textAlign="center" maxW="2xl">
-              這裡收錄了我設計與參與開發的字體作品，每個作品都承載著不同的故事與理念。
+              這裡收錄了我設計與參與開發的作品，每個作品都承載著不同的故事與理念。
             </Text>
           </Stack>
 

@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import { Box, Center, Button } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import TopBar from 'components/TopBar'
-import CharacterSubNav from 'components/character/CharacterSubNav'
+import StorySubNav from 'components/StorySubNav'
 import CharacterIntroduction from 'components/character/CharacterIntroduction'
 import CharacterConceptArt from 'components/character/CharacterConceptArt'
 import Live2DModel from 'components/character/Live2DModel'
@@ -18,7 +18,7 @@ const CharacterOverviewPage: NextPage = () => {
       cursor="url('https://images.plurk.com/i4BLwuGEg7v4dgyVOufB7.gif'), default"
     >
       <TopBar />
-      <CharacterSubNav />
+      <StorySubNav />
       <Box paddingTop="88px" paddingBottom="40px">
         <IntroBackground>
           <CharacterIntroduction />
@@ -28,7 +28,7 @@ const CharacterOverviewPage: NextPage = () => {
       <Live2DModel />
       <MinecraftSkin />
       <Center py="100px">
-        <NextLink href="/character/art">
+        <NextLink href="/story/character/art">
           <Button colorScheme="whiteAlpha" variant="outline">
             更多作品
           </Button>

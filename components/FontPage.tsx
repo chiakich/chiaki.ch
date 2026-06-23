@@ -38,7 +38,7 @@ const FontPage: NextPage<FontPageProps> = ({ title, description, iframeUrl }) =>
           <Stack spacing={8}>
             <ChakraLink
               as={Link}
-              href="/fonts"
+              href="/works"
               display="inline-flex"
               alignItems="center"
               color="blue.500"
@@ -46,7 +46,7 @@ const FontPage: NextPage<FontPageProps> = ({ title, description, iframeUrl }) =>
               mb={4}
             >
               <Icon as={ChevronLeftIcon} mr={1} />
-              返回字體作品集
+              返回作品集
             </ChakraLink>
 
             <Stack spacing={4} color="white">
