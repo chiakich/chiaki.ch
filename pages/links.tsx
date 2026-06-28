@@ -101,7 +101,7 @@ const Links: NextPage = () => {
                   as={Link}
                   width="100%"
                   maxWidth="300px"
-                  href="https://www.plurk.com/akira02"
+                  href="https://www.plurk.com/chiakich"
                   bgColor="#FF574D"
                   isExternal
                 >
