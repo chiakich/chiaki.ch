@@ -1,5 +1,6 @@
 import type { NextPage } from 'next'
-import { Box, Center, Button } from '@chakra-ui/react'
+import { Box, Center } from 'styled-system/jsx'
+import { Button } from 'components/ui/controls'
 import NextLink from 'next/link'
 import TopBar from 'components/TopBar'
 import StorySubNav from 'components/StorySubNav'
@@ -12,14 +13,14 @@ import MinecraftSkin from 'components/character/MinecraftSkin'
 const CharacterOverviewPage: NextPage = () => {
   return (
     <Box
-      backgroundColor="black"
-      width="100%"
+      bg="black"
+      w="100%"
       minHeight="100vh"
       cursor="url('https://images.plurk.com/i4BLwuGEg7v4dgyVOufB7.gif'), default"
     >
       <TopBar />
       <StorySubNav />
-      <Box paddingTop="88px" paddingBottom="40px">
+      <Box pt="88px" pb="40px">
         <IntroBackground>
           <CharacterIntroduction />
           <CharacterConceptArt />

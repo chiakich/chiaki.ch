@@ -3,16 +3,17 @@ import Link from 'next/link'
 import {
   Box,
   Container,
-  Heading,
-  Text,
-  SimpleGrid,
-  Card,
-  CardBody,
+  Grid,
   Stack,
-  useColorModeValue,
-} from '@chakra-ui/react'
+  styled,
+} from 'styled-system/jsx'
 import TopBar from '../../components/TopBar'
 import FontsSubNav from '../../components/FontsSubNav'
+
+const Heading = styled.h1
+const Text = styled.p
+const Card = styled.div
+const CardBody = styled.div
 
 const FontsIndex: NextPage = () => {
   const fonts = [
@@ -39,8 +40,8 @@ const FontsIndex: NextPage = () => {
     },
   ]
 
-  const cardBg = useColorModeValue('white', 'gray.700')
-  const cardHoverBg = useColorModeValue('gray.50', 'gray.600')
+  const cardBg = 'white'
+  const cardHoverBg = 'gray.50'
 
   return (
     <>
@@ -49,8 +50,8 @@ const FontsIndex: NextPage = () => {
 
       <Box pt="88px">
         <Container maxW="container.xl" py={8}>
-          <Stack spacing={8} align="center" mb={12} color="white">
-            <Heading as="h1" size="2xl" textAlign="center">
+          <Stack gap={8} align="center" mb={12} color="white">
+            <Heading fontSize={{ base: '2.25rem', md: '3rem' }} lineHeight={1.1} fontWeight="bold" textAlign="center">
               作品集
             </Heading>
             <Text fontSize="xl" textAlign="center" maxW="2xl">
@@ -58,7 +59,7 @@ const FontsIndex: NextPage = () => {
             </Text>
           </Stack>
 
-          <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={8}>
+          <Grid columns={{ base: 1, md: 2, lg: 3 }} gap={8}>
             {fonts.map((font) => (
               <Link
                 href={font.link}
@@ -76,15 +77,15 @@ const FontsIndex: NextPage = () => {
                   cursor="pointer"
                 >
                   <CardBody>
-                    <Stack spacing={3}>
-                      <Heading size="md">{font.title}</Heading>
+                    <Stack gap={3}>
+                      <Heading as="h2" fontSize="1.25rem" fontWeight="bold">{font.title}</Heading>
                       <Text color="gray.600">{font.description}</Text>
                     </Stack>
                   </CardBody>
                 </Card>
               </Link>
             ))}
-          </SimpleGrid>
+          </Grid>
         </Container>
       </Box>
     </>

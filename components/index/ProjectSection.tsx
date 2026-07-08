@@ -1,5 +1,8 @@
-import { Box, Heading, Button } from '@chakra-ui/react'
+import { Box, styled } from 'styled-system/jsx'
+import { Button } from 'components/ui/controls'
 import Link from 'next/link'
+
+const Heading = styled.h1
 
 const ProjectSection = () => {
   return (
@@ -15,8 +18,8 @@ const ProjectSection = () => {
       gap={8}
     >
       <Heading
-        as="h1"
-        size="2xl"
+        fontSize={{ base: '2.25rem', md: '3rem' }}
+        lineHeight={1.1}
         color="white"
         textAlign="center"
         fontWeight="bold"

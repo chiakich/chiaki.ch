@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "panda codegen && panda cssgen && next dev",
+    "build": "panda codegen && panda cssgen && next build",
     "start": "next start",
     "lint": "next lint",
     "generate-thumbnails": "node scripts/generateThumbnails.js",
@@ -13,10 +13,6 @@
   },
   "dependencies": {
     "@babel/core": "^7.18.13",
-    "@chakra-ui/icons": "^2.2.4",
-    "@chakra-ui/react": "^2.2.9",
-    "@emotion/react": "^11",
-    "@emotion/styled": "^11",
     "@pixi/core": "6.5.10",
     "@pixi/display": "6.5.10",
     "@pixi/loaders": "6.5.10",
@@ -39,7 +35,7 @@
     "yet-another-react-lightbox": "^3.23.2"
   },
   "devDependencies": {
-    "@chakra-ui/styled-system": "^2.2.8",
+    "@pandacss/dev": "^1.11.4",
     "@svgr/webpack": "^6.3.1",
     "@types/node": "18.7.13",
     "@types/react": "^19",

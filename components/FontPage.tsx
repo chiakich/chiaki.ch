@@ -4,15 +4,17 @@ import Link from 'next/link'
 import {
   Box,
   Container,
-  Heading,
-  Text,
-  Link as ChakraLink,
   Stack,
-  Icon,
-} from '@chakra-ui/react'
-import { ChevronLeftIcon } from '@chakra-ui/icons'
+  styled,
+} from 'styled-system/jsx'
+import { ChevronLeftIcon } from 'components/ui/icons'
 import TopBar from './TopBar'
 import FontsSubNav from './FontsSubNav'
+
+const Heading = styled.h1
+const Text = styled.p
+const ChakraLink = styled.a
+const Iframe = styled.iframe
 
 interface FontPageProps {
   title: string
@@ -35,7 +37,7 @@ const FontPage: NextPage<FontPageProps> = ({ title, description, iframeUrl }) =>
         {' '}
         {/* Add padding-top to account for both TopBar and FontsSubNav */}
         <Container maxW="container.xl" py={8}>
-          <Stack spacing={8}>
+          <Stack gap={8}>
             <ChakraLink
               as={Link}
               href="/works"
@@ -45,12 +47,14 @@ const FontPage: NextPage<FontPageProps> = ({ title, description, iframeUrl }) =>
               _hover={{ textDecoration: 'none', color: 'blue.600' }}
               mb={4}
             >
-              <Icon as={ChevronLeftIcon} mr={1} />
+              <styled.span mr={1}>
+                <ChevronLeftIcon />
+              </styled.span>
               返回作品集
             </ChakraLink>
 
-            <Stack spacing={4} color="white">
-              <Heading as="h1" size="2xl">
+            <Stack gap={4} color="white">
+              <Heading fontSize={{ base: '2.25rem', md: '3rem' }} lineHeight={1.1} fontWeight="bold">
                 {title}
               </Heading>
               <Text fontSize="xl">{description}</Text>
@@ -65,13 +69,12 @@ const FontPage: NextPage<FontPageProps> = ({ title, description, iframeUrl }) =>
               overflow="hidden"
               boxShadow="xl"
             >
-              <Box
-                as="iframe"
+              <Iframe
                 position="absolute"
                 top="0"
                 left="0"
-                width="100%"
-                height="100%"
+                w="100%"
+                h="100%"
                 src={iframeUrl}
                 title={title}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

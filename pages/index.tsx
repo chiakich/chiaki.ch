@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import { Box } from '@chakra-ui/react'
+import { Box } from 'styled-system/jsx'
 import CoverSection from 'components/index/Cover'
 import TopBar from 'components/TopBar'
 

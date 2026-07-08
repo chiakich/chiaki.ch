@@ -1,15 +1,13 @@
 import type { NextPage } from 'next'
 import React, { useState } from 'react'
-import { Box, Flex, Button, Center, Link } from '@chakra-ui/react'
+import { Box, Center, styled } from 'styled-system/jsx'
+import { Button } from 'components/ui/controls'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import DotBackground from 'components/index/DotBackground'
 import AnimatedLogo from 'components/index/AnimatedLogo'
-import { keyframes } from '@emotion/react'
 
-const spin = keyframes`
-  from {transform: rotate(0deg);}
-  to {transform: rotate(360deg)}`
+const Link = styled.a
 
 const Links: NextPage = () => {
   const [isBgLoaded, setBgLoaded] = useState(false)
@@ -45,7 +43,7 @@ const Links: NextPage = () => {
           animate={{ opacity: 0 }}
           transition={{ delay: 0.7, duration: 1, ease: 'easeOut' }}
         >
-          <Box animation={`${spin} infinite 15s linear`} width="100px">
+          <Box animation="spin infinite 15s linear" width="100px">
             <AnimatedLogo fastAni />
           </Box>
         </motion.div>

@@ -1,19 +1,13 @@
 import React, { useState } from 'react'
-import {
-  Box,
-  Text,
-  Grid,
-  GridItem,
-  VStack,
-  Image,
-  IconButton,
-  Flex,
-  useDisclosure,
-} from '@chakra-ui/react'
-import { SearchIcon } from '@chakra-ui/icons'
+import { Box, Grid, GridItem, VStack, Flex, styled } from 'styled-system/jsx'
+import { IconButton, useDisclosure } from 'components/ui/controls'
+import { SearchIcon } from 'components/ui/icons'
 import Lightbox from 'yet-another-react-lightbox'
 import Zoom from 'yet-another-react-lightbox/plugins/zoom'
 import 'yet-another-react-lightbox/styles.css'
+
+const Text = styled.p
+const Image = styled.img
 
 const CharacterIntroduction: React.FC = () => {
   // State for current character art
@@ -44,24 +38,24 @@ const CharacterIntroduction: React.FC = () => {
 
   return (
     <Grid
-      templateColumns={{ base: '1fr', md: '1fr 1fr' }}
+      gridTemplateColumns={{ base: '1fr', md: '1fr 1fr' }}
       gap={{ base: 8, md: 12 }}
-      width="100%"
-      maxWidth="width.section"
-      margin="0 auto"
-      paddingX={{ base: '20px', md: '40px', lg: '60px' }}
-      paddingY="40px"
+      w="100%"
+      maxW="width.section"
+      mx="auto"
+      px={{ base: '20px', md: '40px', lg: '60px' }}
+      py="40px"
       color="black"
       position="relative"
       zIndex={1}
     >
       {/* Left Column - Character Introduction */}
       <GridItem my={{ base: '10px', md: '150px' }}>
-        <VStack spacing={4} align="start">
+        <VStack gap={4} alignItems="start">
           <Text
             fontSize={{ base: '2xl', md: '3xl', lg: '4xl' }}
             fontWeight="bold"
-            marginBottom="20px"
+            mb="20px"
           >
             涼風千秋
           </Text>
@@ -87,7 +81,7 @@ const CharacterIntroduction: React.FC = () => {
           <Image
             src="/assets/about/signv2_animated.svg"
             alt="Chiaki Sign"
-            width="50%"
+            w="50%"
             mt="20px"
             alignSelf="flex-end"
             transform="rotate(4deg)"
@@ -108,8 +102,8 @@ const CharacterIntroduction: React.FC = () => {
             <Image
               src={characterArts[currentArtIndex]}
               alt={`Character art ${currentArtIndex + 1}`}
-              width="100%"
-              height="100%"
+              w="100%"
+              h="100%"
               objectFit="contain"
             />
             <IconButton
@@ -128,14 +122,15 @@ const CharacterIntroduction: React.FC = () => {
 
           {/* Thumbnails */}
           <VStack
-            spacing={3}
-            width={{ base: '60px', md: '80px' }}
+            gap={3}
+            w={{ base: '60px', md: '80px' }}
             my={{ base: '10px', md: '50px' }}
           >
             {characterArts.map((art, index) => (
               <Box
                 key={art}
-                boxSize={{ base: '50px', md: '70px' }}
+                w={{ base: '50px', md: '70px' }}
+                h={{ base: '50px', md: '70px' }}
                 borderRadius="full"
                 overflow="hidden"
                 cursor="pointer"
@@ -148,8 +143,8 @@ const CharacterIntroduction: React.FC = () => {
                 <Image
                   src={art}
                   alt={`Thumbnail ${index + 1}`}
-                  width="100%"
-                  height="100%"
+                  w="100%"
+                  h="100%"
                   objectFit="cover"
                   objectPosition="top"
                 />

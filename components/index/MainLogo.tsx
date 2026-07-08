@@ -1,12 +1,7 @@
-import { Box, Center } from '@chakra-ui/react'
-import { keyframes } from '@emotion/react'
+import { Box, Center } from 'styled-system/jsx'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import AnimatedLogo from 'components/index/AnimatedLogo'
 import LogoText from '@icon/logo_text_light.svg'
-
-const spin = keyframes`
-  from {transform: rotate(0deg);}
-  to {transform: rotate(360deg)}`
 
 const MainLogo = () => {
   const { scrollY } = useScroll()
@@ -31,7 +26,7 @@ const MainLogo = () => {
       >
         <Box
           display={{ base: 'none', md: 'block' }}
-          animation={`${spin} infinite 15s linear`}
+          animation="spin infinite 15s linear"
           width={{ base: '23vw', md: '6vw' }}
         >
           <AnimatedLogo />
@@ -46,7 +41,7 @@ const MainLogo = () => {
       >
         <Box
           display={{ base: 'block', md: 'none' }}
-          animation={`${spin} infinite 15s linear`}
+          animation="spin infinite 15s linear"
           width={{ base: '23vw', md: '6vw' }}
         >
           <AnimatedLogo />
@@ -80,7 +75,7 @@ const MainLogo = () => {
       >
         <Box
           display={{ base: 'none', md: 'block' }}
-          animation={`${spin} infinite 15s linear reverse`}
+          animation="spin infinite 15s linear reverse"
           width={{ base: '23vw', md: '6vw' }}
         >
           <AnimatedLogo />

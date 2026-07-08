@@ -1,19 +1,13 @@
 import React, { useState } from 'react'
-import {
-  Box,
-  Text,
-  Grid,
-  GridItem,
-  VStack,
-  Image,
-  IconButton,
-  HStack,
-  useDisclosure,
-} from '@chakra-ui/react'
-import { SearchIcon } from '@chakra-ui/icons'
+import { Box, HStack, styled } from 'styled-system/jsx'
+import { IconButton, useDisclosure } from 'components/ui/controls'
+import { SearchIcon } from 'components/ui/icons'
 import Lightbox from 'yet-another-react-lightbox'
 import Zoom from 'yet-another-react-lightbox/plugins/zoom'
 import 'yet-another-react-lightbox/styles.css'
+
+const Text = styled.p
+const Image = styled.img
 
 // Character concept art images
 const conceptArts = [
@@ -35,12 +29,12 @@ const CharacterConceptArt: React.FC = () => {
 
   return (
     <Box
-      width="100%"
-      maxWidth="width.section"
-      margin="0 auto"
-      paddingX={{ base: '20px', md: '40px', lg: '60px' }}
-      paddingTop="20px"
-      paddingBottom="60px"
+      w="100%"
+      maxW="width.section"
+      mx="auto"
+      px={{ base: '20px', md: '40px', lg: '60px' }}
+      pt="20px"
+      pb="60px"
       position="relative"
       zIndex={1}
       color="black"
@@ -48,7 +42,7 @@ const CharacterConceptArt: React.FC = () => {
       <Text
         fontSize={{ base: '2xl', md: '3xl', lg: '4xl' }}
         fontWeight="bold"
-        marginBottom="20px"
+        mb="20px"
       >
         設定圖集
       </Text>
@@ -57,19 +51,19 @@ const CharacterConceptArt: React.FC = () => {
         {/* Main Display Area */}
         <Box
           position="relative"
-          marginBottom="30px"
+          mb="30px"
           borderRadius="16px"
           overflow="hidden"
-          backgroundColor="rgba(245, 200, 161, 0.1)"
+          bg="rgba(245, 200, 161, 0.1)"
           border="2px solid rgba(223, 138, 66, 0.2)"
         >
           <Image
             src={conceptArts[currentConceptIndex]}
             alt={conceptTitles[currentConceptIndex]}
-            width="100%"
+            w="100%"
             height={{ base: '300px', md: '650px' }}
             objectFit="contain"
-            backgroundColor="rgba(255, 255, 255, 0.9)"
+            bg="rgba(255, 255, 255, 0.9)"
           />
           <IconButton
             aria-label="View full size"
@@ -85,13 +79,13 @@ const CharacterConceptArt: React.FC = () => {
             }}
             size="lg"
             borderRadius="full"
-            backgroundColor="#df8a42"
-            _hover={{ backgroundColor: '#c57835' }}
+            bg="#df8a42"
+            _hover={{ bg: '#c57835' }}
           />
         </Box>
 
         {/* Thumbnail Navigation */}
-        <HStack spacing={4} justify="center" flexWrap="wrap">
+        <HStack gap={4} justify="center" flexWrap="wrap">
           {conceptArts.map((art, index) => (
             <Box
               key={art}
@@ -112,13 +106,13 @@ const CharacterConceptArt: React.FC = () => {
                     ? '#df8a42'
                     : 'rgba(223, 138, 66, 0.3)'
                 }
-                backgroundColor="rgba(255, 255, 255, 0.9)"
+                bg="rgba(255, 255, 255, 0.9)"
               >
                 <Image
                   src={art}
                   alt={conceptTitles[index]}
-                  width="100%"
-                  height="100%"
+                  w="100%"
+                  h="100%"
                   objectFit="cover"
                   objectPosition="center"
                 />

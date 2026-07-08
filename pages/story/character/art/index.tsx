@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import { Box } from '@chakra-ui/react'
+import { Box } from 'styled-system/jsx'
 import TopBar from 'components/TopBar'
 import StorySubNav from 'components/StorySubNav'
 import CharacterIntroduction from 'components/character/CharacterIntroduction'

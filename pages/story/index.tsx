@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import { Box } from '@chakra-ui/react'
+import { Box } from 'styled-system/jsx'
 import DepthScrollSection from 'components/index/DepthScrollSection'
 import SeedGrowthSection from 'components/index/SeedGrowthSection'
 import ProjectSection from 'components/index/ProjectSection'

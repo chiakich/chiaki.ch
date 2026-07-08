@@ -1,4 +1,4 @@
-import { Box, Center } from '@chakra-ui/react'
+import { Box } from 'styled-system/jsx'
 
 const DotBackground = () => (
   <Box
@@ -14,9 +14,7 @@ const DotBackground = () => (
       rgb(75, 76, 71) 25%,
       transparent 25%
     )"
-    sx={{
-      maskImage: 'linear-gradient(to bottom,#000,50%,transparent)',
-    }}
+    maskImage="linear-gradient(to bottom,#000,50%,transparent)"
   />
 )
 

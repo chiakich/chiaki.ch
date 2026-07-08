@@ -1,6 +1,9 @@
-import { Box, Flex, HStack, Link, Text, useColorModeValue } from '@chakra-ui/react'
+import { Box, Flex, HStack, styled } from 'styled-system/jsx'
 import { useRouter } from 'next/router'
 import NextLink from 'next/link'
+
+const Text = styled.p
+const Link = styled.a
 
 export interface SubNavItem {
   id: string
@@ -47,7 +50,7 @@ const SubNav = ({
       >
         <Text fontSize="lg">{title}</Text>
 
-        <HStack spacing={8} height="100%">
+        <HStack gap={8} height="100%">
           {items.map((item) => (
             <Link
               as={NextLink}

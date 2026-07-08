@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react'
+import { Box } from 'styled-system/jsx'
 import { useRef, useEffect } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
@@ -291,7 +291,7 @@ const SeedGrowthSection = () => {
           {[...Array(6)].map((_, i) => (
             <Box
               key={i}
-              ref={(el) => {
+              ref={(el: HTMLDivElement | null) => {
                 if (el) sparklesRef.current[i] = el
               }}
               position="fixed"

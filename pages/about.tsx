@@ -2,18 +2,20 @@ import type { NextPage } from 'next'
 import {
   Box,
   Container,
-  Heading,
-  Text,
   VStack,
-  List,
-  ListItem,
-  SimpleGrid,
-  Link as ChakraLink,
-} from '@chakra-ui/react'
+  Grid,
+  styled,
+} from 'styled-system/jsx'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import NextLink from 'next/link'
 import TopBar from 'components/TopBar'
+
+const Heading = styled.h2
+const Text = styled.p
+const List = styled.ul
+const ListItem = styled.li
+const ChakraLink = styled.a
 
 const MotionBox = motion(Box)
 
@@ -104,7 +106,7 @@ const About: NextPage = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
         >
-          <VStack spacing={5} align="center" textAlign="center" mb={16}>
+          <VStack gap={5} alignItems="center" textAlign="center" mb={16}>
             <Box
               borderRadius="full"
               overflow="hidden"
@@ -137,9 +139,9 @@ const About: NextPage = () => {
           </VStack>
         </MotionBox>
 
-        <VStack spacing={14} align="start">
+        <VStack gap={14} alignItems="start">
           <Section title="最近在玩的坑">
-            <List spacing={3}>
+            <List display="flex" flexDirection="column" gap={3} pl="1.5rem">
               <ListItem>看動畫、打電動，特別吃科幻題材（Cyberpunk、終末地這種）</ListItem>
               <ListItem>最近開始收黑膠</ListItem>
               <ListItem>偏執地喜歡復古的東西，尤其是 20 世紀前後那個年代的設計感</ListItem>
@@ -147,7 +149,7 @@ const About: NextPage = () => {
           </Section>
 
           <Section title="還有這些一直放在心上的東西">
-            <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6} mt={2}>
+            <Grid columns={{ base: 1, md: 2 }} gap={6} mt={2}>
               {interests.map((item) => (
                 <Box
                   key={item.title}
@@ -163,7 +165,7 @@ const About: NextPage = () => {
                   </Text>
                 </Box>
               ))}
-            </SimpleGrid>
+            </Grid>
           </Section>
 
           <Section title="白天的我">
