@@ -1,212 +1,528 @@
 import type { NextPage } from 'next'
+import { Box, Flex, Grid, HStack, VStack, styled } from 'styled-system/jsx'
 import {
-  Box,
-  Container,
-  VStack,
-  Grid,
-  styled,
-} from 'styled-system/jsx'
-import { motion } from 'framer-motion'
+  motion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+  useScroll,
+} from 'framer-motion'
 import Image from 'next/image'
 import NextLink from 'next/link'
+import { useRef } from 'react'
 import TopBar from 'components/TopBar'
 
 const Heading = styled.h2
 const Text = styled.p
 const List = styled.ul
 const ListItem = styled.li
-const ChakraLink = styled.a
+const Span = styled.span
 
 const MotionBox = motion(Box)
+const MotionImg = motion(styled.img)
 
-const interests: { title: string; description: string }[] = [
+const ACCENT = '#df8a42'
+const ACCENT_SOFT = '#f5c8a1'
+
+const interests: { title: string; en: string; description: string }[] = [
   {
     title: '設計',
+    en: 'DESIGN',
     description:
-      '喜歡以人為本、機能與美觀兼顧的設計。曾參與 justfont 粉圓字型，也做平面與網頁設計，想為更有設計感的社會盡一份力。',
+      '喜歡以人為本、機能與美觀兼顧的設計。曾參與 justfont 粉圓字型，也做過一些平面與網頁設計。',
   },
   {
     title: '繪畫',
-    description:
-      '喜歡畫畫，偶爾塗鴉。女僕、眼鏡、水手服、獸耳、褲襪、短髮都是我的菜。',
+    en: 'DRAWING',
+    description: '喜歡畫畫，偶爾會塗鴉。喜歡女僕裝、眼鏡、水手服、獸耳、兔女郎跟競賽泳裝！',
   },
   {
     title: '攝影',
-    description:
-      '喜歡用相機留下只存在於那個瞬間的事物。最近主力是底片相機。',
+    en: 'PHOTO',
+    description: '喜歡用相機留下只存在於那個瞬間的事物。最近主力是底片相機。',
   },
   {
     title: '模型',
+    en: 'MODEL',
     description:
-      '醉心於極小比例下濃縮的力與美，大多是 1/700 二戰日本軍艦與 1/72 飛機，最愛航空母艦。曾任台大模型社社長。',
+      '醉心於極小比例下濃縮的力與美，家裡有空壓機可以噴漆！',
   },
   {
     title: '同人活動',
+    en: 'DOUJIN',
     description:
-      '不受商業限制、創作自由度更高的獨立創作。喜歡在 FF 等同人場直接和讀者交流。',
+      '因為作品大多都是原創，報攤通常只會報小場。喜歡在活動上跟其他創作者交流，或是觀察大家的作品。',
   },
   {
     title: 'Cosplay',
-    description:
-      '透過服裝與道具詮釋自己喜愛的角色，是一種演繹角色的表演藝術。',
+    en: 'COSPLAY',
+    description: '透過服裝與道具詮釋自己喜愛的角色，是一種演繹角色的表演藝術。',
   },
   {
     title: '旅行',
-    description:
-      '研究路線、探索新地區、體驗不同文化。喜歡各地的夜景與在地美食。',
+    en: 'TRAVEL',
+    description: '研究路線、探索新地區、體驗不同文化。喜歡各地的夜景與在地美食。',
   },
   {
     title: '開源',
+    en: 'OSS',
     description:
       '把技術開放給他人、降低交流門檻，進而演變成合作開發的文化。我覺得這對社會很有幫助，也想把它傳承下去。',
   },
   {
     title: '在房間耍廢',
+    en: 'CHILL',
     description:
-      '為了打造不用出門也能極致悠閒的環境，自己設計、發包裝潢了房間，工時約四個月。',
+      '喜歡日本錢湯的榻榻米休憩區，自己設計、發包裝潢，工時約四個月。',
   },
 ]
 
-interface SectionProps {
-  title: string
-  children: React.ReactNode
-}
-
-const Section = ({ title, children }: SectionProps) => (
-  <MotionBox
-    width="100%"
-    initial={{ opacity: 0, y: 24 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: '-80px' }}
-    transition={{ duration: 0.6, ease: 'easeOut' }}
-  >
+// Skewed P5-style tag + heading
+const SectionTitle = ({ en, children }: { en: string; children: React.ReactNode }) => (
+  <Flex alignItems="center" gap={4} mb={5}>
+    <Box
+      backgroundColor={ACCENT}
+      color="black"
+      fontWeight="bold"
+      fontSize="xs"
+      letterSpacing="0.2em"
+      px={3}
+      py={1}
+      transform="skewX(-12deg)"
+      flexShrink={0}
+    >
+      <Box transform="skewX(12deg)">{en}</Box>
+    </Box>
     <Heading
       as="h2"
-      fontSize={{ base: 'lg', md: 'xl' }}
-      color="#df8a42"
-      mb={4}
+      fontSize={{ base: 'xl', md: '2xl' }}
+      fontWeight="bold"
       letterSpacing="0.05em"
     >
-      {title}
+      {children}
     </Heading>
+    <Box flex="1" height="1px" background={`linear-gradient(90deg, ${ACCENT}55, transparent)`} />
+  </Flex>
+)
+
+const Section = ({
+  en,
+  title,
+  children,
+}: {
+  en: string
+  title: string
+  children: React.ReactNode
+}) => (
+  <MotionBox
+    width="100%"
+    initial={{ opacity: 0, y: 32 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: '-80px' }}
+    transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+  >
+    <SectionTitle en={en}>{title}</SectionTitle>
     <Box fontSize={{ base: 'md', md: 'lg' }} lineHeight="1.9" opacity={0.92}>
       {children}
     </Box>
   </MotionBox>
 )
 
-const About: NextPage = () => {
+// Sticky character visual with wipe-in entrance and mouse parallax
+const CharacterPanel = ({
+  x,
+  y,
+}: {
+  x: ReturnType<typeof useSpring>
+  y: ReturnType<typeof useSpring>
+}) => {
+  const bgX = useTransform(x, (v: number) => v * -1.6)
+  const bgY = useTransform(y, (v: number) => v * -1.6)
+
   return (
-    <Box backgroundColor="black" color="white" minHeight="100vh">
+    <Box
+      position="relative"
+      width="100%"
+      height={{ base: '68vh', lg: 'calc(100vh - 44px)' }}
+      overflow="hidden"
+    >
+      {/* Slanted accent panel */}
+      <MotionBox
+        position="absolute"
+        top="-5%"
+        right="-12%"
+        width="70%"
+        height="115%"
+        background={`linear-gradient(200deg, ${ACCENT}2e 0%, ${ACCENT}08 65%, transparent 100%)`}
+        clipPath="polygon(28% 0, 100% 0, 100% 100%, 0 100%)"
+        initial={{ opacity: 0, x: 80 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+      />
+      {/* Halftone dots */}
+      <Box
+        position="absolute"
+        inset="0"
+        backgroundImage="radial-gradient(rgba(255,255,255,0.07) 1px, transparent 1.5px)"
+        backgroundSize="22px 22px"
+        maskImage="linear-gradient(115deg, transparent 30%, black 75%)"
+      />
+      {/* Outline name behind the character */}
+      <MotionBox
+        position="absolute"
+        top="2%"
+        right="2%"
+        fontSize={{ base: '4rem', lg: '6.5rem' }}
+        fontWeight="900"
+        letterSpacing="0.02em"
+        lineHeight="0.95"
+        textTransform="uppercase"
+        color="transparent"
+        style={{
+          x: bgX,
+          y: bgY,
+          WebkitTextStroke: `1px ${ACCENT}59`,
+          writingMode: 'vertical-rl',
+        }}
+        whiteSpace="nowrap"
+        userSelect="none"
+        aria-hidden
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5, duration: 1 }}
+      >
+        SUZUKAZE CHIAKI
+      </MotionBox>
+
+      <MotionImg
+        src="/assets/about/chiaki_v2_web.png"
+        alt="涼風千秋 立繪"
+        position="absolute"
+        bottom="0"
+        left="50%"
+        height={{ base: '64vh', lg: '88%' }}
+        maxWidth="none"
+        filter={`drop-shadow(0 0 40px ${ACCENT}30)`}
+        initial={{
+          clipPath: 'polygon(0 0, 18% 0, 0 100%, 0 100%)',
+          opacity: 0,
+          x: '-42%',
+        }}
+        animate={{
+          clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
+          opacity: 1,
+          x: '-50%',
+        }}
+        transition={{ duration: 1.1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+        style={{ translateX: x, translateY: y }}
+      />
+
+      {/* Blend the feet into the page bottom */}
+      <Box
+        position="absolute"
+        bottom="0"
+        left="0"
+        right="0"
+        height="18%"
+        background="linear-gradient(transparent, black)"
+        display={{ base: 'block', lg: 'none' }}
+      />
+    </Box>
+  )
+}
+
+const About: NextPage = () => {
+  const rootRef = useRef<HTMLDivElement>(null)
+  const mouseX = useMotionValue(0)
+  const mouseY = useMotionValue(0)
+  const x = useSpring(mouseX, { stiffness: 60, damping: 18 })
+  const y = useSpring(mouseY, { stiffness: 60, damping: 18 })
+
+  const { scrollYProgress } = useScroll()
+  const barY = useTransform(scrollYProgress, [0, 1], ['0%', '-30%'])
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    mouseX.set((e.clientX / window.innerWidth - 0.5) * 14)
+    mouseY.set((e.clientY / window.innerHeight - 0.5) * 10)
+  }
+
+  return (
+    <Box
+      ref={rootRef}
+      backgroundColor="black"
+      color="white"
+      minHeight="100vh"
+      overflowX="hidden"
+      onMouseMove={handleMouseMove}
+    >
       <TopBar />
-      <Container maxW="720px" pt="88px" pb="120px" px={{ base: '24px', md: '20px' }}>
-        {/* Header */}
-        <MotionBox
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
-        >
-          <VStack gap={5} alignItems="center" textAlign="center" mb={16}>
-            <Box
-              borderRadius="full"
-              overflow="hidden"
-              boxSize={{ base: '110px', md: '130px' }}
-              border="2px solid #df8a42"
+
+      {/* Decorative diagonal bars, parallax on scroll */}
+      <MotionBox
+        position="fixed"
+        top="20%"
+        left="-6%"
+        width="46%"
+        height="10px"
+        background={`linear-gradient(90deg, ${ACCENT}66, transparent)`}
+        transform="rotate(-18deg)"
+        style={{ y: barY }}
+        pointerEvents="none"
+        zIndex={0}
+      />
+      <MotionBox
+        position="fixed"
+        top="65%"
+        left="-10%"
+        width="36%"
+        height="4px"
+        background={`linear-gradient(90deg, ${ACCENT}40, transparent)`}
+        transform="rotate(-18deg)"
+        style={{ y: barY }}
+        pointerEvents="none"
+        zIndex={0}
+      />
+
+      <Grid
+        gridTemplateColumns={{ base: '1fr', lg: 'minmax(0, 1fr) clamp(320px, 34vw, 440px)' }}
+        gap={0}
+        pt="44px"
+        maxW="width.section"
+        mx="auto"
+        position="relative"
+        zIndex={1}
+      >
+        {/* Mobile-first: character hero on top for small screens */}
+        <Box display={{ base: 'block', lg: 'none' }} order={0}>
+          <CharacterPanel x={x} y={y} />
+        </Box>
+
+        {/* Content column */}
+        <Box order={{ base: 1, lg: 0 }} px={{ base: '24px', md: '48px' }} pt={{ base: 6, lg: 20 }} pb="80px">
+          {/* Header */}
+          <MotionBox
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            mb={14}
+          >
+            <HStack gap={4} mb={4} alignItems="center">
+              <Box
+                borderRadius="full"
+                overflow="hidden"
+                boxSize="64px"
+                border={`2px solid ${ACCENT}`}
+                flexShrink={0}
+              >
+                <Image
+                  src="/assets/img/profile.jpg"
+                  alt="涼風千秋"
+                  width={64}
+                  height={64}
+                  style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                />
+              </Box>
+              <Text
+                fontFamily="mono"
+                fontSize="sm"
+                letterSpacing="0.35em"
+                color={ACCENT}
+                fontWeight="bold"
+              >
+                ABOUT&nbsp;&nbsp;//&nbsp;&nbsp;PROFILE_01
+              </Text>
+            </HStack>
+
+            <Heading
+              as="h1"
+              fontSize={{ base: '3.5rem', md: '5.5rem' }}
+              fontWeight="900"
+              lineHeight="1.05"
+              letterSpacing="-0.02em"
+              mb={4}
             >
-              <Image
-                src="/assets/img/profile.jpg"
-                alt="涼風千秋"
-                width={130}
-                height={130}
-                style={{ objectFit: 'cover', width: '100%', height: '100%' }}
-              />
-            </Box>
-            <Heading as="h1" fontSize={{ base: '3xl', md: '4xl' }}>
-              涼風千秋
+              涼風
+              <Span position="relative" display="inline-block" mx="0.1em">
+                <Span
+                  position="absolute"
+                  inset="0.05em -0.08em -0.02em"
+                  backgroundColor={ACCENT}
+                  transform="skewX(-8deg)"
+                  zIndex={0}
+                />
+                <Span position="relative" zIndex={1} color="black">
+                  千秋
+                </Span>
+              </Span>
             </Heading>
+
+            {/* Hazard stripe, Endfield-style */}
+            <Box
+              width="180px"
+              height="8px"
+              mb={5}
+              background={`repeating-linear-gradient(-45deg, ${ACCENT} 0 10px, transparent 10px 20px)`}
+            />
             <Text
               fontSize={{ base: 'lg', md: 'xl' }}
               fontWeight="medium"
-              color="#f5c8a1"
+              color={ACCENT_SOFT}
+              mb={5}
             >
-              喜歡沒事找事做，沒坑找坑挖
+              藉算機以窮妙理，運寸彩以繪芳華
             </Text>
             <Text fontSize={{ base: 'md', md: 'lg' }} lineHeight="1.9" maxW="520px">
-              嗨，我是涼風千秋。
+              您好！我是涼風千秋。
               <br />
-              一個興趣比時間多很多的人——常常一個坑還沒填完，就又興沖沖地跳進下一個。
+              畫畫、做設計師、寫程式的人。永遠都在挖坑與填坑的路上。
             </Text>
-          </VStack>
-        </MotionBox>
+          </MotionBox>
 
-        <VStack gap={14} alignItems="start">
-          <Section title="最近在玩的坑">
-            <List display="flex" flexDirection="column" gap={3} pl="1.5rem">
-              <ListItem>看動畫、打電動，特別吃科幻題材（Cyberpunk、終末地這種）</ListItem>
-              <ListItem>最近開始收黑膠</ListItem>
-              <ListItem>偏執地喜歡復古的東西，尤其是 20 世紀前後那個年代的設計感</ListItem>
-            </List>
-          </Section>
+          <VStack gap={16} alignItems="start">
+            <Section en="NOW PLAYING" title="最近在玩的坑">
+              <List display="flex" flexDirection="column" gap={3} pl="1.5rem">
+                <ListItem>看動畫、打電動，特別吃科幻題材（Cyberpunk、終末地這種）</ListItem>
+                <ListItem>最近開始收黑膠</ListItem>
+                <ListItem>喜歡復古的東西，尤其是 20 世紀前後那個年代的設計感</ListItem>
+              </List>
+            </Section>
 
-          <Section title="還有這些一直放在心上的東西">
-            <Grid columns={{ base: 1, md: 2 }} gap={6} mt={2}>
-              {interests.map((item) => (
-                <Box
-                  key={item.title}
-                  borderLeft="2px solid #df8a42"
-                  pl={4}
-                  py={1}
+            <Section en="INTERESTS" title="一直放在心上的東西">
+              <Grid columns={{ base: 1, md: 2 }} gap={4} mt={2}>
+                {interests.map((item, i) => (
+                  <MotionBox
+                    key={item.title}
+                    position="relative"
+                    backgroundColor="#111"
+                    border="1px solid #222"
+                    clipPath="polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)"
+                    px={5}
+                    py={4}
+                    overflow="hidden"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: '-40px' }}
+                    transition={{ duration: 0.5, delay: (i % 2) * 0.08, ease: 'easeOut' }}
+                    _hover={{
+                      borderColor: `${ACCENT}88`,
+                      transform: 'translateY(-3px)',
+                      '& .interest-en': { color: ACCENT, opacity: 0.9 },
+                    }}
+                    style={{ transition: 'transform 0.25s ease, border-color 0.25s ease' }}
+                  >
+                    <Text
+                      className="interest-en"
+                      position="absolute"
+                      top={2}
+                      right={4}
+                      fontSize="xs"
+                      fontWeight="900"
+                      letterSpacing="0.2em"
+                      opacity={0.3}
+                      style={{ transition: 'color 0.25s ease, opacity 0.25s ease' }}
+                    >
+                      {item.en}
+                    </Text>
+                    <Text fontWeight="bold" fontSize={{ base: 'md', md: 'lg' }} mb={1}>
+                      <Span color={ACCENT} mr={2} fontSize="sm">
+                        {String(i + 1).padStart(2, '0')}
+                      </Span>
+                      {item.title}
+                    </Text>
+                    <Text fontSize={{ base: 'sm', md: 'md' }} opacity={0.85} lineHeight="1.8">
+                      {item.description}
+                    </Text>
+                  </MotionBox>
+                ))}
+              </Grid>
+            </Section>
+
+            <Section en="DAYTIME" title="白天的我">
+              <Text>
+                平常是個普通的軟體工程師！
+              </Text>
+            </Section>
+
+            <Section en="GETTING ALONG" title="關於相處">
+              <Text>
+                算慢熟，而且事情實在太多了，回訊息會很慢。
+                <br />
+                但「慢」不等於「不想理你」：想找我聊、想傳訊息給我，都非常歡迎，我有空一定會盡量回、盡量看。
+                <br />
+                只是要先跟大家說聲抱歉，我不一定每則貼文都會看到，不是故意已讀或無視，是忙起來真的會漏，這點請多包涵。
+              </Text>
+            </Section>
+
+            <Section en="ONE REQUEST" title="一點小小的請求">
+              <Text>
+                個人不太聊政治、也不太喜歡別人批評東西QQ
+                <br />
+                我覺得沒有什麼絕對的對錯，很多東西只是被放在錯的地方而已。
+                <br />
+                帶著這樣的善意與尊重，我們應該會很合得來！
+              </Text>
+            </Section>
+
+            <Section en="CONTACT" title="找我">
+              <Text>
+                想找我的話，所有聯絡方式都整理在{' '}
+                <NextLink
+                  href="/links"
+                  style={{ color: ACCENT, borderBottom: `1px solid ${ACCENT}66` }}
                 >
-                  <Text fontWeight="bold" fontSize={{ base: 'md', md: 'lg' }} mb={1}>
-                    {item.title}
-                  </Text>
-                  <Text fontSize={{ base: 'sm', md: 'md' }} opacity={0.85} lineHeight="1.8">
-                    {item.description}
-                  </Text>
-                </Box>
-              ))}
-            </Grid>
-          </Section>
+                  這裡
+                </NextLink>
+                。
+              </Text>
+            </Section>
+          </VStack>
+        </Box>
 
-          <Section title="白天的我">
-            <Text>
-              平常是個普通的軟體工程師，也做字體設計。
-              <br />
-              之前有人找我一起做字體分發相關的東西——所以如果你有什麼想一起搞的，歡迎丟訊息來聊聊，雖然我也不知道會長成什麼樣，但這種「不知道會變怎樣」的事我最喜歡了。
-            </Text>
-          </Section>
+        {/* Desktop: sticky character on the right */}
+        <Box
+          display={{ base: 'none', lg: 'block' }}
+          position="sticky"
+          top="44px"
+          height="calc(100vh - 44px)"
+          alignSelf="start"
+        >
+          <CharacterPanel x={x} y={y} />
+        </Box>
+      </Grid>
 
-          <Section title="關於相處（先說在前面）">
-            <Text>
-              我大概算慢熟，而且——事情實在太多了——回訊息會很慢。
-              <br />
-              但「慢」不等於「不想理你」：想找我聊、想傳訊息給我，都非常歡迎，我有空一定會盡量回、盡量看。
-              <br />
-              只是要先跟大家說聲抱歉：我不一定每則貼文都會看到，不是故意已讀或無視，是忙起來真的會漏。要追上每個人的近況對我來說有點難，這點請多包涵。
-            </Text>
-          </Section>
-
-          <Section title="一點小小的請求">
-            <Text>
-              這裡不太適合聊政治、也不太適合拿來批評什麼東西。
-              <br />
-              我一直覺得沒有什麼是絕對的善或惡，很多東西只是被放錯了地方而已。
-              <br />
-              帶著這樣的善意來，我們應該會很合得來。
-            </Text>
-          </Section>
-
-          <Section title="找我">
-            <Text>
-              想找我的話，所有聯絡方式都整理在{' '}
-              <ChakraLink as={NextLink} href="/links" color="#df8a42">
-                這裡
-              </ChakraLink>
-              。
-            </Text>
-          </Section>
-        </VStack>
-      </Container>
+      {/* Footer strip */}
+      <Box
+        borderTop={`1px solid ${ACCENT}33`}
+        py={4}
+        position="relative"
+        zIndex={1}
+        backgroundColor="black"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        gap={6}
+      >
+        <Box
+          width="64px"
+          height="6px"
+          background={`repeating-linear-gradient(-45deg, ${ACCENT} 0 8px, transparent 8px 16px)`}
+        />
+        <Span
+          fontFamily="mono"
+          fontSize="sm"
+          fontWeight="bold"
+          letterSpacing="0.3em"
+          color={`${ACCENT}cc`}
+          whiteSpace="nowrap"
+        >
+          SUZUKAZE CHIAKI // 涼風千秋
+        </Span>
+        <Box
+          width="64px"
+          height="6px"
+          background={`repeating-linear-gradient(-45deg, ${ACCENT} 0 8px, transparent 8px 16px)`}
+        />
+      </Box>
     </Box>
   )
 }

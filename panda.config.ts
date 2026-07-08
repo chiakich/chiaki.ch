@@ -27,6 +27,13 @@ export default defineConfig({
         },
         fonts: {
           body: { value: '"xingothic-tc", "Noto Sans TC", sans-serif' },
+          akitra: { value: 'akitra, "xingothic-tc", sans-serif' },
+          nixie: { value: 'nixie, monospace' },
+          huninn: { value: 'huninn, "xingothic-tc", sans-serif' },
+        },
+        colors: {
+          accent: { value: '#df8a42' },
+          accentSoft: { value: '#f5c8a1' },
         },
       },
       keyframes: {
@@ -34,13 +41,38 @@ export default defineConfig({
           from: { transform: 'rotate(0deg)' },
           to: { transform: 'rotate(360deg)' },
         },
+        nixieShine: {
+          '0%': { color: '#ff7728' },
+          '33%': { color: '#f57c37' },
+          '66%': { color: '#e85d02' },
+          '100%': { color: '#ff7728' },
+        },
       },
+    },
+  },
+  globalFontface: {
+    akitra: {
+      src: 'url(/assets/fonts/AkiTRA-Regular.woff2) format("woff2")',
+      fontWeight: 400,
+      fontDisplay: 'swap',
+    },
+    nixie: {
+      src: 'url(/assets/fonts/AkiNixieNumber-Regular.woff2) format("woff2")',
+      fontWeight: 400,
+      fontDisplay: 'swap',
+    },
+    // Subset for headings; the full font is lazy-loaded by the type tester
+    huninn: {
+      src: 'url(/assets/fonts/huninn-subset.woff2) format("woff2")',
+      fontWeight: 400,
+      fontDisplay: 'swap',
     },
   },
   globalCss: {
     body: {
       bg: 'black',
       fontFamily: 'body',
+      fontWeight: 'normal',
     },
     a: {
       color: 'inherit',
