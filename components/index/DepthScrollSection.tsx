@@ -11,12 +11,14 @@ import {
   BufferGeometry,
   ShaderMaterial,
 } from 'three'
-import { Box, Text } from '@chakra-ui/react'
+import { Box, styled } from 'styled-system/jsx'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger)
+
+const Text = styled.p
 
 const vertexShader = `
   varying vec2 vUv;
@@ -435,7 +437,7 @@ const DepthScrollSection = () => {
           {textLines.map((line, index) => (
             <Box
               key={index}
-              ref={(el) => {
+              ref={(el: HTMLDivElement | null) => {
                 if (el) textLinesRef.current[index] = el
               }}
               marginBottom="50px"

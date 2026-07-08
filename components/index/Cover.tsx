@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Box, Center } from '@chakra-ui/react'
+import { Box, Center } from 'styled-system/jsx'
 import Image from 'next/image'
 import DotBackground from 'components/index/DotBackground'
 import MainLogo from './MainLogo'

@@ -1,7 +1,11 @@
 import React from 'react'
-import { Box, Switch, FormControl, FormLabel, Text, VStack } from '@chakra-ui/react'
+import { Box, Flex, VStack, styled } from 'styled-system/jsx'
+import { Switch } from 'components/ui/controls'
 import { getAllProjects } from 'components/character/characterAssetsIndex'
 import ProjectCard from './ProjectCard'
+
+const Text = styled.p
+const FormLabel = styled.label
 
 interface ProjectGalleryProps {
   showR18: boolean
@@ -20,7 +24,7 @@ const ProjectGallery: React.FC<ProjectGalleryProps> = ({
     <Box maxWidth="800px" width="100%" margin="0 auto">
       {/* R18 Toggle */}
       <Box marginBottom={6}>
-        <FormControl display="flex" alignItems="center" justifyContent="center">
+        <Flex alignItems="center" justifyContent="center">
           <FormLabel
             htmlFor="r18-toggle"
             margin={0}
@@ -37,7 +41,7 @@ const ProjectGallery: React.FC<ProjectGalleryProps> = ({
             colorScheme="red"
             size="md"
           />
-        </FormControl>
+        </Flex>
         {showR18 && (
           <Text
             fontSize="xs"
@@ -52,7 +56,7 @@ const ProjectGallery: React.FC<ProjectGalleryProps> = ({
       </Box>
 
       {/* Projects List - Natural scrolling */}
-      <VStack spacing={6} align="stretch">
+      <VStack gap={6} alignItems="stretch">
         {projects.map((project) => (
           <ProjectCard
             key={project.id}

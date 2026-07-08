@@ -1,21 +1,24 @@
 import {
   Flex,
-  IconButton,
   Box,
   HStack,
-  Image,
-  Text,
-  Drawer,
-  DrawerOverlay,
-  DrawerHeader,
-  DrawerContent,
   VStack,
+  styled,
+} from 'styled-system/jsx'
+import {
+  Drawer,
   DrawerBody,
-} from '@chakra-ui/react'
-import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons'
+  DrawerContent,
+  DrawerHeader,
+  DrawerOverlay,
+  IconButton,
+} from 'components/ui/controls'
+import { CloseIcon, HamburgerIcon } from 'components/ui/icons'
 import Link from 'next/link'
 import React, { useState } from 'react'
 import { usePathname } from 'next/navigation'
+
+const Image = styled.img
 
 const TopBar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -36,12 +39,12 @@ const TopBar: React.FC = () => {
         mx="auto"
         px={{ base: '20px', md: '40px', lg: '60px' }}
         height="44px"
-        align="center"
+        alignItems="center"
         justify="space-between"
         fontWeight="normal"
       >
         {/* Left section */}
-        <HStack spacing={5}>
+        <HStack gap={5}>
           <IconButton
             aria-label="Menu"
             icon={<HamburgerIcon />}
@@ -55,35 +58,35 @@ const TopBar: React.FC = () => {
             }}
           />
           <Link href="/">
-            <HStack spacing={2}>
-              <Image
-                src="/assets/icon/logo_white.svg"
-                alt="Logo"
-                height="20px"
-                display={{ base: 'none', md: 'block' }}
-              />
-            </HStack>
+            <Image
+              src="/assets/icon/logo_white.svg"
+              alt="Logo"
+              height="20px"
+              display={{ base: 'none', md: 'block' }}
+            />
           </Link>
 
-          <HStack spacing={5} display={{ base: 'none', md: 'flex' }} color="#F5F5F7">
+          <HStack gap={5} display={{ base: 'none', md: 'flex' }} color="#F5F5F7">
             <Link href="/" style={{ opacity: currentPath === '/' ? 1 : 0.5 }}>
               Home
             </Link>
             <Link
-              href="/character"
-              style={{
-                opacity: currentPath === '/character' ? 1 : 0.5,
-              }}
+              href="/about"
+              style={{ opacity: currentPath === '/about' ? 1 : 0.5 }}
             >
-              Character
+              About
             </Link>
             <Link
-              href="/fonts"
-              style={{
-                opacity: currentPath === '/fonts' ? 1 : 0.5,
-              }}
+              href="/story"
+              style={{ opacity: currentPath?.startsWith('/story') ? 1 : 0.5 }}
             >
-              Fonts
+              Story
+            </Link>
+            <Link
+              href="/works"
+              style={{ opacity: currentPath?.startsWith('/works') ? 1 : 0.5 }}
+            >
+              Works
             </Link>
           </HStack>
         </HStack>
@@ -94,7 +97,7 @@ const TopBar: React.FC = () => {
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
         >
-          <DrawerOverlay />
+          <DrawerOverlay onClick={() => setIsOpen(false)} />
           <DrawerContent backgroundColor="black" color="white">
             <DrawerHeader alignSelf="flex-end">
               <IconButton
@@ -105,10 +108,11 @@ const TopBar: React.FC = () => {
               />
             </DrawerHeader>
             <DrawerBody>
-              <VStack spacing={5} align="start">
+              <VStack gap={5} alignItems="start">
                 <Link href="/">Home</Link>
-                <Link href="/character">Character</Link>
-                <Link href="/fonts">Fonts</Link>
+                <Link href="/about">About</Link>
+                <Link href="/story">Story</Link>
+                <Link href="/works">Works</Link>
               </VStack>
             </DrawerBody>
           </DrawerContent>

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { Box } from '@chakra-ui/react'
+import { Box } from 'styled-system/jsx'
 
 // Add type definition for window.PIXI
 declare global {

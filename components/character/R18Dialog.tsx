@@ -2,12 +2,12 @@ import React from 'react'
 import {
   AlertDialog,
   AlertDialogBody,
+  AlertDialogContent,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogContent,
   AlertDialogOverlay,
   Button,
-} from '@chakra-ui/react'
+} from 'components/ui/controls'
 
 interface R18DialogProps {
   isOpen: boolean

@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react'
+import { Box } from 'styled-system/jsx'
 
 const delicateWirePatternStyles = {
   background: `
@@ -12,7 +12,7 @@ const delicateWirePatternStyles = {
 const IntroBackground: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <Box
-      backgroundColor="white"
+      bg="white"
       position="relative"
       _before={{
         content: '""',

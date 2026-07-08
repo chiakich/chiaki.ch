@@ -1,20 +1,16 @@
 import React, { useState } from 'react'
 import {
   Box,
-  Text,
   VStack,
   HStack,
-  Button,
-  Link,
   Grid,
   GridItem,
-  useDisclosure,
   Flex,
-  Avatar,
-  Tooltip,
   Divider,
-} from '@chakra-ui/react'
-import { DownloadIcon, CalendarIcon, AtSignIcon } from '@chakra-ui/icons'
+  styled,
+} from 'styled-system/jsx'
+import { Avatar, Button, Tooltip, useDisclosure } from 'components/ui/controls'
+import { DownloadIcon, CalendarIcon, AtSignIcon } from 'components/ui/icons'
 import Lightbox from 'yet-another-react-lightbox'
 import Download from 'yet-another-react-lightbox/plugins/download'
 import Zoom from 'yet-another-react-lightbox/plugins/zoom'
@@ -23,6 +19,9 @@ import { Project } from 'components/character/characterAssetsIndex'
 import R18Dialog from './R18Dialog'
 import { useR18Dialog } from './useR18Dialog'
 import NextImage from 'next/image'
+
+const Text = styled.p
+const Link = styled.a
 
 interface ProjectCardProps {
   project: Project
@@ -238,7 +237,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             )}
           </Box>
           {/* Right side 2 small images */}
-          <VStack spacing={2} flex={1} height="510px">
+          <VStack gap={2} flex={1} height="510px">
             {images.slice(1, 3).map((image, index) => (
               <Box
                 key={`${project.id}-${image.name}-${index + 1}`}
@@ -310,7 +309,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     // All layout: Display all images, max 3 per row
     if (layout === 'all') {
       return (
-        <Grid templateColumns="repeat(3, 1fr)" gap={2}>
+        <Grid gridTemplateColumns="repeat(3, 1fr)" gap={2}>
           {images.map((image, index) => (
             <Box
               key={`${project.id}-${image.name}-${index}`}
@@ -358,7 +357,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
     // Horizontal layout (default): Top large image, bottom max 3 small images, third shows +N
     return (
-      <Grid templateRows="auto 1fr" gap={2}>
+      <Grid gridTemplateRows="auto 1fr" gap={2}>
         {/* Large image on top */}
         <GridItem>
           <Box
@@ -401,7 +400,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         {/* Bottom small images */}
         <GridItem>
           <Grid
-            templateColumns={`repeat(${Math.min(totalImages - 1, 3)}, 1fr)`}
+            gridTemplateColumns={`repeat(${Math.min(totalImages - 1, 3)}, 1fr)`}
             gap={1}
           >
             {images.slice(1, 4).map((image, index) => (
@@ -480,12 +479,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       <Flex p={4} gap={3} align="center">
         <Avatar
           name={project.author}
-          size="md"
           bg="blue.500"
           color="white"
           icon={<AtSignIcon />}
         />
-        <VStack align="start" spacing={0} flex={1}>
+        <VStack alignItems="start" gap={0} flex={1}>
           <HStack>
             <Text fontWeight="bold" color="white">
               {project.author}
@@ -523,7 +521,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             <Text fontSize="sm" color="gray.300" marginBottom="8px">
               下載檔案：
             </Text>
-            <VStack spacing={2} align="stretch">
+            <VStack gap={2} alignItems="stretch">
               {project.downloadFiles.map((file, index) => (
                 <Link
                   key={`${project.id}-${file.name}-${index}`}
@@ -556,7 +554,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       {/* Footer Stats */}
       <Divider borderColor="rgba(255, 255, 255, 0.1)" />
       <Flex p={3} justify="space-between" color="gray.400" fontSize="sm">
-        <HStack spacing={4}>
+        <HStack gap={4}>
           <Tooltip label="圖片數量">
             <HStack>
               <Text>{displayImages.length} 張圖片</Text>
