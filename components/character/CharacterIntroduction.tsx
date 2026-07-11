@@ -67,16 +67,14 @@ const CharacterIntroduction: React.FC = () => {
             「はおーっ！涼風千秋です！」
           </Text>
           <Text fontSize={{ base: 'md', md: 'lg' }} lineHeight="1.8" opacity={0.9}>
-            棕髮獸耳神使狐狸大小姐，喜歡跟人們交流。
+            千秋稲荷社第一研究室室長，兼第▓▓代巫女，棕髮獸耳神使狐狸大小姐。
             <br />
-            希望能開心的度過每一天。
+            非常善良，喜歡跟人們交流，希望能開心的度過每一天。
             <br />
-            繪師、字體設計師、工程部門主管，興趣是自己動手做點小東西，對各種可愛的事物沒有抵抗力。
+            雖然是戰後出生的，但非常喜歡收集戰前人類的遺留物。也喜歡自己動手做點小東西，對各種可愛的事物沒有抵抗力。
           </Text>
           <Text fontSize={{ base: 'md', md: 'lg' }} lineHeight="1.8" opacity={0.9}>
             生日：2月27日
-            <br />
-            喜歡的要素：獸耳、女僕裝、水手領、蘿莉塔
           </Text>
           <Image
             src="/assets/about/signv2_animated.svg"

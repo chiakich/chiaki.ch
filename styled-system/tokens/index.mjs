@@ -751,6 +751,10 @@ const tokens = {
     "value": "huninn, \"xingothic-tc\", sans-serif",
     "variable": "var(--fonts-huninn)"
   },
+  "fonts.cubic": {
+    "value": "cubic, \"xingothic-tc\", monospace",
+    "variable": "var(--fonts-cubic)"
+  },
   "colors.current": {
     "value": "currentColor",
     "variable": "var(--colors-current)"

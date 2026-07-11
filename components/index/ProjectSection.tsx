@@ -56,16 +56,17 @@ const ProjectSection = () => {
           ARCHIVE / 01
         </Box>
       <Heading
-        fontSize={{ base: 'clamp(3.2rem, 14vw, 5rem)', md: 'clamp(5rem, 9vw, 8rem)' }}
-        lineHeight={0.9}
-        color="white"
+        fontFamily="nixie"
+        fontSize={{ base: '1.1rem', md: '1.5rem' }}
+        lineHeight={1.2}
+        color="rgba(255,255,255,.82)"
         textAlign="center"
         fontWeight="400"
-        letterSpacing="-.06em"
-        textShadow="0 12px 40px rgba(0,0,0,.55)"
+        letterSpacing=".24em"
+        textShadow="0 4px 24px rgba(0,0,0,.55)"
         mb="36px"
       >
-        故事仍在生長
+        to be continued...
       </Heading>
 
       <Link href="/story/character">
@@ -104,7 +105,7 @@ const ProjectSection = () => {
         color="rgba(255,255,255,.35)"
       >
         <Box>CHIAKI INARI SHRINE</Box>
-        <Box>TO BE CONTINUED</Box>
+        <Box>DAY 11,247</Box>
       </Flex>
     </Box>
   )
