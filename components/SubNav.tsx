@@ -50,7 +50,15 @@ const SubNav = ({
       >
         <Text fontSize="lg">{title}</Text>
 
-        <HStack gap={8} height="100%">
+        <HStack
+          gap={{ base: 4, md: 8 }}
+          height="100%"
+          overflowX="auto"
+          flex="1"
+          justifyContent={{ base: 'flex-start', md: 'flex-end' }}
+          ml={5}
+          css={{ scrollbarWidth: 'none', '&::-webkit-scrollbar': { display: 'none' } }}
+        >
           {items.map((item) => (
             <Link
               as={NextLink}
@@ -72,6 +80,7 @@ const SubNav = ({
               borderBottom={router.pathname === item.path ? '1px solid' : 'none'}
               borderColor="white"
               px="5px"
+              flexShrink={0}
               transition="all 0.2s"
             >
               {item.title}

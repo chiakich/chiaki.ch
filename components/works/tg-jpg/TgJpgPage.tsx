@@ -1,0 +1,32 @@
+import Head from 'next/head'
+import { Box, Container, Grid, Stack, styled } from 'styled-system/jsx'
+import TopBar from 'components/TopBar'
+import MotionSection from 'components/portfolio/MotionSection'
+import ProjectLink from 'components/portfolio/ProjectLink'
+import SectionHeading from 'components/portfolio/SectionHeading'
+import WorksSubNav from 'components/works/WorksSubNav'
+import TgJpgHero from './TgJpgHero'
+
+const Heading = styled.h3
+const Text = styled.p
+const Image = styled.img
+
+const pipeline = [
+  ['01', '辨識檔名', '監聽以 .jpg、.png 或 .gif 結尾的訊息。'],
+  ['02', '檢查搜尋來源', '啟動時執行健康檢查，只啟用當下可用的引擎。'],
+  ['03', '搶先回覆', '跨來源搜尋，第一張 Telegram 能傳送的結果立刻勝出。'],
+]
+
+const TgJpgPage = () => (
+  <Box backgroundColor="#08121c" color="white" minHeight="100vh">
+    <Head><title>tg.jpg Telegram Bot - Works</title><meta name="description" content="輸入圖片檔名，就回覆第一張可用搜尋結果的 Telegram bot。" /></Head>
+    <TopBar /><WorksSubNav /><TgJpgHero />
+    <Container maxW="1080px" px={{ base: '24px', md: '40px' }} py={{ base: 16, md: 20 }}><Stack gap={20}>
+      <MotionSection><SectionHeading en="IDEA" accent="#57b5ff">把搜尋縮成一個檔名</SectionHeading><Text maxW="760px" fontSize={{ base: 'md', md: 'lg' }} lineHeight="2" opacity={.78}>不用離開對話、打開瀏覽器或翻貼圖收藏。tg.jpg 把 Google、DuckDuckGo、Bing，以及可選的 Serper 與 SerpAPI，收斂成一次簡短的聊天操作。</Text></MotionSection>
+      <Box><SectionHeading en="PIPELINE" accent="#57b5ff">誰先找到，就由誰回覆</SectionHeading><Grid columns={{ base: 1, md: 3 }} gap={4}>{pipeline.map(([number, title, description], index) => <MotionSection key={number} delay={index * .08}><Box backgroundColor="#111f2d" border="1px solid #263e53" p={6} height="100%"><Text color="#57b5ff" fontFamily="mono">{number}</Text><Heading fontSize="xl" my={3}>{title}</Heading><Text opacity={.7} lineHeight="1.8" fontSize="sm">{description}</Text></Box></MotionSection>)}</Grid></Box>
+      <MotionSection><Grid columns={{ base: 1, md: 2 }} gap={8} alignItems="center"><Box border="1px solid #29445c" borderRadius="14px" overflow="hidden"><Image src="/assets/works/tg-jpg/chat.webp" alt="tg.jpg 在 Telegram 回覆 mic drop GIF" width="100%" display="block" /></Box><Box><SectionHeading en="BUILT WITH RUST" accent="#57b5ff">短短一句，背後多試幾條路</SectionHeading><Text lineHeight="1.9" opacity={.75} mb={6}>以 Rust、Teloxide、Reqwest 與 Regex 建構。搜尋來源即使暫時失效，啟動健康檢查與 fallback 仍能讓機器人選擇可工作的路線。</Text><ProjectLink href="https://github.com/chiakich/rust-tg.jpg" label="GitHub Repository" accent="#57b5ff" /></Box></Grid></MotionSection>
+    </Stack></Container>
+  </Box>
+)
+
+export default TgJpgPage

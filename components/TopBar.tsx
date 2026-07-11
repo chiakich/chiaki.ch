@@ -88,6 +88,12 @@ const TopBar: React.FC = () => {
             >
               Works
             </Link>
+            <Link
+              href="/fonts"
+              style={{ opacity: currentPath?.startsWith('/fonts') ? 1 : 0.5 }}
+            >
+              Fonts
+            </Link>
           </HStack>
         </HStack>
 
@@ -113,6 +119,7 @@ const TopBar: React.FC = () => {
                 <Link href="/about">About</Link>
                 <Link href="/story">Story</Link>
                 <Link href="/works">Works</Link>
+                <Link href="/fonts">Fonts</Link>
               </VStack>
             </DrawerBody>
           </DrawerContent>
