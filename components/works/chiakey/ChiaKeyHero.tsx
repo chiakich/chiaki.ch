@@ -49,7 +49,7 @@ const TypingDemo = () => {
           今晚吃
           {committed
             ? <Span color="#f5f5f7">{buffer}</Span>
-            : <Span borderBottom="4px solid #e8e8ec" color="#f5f5f7">{buffer}</Span>}
+            : <Span color="#f5f5f7" style={{ borderBottom: '4px solid #e8e8ec', paddingBottom: 2 }}>{buffer}</Span>}
           <motion.span animate={{ opacity: [1, 1, 0, 0] }} transition={{ duration: 1, repeat: Infinity, times: [0, .5, .5, 1] }} style={{ display: 'inline-block', width: 2, height: '1.6rem', marginLeft: 2, verticalAlign: -3, backgroundColor: '#f5f5f7' }} />
         </Text>
         <HStack mt={4} gap={2} alignItems="center" minHeight="34px">
