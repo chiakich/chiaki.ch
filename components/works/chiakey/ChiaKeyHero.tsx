@@ -14,28 +14,29 @@ const MotionBox = motion(Box)
 // 注音直接出現在底線組字區，按聲調鍵的當下以 unigram 轉成漢字（延、蘇），
 // 打到後面整句重新判斷組出「鹽酥雞」；↓ 開候選窗、數字鍵選字。
 const frames = [
-  { key: 'ㄧ', buffer: 'ㄧ', menu: false, committed: false, note: '逐鍵輸入注音' },
-  { key: 'ㄢ', buffer: 'ㄧㄢ', menu: false, committed: false, note: '注音直接顯示在組字區' },
-  { key: 'ˊ', buffer: '延', menu: false, committed: false, note: '按聲調鍵，當下轉成漢字' },
-  { key: 'ㄙ', buffer: '延ㄙ', menu: false, committed: false, note: '接著打下一個字' },
-  { key: 'ㄨ', buffer: '延ㄙㄨ', menu: false, committed: false, note: '接著打下一個字' },
-  { key: '␣', buffer: '延蘇', menu: false, committed: false, note: '一聲是空白鍵，先轉成「蘇」' },
-  { key: 'ㄐ', buffer: '延蘇ㄐ', menu: false, committed: false, note: '繼續打' },
-  { key: 'ㄧ', buffer: '延蘇ㄐㄧ', menu: false, committed: false, note: '繼續打' },
-  { key: '␣', buffer: '鹽酥雞', menu: false, committed: false, note: '看到整句，重新組出「鹽酥雞」' },
-  { key: '↓', buffer: '鹽酥雞', menu: true, committed: false, note: '按 ↓ 開啟候選窗' },
-  { key: '1', buffer: '鹽酥雞', menu: false, committed: true, note: '按數字鍵選字送出' },
+  { pressed: 'ㄧ', buffer: 'ㄧ', menu: false, committed: false, note: '逐鍵輸入注音', hold: 450 },
+  { pressed: 'ㄢ', buffer: 'ㄧㄢ', menu: false, committed: false, note: '注音直接顯示在組字區', hold: 450 },
+  { pressed: 'ˊ', buffer: '延', menu: false, committed: false, note: '按聲調鍵，當下轉成漢字', hold: 750 },
+  { pressed: 'ㄙ', buffer: '延ㄙ', menu: false, committed: false, note: '接著打下一個字', hold: 450 },
+  { pressed: 'ㄨ', buffer: '延ㄙㄨ', menu: false, committed: false, note: '接著打下一個字', hold: 450 },
+  { pressed: '␣', buffer: '延蘇', menu: false, committed: false, note: '一聲是空白鍵，先轉成「蘇」', hold: 750 },
+  { pressed: 'ㄐ', buffer: '延蘇ㄐ', menu: false, committed: false, note: '繼續打', hold: 450 },
+  { pressed: 'ㄧ', buffer: '延蘇ㄐㄧ', menu: false, committed: false, note: '繼續打', hold: 450 },
+  { pressed: '␣', buffer: '鹽酥雞', menu: false, committed: false, note: '看到整句，重新組出「鹽酥雞」', hold: 1000 },
+  { pressed: '↓', buffer: '鹽酥雞', menu: true, committed: false, note: '按 ↓ 開啟候選窗', hold: 1500 },
+  { pressed: '1', buffer: '鹽酥雞', menu: false, committed: true, note: '按數字鍵選字送出', hold: 1700 },
 ]
 
 const TypingDemo = () => {
   const [frame, setFrame] = useState(0)
 
+  // 逐格 setTimeout 鏈：每一格照自己的停留時間排下一格，不會跳格或提前重來。
   useEffect(() => {
-    const timer = window.setInterval(() => setFrame((value) => (value + 1) % frames.length), 1000)
-    return () => window.clearInterval(timer)
-  }, [])
+    const timer = window.setTimeout(() => setFrame((frame + 1) % frames.length), frames[frame].hold)
+    return () => window.clearTimeout(timer)
+  }, [frame])
 
-  const { key, buffer, menu, committed, note } = frames[frame]
+  const { pressed, buffer, menu, committed, note } = frames[frame]
 
   return (
     <Box backgroundColor="#1d1a21" border="1px solid rgba(255,255,255,.22)" borderRadius="18px" boxShadow="0 36px 90px rgba(15,0,35,.55)" overflow="hidden">
@@ -54,7 +55,7 @@ const TypingDemo = () => {
         <HStack mt={4} gap={2} alignItems="center" minHeight="34px">
           <AnimatePresence mode="popLayout">
             <motion.div key={frame} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: .18 }}>
-              <Kbd display="inline-flex" minWidth="30px" height="30px" alignItems="center" justifyContent="center" px={2} borderRadius="7px" border="1px solid rgba(255,255,255,.3)" borderBottomWidth="3px" backgroundColor="#2c2733" fontSize="sm" fontWeight="bold">{key}</Kbd>
+              <Kbd display="inline-flex" minWidth="30px" height="30px" alignItems="center" justifyContent="center" px={2} borderRadius="7px" border="1px solid rgba(255,255,255,.3)" borderBottomWidth="3px" backgroundColor="#2c2733" fontSize="sm" fontWeight="bold">{pressed}</Kbd>
             </motion.div>
           </AnimatePresence>
           <Text fontSize="sm" color="#948c9e" ml={2}>{note}</Text>
