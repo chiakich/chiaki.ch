@@ -34,7 +34,8 @@ const interests: { title: string; en: string; description: string }[] = [
   {
     title: '繪畫',
     en: 'DRAWING',
-    description: '喜歡畫畫，偶爾會塗鴉。喜歡女僕裝、眼鏡、水手服、獸耳、兔女郎跟競賽泳裝！',
+    description:
+      '喜歡畫畫，偶爾會塗鴉。喜歡女僕裝、眼鏡、水手服、獸耳、兔女郎跟競賽泳裝！',
   },
   {
     title: '攝影',
@@ -44,8 +45,7 @@ const interests: { title: string; en: string; description: string }[] = [
   {
     title: '模型',
     en: 'MODEL',
-    description:
-      '醉心於極小比例下濃縮的力與美，家裡有空壓機可以噴漆！',
+    description: '醉心於極小比例下濃縮的力與美，家裡有空壓機可以噴漆！',
   },
   {
     title: '同人活動',
@@ -56,7 +56,7 @@ const interests: { title: string; en: string; description: string }[] = [
   {
     title: 'Cosplay',
     en: 'COSPLAY',
-    description: '透過服裝與道具詮釋自己喜愛的角色，是一種演繹角色的表演藝術。',
+    description: '好愛攪拌，但怕熱，通常冬天場才會出角。歡迎約搭角！',
   },
   {
     title: '旅行',
@@ -64,16 +64,15 @@ const interests: { title: string; en: string; description: string }[] = [
     description: '研究路線、探索新地區、體驗不同文化。喜歡各地的夜景與在地美食。',
   },
   {
-    title: '開源',
-    en: 'OSS',
+    title: '寫程式',
+    en: 'CODING',
     description:
-      '把技術開放給他人、降低交流門檻，進而演變成合作開發的文化。我覺得這對社會很有幫助，也想把它傳承下去。',
+      '喜歡寫程式、並且把技術開放給他人，進而演變成合作開發的文化。常常可以在COSCUP之類的開源年會上看到我！',
   },
   {
     title: '在房間耍廢',
     en: 'CHILL',
-    description:
-      '喜歡日本錢湯的榻榻米休憩區，自己設計、發包裝潢，工時約四個月。',
+    description: '喜歡日本錢湯的榻榻米休憩區，自己設計、發包裝潢，工時約四個月。',
   },
 ]
 
@@ -284,7 +283,10 @@ const About: NextPage = () => {
       />
 
       <Grid
-        gridTemplateColumns={{ base: '1fr', lg: 'minmax(0, 1fr) clamp(320px, 34vw, 440px)' }}
+        gridTemplateColumns={{
+          base: '1fr',
+          lg: 'minmax(0, 1fr) clamp(320px, 34vw, 440px)',
+        }}
         gap={0}
         pt="44px"
         maxW="width.section"
@@ -298,7 +300,12 @@ const About: NextPage = () => {
         </Box>
 
         {/* Content column */}
-        <Box order={{ base: 1, lg: 0 }} px={{ base: '24px', md: '48px' }} pt={{ base: 6, lg: 20 }} pb="80px">
+        <Box
+          order={{ base: 1, lg: 0 }}
+          px={{ base: '24px', md: '48px' }}
+          pt={{ base: 6, lg: 20 }}
+          pb="80px"
+        >
           {/* Header */}
           <MotionBox
             initial={{ opacity: 0, y: 24 }}
@@ -381,13 +388,16 @@ const About: NextPage = () => {
           <VStack gap={16} alignItems="start">
             <Section en="NOW PLAYING" title="最近在玩的坑">
               <List display="flex" flexDirection="column" gap={3} pl="1.5rem">
-                <ListItem>看動畫、打電動，特別吃科幻題材（Cyberpunk、終末地這種）</ListItem>
-                <ListItem>最近開始收黑膠</ListItem>
-                <ListItem>喜歡復古的東西，尤其是 20 世紀前後那個年代的設計感</ListItem>
+                <ListItem>
+                  看動畫、打電動，特別吃科幻題材（Cyberpunk、終末地這種）
+                </ListItem>
+                <ListItem>
+                  喜歡復古的東西，尤其是 20 世紀前後那個年代的設計感，最近開始收黑膠
+                </ListItem>
               </List>
             </Section>
 
-            <Section en="INTERESTS" title="一直放在心上的東西">
+            <Section en="INTERESTS" title="興趣">
               <Grid columns={{ base: 1, md: 2 }} gap={4} mt={2}>
                 {interests.map((item, i) => (
                   <MotionBox
@@ -402,13 +412,19 @@ const About: NextPage = () => {
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: '-40px' }}
-                    transition={{ duration: 0.5, delay: (i % 2) * 0.08, ease: 'easeOut' }}
+                    transition={{
+                      duration: 0.5,
+                      delay: (i % 2) * 0.08,
+                      ease: 'easeOut',
+                    }}
                     _hover={{
                       borderColor: `${ACCENT}88`,
                       transform: 'translateY(-3px)',
                       '& .interest-en': { color: ACCENT, opacity: 0.9 },
                     }}
-                    style={{ transition: 'transform 0.25s ease, border-color 0.25s ease' }}
+                    style={{
+                      transition: 'transform 0.25s ease, border-color 0.25s ease',
+                    }}
                   >
                     <Text
                       className="interest-en"
@@ -423,24 +439,26 @@ const About: NextPage = () => {
                     >
                       {item.en}
                     </Text>
-                    <Text fontWeight="bold" fontSize={{ base: 'md', md: 'lg' }} mb={1}>
+                    <Text
+                      fontWeight="bold"
+                      fontSize={{ base: 'md', md: 'lg' }}
+                      mb={1}
+                    >
                       <Span color={ACCENT} mr={2} fontSize="sm">
                         {String(i + 1).padStart(2, '0')}
                       </Span>
                       {item.title}
                     </Text>
-                    <Text fontSize={{ base: 'sm', md: 'md' }} opacity={0.85} lineHeight="1.8">
+                    <Text
+                      fontSize={{ base: 'sm', md: 'md' }}
+                      opacity={0.85}
+                      lineHeight="1.8"
+                    >
                       {item.description}
                     </Text>
                   </MotionBox>
                 ))}
               </Grid>
-            </Section>
-
-            <Section en="DAYTIME" title="白天的我">
-              <Text>
-                平常是個普通的軟體工程師！
-              </Text>
             </Section>
 
             <Section en="GETTING ALONG" title="關於相處">
