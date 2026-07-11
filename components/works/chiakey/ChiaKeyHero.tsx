@@ -10,28 +10,32 @@ const Span = styled.span
 const Kbd = styled.kbd
 const MotionBox = motion(Box)
 
-// 依照實際輸入流程逐格重現：
-// 注音直接出現在底線組字區，按聲調鍵的當下轉成漢字；
-// 後續輸入會讓整句重新判斷（延 → 鹽），↓ 開候選窗、數字鍵選字。
+// 依照實際輸入流程逐鍵重現：
+// 注音直接出現在底線組字區，按聲調鍵的當下以 unigram 轉成漢字（延、蘇），
+// 打到後面整句重新判斷組出「鹽酥雞」；↓ 開候選窗、數字鍵選字。
 const frames = [
-  { keys: ['ㄧ', 'ㄢ'], buffer: 'ㄧㄢ', menu: false, committed: false, note: '注音直接出現在組字區' },
-  { keys: ['ˊ'], buffer: '延', menu: false, committed: false, note: '按聲調鍵，當下轉成漢字' },
-  { keys: ['ㄙ', 'ㄨ'], buffer: '延ㄙㄨ', menu: false, committed: false, note: '接著打下一個字' },
-  { keys: ['␣'], buffer: '鹽酥', menu: false, committed: false, note: '整句重新判斷：延 → 鹽' },
-  { keys: ['ㄐ', 'ㄧ', '␣'], buffer: '鹽酥雞', menu: false, committed: false, note: 'bigram 組出「鹽酥雞」' },
-  { keys: ['↓'], buffer: '鹽酥雞', menu: true, committed: false, note: '按 ↓ 開啟候選窗' },
-  { keys: ['1'], buffer: '鹽酥雞', menu: false, committed: true, note: '按數字鍵選字送出' },
+  { key: 'ㄧ', buffer: 'ㄧ', menu: false, committed: false, note: '逐鍵輸入注音' },
+  { key: 'ㄢ', buffer: 'ㄧㄢ', menu: false, committed: false, note: '注音直接顯示在組字區' },
+  { key: 'ˊ', buffer: '延', menu: false, committed: false, note: '按聲調鍵，當下轉成漢字' },
+  { key: 'ㄙ', buffer: '延ㄙ', menu: false, committed: false, note: '接著打下一個字' },
+  { key: 'ㄨ', buffer: '延ㄙㄨ', menu: false, committed: false, note: '接著打下一個字' },
+  { key: '␣', buffer: '延蘇', menu: false, committed: false, note: '一聲是空白鍵，先轉成「蘇」' },
+  { key: 'ㄐ', buffer: '延蘇ㄐ', menu: false, committed: false, note: '繼續打' },
+  { key: 'ㄧ', buffer: '延蘇ㄐㄧ', menu: false, committed: false, note: '繼續打' },
+  { key: '␣', buffer: '鹽酥雞', menu: false, committed: false, note: '看到整句，重新組出「鹽酥雞」' },
+  { key: '↓', buffer: '鹽酥雞', menu: true, committed: false, note: '按 ↓ 開啟候選窗' },
+  { key: '1', buffer: '鹽酥雞', menu: false, committed: true, note: '按數字鍵選字送出' },
 ]
 
 const TypingDemo = () => {
   const [frame, setFrame] = useState(0)
 
   useEffect(() => {
-    const timer = window.setInterval(() => setFrame((value) => (value + 1) % frames.length), 1500)
+    const timer = window.setInterval(() => setFrame((value) => (value + 1) % frames.length), 1000)
     return () => window.clearInterval(timer)
   }, [])
 
-  const { keys, buffer, menu, committed, note } = frames[frame]
+  const { key, buffer, menu, committed, note } = frames[frame]
 
   return (
     <Box backgroundColor="#1d1a21" border="1px solid rgba(255,255,255,.22)" borderRadius="18px" boxShadow="0 36px 90px rgba(15,0,35,.55)" overflow="hidden">
@@ -45,15 +49,13 @@ const TypingDemo = () => {
           {committed
             ? <Span color="#f5f5f7">{buffer}</Span>
             : <Span borderBottom="4px solid #e8e8ec" color="#f5f5f7">{buffer}</Span>}
-          <Span display="inline-block" width="2px" height="1.6rem" ml="2px" verticalAlign="-3px" backgroundColor="#f5f5f7" />
+          <motion.span animate={{ opacity: [1, 1, 0, 0] }} transition={{ duration: 1, repeat: Infinity, times: [0, .5, .5, 1] }} style={{ display: 'inline-block', width: 2, height: '1.6rem', marginLeft: 2, verticalAlign: -3, backgroundColor: '#f5f5f7' }} />
         </Text>
         <HStack mt={4} gap={2} alignItems="center" minHeight="34px">
           <AnimatePresence mode="popLayout">
-            {keys.map((key, index) => (
-              <motion.div key={`${frame}-${key}-${index}`} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ delay: index * .18, duration: .22 }}>
-                <Kbd display="inline-flex" minWidth="30px" height="30px" alignItems="center" justifyContent="center" px={2} borderRadius="7px" border="1px solid rgba(255,255,255,.3)" borderBottomWidth="3px" backgroundColor="#2c2733" fontSize="sm" fontWeight="bold">{key}</Kbd>
-              </motion.div>
-            ))}
+            <motion.div key={frame} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: .18 }}>
+              <Kbd display="inline-flex" minWidth="30px" height="30px" alignItems="center" justifyContent="center" px={2} borderRadius="7px" border="1px solid rgba(255,255,255,.3)" borderBottomWidth="3px" backgroundColor="#2c2733" fontSize="sm" fontWeight="bold">{key}</Kbd>
+            </motion.div>
           </AnimatePresence>
           <Text fontSize="sm" color="#948c9e" ml={2}>{note}</Text>
         </HStack>
@@ -77,7 +79,7 @@ const ChiaKeyHero = () => (
         <MotionBox flex="1" initial={{ opacity: 0, x: -28 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: .8 }}>
           <Text fontFamily="mono" letterSpacing=".28em" color="#dcb8ff" fontSize="sm" fontWeight="900" mb={4}>CHIAKEY · FOR MODERN macOS</Text>
           <Heading fontSize={{ base: '3.4rem', md: '5.6rem' }} lineHeight="1.04" letterSpacing="-.04em" mb={6}>千秋<Span color="#d49bff">輸入法</Span></Heading>
-          <Text fontSize={{ base: 'lg', md: 'xl' }} lineHeight="1.9" maxW="560px" color="#f4eaff" opacity={.88}>macOS 的繁體中文注音輸入法。以 Yahoo! 奇摩輸入法／KeyKey 的開源程式碼為基礎，保留原本的組字手感、候選窗與 bigram 引擎，在現代 macOS 上繼續維護。</Text>
+          <Text fontSize={{ base: 'lg', md: 'xl' }} lineHeight="1.9" maxW="560px" color="#f4eaff" opacity={.88}>macOS 的繁體中文注音輸入法。以 Yahoo! 奇摩輸入法／KeyKey 的開源程式碼為基礎，保留原本的組字手感、候選窗與語言模型，在現代 macOS 上繼續維護。</Text>
           <HStack mt={8} gap={3} flexWrap="wrap">
             <ProjectLink href="https://github.com/chiakich/ChiaKey/releases/latest" label="下載最新版" detail="macOS .pkg" accent="#d49bff" />
             <ProjectLink href="https://github.com/chiakich/ChiaKey" label="GitHub" accent="#ecdcff" />

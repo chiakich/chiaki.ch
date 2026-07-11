@@ -1,4 +1,4 @@
-import { Box, Grid, Stack, styled } from 'styled-system/jsx'
+import { Box, Flex, Grid, Stack, styled } from 'styled-system/jsx'
 import MotionSection from 'components/portfolio/MotionSection'
 import SectionHeading from 'components/portfolio/SectionHeading'
 
@@ -6,16 +6,22 @@ const Heading = styled.h3
 const Text = styled.p
 const Image = styled.img
 const Code = styled.code
+const Link = styled.a
 
 const lineage = [
-  ['1 →', 'Yahoo! 奇摩輸入法', 'KeyKey，2008 年前後許多人的第一套智慧注音'],
-  ['2 →', '開源釋出', 'BSD-style 授權，YahooArchive/KeyKey'],
-  ['3 →', '社群保存', 'OpenVanilla 與 KeyKey-Boneyard 留下的程式碼'],
-  ['NOW', 'ChiaKey', '整理建置、修復本體，在現代 macOS 繼續維護'],
+  ['2008', 'Yahoo! 奇摩輸入法', '許多人的第一套智慧注音，Windows 與 Mac 都有'],
+  ['2013', '專案關閉、程式碼開源', 'BSD-style 授權留在 GitHub（YahooArchive/KeyKey）'],
+  ['其後', '社群保存', 'OpenVanilla 與 KeyKey-Boneyard 讓程式碼沒有散佚'],
+  ['現在', 'ChiaKey', '整理建置、修復本體，在現代 macOS 繼續維護'],
+]
+
+const quotes = [
+  ['真的需要選字的次數應該不超過 3 次，真的是太強了。', 'The Will Will Web，2008', 'https://blog.miniasp.com/post/2008/06/01/Useful-tools-Yahoo-KeyKey'],
+  ['用起來比新注音好太多，而初步的感覺不遜於自然輸入法和新酷音。', '電腦玩物，2008', 'https://www.playpcesor.com/2008/12/yahoo-10.html'],
 ]
 
 const principles = [
-  ['01', '熟悉的手感', '保留 KeyKey 的組字、候選窗與 bigram 語言模型，打起來就是原本那一套。'],
+  ['01', '熟悉的手感', '保留 KeyKey 的組字、候選窗與語言模型，打起來就是原本那一套。'],
   ['02', '現代化建置', 'InputMethodKit、Apple Silicon、簽章與公證，用現在的 Xcode 就能建置。'],
   ['03', '保守步調', '不跟現代輸入法比功能。想要更多功能，README 會老實建議你用 McBopomofo 或 vChewing。'],
 ]
@@ -35,14 +41,32 @@ const ChiaKeyStory = () => (
       </Grid>
     </MotionSection>
     <MotionSection>
-      <Grid columns={{ base: 1, md: 4 }} gap={3}>
-        {lineage.map(([label, title, description]) => (
-          <Box key={title} border="1px solid #34244a" backgroundColor="#130c1f" p={5}>
-            <Text fontFamily="mono" fontSize="xs" color="#c77dff" letterSpacing=".2em" mb={2}>{label}</Text>
-            <Heading fontSize="md" mb={2}>{title}</Heading>
-            <Text fontSize="xs" opacity={.6} lineHeight="1.8">{description}</Text>
-          </Box>
-        ))}
+      <Grid columns={{ base: 1, md: 2 }} gap={10} alignItems="start">
+        <Stack gap={0}>
+          {lineage.map(([year, title, description], index) => (
+            <Flex key={title} gap={5}>
+              <Flex direction="column" alignItems="center" width="14px" flexShrink={0}>
+                <Box width="10px" height="10px" borderRadius="full" backgroundColor={index === lineage.length - 1 ? '#c77dff' : '#4c3564'} boxShadow={index === lineage.length - 1 ? '0 0 12px #c77dff' : 'none'} mt="6px" />
+                {index < lineage.length - 1 && <Box width="2px" flex="1" backgroundColor="#34244a" minHeight="52px" />}
+              </Flex>
+              <Box pb={index < lineage.length - 1 ? 6 : 0}>
+                <Text fontFamily="mono" fontSize="xs" color="#c77dff" letterSpacing=".2em" mb={1}>{year}</Text>
+                <Heading fontSize="md" mb={1}>{title}</Heading>
+                <Text fontSize="xs" opacity={.6} lineHeight="1.8">{description}</Text>
+              </Box>
+            </Flex>
+          ))}
+        </Stack>
+        <Stack gap={4}>
+          <Text fontFamily="mono" fontSize="xs" color="#c77dff" letterSpacing=".22em">WHAT PEOPLE SAID · 當年的評價</Text>
+          {quotes.map(([quote, source, href]) => (
+            <Box key={source} border="1px solid #34244a" borderLeft="3px solid #c77dff" backgroundColor="#130c1f" p={5}>
+              <Text lineHeight="1.9" opacity={.85}>「{quote}」</Text>
+              <Link href={href} target="_blank" rel="noreferrer" display="block" mt={3} fontSize="xs" opacity={.5} _hover={{ opacity: .8 }}>— {source}</Link>
+            </Box>
+          ))}
+          <Text fontSize="xs" opacity={.45} lineHeight="1.7">十幾年後還有人在找它的安裝檔。這是 ChiaKey 想延續的東西。</Text>
+        </Stack>
       </Grid>
     </MotionSection>
     <Grid columns={{ base: 1, md: 3 }} gap={4}>

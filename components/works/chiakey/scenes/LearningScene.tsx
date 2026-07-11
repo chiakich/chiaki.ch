@@ -6,9 +6,7 @@ const LearningScene = () => (
   <svg viewBox="0 0 640 300" width="100%" role="img" aria-label="選過「再」之後，下次輸入時「再」排到候選第一位">
     <SceneBackground title="選字學習" />
     <text x="160" y="92" textAnchor="middle" fontSize="13" fill="#7c6b90">第一次：選第 2 個「再」</text>
-    <motion.g animate={{ opacity: [1, 1, 1, .35] }} transition={{ duration: 6, repeat: Infinity, times: [0, .45, .6, 1] }}>
-      <SvgCandidateMenu items={['在', '再', '載', '栽']} x={62} y={104} page="1/9" highlightIndex={1} animated={false} />
-    </motion.g>
+    <SvgCandidateMenu items={['在', '再', '載', '栽']} x={62} y={104} page="1/9" highlightIndex={1} animated={false} />
     <motion.g animate={{ opacity: [0, 0, 1, 1], x: [-8, -8, 0, 0] }} transition={{ duration: 6, repeat: Infinity, times: [0, .4, .55, 1] }}>
       <path d="M282 190 H340" stroke="#8a2b9e" strokeWidth="3" strokeLinecap="round" />
       <path d="M332 182 L344 190 L332 198" fill="none" stroke="#8a2b9e" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
