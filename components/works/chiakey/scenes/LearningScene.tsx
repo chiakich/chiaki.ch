@@ -1,33 +1,21 @@
 import { motion } from 'framer-motion'
-import { SceneBackground } from '../ChiaKeySvgPrimitives'
+import { SceneBackground, SvgCandidateMenu } from '../ChiaKeySvgPrimitives'
 
-const times = [0, .34, .5, .84, 1]
-const transition = { duration: 4.6, repeat: Infinity, times }
-const row1 = 140
-const row2 = 182
-
+// 依實際行為：選字會寫入使用者候選快取，下次相同讀音時排序提前。
 const LearningScene = () => (
-  <svg viewBox="0 0 640 300" width="100%" height="100%" role="img" aria-label="常選的候選詞逐漸往前移到第一位">
-    <SceneBackground title="智慧學習使用者偏好" />
-    <text x="320" y="106" textAnchor="middle" fontSize="13" fill="#69798c">輸入「ㄗㄞˋ」，常選的字自動往前</text>
-
-    <rect x="236" y="120" width="168" height="130" rx="14" fill="#111" stroke="#fff" strokeWidth="3" />
-    {/* 第一列高亮 */}
-    <rect x="238" y={row1 - 20} width="164" height="32" fill="#8a008a" />
-    {/* 固定的候選編號 */}
-    {[row1, row2, 224].map((y, index) => (
-      <text key={y} x="262" y={y} textAnchor="middle" fontSize="15" fontWeight="700" fill="white">{index + 1}</text>
-    ))}
-
-    {/* 「再」從第二列升到第一列 */}
-    <motion.text x="300" fontSize="21" fontWeight="700" fill="white" animate={{ y: [row2, row2, row1, row1, row2] }} transition={transition}>再</motion.text>
-    {/* 「在」被擠到第二列 */}
-    <motion.text x="300" fontSize="21" fontWeight="700" fill="white" animate={{ y: [row1, row1, row2, row2, row1] }} transition={transition}>在</motion.text>
-    <text x="300" y="224" fontSize="21" fontWeight="700" fill="white">載</text>
-
-    <motion.g animate={{ opacity: [0, 0, 1, 1, 0] }} transition={transition}>
-      <rect x="440" y="150" width="128" height="44" rx="10" fill="#e9f3ff" stroke="#76adf1" />
-      <text x="504" y="177" textAnchor="middle" fontSize="14" fill="#23466e">偏好 +1</text>
+  <svg viewBox="0 0 640 300" width="100%" role="img" aria-label="選過「再」之後，下次輸入時「再」排到候選第一位">
+    <SceneBackground title="選字學習" />
+    <text x="160" y="92" textAnchor="middle" fontSize="13" fill="#69798c">第一次：選第 2 個「再」</text>
+    <motion.g animate={{ opacity: [1, 1, 1, .35] }} transition={{ duration: 6, repeat: Infinity, times: [0, .45, .6, 1] }}>
+      <SvgCandidateMenu items={['在', '再', '載', '栽']} x={62} y={104} page="1/9" highlightIndex={1} animated={false} />
+    </motion.g>
+    <motion.g animate={{ opacity: [0, 0, 1, 1], x: [-8, -8, 0, 0] }} transition={{ duration: 6, repeat: Infinity, times: [0, .4, .55, 1] }}>
+      <path d="M282 190 H340" stroke="#2f80ed" strokeWidth="3" strokeLinecap="round" />
+      <path d="M332 182 L344 190 L332 198" fill="none" stroke="#2f80ed" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+    </motion.g>
+    <text x="478" y="92" textAnchor="middle" fontSize="13" fill="#69798c">下一次：「再」已在第 1 位</text>
+    <motion.g animate={{ opacity: [0, 0, 1, 1], y: [8, 8, 0, 0] }} transition={{ duration: 6, repeat: Infinity, times: [0, .45, .6, 1] }}>
+      <SvgCandidateMenu items={['再', '在', '載', '栽']} x={380} y={104} page="1/9" highlightIndex={0} animated={false} />
     </motion.g>
   </svg>
 )

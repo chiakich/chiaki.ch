@@ -1,23 +1,31 @@
+import { motion } from 'framer-motion'
 import { Keycap, SceneBackground } from '../ChiaKeySvgPrimitives'
 
-const symbols = ['，', '。', '「', '」', '《', '》', '—', '…', '※', '☆', '℃', '→']
+const symbols = ['，', '。', '、', '「', '」', '《', '》', '？', '！', '：', '…', '—', '※', '★', '→', '℃']
 
+// 依實際快捷鍵：Control + Command + . 開啟符號表。
 const SymbolTableScene = () => (
-  <svg viewBox="0 0 640 300" width="100%" height="100%" role="img" aria-label="按 Option Command 句點叫出符號表">
+  <svg viewBox="0 0 640 300" width="100%" role="img" aria-label="按 Control、Command 與句點開啟符號表">
     <SceneBackground title="符號表" />
-    <Keycap x={70} y={128} width={76} label="option" active={false} />
-    <text x={158} y={153} fontSize="18" fill="#738196">＋</text>
-    <Keycap x={176} y={128} width={90} label="command" active={false} />
-    <text x={278} y={153} fontSize="18" fill="#738196">＋</text>
-    <Keycap x={296} y={128} label="." active={false} />
-    <g transform="translate(374 78)">
-      <rect width="196" height="144" rx="12" fill="#24272d" />
+    <Keycap x={80} y={120} width={72} label="control" />
+    <text x="166" y="145" fontSize="18" fill="#69798c">+</text>
+    <Keycap x={184} y={120} width={54} label="⌘" delay={.12} />
+    <text x="252" y="145" fontSize="18" fill="#69798c">+</text>
+    <Keycap x={270} y={120} width={44} label="." delay={.24} />
+    <motion.g animate={{ opacity: [0, 1, 1, 0], y: [8, 0, 0, 6] }} transition={{ duration: 4.8, repeat: Infinity, times: [0, .22, .86, 1] }}>
+      <rect x="366" y="68" width="216" height="180" rx="14" fill="#fdfdfd" stroke="#9aabbe" filter="url(#shadow)" />
+      <text x="474" y="92" textAnchor="middle" fontSize="12" fill="#69798c">符號表</text>
       {symbols.map((symbol, index) => {
-        const x = 17 + (index % 4) * 44
-        const y = 18 + Math.floor(index / 4) * 38
-        return <g key={symbol}><rect x={x} y={y} width="34" height="30" rx="5" fill={index === 0 ? '#347fd6' : '#343840'} /><text x={x + 17} y={y + 21} textAnchor="middle" fontSize="16" fill="white">{symbol}</text></g>
+        const column = index % 4
+        const row = Math.floor(index / 4)
+        return (
+          <g key={symbol}>
+            {index === 0 && <rect x={382} y={104} width="44" height="30" rx="6" fill="#d7e9ff" />}
+            <text x={404 + column * 48} y={126 + row * 34} textAnchor="middle" fontSize="19" fill="#182431">{symbol}</text>
+          </g>
+        )
       })}
-    </g>
+    </motion.g>
   </svg>
 )
 

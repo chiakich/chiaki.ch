@@ -16,7 +16,7 @@ const TokyonoHero = () => (
         <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .8 }}>
           <Text color="#aaf5ff" fontFamily="mono" fontSize="sm" letterSpacing=".3em">PLURK UI REDESIGN</Text>
           <Heading fontSize={{ base: '3.5rem', md: '6.5rem' }} mt={4} lineHeight="1">東京乃空</Heading>
-          <Text fontSize={{ base: 'lg', md: 'xl' }} lineHeight="1.9" maxW="720px" mt={5} opacity={.85}>把噗浪河道變成一幅會呼吸的風景：重新安排資訊、角色與時間，並讓背景真正成為介面的一部分。</Text>
+          <Text fontSize={{ base: 'lg', md: 'xl' }} lineHeight="1.9" maxW="720px" mt={5} opacity={.85}>免費、自由使用的噗浪 CSS 佈景。重排時間軸、毛玻璃面板、響應式排版——貼上一段 CSS 就能套用。</Text>
           <HStack justifyContent="center" mt={7}><ProjectLink href="https://github.com/chiakich/Tokyono-Sora" label="取得佈景 CSS" accent="#8eeaf4" /></HStack>
         </motion.div>
         <Box mt={10} width="100%"><ThemeComparison /></Box>

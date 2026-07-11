@@ -11,7 +11,7 @@ export const ChiaKeySpecimen = () => (
     <Text position="absolute" style={{ top: 30, left: 24 }} fontSize="1.7rem" fontWeight="bold" color="#f5f5f7">
       今晚吃<Span borderBottom="2px solid #4c9dff">鹽酥雞</Span>
     </Text>
-    <Text position="absolute" style={{ top: 74, left: 24 }} fontSize="xs" color="#8b8b93">組字中「ㄐㄧ」</Text>
+    <Text position="absolute" style={{ top: 74, left: 24 }} fontSize="xs" color="#8b8b93">按 ↓ 開啟候選窗</Text>
     <motion.div style={{ position: 'absolute', left: '32%', top: '30%', transformOrigin: 'top left', scale: .74 }} animate={{ opacity: [0, 1, 1, 0], y: [6, 0, 0, 6] }} transition={{ duration: 5, repeat: Infinity }}>
       <VerticalCandidateMenu compact />
     </motion.div>
@@ -20,11 +20,8 @@ export const ChiaKeySpecimen = () => (
 
 export const KumikoSpecimen = () => (
   <Box width="100%" height="100%" backgroundColor="#17181b" position="relative" overflow="hidden">
-    <Image src="/assets/works/kumiko/editor.webp" alt="Kumiko 字體編輯畫面" width="100%" height="100%" objectFit="cover" objectPosition="center" opacity={.78} />
-    <motion.svg viewBox="0 0 200 120" style={{ position: 'absolute', inset: '12% 22%', width: '56%', height: '76%' }}>
-      <motion.path d="M35 90 L35 30 L92 30 L92 90 M108 88 Q145 82 165 34" fill="none" stroke="#ffea2f" strokeWidth="3" initial={{ pathLength: 0 }} animate={{ pathLength: [0, 1, 1] }} transition={{ duration: 4, repeat: Infinity, times: [0, .55, 1] }} />
-      {[35, 92, 108, 165].map((x, i) => <motion.rect key={x} x={x - 3} y={i < 2 ? 27 : i === 2 ? 85 : 31} width="6" height="6" fill="#ffea2f" animate={{ scale: [0, 1, 1] }} transition={{ duration: 4, repeat: Infinity, delay: i * .12 }} />)}
-    </motion.svg>
+    <Image src="/assets/works/kumiko/editor.webp" alt="Kumiko 字體編輯畫面" width="100%" height="100%" objectFit="cover" objectPosition="center" opacity={.85} />
+    <motion.div style={{ position: 'absolute', left: 16, bottom: 14, background: 'rgba(23,24,27,.85)', border: '1px solid rgba(255,234,47,.4)', borderRadius: 8, padding: '6px 12px', fontFamily: 'monospace', color: '#ffea2f', fontSize: 13 }} animate={{ opacity: [.55, 1, .55] }} transition={{ duration: 3.2, repeat: Infinity }}>⿰糹扁 → 編</motion.div>
   </Box>
 )
 

@@ -8,6 +8,10 @@ export const SceneBackground = ({ title }: { title: string }) => (
         <stop stopColor="#eef4fb" />
         <stop offset="1" stopColor="#cbd8e9" />
       </linearGradient>
+      <linearGradient id="candidateHighlight" x1="0" y1="0" x2="0" y2="1">
+        <stop stopColor="#a12cae" />
+        <stop offset="1" stopColor="#5f1069" />
+      </linearGradient>
       <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%">
         <feDropShadow dx="0" dy="10" stdDeviation="12" floodColor="#243a55" floodOpacity=".2" />
       </filter>
@@ -45,27 +49,28 @@ export const InputLine = ({ text, x = 104, y = 132, width = 220, animated = true
   </>
 )
 
-export const SvgCandidateMenu = ({ items, x = 356, y = 78, page = '1/8', animated = true }: { items: string[]; x?: number; y?: number; page?: string; animated?: boolean }) => {
-  const rowHeight = 28
-  const height = 46 + items.length * rowHeight
+// SVG 版候選窗，樣式與 VerticalCandidateMenu 一致（黑底圓角、白圈黑數字、紫色漸層選取列）。
+export const SvgCandidateMenu = ({ items, x = 356, y = 78, page = '1/21', highlightIndex = 0, animated = true }: { items: string[]; x?: number; y?: number; page?: string; highlightIndex?: number; animated?: boolean }) => {
+  const rowHeight = 30
+  const height = 48 + items.length * rowHeight
   const motionProps = animated
     ? { animate: { opacity: [0, 1, 1, 0], y: [8, 0, 0, 5] }, transition: { duration: 4.8, repeat: Infinity, times: [0, .2, .86, 1] } }
     : {}
   return (
     <motion.g {...motionProps}>
-      <rect x={x} y={y} width="194" height={height} rx="16" fill="#000" stroke="#fff" strokeWidth="3" />
-      <text x={x + 20} y={y + 19} fontSize="12" fill="white">▲</text>
+      <rect x={x} y={y} width="196" height={height} rx="22" fill="#050505" stroke="#f2f2f2" strokeWidth="3" />
+      <text x={x + 98} y={y + 18} textAnchor="middle" fontSize="11" fill="white">▲</text>
       {items.map((item, index) => {
-        const rowY = y + 26 + index * rowHeight
+        const rowY = y + 24 + index * rowHeight
         return <g key={`${item}-${index}`}>
-          {index === 0 && <rect x={x + 2} y={rowY} width="190" height={rowHeight} fill="#8a008a" />}
-          {index === 0 && <circle cx={x + 26} cy={rowY + 14} r="12" fill="#230026" />}
-          <text x={x + 26} y={rowY + 20} textAnchor="middle" fontSize="16" fontWeight="700" fill="white">{index + 1}</text>
-          <text x={x + 51} y={rowY + 20} fontSize="18" fontWeight="700" fill="white">{item}</text>
+          {index === highlightIndex && <rect x={x + 3} y={rowY} width="190" height={rowHeight} fill="url(#candidateHighlight)" />}
+          <circle cx={x + 26} cy={rowY + 15} r="11" fill="#f5f5f5" />
+          <text x={x + 26} y={rowY + 20} textAnchor="middle" fontSize="14" fontWeight="800" fill="#0a0a0a">{index + 1}</text>
+          <text x={x + 48} y={rowY + 22} fontSize="19" fontWeight="700" fill="white">{item}</text>
         </g>
       })}
-      <text x={x + 20} y={y + height - 9} fontSize="12" fill="white">▼</text>
-      <text x={x + 165} y={y + height - 8} textAnchor="end" fontSize="12" fontWeight="700" fill="white">{page}</text>
+      <text x={x + 22} y={y + height - 10} fontSize="11" fill="white">▼</text>
+      <text x={x + 176} y={y + height - 10} textAnchor="end" fontSize="11" fontWeight="700" fill="white">{page}</text>
     </motion.g>
   )
 }

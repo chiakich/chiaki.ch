@@ -21,7 +21,6 @@ const KumikoHero = () => (
         </MotionBox>
         <MotionBox mt={8} width="100%" position="relative" initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .9, delay: .25 }}>
           <Box border="1px solid #34363b" borderRadius="14px" overflow="hidden" boxShadow="0 36px 100px rgba(0,0,0,.55)"><Image src="/assets/works/kumiko/editor.webp" alt="Kumiko 字形與部件編輯畫面" width="100%" display="block" /></Box>
-          {[['28%', '50%'], ['61%', '31%'], ['69%', '59%']].map(([left, top], index) => <motion.div key={index} style={{ position: 'absolute', left, top, width: 12, height: 12, background: '#ffea2f', boxShadow: '0 0 16px #ffea2f' }} animate={{ scale: [1, 1.8, 1], opacity: [.65, 1, .65] }} transition={{ duration: 2.4, repeat: Infinity, delay: index * .5 }} />)}
         </MotionBox>
       </Stack>
     </Container>
