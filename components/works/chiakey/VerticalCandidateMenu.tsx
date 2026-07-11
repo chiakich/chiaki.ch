@@ -14,6 +14,9 @@ interface VerticalCandidateMenuProps {
 // 黑底大圓角、白框、白色圓圈黑數字、選取列為紫色漸層。
 const defaultItems = ['鹽酥雞', '機', '基', '績', '積', '雞', '奇', '幾']
 
+// 漸層寫在 inline style，Panda 無法靜態抽取條件式的任意值。
+const highlightBackground = 'linear-gradient(180deg, #a12cae 0%, #5f1069 100%)'
+
 const VerticalCandidateMenu = ({ items = defaultItems, page = '1/21', highlightIndex = 0, compact = false }: VerticalCandidateMenuProps) => (
   <Box
     width={compact ? '178px' : '212px'}
@@ -34,7 +37,7 @@ const VerticalCandidateMenu = ({ items = defaultItems, page = '1/21', highlightI
           alignItems="center"
           px={compact ? 2.5 : 3}
           gap={compact ? 2.5 : 3}
-          background={index === highlightIndex ? 'linear-gradient(180deg, #a12cae 0%, #5f1069 100%)' : 'transparent'}
+          style={{ background: index === highlightIndex ? highlightBackground : 'transparent' }}
         >
           <Flex
             width={compact ? '21px' : '26px'}

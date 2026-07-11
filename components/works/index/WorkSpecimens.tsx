@@ -7,9 +7,9 @@ const Span = styled.span
 const Image = styled.img
 
 export const ChiaKeySpecimen = () => (
-  <Box width="100%" height="100%" backgroundColor="#202024" position="relative" overflow="hidden" color="white">
+  <Box width="100%" height="100%" backgroundColor="#1d1a21" position="relative" overflow="hidden" color="white">
     <Text position="absolute" style={{ top: 30, left: 24 }} fontSize="1.7rem" fontWeight="bold" color="#f5f5f7">
-      今晚吃<Span borderBottom="2px solid #4c9dff">鹽酥雞</Span>
+      今晚吃<Span borderBottom="3px solid #e8e8ec">鹽酥雞</Span>
     </Text>
     <Text position="absolute" style={{ top: 74, left: 24 }} fontSize="xs" color="#8b8b93">按 ↓ 開啟候選窗</Text>
     <motion.div style={{ position: 'absolute', left: '32%', top: '30%', transformOrigin: 'top left', scale: .74 }} animate={{ opacity: [0, 1, 1, 0], y: [6, 0, 0, 6] }} transition={{ duration: 5, repeat: Infinity }}>

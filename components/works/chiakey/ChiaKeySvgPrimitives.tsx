@@ -5,22 +5,22 @@ export const SceneBackground = ({ title }: { title: string }) => (
     <rect width="640" height="300" rx="18" fill="url(#sceneBg)" />
     <defs>
       <linearGradient id="sceneBg" x1="0" y1="0" x2="1" y2="1">
-        <stop stopColor="#eef4fb" />
-        <stop offset="1" stopColor="#cbd8e9" />
+        <stop stopColor="#f4effb" />
+        <stop offset="1" stopColor="#d7cce8" />
       </linearGradient>
       <linearGradient id="candidateHighlight" x1="0" y1="0" x2="0" y2="1">
         <stop stopColor="#a12cae" />
         <stop offset="1" stopColor="#5f1069" />
       </linearGradient>
       <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%">
-        <feDropShadow dx="0" dy="10" stdDeviation="12" floodColor="#243a55" floodOpacity=".2" />
+        <feDropShadow dx="0" dy="10" stdDeviation="12" floodColor="#3b2455" floodOpacity=".2" />
       </filter>
     </defs>
     <rect x="42" y="34" width="556" height="232" rx="14" fill="rgba(255,255,255,.9)" filter="url(#shadow)" />
     <circle cx="66" cy="56" r="5" fill="#ff5f57" />
     <circle cx="84" cy="56" r="5" fill="#febc2e" />
     <circle cx="102" cy="56" r="5" fill="#28c840" />
-    <text x="320" y="61" textAnchor="middle" fontSize="12" fill="#69798c">{title}</text>
+    <text x="320" y="61" textAnchor="middle" fontSize="12" fill="#7c6b90">{title}</text>
   </>
 )
 
@@ -35,17 +35,17 @@ interface KeycapProps {
 
 export const Keycap = ({ x, y, width = 58, label, active = true, delay = 0 }: KeycapProps) => (
   <motion.g animate={active ? { y: [0, 3, 0] } : undefined} transition={{ duration: .55, repeat: Infinity, repeatDelay: 2.8, delay }}>
-    <motion.rect x={x} y={y} width={width} height="38" rx="8" fill="#fff" stroke="#9aabbe" animate={active ? { fill: ['#fff', '#d7e9ff', '#fff'], stroke: ['#9aabbe', '#2f80ed', '#9aabbe'] } : undefined} transition={{ duration: .55, repeat: Infinity, repeatDelay: 2.8, delay }} />
-    <text x={x + width / 2} y={y + 24} textAnchor="middle" fontSize="13" fontWeight="700" fill="#33465c">{label}</text>
+    <motion.rect x={x} y={y} width={width} height="38" rx="8" fill="#fff" stroke="#a795c0" animate={active ? { fill: ['#fff', '#ecd8f7', '#fff'], stroke: ['#a795c0', '#8a2b9e', '#a795c0'] } : undefined} transition={{ duration: .55, repeat: Infinity, repeatDelay: 2.8, delay }} />
+    <text x={x + width / 2} y={y + 24} textAnchor="middle" fontSize="13" fontWeight="700" fill="#4a3560">{label}</text>
   </motion.g>
 )
 
 export const InputLine = ({ text, x = 104, y = 132, width = 220, animated = true }: { text: string; x?: number; y?: number; width?: number; animated?: boolean }) => (
   <>
-    <text x={x} y={y} fontSize="28" fill="#182431">{text}</text>
+    <text x={x} y={y} fontSize="28" fill="#241533">{text}</text>
     {animated
-      ? <motion.line x1={x} y1={y + 8} x2={x + width} y2={y + 8} stroke="#2f80ed" strokeWidth="3" strokeLinecap="round" initial={{ pathLength: 0 }} animate={{ pathLength: [0, 1, 1, 0] }} transition={{ duration: 4.8, repeat: Infinity, times: [0, .32, .86, 1] }} />
-      : <line x1={x} y1={y + 8} x2={x + width} y2={y + 8} stroke="#2f80ed" strokeWidth="3" strokeLinecap="round" />}
+      ? <motion.line x1={x} y1={y + 8} x2={x + width} y2={y + 8} stroke="#8a2b9e" strokeWidth="3" strokeLinecap="round" initial={{ pathLength: 0 }} animate={{ pathLength: [0, 1, 1, 0] }} transition={{ duration: 4.8, repeat: Infinity, times: [0, .32, .86, 1] }} />
+      : <line x1={x} y1={y + 8} x2={x + width} y2={y + 8} stroke="#8a2b9e" strokeWidth="3" strokeLinecap="round" />}
   </>
 )
 

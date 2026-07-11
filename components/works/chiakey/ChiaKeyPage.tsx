@@ -11,7 +11,7 @@ import ChiaKeyStory from './ChiaKeyStory'
 
 const ChiaKeyPage = () => (
   <MotionConfig reducedMotion="user">
-    <Box backgroundColor="#070d15" color="white" minHeight="100vh">
+    <Box backgroundColor="#0e0716" color="white" minHeight="100vh">
       <Head><title>千秋輸入法 ChiaKey - Works</title><meta name="description" content="以 Yahoo! 奇摩輸入法／KeyKey 開源程式碼為基礎的現代 macOS 繁體中文注音輸入法。" /></Head>
       <TopBar /><WorksSubNav /><ChiaKeyHero />
       <Container maxW="1080px" px={{ base: '24px', md: '40px' }} py={{ base: 14, md: 20 }}>

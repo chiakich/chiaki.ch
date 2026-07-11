@@ -16,17 +16,17 @@ const steps = [
 
 const ChiaKeyLexicon = () => (
   <MotionSection>
-    <SectionHeading en="LEXICON" accent="#78b7ff">詞庫是另一個專案</SectionHeading>
+    <SectionHeading en="LEXICON" accent="#c77dff">詞庫是另一個專案</SectionHeading>
     <Grid columns={{ base: 1, md: 2 }} gap={8} alignItems="start">
       <Stack gap={4} lineHeight="2" opacity={.85}>
-        <Text>詞彙資料不進輸入法的程式碼庫。<Code fontSize=".9em" color="#9ac8ff">ChiaKey-Lexicon</Code> 獨立整理台灣用語，更新詞庫不用重裝輸入法。</Text>
-        <Text fontSize="sm" opacity={.8}>輸入法安裝後內建一份詞庫當底；使用者資料（自訂詞、選字紀錄）放在 <Code fontSize=".9em" color="#9ac8ff">~/Library/Application Support/ChiaKey</Code>。</Text>
-        <Box><ProjectLink href="https://github.com/chiakich/ChiaKey-Lexicon" label="詞庫專案" detail="SQLite" accent="#78b7ff" /></Box>
+        <Text>詞彙資料不進輸入法的程式碼庫。<Code fontSize=".9em" color="#d49bff">ChiaKey-Lexicon</Code> 獨立整理台灣用語，更新詞庫不用重裝輸入法。</Text>
+        <Text fontSize="sm" opacity={.8}>輸入法安裝後內建一份詞庫當底；使用者資料（自訂詞、選字紀錄）放在 <Code fontSize=".9em" color="#d49bff">~/Library/Application Support/ChiaKey</Code>。</Text>
+        <Box><ProjectLink href="https://github.com/chiakich/ChiaKey-Lexicon" label="詞庫專案" detail="SQLite" accent="#c77dff" /></Box>
       </Stack>
-      <Stack gap={0} border="1px solid #24394f" backgroundColor="#0b131d">
+      <Stack gap={0} border="1px solid #34244a" backgroundColor="#130c1f">
         {steps.map(([title, description], index) => (
-          <Flex key={title} gap={4} p={4} alignItems="baseline" borderBottom={index < steps.length - 1 ? '1px solid #1a2a3c' : 'none'}>
-            <Text fontFamily="mono" fontSize="xs" color="#78b7ff" flexShrink={0}>0{index + 1}</Text>
+          <Flex key={title} gap={4} p={4} alignItems="baseline" style={{ borderBottom: index < steps.length - 1 ? '1px solid #241733' : 'none' }}>
+            <Text fontFamily="mono" fontSize="xs" color="#c77dff" flexShrink={0}>0{index + 1}</Text>
             <Box>
               <Heading fontSize="sm" fontFamily="mono" mb={1}>{title}</Heading>
               <Text fontSize="xs" opacity={.6} lineHeight="1.7">{description}</Text>
