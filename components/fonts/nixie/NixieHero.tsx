@@ -8,14 +8,7 @@ const Text = styled.p
 const Span = styled.span
 const MotionBox = motion(Box)
 
-const RetroButton = ({
-  onClick,
-  label,
-  hint,
-}: {
-  onClick: () => void
-  label: string
-}) => (
+const RetroButton = ({ onClick, label }: { onClick: () => void; label: string }) => (
   <Button
     background="silver"
     border="none"
