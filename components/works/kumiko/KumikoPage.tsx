@@ -1,4 +1,3 @@
-import Head from 'next/head'
 import { Box, Container, Grid, HStack, Stack, styled } from 'styled-system/jsx'
 import TopBar from 'components/TopBar'
 import MotionSection from 'components/portfolio/MotionSection'
@@ -21,7 +20,6 @@ const features = [
 
 const KumikoPage = () => (
   <Box backgroundColor="#101114" color="white" minHeight="100vh">
-    <Head><title>Kumiko Font Editor - Works</title><meta name="description" content="完全在瀏覽器運作、以 GitHub 為核心的 CJK 補字工具。" /></Head>
     <TopBar /><WorksSubNav /><KumikoHero />
     <Container maxW="1080px" px={{ base: '24px', md: '40px' }} py={{ base: 16, md: 20 }}><Stack gap={20}>
       <MotionSection><SectionHeading en="WHY KUMIKO" accent="#ffea2f">把補字的門檻降到一個網址</SectionHeading><Text maxW="760px" fontSize={{ base: 'md', md: 'lg' }} lineHeight="2" opacity={.78}>開源 CJK 字體動輒缺幾千個字，但願意補字的人未必想架整套字體工具鏈。Kumiko 的流程是：從 GitHub 載入 UFO 專案、在瀏覽器裡編輯字形、把變更推回去開 pull request。沒有安裝步驟，也沒有要自己跑的後端。</Text></MotionSection>

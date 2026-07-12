@@ -1,4 +1,3 @@
-import Head from 'next/head'
 import { motion } from 'framer-motion'
 import { Box, Container, Stack, styled } from 'styled-system/jsx'
 import TopBar from 'components/TopBar'
@@ -20,7 +19,6 @@ const works: WorkCardData[] = [
 
 const WorksIndexPage = () => (
   <Box backgroundColor="#070708" color="white" minHeight="100vh">
-    <Head><title>Works - 千秋的作品</title><meta name="description" content="千秋設計與開發的軟體、工具與介面作品。" /></Head>
     <TopBar /><WorksSubNav />
     <Box pt="96px"><Container maxW="1080px" py={12} px={{ base: '24px', md: '40px' }}>
       <MotionBox initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7 }} mb={16} textAlign="center">

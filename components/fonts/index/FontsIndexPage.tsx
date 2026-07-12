@@ -1,4 +1,3 @@
-import Head from 'next/head'
 import { motion } from 'framer-motion'
 import { Box, Container, Stack, styled } from 'styled-system/jsx'
 import TopBar from 'components/TopBar'
@@ -19,7 +18,6 @@ const fonts: FontCardData[] = [
 
 const FontsIndexPage = () => (
   <Box backgroundColor="black" color="white" minHeight="100vh">
-    <Head><title>Fonts - 千秋的字體作品</title><meta name="description" content="千秋設計與參與製作的字體作品。" /></Head>
     <TopBar />
     <FontsSubNav />
     <Box pt="96px">

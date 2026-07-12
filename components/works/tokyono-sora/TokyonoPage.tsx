@@ -1,4 +1,3 @@
-import Head from 'next/head'
 import { Box, Container, Grid, HStack, Stack, styled } from 'styled-system/jsx'
 import TopBar from 'components/TopBar'
 import MotionSection from 'components/portfolio/MotionSection'
@@ -20,10 +19,6 @@ const features = [
 
 const TokyonoPage = () => (
   <Box backgroundColor="#081720" color="white" minHeight="100vh">
-    <Head>
-      <title>東京乃空 Tokyono Sora - Works</title>
-      <meta name="description" content="重新設計噗浪時間軸的免費 CSS 佈景。" />
-    </Head>
     <TopBar />
     <WorksSubNav />
     <TokyonoHero />

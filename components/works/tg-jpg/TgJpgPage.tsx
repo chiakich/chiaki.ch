@@ -1,4 +1,3 @@
-import Head from 'next/head'
 import { Box, Container, Grid, Stack, styled } from 'styled-system/jsx'
 import TopBar from 'components/TopBar'
 import MotionSection from 'components/portfolio/MotionSection'
@@ -19,13 +18,6 @@ const pipeline = [
 
 const TgJpgPage = () => (
   <Box backgroundColor="#08121c" color="white" minHeight="100vh">
-    <Head>
-      <title>tg.jpg Telegram Bot - Works</title>
-      <meta
-        name="description"
-        content="輸入圖片檔名，就回覆第一張可用搜尋結果的 Telegram bot。"
-      />
-    </Head>
     <TopBar />
     <WorksSubNav />
     <TgJpgHero />
