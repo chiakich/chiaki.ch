@@ -17,8 +17,7 @@ const layers: { name: string; local?: boolean; fill: string; border: string }[] 
   { name: '外部詞庫', fill: 'rgba(66,26,84,.86)', border: 'rgba(199,125,255,.32)' },
   { name: '專案詞庫', fill: 'rgba(95,16,105,.78)', border: 'rgba(199,125,255,.45)' },
   { name: '校正層', fill: 'rgba(135,36,148,.72)', border: 'rgba(199,125,255,.58)' },
-  { name: '使用者詞庫', local: true, fill: 'rgba(161,44,174,.66)', border: 'rgba(236,220,255,.65)' },
-  { name: '學習快取', local: true, fill: 'rgba(199,125,255,.6)', border: 'rgba(236,220,255,.8)' },
+  { name: '使用者詞庫＋學習快取', local: true, fill: 'rgba(178,68,190,.62)', border: 'rgba(236,220,255,.72)' },
 ]
 
 const dataLayers = [
@@ -49,11 +48,11 @@ const localLayers = [
   ['學習快取', '選字紀錄與詞頻。安全輸入欄位不記錄。'],
 ]
 
-const spreadY = (index: number) => 250 - index * 100
-const stackedY = (index: number) => 90 - index * 36
+const spreadY = (index: number) => 215 - index * 105
+const stackedY = (index: number) => 78 - index * 39
 
 const LexiconLayers = () => (
-  <Box position="relative" height={{ base: '520px', md: '600px' }} style={{ perspective: '1400px' }} overflow="visible">
+  <Box position="relative" height={{ base: '450px', md: '520px' }} style={{ perspective: '1400px' }} overflow="visible">
     {layers.map(({ name, local, fill, border }, index) => (
       <motion.div
         key={name}
@@ -135,7 +134,7 @@ const ChiaKeyLexicon = () => (
         <MotionSection key={name} delay={index * .06}>
           <Box borderRadius="20px" p={6} height="100%" border="1px dashed rgba(236,220,255,.35)" backgroundColor="rgba(21,13,32,.6)">
             <HStack gap={2} mb={2}>
-              <Box width="9px" height="9px" borderRadius="full" style={{ background: layers[4 + index].border }} />
+              <Box width="9px" height="9px" borderRadius="full" style={{ background: layers[4].border }} />
               <Heading fontSize="md">{name}</Heading>
               <Text fontSize="10px" opacity={.5}>你的機器</Text>
             </HStack>
