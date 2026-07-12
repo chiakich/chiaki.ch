@@ -461,7 +461,7 @@
     --fonts-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --fonts-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
     --fonts-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    --fonts-body: "jf-lanyanghei", "Noto Sans TC", sans-serif;
+    --fonts-body: "xingothic-tc", "Noto Sans TC", sans-serif;
     --fonts-akitra: akitra, "xingothic-tc", sans-serif;
     --fonts-nixie: nixie, monospace;
     --fonts-huninn: huninn, "xingothic-tc", sans-serif;

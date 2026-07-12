@@ -26,7 +26,7 @@ export default defineConfig({
           },
         },
         fonts: {
-          body: { value: '"jf-lanyanghei", "Noto Sans TC", sans-serif' },
+          body: { value: '"xingothic-tc", "Noto Sans TC", sans-serif' },
           akitra: { value: 'akitra, "xingothic-tc", sans-serif' },
           nixie: { value: 'nixie, monospace' },
           huninn: { value: 'huninn, "xingothic-tc", sans-serif' },
@@ -61,27 +61,76 @@ export default defineConfig({
           to: { transform: 'translateY(100vh)' },
         },
         foxfireFloat: {
-          '0%, 100%': { transform: 'translate3d(0, 10px, 0) scale(.82)', opacity: 0.35 },
-          '45%': { transform: 'translate3d(8px, -16px, 0) scale(1.08)', opacity: 0.95 },
-          '70%': { transform: 'translate3d(-5px, -7px, 0) scale(.94)', opacity: 0.62 },
+          '0%, 100%': {
+            transform: 'translate3d(0, 10px, 0) scale(.82)',
+            opacity: 0.35,
+          },
+          '45%': {
+            transform: 'translate3d(8px, -16px, 0) scale(1.08)',
+            opacity: 0.95,
+          },
+          '70%': {
+            transform: 'translate3d(-5px, -7px, 0) scale(.94)',
+            opacity: 0.62,
+          },
         },
         noritoBurn: {
-          '0%': { opacity: 0, filter: 'blur(8px)', transform: 'translate3d(0, 28px, 0) scale(.94)' },
-          '18%': { opacity: 0.88, filter: 'blur(0)', transform: 'translate3d(0, 0, 0) scale(1)' },
-          '68%': { opacity: 0.55, filter: 'blur(1px)', transform: 'translate3d(6px, -18px, 0) scale(1.015)' },
-          '100%': { opacity: 0, filter: 'blur(9px)', transform: 'translate3d(-8px, -70px, 0) scale(1.04)' },
+          '0%': {
+            opacity: 0,
+            filter: 'blur(8px)',
+            transform: 'translate3d(0, 28px, 0) scale(.94)',
+          },
+          '18%': {
+            opacity: 0.88,
+            filter: 'blur(0)',
+            transform: 'translate3d(0, 0, 0) scale(1)',
+          },
+          '68%': {
+            opacity: 0.55,
+            filter: 'blur(1px)',
+            transform: 'translate3d(6px, -18px, 0) scale(1.015)',
+          },
+          '100%': {
+            opacity: 0,
+            filter: 'blur(9px)',
+            transform: 'translate3d(-8px, -70px, 0) scale(1.04)',
+          },
         },
         noritoGlyphSettle: {
-          '0%': { opacity: 0, transform: 'scale(5.5) translateZ(0)', filter: 'blur(12px)', color: '#fff4c6' },
-          '45%': { opacity: 1, transform: 'scale(1.35) translateZ(0)', filter: 'blur(1px)', color: '#f5cc70' },
-          '100%': { opacity: 0.92, transform: 'scale(1) translateZ(0)', filter: 'blur(0)', color: '#d9f7eb' },
+          '0%': {
+            opacity: 0,
+            transform: 'scale(5.5) translateZ(0)',
+            filter: 'blur(12px)',
+            color: '#fff4c6',
+          },
+          '45%': {
+            opacity: 1,
+            transform: 'scale(1.35) translateZ(0)',
+            filter: 'blur(1px)',
+            color: '#f5cc70',
+          },
+          '100%': {
+            opacity: 0.92,
+            transform: 'scale(1) translateZ(0)',
+            filter: 'blur(0)',
+            color: '#d9f7eb',
+          },
         },
         packetDamage: {
           '0%, 100%': { transform: 'translate3d(0,0,0)', filter: 'none' },
           '12%': { transform: 'translate3d(-15px,5px,0)', filter: 'saturate(2.2)' },
-          '24%': { transform: 'translate3d(13px,-6px,0)', filter: 'hue-rotate(-24deg) saturate(3)' },
-          '38%': { transform: 'translate3d(-9px,3px,0)', filter: 'contrast(1.6) saturate(3)' },
-          '56%': { transform: 'translate3d(7px,-2px,0)', filter: 'hue-rotate(18deg)' },
+          '24%': {
+            transform: 'translate3d(13px,-6px,0)',
+            filter: 'hue-rotate(-24deg) saturate(3)',
+          },
+          '38%': {
+            transform: 'translate3d(-9px,3px,0)',
+            filter: 'contrast(1.6) saturate(3)',
+          },
+          '56%': {
+            transform: 'translate3d(7px,-2px,0)',
+            filter: 'hue-rotate(18deg)',
+          },
         },
         redFailureFlash: {
           '0%, 100%': { opacity: 0 },
@@ -139,7 +188,11 @@ export default defineConfig({
           '0%': { opacity: 0, filter: 'blur(6px)', transform: 'translateY(12px)' },
           '18%': { opacity: 1, filter: 'blur(0)', transform: 'translateY(0)' },
           '72%': { opacity: 1, filter: 'blur(0)', transform: 'translateY(0)' },
-          '100%': { opacity: 0, filter: 'blur(4px)', transform: 'translateY(-10px)' },
+          '100%': {
+            opacity: 0,
+            filter: 'blur(4px)',
+            transform: 'translateY(-10px)',
+          },
         },
       },
     },
