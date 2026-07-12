@@ -45,7 +45,7 @@ class MyDocument extends Document {
 
           <link rel="preconnect" href="https://s3-ap-northeast-1.amazonaws.com" />
           <script
-            src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-64294.js"
+            src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-56705.js"
             async
           />
           <link rel="icon" href="/favicon.ico" />

@@ -26,7 +26,7 @@ export default defineConfig({
           },
         },
         fonts: {
-          body: { value: '"xingothic-tc", "Noto Sans TC", sans-serif' },
+          body: { value: '"jf-lanyanghei", "Noto Sans TC", sans-serif' },
           akitra: { value: 'akitra, "xingothic-tc", sans-serif' },
           nixie: { value: 'nixie, monospace' },
           huninn: { value: 'huninn, "xingothic-tc", sans-serif' },
