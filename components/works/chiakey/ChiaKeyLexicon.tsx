@@ -17,11 +17,11 @@ const layers = [
   { name: '學習快取', desc: '選字紀錄與詞頻，安全輸入欄位不記錄', fill: 'rgba(199,125,255,.62)', border: 'rgba(236,220,255,.7)' },
 ]
 
-const spreadY = (index: number) => 150 - index * 100
+const spreadY = (index: number) => 175 - index * 118
 const stackedY = (index: number) => 60 - index * 40
 
 const LexiconLayers = () => (
-  <Box position="relative" height={{ base: '380px', md: '440px' }} style={{ perspective: '1400px' }} overflow="visible">
+  <Box position="relative" height={{ base: '400px', md: '480px' }} style={{ perspective: '1400px' }} overflow="visible">
     {layers.map(({ name, fill, border }, index) => (
       <motion.div
         key={name}

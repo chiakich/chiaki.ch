@@ -97,7 +97,7 @@ const ChiaKeyHero = () => {
   const pkg = useLatestPkg()
 
   return (
-    <Box pt="92px" position="relative" overflow="hidden" background="radial-gradient(ellipse at 50% -10%, #b79bd2 0, #3d2159 42%, #1b0e2e 72%, #0e0716 100%)">
+    <Box pt={{ base: '76px', md: '116px' }} position="relative" overflow="hidden" background="radial-gradient(ellipse at 50% -10%, #b79bd2 0, #3d2159 42%, #1b0e2e 72%, #0e0716 100%)">
       <Container maxW="1120px" px={{ base: '24px', md: '40px' }} pt={{ base: 14, md: 20 }} pb={{ base: 14, md: 20 }} position="relative">
         <Stack alignItems="center" textAlign="center" gap={0}>
           <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .8 }}>
