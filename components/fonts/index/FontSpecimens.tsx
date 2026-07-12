@@ -8,7 +8,7 @@ const MotionText = motion(Text)
 export const AkitraSpecimen = () => (
   <Box width="100%" height="100%" backgroundColor="#20242e" position="relative" overflow="hidden">
     <Flex height="9px">
-      {['#f6f1de', '#f8751b', '#284b9d'].map((color) => <Box key={color} flex="1" backgroundColor={color} />)}
+      {['#f6f1de', '#f8751b', '#284b9d'].map((color) => <Box key={color} flex="1" style={{ backgroundColor: color }} />)}
     </Flex>
     <Flex height="calc(100% - 9px)" alignItems="center" justifyContent="center">
       <Text className="specimen" fontFamily="akitra" fontSize={{ base: '3rem', md: '4.2rem' }} color="white" style={{ transition: 'transform .4s ease' }}>

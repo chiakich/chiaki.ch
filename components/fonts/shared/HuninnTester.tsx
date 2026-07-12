@@ -71,7 +71,7 @@ const HuninnTester = () => {
           fontSize="md"
           color="white"
           resize="none"
-          _focus={{ outline: 'none', borderColor: YELLOW }}
+          _focus={{ outline: 'none', borderColor: '#febb27' }}
           placeholder="輸入想試的字……"
         />
         <HStack gap={3} flexShrink={0}>
@@ -85,13 +85,13 @@ const HuninnTester = () => {
             value={size}
             onChange={(e) => setSize(Number(e.target.value))}
             width="160px"
-            accentColor={YELLOW}
+            style={{ accentColor: YELLOW }}
           />
         </HStack>
       </Flex>
 
       <Box
-        backgroundColor={PAPER}
+        style={{ backgroundColor: PAPER }}
         clipPath="polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)"
         px={{ base: 5, md: 8 }}
         py={{ base: 6, md: 10 }}
@@ -104,8 +104,8 @@ const HuninnTester = () => {
             top={3}
             right={5}
             fontSize="xs"
-            color={INK}
             opacity={0.5}
+            style={{ color: INK }}
           >
             {status === 'error'
               ? '完整字型載入失敗，僅顯示部分字符'
@@ -113,11 +113,9 @@ const HuninnTester = () => {
           </Text>
         )}
         <Text
-          fontSize={`${size}px`}
           lineHeight="1.6"
-          color={INK}
           wordBreak="break-word"
-          style={{ fontFamily: 'huninn-full, huninn, "Noto Sans TC", sans-serif' }}
+          style={{ fontFamily: 'huninn-full, huninn, "Noto Sans TC", sans-serif', fontSize: size, color: INK }}
         >
           {text || ' '}
         </Text>

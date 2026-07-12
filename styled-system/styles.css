@@ -3704,16 +3704,16 @@
     vertical-align: 30%;
 }
 
-  .c_\#7f9be0 {
-    color: #7f9be0;
-}
-
   .lh_2 {
     line-height: 2;
 }
 
   .fs_3rem {
     font-size: 3rem;
+}
+
+  .c_\#7f9be0 {
+    color: #7f9be0;
 }
 
   .op_0\.6 {
@@ -3789,14 +3789,6 @@
     duration: 2.8px;
 }
 
-  .filter_blur\(1px\)_brightness\(1\.7\) {
-    filter: blur(1px) brightness(1.7);
-}
-
-  .filter_none {
-    filter: none;
-}
-
   .bg-c_\#0a0503 {
     background-color: #0a0503;
 }
@@ -3846,10 +3838,6 @@
     duration: 0.3px;
 }
 
-  .tsh_0_0_6px_rgba\(255\,65\,0\,0\.7\)\,_0_0_20px_\#ff8000 {
-    text-shadow: 0 0 6px rgba(255,65,0,0.7), 0 0 20px #ff8000;
-}
-
   .fs_clamp\(1\.4rem\,_2\.6vw\,_2\.2rem\) {
     font-size: clamp(1.4rem, 2.6vw, 2.2rem);
 }
@@ -3866,20 +3854,8 @@
     font-family: monospace;
 }
 
-  .bg-c_\#eeefe9 {
-    background-color: #eeefe9;
-}
-
   .resize_none {
     resize: none;
-}
-
-  .ac-c_\#febb27 {
-    accent-color: #febb27;
-}
-
-  .c_\#342c2c {
-    color: #342c2c;
 }
 
   .wb_break-word {

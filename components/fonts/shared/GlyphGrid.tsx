@@ -59,13 +59,11 @@ const GlyphGrid = ({
             fontFamily={fontFamily}
             fontSize="clamp(1.4rem, 2.6vw, 2.2rem)"
             lineHeight="1"
-            color={glow ? '#ff9b28' : 'white'}
-            textShadow={
-              glow
-                ? '0 0 6px rgba(255,65,0,0.7), 0 0 20px #ff8000'
-                : undefined
-            }
-            style={{ transition: 'transform 0.2s ease' }}
+            style={{
+              transition: 'transform 0.2s ease',
+              color: glow ? '#ff9b28' : 'white',
+              textShadow: glow ? '0 0 6px rgba(255,65,0,0.7), 0 0 20px #ff8000' : undefined,
+            }}
           >
             {char}
           </Box>
