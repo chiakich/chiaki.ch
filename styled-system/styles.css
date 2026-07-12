@@ -4370,6 +4370,10 @@
     --translate-x: 270;
 }
 
+  .fw_800 {
+    font-weight: 800;
+}
+
   .mb_5 {
     margin-bottom: var(--spacing-5);
 }

@@ -1,10 +1,4 @@
-import {
-  Flex,
-  Box,
-  HStack,
-  VStack,
-  styled,
-} from 'styled-system/jsx'
+import { Flex, Box, HStack, VStack, styled } from 'styled-system/jsx'
 import {
   Drawer,
   DrawerBody,
@@ -80,7 +74,7 @@ const TopBar: React.FC = () => {
         fontWeight="normal"
       >
         {/* Left section */}
-        <HStack gap={5}>
+        <HStack gap={8}>
           <IconButton
             aria-label="Menu"
             icon={<HamburgerIcon color="white" />}
@@ -103,9 +97,24 @@ const TopBar: React.FC = () => {
             />
           </Link>
 
-          <HStack gap={5} display={{ base: 'none', md: 'flex' }} color="#F5F5F7">
+          <HStack
+            gap={7}
+            display={{ base: 'none', md: 'flex' }}
+            color="#F5F5F7"
+            fontSize="17px"
+            fontWeight="600"
+          >
             {mainLinks.map(([label, path]) => (
-              <Link key={path} href={path} style={{ opacity: isActive(path) ? 1 : 0.5 }}>
+              <Link
+                key={path}
+                href={path}
+                style={{
+                  opacity: isActive(path) ? 1 : 0.5,
+                  textShadow: isActive(path)
+                    ? '0 0 5px rgba(255,255,255,.5)'
+                    : 'none',
+                }}
+              >
                 {label}
               </Link>
             ))}
@@ -160,7 +169,11 @@ const TopBar: React.FC = () => {
                           letterSpacing="-.02em"
                           textAlign="left"
                           opacity={isActive(path) ? 1 : 0.8}
-                          onClick={() => setExpandedMenu((expanded) => expanded === label ? null : label)}
+                          onClick={() =>
+                            setExpandedMenu((expanded) =>
+                              expanded === label ? null : label
+                            )
+                          }
                           aria-expanded={isExpanded}
                           aria-controls={`mobile-${label.toLowerCase()}-menu`}
                         >
@@ -169,14 +182,27 @@ const TopBar: React.FC = () => {
                             as="span"
                             display="inline-flex"
                             fontSize="1.25rem"
-                            transform={isExpanded ? 'rotate(180deg)' : 'rotate(0deg)'}
+                            transform={
+                              isExpanded ? 'rotate(180deg)' : 'rotate(0deg)'
+                            }
                             transition="transform 220ms ease"
                           >
                             <ChevronDownIcon />
                           </Box>
                         </styled.button>
                       ) : (
-                        <Link href={path} onClick={() => setIsOpen(false)} style={{ display: 'block', padding: '.5rem 0', fontSize: '1.6rem', fontWeight: 600, letterSpacing: '-.02em', opacity: isActive(path) ? 1 : 0.8 }}>
+                        <Link
+                          href={path}
+                          onClick={() => setIsOpen(false)}
+                          style={{
+                            display: 'block',
+                            padding: '.5rem 0',
+                            fontSize: '1.6rem',
+                            fontWeight: 600,
+                            letterSpacing: '-.02em',
+                            opacity: isActive(path) ? 1 : 0.8,
+                          }}
+                        >
                           {label}
                         </Link>
                       )}
@@ -188,9 +214,26 @@ const TopBar: React.FC = () => {
                           overflow="hidden"
                           transition="max-height 320ms cubic-bezier(0.22, 1, 0.36, 1), opacity 200ms ease"
                         >
-                          <VStack gap={1} alignItems="start" mt={1} mb={2} pl={4} py={1} borderLeft="1px solid rgba(255,255,255,.16)">
+                          <VStack
+                            gap={1}
+                            alignItems="start"
+                            mt={1}
+                            mb={2}
+                            pl={4}
+                            py={1}
+                            borderLeft="1px solid rgba(255,255,255,.16)"
+                          >
                             {subnavItems?.map((item) => (
-                              <Link key={item.id} href={item.path} onClick={() => setIsOpen(false)} style={{ padding: '.35rem 0', fontSize: '1.05rem', opacity: currentPath === item.path ? 1 : 0.55 }}>
+                              <Link
+                                key={item.id}
+                                href={item.path}
+                                onClick={() => setIsOpen(false)}
+                                style={{
+                                  padding: '.35rem 0',
+                                  fontSize: '1.05rem',
+                                  opacity: currentPath === item.path ? 1 : 0.55,
+                                }}
+                              >
                                 {item.title}
                               </Link>
                             ))}
@@ -201,7 +244,9 @@ const TopBar: React.FC = () => {
                   )
                 })}
               </VStack>
-              <Text mt={8} fontSize="xs" opacity={.35}>chiaki.ch</Text>
+              <Text mt={8} fontSize="xs" opacity={0.35}>
+                chiaki.ch
+              </Text>
             </DrawerBody>
           </DrawerContent>
         </Drawer>

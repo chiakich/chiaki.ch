@@ -51,7 +51,9 @@ const SubNav = ({
         justify="space-between"
         color="white"
       >
-        <Text fontSize="17px" fontWeight="600" letterSpacing="-.01em">{title}</Text>
+        <Text fontSize="17px" fontWeight="600" letterSpacing="-.01em">
+          {title}
+        </Text>
 
         <HStack gap={8} height="100%" ml={5}>
           {items.map((item) => (
@@ -59,11 +61,14 @@ const SubNav = ({
               as={NextLink}
               key={item.id}
               href={item.path}
-              fontSize="12px"
+              fontSize="14px"
+              fontWeight="600"
               height="100%"
               display="flex"
               alignItems="center"
-              color={router.pathname === item.path ? 'white' : 'rgba(255, 255, 255, 0.62)'}
+              color={
+                router.pathname === item.path ? 'white' : 'rgba(255, 255, 255, 0.62)'
+              }
               _hover={{ color: 'white' }}
               flexShrink={0}
               transition="color 0.2s"
