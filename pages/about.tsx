@@ -1,6 +1,7 @@
 import type { NextPage } from 'next'
 import { Box, Flex, Grid, HStack, VStack, styled } from 'styled-system/jsx'
 import {
+  animate,
   motion,
   useMotionValue,
   useSpring,
@@ -9,7 +10,7 @@ import {
 } from 'framer-motion'
 import Image from 'next/image'
 import NextLink from 'next/link'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import TopBar from 'components/TopBar'
 
 const Heading = styled.h2
@@ -21,7 +22,7 @@ const Span = styled.span
 const MotionBox = motion(Box)
 const MotionImg = motion(styled.img)
 
-const ACCENT = '#df8a42'
+const ACCENT = '#ff7829'
 const ACCENT_SOFT = '#f5c8a1'
 
 const interests: { title: string; en: string; description: string }[] = [
@@ -77,7 +78,13 @@ const interests: { title: string; en: string; description: string }[] = [
 ]
 
 // Skewed P5-style tag + heading
-const SectionTitle = ({ en, children }: { en: string; children: React.ReactNode }) => (
+const SectionTitle = ({
+  en,
+  children,
+}: {
+  en: string
+  children: React.ReactNode
+}) => (
   <Flex alignItems="center" gap={4} mb={5}>
     <Box
       backgroundColor={ACCENT}
@@ -100,7 +107,11 @@ const SectionTitle = ({ en, children }: { en: string; children: React.ReactNode 
     >
       {children}
     </Heading>
-    <Box flex="1" height="1px" background={`linear-gradient(90deg, ${ACCENT}55, transparent)`} />
+    <Box
+      flex="1"
+      height="1px"
+      background={`linear-gradient(90deg, ${ACCENT}55, transparent)`}
+    />
   </Flex>
 )
 
@@ -135,22 +146,48 @@ const CharacterPanel = ({
   x: ReturnType<typeof useSpring>
   y: ReturnType<typeof useSpring>
 }) => {
-  const bgX = useTransform(x, (v: number) => v * -1.6)
-  const bgY = useTransform(y, (v: number) => v * -1.6)
+  const swayX = useMotionValue(0)
+  const breatheY = useMotionValue(0)
+
+  useEffect(() => {
+    const swayControls = animate(swayX, [-6, 6, -6], {
+      duration: 7,
+      ease: 'easeInOut',
+      repeat: Infinity,
+      repeatType: 'loop',
+    })
+
+    const breatheControls = animate(breatheY, [0, -2, 0], {
+      duration: 5.5,
+      ease: 'easeInOut',
+      repeat: Infinity,
+      repeatType: 'loop',
+    })
+
+    return () => {
+      swayControls.stop()
+      breatheControls.stop()
+    }
+  }, [swayX, breatheY])
+
+  const floatX = useTransform(() => x.get() + swayX.get())
+  const floatY = useTransform(() => y.get() + breatheY.get())
+
+  const bgX = useTransform(floatX, (v: number) => v * -1.6)
+  const bgY = useTransform(floatY, (v: number) => v * -1.6)
 
   return (
     <Box
       position="relative"
       width="100%"
       height={{ base: '68vh', lg: 'calc(100vh - 44px)' }}
-      overflow="hidden"
     >
       {/* Slanted accent panel */}
       <MotionBox
         position="absolute"
         top="-5%"
-        right="-12%"
-        width="70%"
+        right="-5%"
+        width="65%"
         height="115%"
         background={`linear-gradient(200deg, ${ACCENT}2e 0%, ${ACCENT}08 65%, transparent 100%)`}
         clipPath="polygon(28% 0, 100% 0, 100% 100%, 0 100%)"
@@ -213,7 +250,7 @@ const CharacterPanel = ({
           x: '-50%',
         }}
         transition={{ duration: 1.1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-        style={{ translateX: x, translateY: y }}
+        style={{ translateX: floatX, translateY: floatY }}
       />
 
       {/* Blend the feet into the page bottom */}
@@ -251,7 +288,6 @@ const About: NextPage = () => {
       backgroundColor="black"
       color="white"
       minHeight="100vh"
-      overflowX="hidden"
       onMouseMove={handleMouseMove}
     >
       <TopBar />
