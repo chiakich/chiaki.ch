@@ -60,19 +60,25 @@ const TypingTitle = () => {
           transition={{ duration: 1, repeat: Infinity, times: [0, .5, .5, 1] }}
           style={{ display: 'inline-block', width: 4, height: '.92em', marginLeft: 5, verticalAlign: '-.1em', backgroundColor: '#f5f5f7' }}
         />
-        <AnimatePresence>
-          {menu && (
-            <motion.div
-              initial={{ opacity: 0, scale: .96, y: 6 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, y: 4 }}
-              transition={{ duration: .28 }}
-              style={{ position: 'absolute', left: 'calc(100% - 1.1em)', top: 'calc(100% + 48px)', zIndex: 5 }}
-            >
-              <VerticalCandidateMenu items={menuItems} page="1/2" />
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* 不用 AnimatePresence 退場：loop 重來時標題寬度瞬間縮短，
+            殘留的選字框會跟著錨點往左飛，直接卸載比較乾淨 */}
+        {menu && (
+          <motion.div
+            initial={{ opacity: 0, scale: .96, y: 6 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: .28 }}
+            style={{
+              position: 'absolute',
+              left: 'calc(100% - 1.1em)',
+              top: 'calc(100% + 48px)',
+              zIndex: 5,
+              WebkitMaskImage: 'linear-gradient(180deg, #000 52%, transparent 96%)',
+              maskImage: 'linear-gradient(180deg, #000 52%, transparent 96%)',
+            }}
+          >
+            <VerticalCandidateMenu items={menuItems} page="1/2" />
+          </motion.div>
+        )}
       </Box>
       <HStack gap={2} alignItems="center" minHeight="32px">
         <AnimatePresence mode="popLayout">
@@ -82,8 +88,8 @@ const TypingTitle = () => {
         </AnimatePresence>
         <Text fontSize="sm" color="#b7aec3" ml={1} minWidth="180px" textAlign="left">{note ?? ''}</Text>
       </HStack>
-      {/* 候選窗的保留區：選字框浮在這塊空間裡，不會蓋到副標與按鈕 */}
-      <Box height="370px" width="100%" aria-hidden />
+      {/* 候選窗的保留區：選字框（下緣漸層淡出）浮在這塊空間裡，不會蓋到副標與按鈕 */}
+      <Box height="230px" width="100%" aria-hidden />
     </Stack>
   )
 }
