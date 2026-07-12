@@ -5262,6 +5262,10 @@
     min-height: 4.4rem;
 }
 
+  .h_370px {
+    height: 370px;
+}
+
   .pt_76px {
     padding-top: 76px;
 }
@@ -5306,8 +5310,8 @@
     padding-top: var(--spacing-14);
 }
 
-  .pb_20 {
-    padding-bottom: var(--spacing-20);
+  .pb_8 {
+    padding-bottom: var(--spacing-8);
 }
 
   .w_48vw {
@@ -6245,8 +6249,8 @@
     .md\:pt_20 {
       padding-top: var(--spacing-20);
 }
-    .md\:pb_28 {
-      padding-bottom: var(--spacing-28);
+    .md\:pb_10 {
+      padding-bottom: var(--spacing-10);
 }
     .md\:h_480px {
       height: 480px;

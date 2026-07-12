@@ -12,23 +12,23 @@ const Kbd = styled.kbd
 // 打到 ㄕㄨ 時 unigram 先猜「書」（顯示「千秋書」），
 // ㄖㄨˋ 進來之後被「輸入」校正，最後停在「千秋輸入法」並開出候選窗。
 const frames: { pressed: string; buffer: string; note?: string; menu?: boolean; hold: number }[] = [
-  { pressed: 'ㄑ', buffer: 'ㄑ', hold: 220 },
-  { pressed: 'ㄧ', buffer: 'ㄑㄧ', hold: 220 },
-  { pressed: 'ㄢ', buffer: 'ㄑㄧㄢ', hold: 220 },
-  { pressed: '␣', buffer: '千', note: '一聲是空白鍵', hold: 500 },
-  { pressed: 'ㄑ', buffer: '千ㄑ', hold: 220 },
-  { pressed: 'ㄧ', buffer: '千ㄑㄧ', hold: 220 },
-  { pressed: 'ㄡ', buffer: '千ㄑㄧㄡ', hold: 220 },
-  { pressed: '␣', buffer: '千秋', hold: 500 },
-  { pressed: 'ㄕ', buffer: '千秋ㄕ', hold: 220 },
-  { pressed: 'ㄨ', buffer: '千秋ㄕㄨ', hold: 220 },
-  { pressed: '␣', buffer: '千秋書', note: '還沒有下文，先猜「書」', hold: 800 },
-  { pressed: 'ㄖ', buffer: '千秋書ㄖ', hold: 220 },
-  { pressed: 'ㄨ', buffer: '千秋書ㄖㄨ', hold: 220 },
-  { pressed: 'ˋ', buffer: '千秋輸入', note: '「入」出現，書 → 輸', hold: 800 },
-  { pressed: 'ㄈ', buffer: '千秋輸入ㄈ', hold: 220 },
-  { pressed: 'ㄚ', buffer: '千秋輸入ㄈㄚ', hold: 220 },
-  { pressed: 'ˇ', buffer: '千秋輸入法', note: '整句組好', menu: true, hold: 4200 },
+  { pressed: 'ㄑ', buffer: 'ㄑ', hold: 130 },
+  { pressed: 'ㄧ', buffer: 'ㄑㄧ', hold: 130 },
+  { pressed: 'ㄢ', buffer: 'ㄑㄧㄢ', hold: 130 },
+  { pressed: '␣', buffer: '千', note: '一聲是空白鍵', hold: 340 },
+  { pressed: 'ㄑ', buffer: '千ㄑ', hold: 130 },
+  { pressed: 'ㄧ', buffer: '千ㄑㄧ', hold: 130 },
+  { pressed: 'ㄡ', buffer: '千ㄑㄧㄡ', hold: 130 },
+  { pressed: '␣', buffer: '千秋', hold: 340 },
+  { pressed: 'ㄕ', buffer: '千秋ㄕ', hold: 130 },
+  { pressed: 'ㄨ', buffer: '千秋ㄕㄨ', hold: 130 },
+  { pressed: '␣', buffer: '千秋書', note: '還沒有下文，先猜「書」', hold: 620 },
+  { pressed: 'ㄖ', buffer: '千秋書ㄖ', hold: 130 },
+  { pressed: 'ㄨ', buffer: '千秋書ㄖㄨ', hold: 130 },
+  { pressed: 'ˋ', buffer: '千秋輸入', note: '「入」出現，書 → 輸', hold: 620 },
+  { pressed: 'ㄈ', buffer: '千秋輸入ㄈ', hold: 130 },
+  { pressed: 'ㄚ', buffer: '千秋輸入ㄈㄚ', hold: 130 },
+  { pressed: 'ˇ', buffer: '千秋輸入法', note: '整句組好', menu: true, hold: 3800 },
 ]
 
 const menuItems = ['輸入法', '法', '髮', '琺', '砝', '鍅', '灋', '珐']
@@ -46,9 +46,9 @@ const TypingTitle = () => {
 
   return (
     <Stack alignItems="center" gap={5}>
-      <Box position="relative" display="inline-block" minHeight={{ base: '4.4rem', md: '7rem' }}>
+      {/* 字級放在容器上讓游標（em 高）與候選窗定位（em 對齊「法」）都跟著縮放 */}
+      <Box position="relative" display="inline-block" fontSize={{ base: '3rem', md: '5.6rem' }} minHeight={{ base: '4.4rem', md: '7rem' }}>
         <Span
-          fontSize={{ base: '3rem', md: '5.6rem' }}
           fontWeight="700"
           letterSpacing=".02em"
           lineHeight="1.15"
@@ -58,7 +58,7 @@ const TypingTitle = () => {
         <motion.span
           animate={{ opacity: [1, 1, 0, 0] }}
           transition={{ duration: 1, repeat: Infinity, times: [0, .5, .5, 1] }}
-          style={{ display: 'inline-block', width: 3, height: '.9em', marginLeft: 4, verticalAlign: '-.08em', backgroundColor: '#f5f5f7', fontSize: 'inherit' }}
+          style={{ display: 'inline-block', width: 4, height: '.92em', marginLeft: 5, verticalAlign: '-.1em', backgroundColor: '#f5f5f7' }}
         />
         <AnimatePresence>
           {menu && (
@@ -67,7 +67,7 @@ const TypingTitle = () => {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, y: 4 }}
               transition={{ duration: .28 }}
-              style={{ position: 'absolute', right: -24, top: 'calc(100% + 10px)', zIndex: 5 }}
+              style={{ position: 'absolute', left: 'calc(100% - 1.1em)', top: 'calc(100% + 48px)', zIndex: 5 }}
             >
               <VerticalCandidateMenu items={menuItems} page="1/2" />
             </motion.div>
@@ -82,6 +82,8 @@ const TypingTitle = () => {
         </AnimatePresence>
         <Text fontSize="sm" color="#b7aec3" ml={1} minWidth="180px" textAlign="left">{note ?? ''}</Text>
       </HStack>
+      {/* 候選窗的保留區：選字框浮在這塊空間裡，不會蓋到副標與按鈕 */}
+      <Box height="370px" width="100%" aria-hidden />
     </Stack>
   )
 }
@@ -113,7 +115,7 @@ const ChiaKeyHero = () => {
 
   return (
     <Box pt={{ base: '76px', md: '116px' }} position="relative" overflow="hidden" background="radial-gradient(ellipse at 50% -10%, #b79bd2 0, #3d2159 42%, #1b0e2e 72%, #0e0716 100%)">
-      <Container maxW="1120px" px={{ base: '24px', md: '40px' }} pt={{ base: 14, md: 20 }} pb={{ base: 20, md: 28 }} position="relative">
+      <Container maxW="1120px" px={{ base: '24px', md: '40px' }} pt={{ base: 14, md: 20 }} pb={{ base: 8, md: 10 }} position="relative">
         <Stack alignItems="center" textAlign="center" gap={0}>
           <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .8 }}>
             <Text fontFamily="mono" letterSpacing=".28em" color="#dcb8ff" fontSize="sm" fontWeight="900" mb={8}>CHIAKEY · FOR MODERN macOS</Text>

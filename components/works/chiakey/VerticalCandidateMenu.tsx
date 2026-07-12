@@ -53,7 +53,7 @@ const VerticalCandidateMenu = ({ items = defaultItems, page = '1/21', highlightI
               backgroundColor="#050505"
               color="#f5f5f5"
               fontWeight="900"
-              style={{ width: size.circle, height: size.circle, fontSize: size.number, border: '1.5px solid #f5f5f5' }}
+              style={{ width: size.circle, height: size.circle, fontSize: size.number }}
             >{index + 1}</Flex>
             <Span fontWeight="bold" lineHeight="1" letterSpacing=".08em" style={{ fontSize: size.item }}>{item}</Span>
           </Flex>
