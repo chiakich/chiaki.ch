@@ -40,7 +40,8 @@ export const useWorldline = () => {
 
   useEffect(() => {
     const activeTimers = timers.current
-    const clock = window.setInterval(() => { if (!busy.current) setDisplay(clockValue()) }, 100)
+    // 33ms 取樣讓百分之一秒的個位數輪轉（100ms 取樣會每次剛好 +10，末位永遠不動）
+    const clock = window.setInterval(() => { if (!busy.current) setDisplay(clockValue()) }, 33)
     const autoShift = window.setInterval(shift, 13000)
     activeTimers.push(clock, autoShift)
     return () => activeTimers.forEach(window.clearInterval)
