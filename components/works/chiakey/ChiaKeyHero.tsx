@@ -47,30 +47,44 @@ const TypingTitle = () => {
   return (
     <Stack alignItems="center" gap={5}>
       {/* 字級放在容器上讓游標（em 高）與候選窗定位（em 對齊「法」）都跟著縮放 */}
-      <Box position="relative" display="inline-block" fontSize={{ base: '3rem', md: '5.6rem' }} minHeight={{ base: '4.4rem', md: '7rem' }}>
+      <Box
+        position="relative"
+        display="inline-block"
+        fontSize={{ base: '3rem', md: '5.6rem' }}
+        minHeight={{ base: '4.4rem', md: '7rem' }}
+      >
         <Span
           fontWeight="700"
           letterSpacing=".02em"
           lineHeight="1.15"
           color="#ffffff"
           style={{ borderBottom: '5px solid #e8e8ec', paddingBottom: 4 }}
-        >{buffer}</Span>
+        >
+          {buffer}
+        </Span>
         <motion.span
           animate={{ opacity: [1, 1, 0, 0] }}
-          transition={{ duration: 1, repeat: Infinity, times: [0, .5, .5, 1] }}
-          style={{ display: 'inline-block', width: 4, height: '.92em', marginLeft: 5, verticalAlign: '-.1em', backgroundColor: '#f5f5f7' }}
+          transition={{ duration: 1, repeat: Infinity, times: [0, 0.5, 0.5, 1] }}
+          style={{
+            display: 'inline-block',
+            width: 4,
+            height: '.92em',
+            marginLeft: 5,
+            verticalAlign: '-.1em',
+            backgroundColor: '#f5f5f7',
+          }}
         />
         {/* 不用 AnimatePresence 退場：loop 重來時標題寬度瞬間縮短，
             殘留的選字框會跟著錨點往左飛，直接卸載比較乾淨 */}
         {menu && (
           <motion.div
-            initial={{ opacity: 0, scale: .96, y: 6 }}
+            initial={{ opacity: 0, scale: 0.96, y: 6 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: .28 }}
+            transition={{ duration: 0.28 }}
             style={{
               position: 'absolute',
               left: 'calc(100% - 1.1em)',
-              top: 'calc(100% + 48px)',
+              top: '100%',
               zIndex: 5,
               WebkitMaskImage: 'linear-gradient(180deg, #000 52%, transparent 96%)',
               maskImage: 'linear-gradient(180deg, #000 52%, transparent 96%)',
@@ -82,11 +96,34 @@ const TypingTitle = () => {
       </Box>
       <HStack gap={2} alignItems="center" minHeight="32px">
         <AnimatePresence mode="popLayout">
-          <motion.div key={frame} initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: .15 }}>
-            <Kbd display="inline-flex" minWidth="28px" height="28px" alignItems="center" justifyContent="center" px={2} borderRadius="7px" border="1px solid rgba(255,255,255,.3)" borderBottomWidth="3px" backgroundColor="#2c2733" fontSize="sm" fontWeight="bold">{pressed}</Kbd>
+          <motion.div
+            key={frame}
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+          >
+            <Kbd
+              display="inline-flex"
+              minWidth="28px"
+              height="28px"
+              alignItems="center"
+              justifyContent="center"
+              px={2}
+              borderRadius="7px"
+              border="1px solid rgba(255,255,255,.3)"
+              borderBottomWidth="3px"
+              backgroundColor="#2c2733"
+              fontSize="sm"
+              fontWeight="bold"
+            >
+              {pressed}
+            </Kbd>
           </motion.div>
         </AnimatePresence>
-        <Text fontSize="sm" color="#b7aec3" ml={1} minWidth="180px" textAlign="left">{note ?? ''}</Text>
+        <Text fontSize="sm" color="#b7aec3" ml={1} minWidth="180px" textAlign="left">
+          {note ?? ''}
+        </Text>
       </HStack>
       {/* 候選窗的保留區：選字框（下緣漸層淡出）浮在這塊空間裡，不會蓋到副標與按鈕 */}
       <Box height="230px" width="100%" aria-hidden />
@@ -120,23 +157,61 @@ const ChiaKeyHero = () => {
   const pkg = useLatestPkg()
 
   return (
-    <Box pt={{ base: '76px', md: '116px' }} position="relative" overflow="hidden" background="radial-gradient(ellipse at 50% -10%, #b79bd2 0, #3d2159 42%, #1b0e2e 72%, #0e0716 100%)">
-      <Container maxW="1120px" px={{ base: '24px', md: '40px' }} pt={{ base: 14, md: 20 }} pb={{ base: 8, md: 10 }} position="relative">
+    <Box
+      pt={{ base: '76px', md: '116px' }}
+      position="relative"
+      overflow="hidden"
+      background="radial-gradient(ellipse at 50% -10%, #b79bd2 0, #3d2159 42%, #1b0e2e 72%, #0e0716 100%)"
+    >
+      <Container
+        maxW="1120px"
+        px={{ base: '24px', md: '40px' }}
+        pt={{ base: 14, md: 20 }}
+        pb={{ base: 8, md: 10 }}
+        position="relative"
+      >
         <Stack alignItems="center" textAlign="center" gap={0}>
-          <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .8 }}>
-            <Text fontFamily="mono" letterSpacing=".28em" color="#dcb8ff" fontSize="sm" fontWeight="900" mb={8}>CHIAKEY · FOR MODERN macOS</Text>
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <Text
+              fontFamily="mono"
+              letterSpacing=".28em"
+              color="#dcb8ff"
+              fontSize="sm"
+              fontWeight="900"
+              mb={8}
+            >
+              ChiaKey · on modern macOS
+            </Text>
             <TypingTitle />
-            <Text mt={8} fontSize={{ base: 'lg', md: '1.35rem' }} lineHeight="1.8" maxW="640px" mx="auto" color="#f4eaff" opacity={.85}>KeyKey 的延續。熟悉的組字手感與候選窗，回到現代 macOS。</Text>
+            <Text
+              mt={8}
+              fontSize={{ base: 'lg', md: '1.35rem' }}
+              lineHeight="1.8"
+              maxW="640px"
+              mx="auto"
+              color="#f4eaff"
+              opacity={0.85}
+            >
+              熟悉的組字手感與候選窗，現已支援 Apple Silicon
+            </Text>
             <HStack mt={8} gap={4} justifyContent="center" flexWrap="wrap">
               <ProjectLink
                 href={pkg?.url ?? releasesFallback}
                 label="下載"
-                detail={pkg ? `${pkg.version} · .pkg` : 'macOS .pkg'}
+                detail={pkg ? `${pkg.version} .pkg` : 'macOS .pkg'}
                 accent="#d49bff"
                 solid
                 download={Boolean(pkg)}
               />
-              <ProjectLink href="https://github.com/chiakich/ChiaKey" label="GitHub" accent="#ecdcff" />
+              <ProjectLink
+                href="https://github.com/chiakich/ChiaKey"
+                label="瀏覽原始碼"
+                accent="#ecdcff"
+              />
             </HStack>
           </motion.div>
         </Stack>
