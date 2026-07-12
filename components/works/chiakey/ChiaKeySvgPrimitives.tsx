@@ -64,8 +64,8 @@ export const SvgCandidateMenu = ({ items, x = 356, y = 78, page = '1/21', highli
         const rowY = y + 24 + index * rowHeight
         return <g key={`${item}-${index}`}>
           {index === highlightIndex && <rect x={x + 3} y={rowY} width="190" height={rowHeight} fill="url(#candidateHighlight)" />}
-          <circle cx={x + 26} cy={rowY + 15} r="11" fill="#f5f5f5" />
-          <text x={x + 26} y={rowY + 20} textAnchor="middle" fontSize="14" fontWeight="800" fill="#0a0a0a">{index + 1}</text>
+          <circle cx={x + 26} cy={rowY + 15} r="11" fill="#050505" stroke="#f5f5f5" strokeWidth="1.5" />
+          <text x={x + 26} y={rowY + 20} textAnchor="middle" fontSize="14" fontWeight="800" fill="#f5f5f5">{index + 1}</text>
           <text x={x + 48} y={rowY + 22} fontSize="19" fontWeight="700" fill="white">{item}</text>
         </g>
       })}

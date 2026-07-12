@@ -12,8 +12,8 @@ const TgJpgHero = () => (
     <Container maxW="1080px" px={{ base: '24px', md: '40px' }} py={{ base: 14, md: 20 }}>
       <Stack gap={10}>
         <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .75 }}>
-          <Text color="#57b5ff" fontFamily="mono" letterSpacing=".28em" fontSize="sm">AN “I’M FEELING LUCKY” BOT FOR IMAGES</Text>
-          <Heading fontSize={{ base: '4rem', md: '7rem' }} lineHeight="1" mt={4}>tg<Span color="#57b5ff">.jpg</Span></Heading>
+          <Text color="#57b5ff" letterSpacing=".14em" fontSize="sm" fontWeight="700" textTransform="uppercase">An “I’m feeling lucky” bot for images</Text>
+          <Heading fontSize={{ base: '4rem', md: '7rem' }} lineHeight="1" mt={4} fontWeight="700" letterSpacing="-.03em">tg<Span color="#57b5ff">.jpg</Span></Heading>
           <Text mt={5} maxW="660px" fontSize={{ base: 'lg', md: 'xl' }} lineHeight="1.85" opacity={.82}>在聊天裡打出 mic drop.gif，機器人就去搜尋，回傳第一張能傳送的圖片。支援 .jpg、.png、.gif。</Text>
           <HStack mt={7}><ProjectLink href="https://github.com/chiakich/rust-tg.jpg" label="查看 Rust 原始碼" detail="MIT" accent="#57b5ff" /></HStack>
         </motion.div>

@@ -14,8 +14,8 @@ const KumikoHero = () => (
     <Container maxW="1180px" px={{ base: '24px', md: '40px' }} py={{ base: 14, md: 20 }} position="relative">
       <Stack alignItems="center" textAlign="center" gap={5}>
         <MotionBox initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7 }}>
-          <Text fontFamily="mono" letterSpacing=".28em" color="#ffea2f" fontSize="sm" fontWeight="900">ZERO-INSTALL · CJK · GITHUB-NATIVE</Text>
-          <Heading fontSize={{ base: '3rem', md: '5.5rem' }} lineHeight="1.05" mt={4}>Kumiko <Span color="#ffea2f">Font Editor</Span></Heading>
+          <Text letterSpacing=".14em" color="#ffea2f" fontSize="sm" fontWeight="700" textTransform="uppercase">Zero-install · CJK · GitHub-native</Text>
+          <Heading fontSize={{ base: '3rem', md: '5.5rem' }} lineHeight="1.05" mt={4} fontWeight="700" letterSpacing="-.03em">Kumiko <Span color="#ffea2f">Font Editor</Span></Heading>
           <Text maxW="760px" mx="auto" mt={5} fontSize={{ base: 'lg', md: 'xl' }} lineHeight="1.85" opacity={.8}>打開瀏覽器，就能直接替 GitHub 上的開源中文字體補字。</Text>
           <HStack justifyContent="center" gap={3} mt={7} flexWrap="wrap"><ProjectLink href="https://kumiko.chiaki.ch" label="線上試用" accent="#ffea2f" /><ProjectLink href="https://github.com/chiakich/kumiko-font-editor" label="GitHub" accent="#fafafa" /></HStack>
         </MotionBox>

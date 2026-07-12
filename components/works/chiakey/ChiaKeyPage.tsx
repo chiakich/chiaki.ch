@@ -14,8 +14,8 @@ const ChiaKeyPage = () => (
     <Box backgroundColor="#0e0716" color="white" minHeight="100vh">
       <Head><title>千秋輸入法 ChiaKey - Works</title><meta name="description" content="以 Yahoo! 奇摩輸入法／KeyKey 開源程式碼為基礎的現代 macOS 繁體中文注音輸入法。" /></Head>
       <TopBar /><WorksSubNav /><ChiaKeyHero />
-      <Container maxW="1080px" px={{ base: '24px', md: '40px' }} py={{ base: 14, md: 20 }}>
-        <Stack gap={{ base: 18, md: 24 }}><ChiaKeyStory /><ChiaKeyFeatures /><ChiaKeyLexicon /><ChiaKeyLinks /></Stack>
+      <Container maxW="1080px" px={{ base: '24px', md: '40px' }} py={{ base: 16, md: 24 }}>
+        <Stack gap={{ base: 20, md: 32 }}><ChiaKeyStory /><ChiaKeyFeatures /><ChiaKeyLexicon /><ChiaKeyLinks /></Stack>
       </Container>
     </Box>
   </MotionConfig>

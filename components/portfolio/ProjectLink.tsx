@@ -8,27 +8,35 @@ interface ProjectLinkProps {
   label: string
   detail?: string
   accent?: string
+  solid?: boolean
+  download?: boolean
 }
 
-const ProjectLink = ({ href, label, detail, accent = '#df8a42' }: ProjectLinkProps) => (
+// Apple 式膠囊按鈕：solid 為主要動作（填滿主題色），預設為外框次要動作。
+const ProjectLink = ({ href, label, detail, accent = '#df8a42', solid = false, download = false }: ProjectLinkProps) => (
   <Link
     href={href}
-    target="_blank"
+    target={download ? undefined : '_blank'}
     rel="noreferrer"
-    border="1px solid"
-    borderColor="var(--link-accent)"
-    px={5}
+    download={download || undefined}
+    px={6}
     py={3}
     display="inline-flex"
-    color="var(--link-accent)"
-    backgroundColor="transparent"
-    _hover={{ backgroundColor: 'var(--link-accent)', color: 'black' }}
-    style={{ '--link-accent': accent, transition: 'all .25s ease' } as React.CSSProperties}
+    borderRadius="980px"
+    fontSize="sm"
+    style={{
+      '--link-accent': accent,
+      transition: 'all .25s ease',
+      border: `1px solid ${accent}`,
+      backgroundColor: solid ? accent : 'transparent',
+      color: solid ? '#000' : accent,
+    } as React.CSSProperties}
+    _hover={{ transform: 'scale(1.03)', backgroundColor: 'var(--link-accent)', color: 'black' }}
   >
     <HStack gap={3}>
-      <Text fontWeight="900" letterSpacing="0.08em">{label}</Text>
-      {detail && <Text fontSize="xs" opacity={0.7}>{detail}</Text>}
-      <Text aria-hidden>↗</Text>
+      <Text fontWeight="700" letterSpacing=".02em">{label}</Text>
+      {detail && <Text fontSize="xs" opacity={.75}>{detail}</Text>}
+      {!download && <Text aria-hidden>↗</Text>}
     </HStack>
   </Link>
 )

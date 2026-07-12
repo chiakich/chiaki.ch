@@ -23,11 +23,10 @@ const WorksIndexPage = () => (
     <Head><title>Works - 千秋的作品</title><meta name="description" content="千秋設計與開發的軟體、工具與介面作品。" /></Head>
     <TopBar /><WorksSubNav />
     <Box pt="96px"><Container maxW="1080px" py={12} px={{ base: '24px', md: '40px' }}>
-      <MotionBox initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7 }} mb={14}>
-        <Text fontFamily="mono" fontSize="sm" letterSpacing=".35em" color="#7eb6ff" fontWeight="bold" mb={3}>WORKS&nbsp;&nbsp;//&nbsp;&nbsp;DESIGN &amp; CODE</Text>
-        <Heading fontSize={{ base: '3rem', md: '4.5rem' }} lineHeight={1.05} fontWeight="900" mb={5}>作品<Span color="#7eb6ff">集</Span></Heading>
-        <Box width="180px" height="8px" mb={5} background="repeating-linear-gradient(-45deg, #7eb6ff 0 10px, transparent 10px 20px)" />
-        <Text maxW="620px" fontSize={{ base: 'md', md: 'lg' }} opacity={.85} lineHeight="1.9">把熟悉的工具帶到新的系統、讓複雜的創作變得容易，或只是讓一個每天打開的畫面更好看一點。</Text>
+      <MotionBox initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7 }} mb={16} textAlign="center">
+        <Text fontSize="sm" letterSpacing=".14em" color="#7eb6ff" fontWeight="700" textTransform="uppercase" mb={4}>Works · Design &amp; Code</Text>
+        <Heading fontSize={{ base: '3rem', md: '4.8rem' }} lineHeight={1.05} fontWeight="700" letterSpacing="-.03em" mb={5}>作品<Span color="#7eb6ff">集</Span></Heading>
+        <Text maxW="620px" mx="auto" fontSize={{ base: 'md', md: 'lg' }} opacity={.7} lineHeight="1.9">把熟悉的工具帶到新的系統、讓複雜的創作變得容易，或只是讓一個每天打開的畫面更好看一點。</Text>
       </MotionBox>
       <Stack gap={10}>{works.map((work, index) => <WorkCard key={work.id} work={work} index={index} />)}</Stack>
     </Container></Box>

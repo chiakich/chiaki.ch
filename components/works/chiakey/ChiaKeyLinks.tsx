@@ -18,7 +18,7 @@ const ChiaKeyLinks = () => (
         <HStack gap={3} flexWrap="wrap"><ProjectLink href="https://github.com/chiakich/ChiaKey/releases/latest" label="下載安裝包" detail=".pkg" accent="#c77dff" /><ProjectLink href="https://github.com/chiakich/ChiaKey" label="原始碼" accent="#e3c8f5" /></HStack>
         <Text fontSize="xs" opacity={.48} lineHeight="1.7">ChiaKey 不是 Yahoo 官方產品。原始碼依 BSD-style 授權釋出；Yahoo! 名稱與貢獻者姓名不得在未取得書面同意時用於背書衍生產品。</Text>
       </Stack>
-      <Box backgroundColor="#150d20" border="1px solid #34244a" p={6} position="relative" overflow="hidden">
+      <Box backgroundColor="#150d20" borderRadius="24px" p={7} position="relative" overflow="hidden">
         <Heading fontSize="lg" mb={5}>適合這樣的你</Heading>
         <Stack gap={4}>{audiences.map((item, index) => <HStack key={item} alignItems="start" gap={3}><Text color="#c77dff" fontFamily="mono">0{index + 1}</Text><Text lineHeight="1.7" opacity={.78}>{item}</Text></HStack>)}</Stack>
         <Image src="/assets/works/chiakey/chiaki.gif" alt="千秋角色動畫" position="absolute" right="-12px" bottom="-36px" width="120px" opacity={.24} />

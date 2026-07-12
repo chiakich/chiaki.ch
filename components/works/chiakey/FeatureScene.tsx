@@ -5,23 +5,21 @@ const Heading = styled.h3
 const Text = styled.p
 
 interface FeatureSceneProps {
-  number: string
   title: string
   description: string
-  accent?: string
   children: React.ReactNode
   wide?: boolean
 }
 
-const FeatureScene = ({ number, title, description, accent = '#c77dff', children, wide }: FeatureSceneProps) => (
+// Apple 產品頁式的功能卡：大圓角、無邊框、示範畫面在上、標題與說明在下。
+const FeatureScene = ({ title, description, children, wide }: FeatureSceneProps) => (
   <MotionSection spanColumns={wide}>
     <Box height="100%">
-      <Box backgroundColor="#131018" border="1px solid #2e2438" overflow="hidden" height="100%" _hover={{ borderColor: 'var(--scene-accent)', transform: 'translateY(-3px)' }} style={{ '--scene-accent': accent, transition: 'all .3s ease' } as React.CSSProperties}>
+      <Box backgroundColor="#150d20" borderRadius="28px" overflow="hidden" height="100%" _hover={{ transform: 'translateY(-4px)' }} style={{ transition: 'transform .35s ease' }}>
         <Box aspectRatio="640 / 300" backgroundColor="#dcd2ea">{children}</Box>
-        <Box px={{ base: 5, md: 6 }} py={6}>
-          <Text fontFamily="mono" fontSize="xs" letterSpacing=".2em" color="var(--scene-accent)" fontWeight="900" mb={2}>FEATURE {number}</Text>
-          <Heading fontSize="xl" mb={2}>{title}</Heading>
-          <Text lineHeight="1.8" opacity={.72} fontSize="sm">{description}</Text>
+        <Box px={{ base: 6, md: 8 }} py={7}>
+          <Heading fontSize={{ base: 'xl', md: '1.4rem' }} mb={2} letterSpacing="-.01em">{title}</Heading>
+          <Text lineHeight="1.8" opacity={.62} fontSize="sm">{description}</Text>
         </Box>
       </Box>
     </Box>
