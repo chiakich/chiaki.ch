@@ -2120,6 +2120,10 @@
     border-radius: 7px;
 }
 
+  .ov_visible {
+    overflow: visible;
+}
+
   .bdr_22px {
     border-radius: 22px;
 }
@@ -2186,6 +2190,22 @@
 
   .bd-t_1px_solid_rgba\(255\,255\,255\,\.06\) {
     border-top: 1px solid rgba(255,255,255,.06);
+}
+
+  .trs_transform_220ms_ease {
+    transition: transform 220ms ease;
+}
+
+  .trs_grid-template-rows_260ms_ease\,_opacity_180ms_ease {
+    transition: grid-template-rows 260ms ease, opacity 180ms ease;
+}
+
+  .px_7 {
+    padding-inline: var(--spacing-7);
+}
+
+  .trs_max-height_320ms_cubic-bezier\(0\.22\,_1\,_0\.36\,_1\)\,_opacity_200ms_ease {
+    transition: max-height 320ms cubic-bezier(0.22, 1, 0.36, 1), opacity 200ms ease;
 }
 
   .d_flex {
@@ -4286,6 +4306,30 @@
     --translate-x: 270;
 }
 
+  .trf_translateX\(-12px\) {
+    transform: translateX(-12px);
+}
+
+  .trf_rotate\(180deg\) {
+    transform: rotate(180deg);
+}
+
+  .trf_rotate\(0deg\) {
+    transform: rotate(0deg);
+}
+
+  .grid-tr_1fr {
+    grid-template-rows: 1fr;
+}
+
+  .grid-tr_0fr {
+    grid-template-rows: 0fr;
+}
+
+  .fs_1\.6rem {
+    font-size: 1.6rem;
+}
+
   .mb_5 {
     margin-bottom: var(--spacing-5);
 }
@@ -5526,6 +5570,18 @@
     width: var(--sizes-56);
 }
 
+  .pt_3 {
+    padding-top: var(--spacing-3);
+}
+
+  .max-h_20rem {
+    max-height: 20rem;
+}
+
+  .max-h_0 {
+    max-height: var(--sizes-0);
+}
+
   .before\:bg_repeating-linear-gradient\(0deg\,_transparent\,_transparent_50px\,_rgba\(100\,_100\,_100\,_0\.1\)_50px\,_rgba\(100\,_100\,_100\,_0\.1\)_51px\)\,_repeating-linear-gradient\(60deg\,_transparent\,_transparent_50px\,_rgba\(100\,_100\,_100\,_0\.1\)_50px\,_rgba\(100\,_100\,_100\,_0\.1\)_51px\)\,_repeating-linear-gradient\(120deg\,_transparent\,_transparent_50px\,_rgba\(100\,_100\,_100\,_0\.1\)_50px\,_rgba\(100\,_100\,_100\,_0\.1\)_51px\)::before {
     background: repeating-linear-gradient(0deg, transparent, transparent 50px, rgba(100, 100, 100, 0.1) 50px, rgba(100, 100, 100, 0.1) 51px), repeating-linear-gradient(60deg, transparent, transparent 50px, rgba(100, 100, 100, 0.1) 50px, rgba(100, 100, 100, 0.1) 51px), repeating-linear-gradient(120deg, transparent, transparent 50px, rgba(100, 100, 100, 0.1) 50px, rgba(100, 100, 100, 0.1) 51px);
 }
@@ -6028,9 +6084,6 @@
     .md\:py_10 {
       padding-block: var(--spacing-10);
 }
-    .md\:ov_visible {
-      overflow: visible;
-}
     .md\:gap_32 {
       gap: var(--spacing-32);
 }
@@ -6048,6 +6101,9 @@
 }
     .md\:px_5 {
       padding-inline: var(--spacing-5);
+}
+    .md\:ov_visible {
+      overflow: visible;
 }
     .md\:fs_lg {
       font-size: var(--font-sizes-lg);

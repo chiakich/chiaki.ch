@@ -1,6 +1,6 @@
 import SubNav, { SubNavItem } from './SubNav'
 
-const storyItems: SubNavItem[] = [
+export const storyNavItems: SubNavItem[] = [
   {
     id: 'story',
     title: '故事',
@@ -19,7 +19,7 @@ const storyItems: SubNavItem[] = [
 ]
 
 const StorySubNav = () => {
-  return <SubNav title="千秋稻荷社" items={storyItems} />
+  return <SubNav title="千秋稻荷社" items={storyNavItems} />
 }
 
 export default StorySubNav

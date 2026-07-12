@@ -4,7 +4,7 @@ import type { HTMLStyledProps } from 'styled-system/types/jsx'
 import { css, cx } from 'styled-system/css'
 
 const StyledButton = styled.button
-const DRAWER_TRANSITION_MS = 220
+const DRAWER_TRANSITION_MS = 320
 
 const DrawerMotionContext = React.createContext({ isVisible: false })
 
@@ -265,10 +265,10 @@ export const DrawerOverlay = ({ style, ...props }: HTMLStyledProps<'div'>) => {
       zIndex={30}
       bg="rgba(0, 0, 0, 0.55)"
       opacity={isVisible ? 1 : 0}
-      transition={transition}
       style={{
         pointerEvents: isVisible ? 'auto' : 'none',
         visibility: isVisible ? 'visible' : 'hidden',
+        transition,
         ...style,
       }}
       {...props}
@@ -297,10 +297,11 @@ export const DrawerContent = ({
       color="white"
       boxShadow="0 0 30px rgba(0, 0, 0, 0.45)"
       transform={isVisible ? 'translateX(0)' : 'translateX(-100%)'}
-      transition={transition}
       style={{
         pointerEvents: isVisible ? 'auto' : 'none',
         visibility: isVisible ? 'visible' : 'hidden',
+        transition,
+        willChange: 'transform',
         ...style,
       }}
       {...props}
