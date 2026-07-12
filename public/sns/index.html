@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>SNS — 涼風千秋 | chiaki.ch</title>
+    <meta
+      name="description"
+      content="涼風千秋的社群連結：Plurk、X、Facebook、Instagram、pixiv、Discord。"
+    />
+    <meta name="theme-color" content="#1d1d1f" />
+    <meta property="og:title" content="SNS — 涼風千秋" />
+    <meta property="og:description" content="涼風千秋的社群連結集合頁" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://chiaki.ch/sns/" />
+    <link rel="icon" href="/favicon.ico" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+      }
+      body {
+        min-height: 100svh;
+        background: #000;
+        color: #f5f5f7;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+          'Helvetica Neue', 'PingFang TC', 'Noto Sans TC', 'Microsoft JhengHei',
+          sans-serif;
+        -webkit-font-smoothing: antialiased;
+        display: flex;
+        flex-direction: column;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      /* ── TopBar ───────────────────────── */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 20;
+        background: rgba(29, 29, 31, 0.92);
+        -webkit-backdrop-filter: saturate(180%) blur(20px);
+        backdrop-filter: saturate(180%) blur(20px);
+        border-bottom: 1px solid #27272a;
+      }
+      nav .in {
+        max-width: 1080px;
+        margin: 0 auto;
+        height: 44px;
+        padding: 0 20px;
+        display: flex;
+        align-items: center;
+        gap: 32px;
+      }
+      nav svg.logo {
+        height: 20px;
+        width: 20px;
+        flex: none;
+        display: block;
+      }
+      nav .links {
+        display: flex;
+        gap: 28px;
+        font-size: 17px;
+        font-weight: 600;
+      }
+      nav .links a {
+        opacity: 0.5;
+        transition: opacity 0.2s;
+      }
+      nav .links a:hover {
+        opacity: 1;
+      }
+      @media (max-width: 640px) {
+        nav .in {
+          gap: 18px;
+          padding: 0 16px;
+        }
+        nav .links {
+          gap: 16px;
+          font-size: 14px;
+        }
+      }
+      @media (min-width: 768px) {
+        nav .in {
+          padding: 0 40px;
+        }
+      }
+      @media (min-width: 1024px) {
+        nav .in {
+          padding: 0 60px;
+        }
+      }
+
+      /* ── Page ─────────────────────────── */
+      main {
+        flex: 1;
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 96px 20px 40px;
+        background: radial-gradient(
+          600px 320px at 50% 0,
+          rgba(120, 120, 255, 0.1),
+          transparent 70%
+        );
+      }
+      header.me {
+        text-align: center;
+        margin-bottom: 32px;
+      }
+      .avatar {
+        width: 96px;
+        height: 96px;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      }
+      h1 {
+        margin-top: 16px;
+        font-size: 26px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+      .bio {
+        margin-top: 6px;
+        font-size: 14px;
+        color: rgba(245, 245, 247, 0.55);
+      }
+
+      /* ── Cards ────────────────────────── */
+      ul {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .card {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 12px 16px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition:
+          background 0.2s,
+          transform 0.2s,
+          border-color 0.2s;
+      }
+      a.card:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.22);
+        transform: translateY(-2px);
+      }
+      a.card:active {
+        transform: scale(0.98);
+      }
+      .badge {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        flex: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 19px;
+        color: #fff;
+      }
+      .badge svg {
+        width: 20px;
+        height: 20px;
+        display: block;
+      }
+      .t {
+        min-width: 0;
+      }
+      .t b {
+        display: block;
+        font-size: 16px;
+        font-weight: 600;
+      }
+      .t span {
+        display: block;
+        font-size: 13px;
+        color: rgba(245, 245, 247, 0.5);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .arrow {
+        margin-left: auto;
+        flex: none;
+        opacity: 0.35;
+        font-size: 14px;
+      }
+
+      .plurk {
+        background: #ff574d;
+      }
+      .x {
+        background: #111;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+      }
+      .fb {
+        background: #1877f2;
+      }
+      .ig {
+        background: linear-gradient(
+          45deg,
+          #f09433,
+          #e6683c 25%,
+          #dc2743 50%,
+          #cc2366 75%,
+          #bc1888
+        );
+      }
+      .pixiv {
+        background: #0096fa;
+      }
+      .dc {
+        background: #5865f2;
+      }
+
+      /* Discord：純 CSS 一鍵全選 */
+      .handle {
+        user-select: all;
+        -webkit-user-select: all;
+        color: #f5f5f7;
+        font-weight: 600;
+      }
+      .hint {
+        margin-left: auto;
+        flex: none;
+        font-size: 11px;
+        color: rgba(245, 245, 247, 0.4);
+      }
+
+      footer {
+        padding: 24px;
+        text-align: center;
+        font-size: 12px;
+        color: rgba(245, 245, 247, 0.35);
+      }
+      footer a:hover {
+        color: rgba(245, 245, 247, 0.8);
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="in">
+        <a href="/" aria-label="chiaki.ch Home">
+          <svg
+            class="logo"
+            viewBox="0 0 121.94 121.55"
+            fill="#fff"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M61.17 0a60.78 60.78 0 1 0 60.77 60.78A60.85 60.85 0 0 0 61.17 0zm0 4.37a56.11 56.11 0 0 1 31.28 9.5 7.8 7.8 0 0 0-1.17.15 14.61 14.61 0 0 0-3.82 1.45 20.65 20.65 0 0 0-7.58 6.83 11.21 11.21 0 0 0-1.79 3.89 6.93 6.93 0 0 0-.17 2.33h-4.38a22.57 22.57 0 0 0-.94-2.73 18.51 18.51 0 0 0-3.6-5.72l-.72-.72-7 7-7-7-.13.1-.15.14a17.62 17.62 0 0 0-3.38 4.7A23.77 23.77 0 0 0 49 28.52h-4.28a7.57 7.57 0 0 0 0-1.07 8.78 8.78 0 0 0-.81-3.14 19 19 0 0 0-4-5.54 18.18 18.18 0 0 0-3.12-2.48 17.22 17.22 0 0 0-4.69-2.21 8.26 8.26 0 0 0-2-.32 56 56 0 0 1 31.07-9.39zm33.56 64.35l-.19.27a10 10 0 0 0-1.63 4.83v.5L89 77.17a28.09 28.09 0 0 0-7.94-9.37l-.32-.25h0 .3a27.15 27.15 0 0 0 4.62-.55 28.54 28.54 0 0 0 7.68-2.6zM64.22 95.16a7.87 7.87 0 0 0-1.43-.36 11.72 11.72 0 0 0-2.9 0 6.94 6.94 0 0 0-1.76.41l-3.54-2.61 1.49-1.65a27.92 27.92 0 0 0 5-8.77l.18-.51v.06a1.17 1.17 0 0 1 0 .11 27.87 27.87 0 0 0 6.54 10.64zM29.6 74.44a8.41 8.41 0 0 0-.05-1.22 10.58 10.58 0 0 0-1.12-3.59 7.78 7.78 0 0 0-.75-1.17L29 64.37l.79.4a27.86 27.86 0 0 0 11.86 2.75h.21l-.18.14a26.73 26.73 0 0 0-3.56 3.16 28.69 28.69 0 0 0-4.59 6.47zm9-39.48a5.43 5.43 0 0 0 .53-.17 9.63 9.63 0 0 0 4.44-3.29l.06-.1h4.71l-.3 2.54a28.76 28.76 0 0 0 .1 5.33 26.75 26.75 0 0 0 .86 4.52l.27.92-1.07-.72a28.12 28.12 0 0 0-7-3.28 29 29 0 0 0-4.2-1zm27.55 23.47l15.32-5 .7 2.14-15.33 5a9.9 9.9 0 0 0 2.46 3.26A10 10 0 0 0 65.43 65l9.46 13-1.83 1.33-9.46-13a10 10 0 0 0-2.32 3.34 10 10 0 0 0-2.34-3.34l-9.46 13L47.66 78l9.45-13a10 10 0 0 0-3.86-1.16 10.18 10.18 0 0 0 2.46-3.26l-15.34-5 .7-2.14 15.32 5a7.59 7.59 0 0 0 .17-2c0-.66-.14-1.31-.2-2l1.79.78a7.23 7.23 0 0 0 2 .46v-3.21-3.21-9.64h2.25V55.7a6.56 6.56 0 0 0 2-.45l1.84-.8a10 10 0 0 0-.09 3.98zM83 40.21a28.09 28.09 0 0 0-8.94 3.94l-.76.52s0-.17.07-.26a27.44 27.44 0 0 0 1.21-7.25 29.14 29.14 0 0 0-.29-5.16c0-.2-.07-.41-.11-.61H79a8 8 0 0 0 .52.67A10.13 10.13 0 0 0 83 34.68q.36.15.72.27l1.55 4.78-2.27.48zM6.84 75.88a56.2 56.2 0 0 1 19.4-59.34 8.74 8.74 0 0 0-.33 2.64 15.49 15.49 0 0 0 .33 3.19 20.73 20.73 0 0 0 4.3 9.18 11 11 0 0 0 3 2.68 7.19 7.19 0 0 0 2 .81l-1.44 4.4a22.85 22.85 0 0 0-5.59.42 16.78 16.78 0 0 0-4.61 1.63l-.28.16 4.5 8.82L19.29 55a1.85 1.85 0 0 0 .11.24 17.59 17.59 0 0 0 3.93 5.21 23.28 23.28 0 0 0 3.14 2.48l-1.2 3.69a6.67 6.67 0 0 0-.92-.33 9 9 0 0 0-3.84-.12 20.53 20.53 0 0 0-10.23 5.11 15.68 15.68 0 0 0-2.72 3.19 8 8 0 0 0-.72 1.41zm1.52 4.7a9.08 9.08 0 0 0 2.21 1 18.82 18.82 0 0 0 5.82.85 18.28 18.28 0 0 0 3.54-.31 20.69 20.69 0 0 0 4.64-1.39 9.93 9.93 0 0 0 3.31-2.27 6.25 6.25 0 0 0 .85-1.12L32.3 80a22.91 22.91 0 0 0-1.48 6 17.15 17.15 0 0 0 .14 4.8 2.58 2.58 0 0 0 .04.2l9.76-1.55 1.56 9.8 1.48-.26a19.27 19.27 0 0 0 6.2-2.61 27.2 27.2 0 0 0 2.46-1.8l3.17 2.3a7.23 7.23 0 0 0-1.24 2 11.29 11.29 0 0 0-.82 3.85 21.75 21.75 0 0 0 .18 4.27 20.21 20.21 0 0 0 2.76 7.67A10.88 10.88 0 0 0 58.4 117l.08.07A56.51 56.51 0 0 1 8.36 80.58zm55.51 36.53a7.38 7.38 0 0 0 .69-.68 13.73 13.73 0 0 0 2.15-3.24A20.53 20.53 0 0 0 68.82 102a10.36 10.36 0 0 0-.72-3 7.08 7.08 0 0 0-1.31-2.09l3.27-2.37a23.66 23.66 0 0 0 2.4 1.78 18.68 18.68 0 0 0 7.06 2.85l.71.1 1.55-9.79L91.56 91v-.17a17.38 17.38 0 0 0 .11-5.29 21.89 21.89 0 0 0-1.16-4.79l-.36-.87 3.49-2.52A7.39 7.39 0 0 0 96 79.82a14.14 14.14 0 0 0 4 1.82 21 21 0 0 0 6.58 1l1.64-.11a17 17 0 0 0 3.93-.8 10 10 0 0 0 1.73-.78 56.5 56.5 0 0 1-50.01 36.16zm50.95-42.66a16.15 16.15 0 0 0-2.46-2.89 20.64 20.64 0 0 0-9.69-5.16 10 10 0 0 0-3.81-.16 6.42 6.42 0 0 0-1.74.53L95.88 63a22 22 0 0 0 5.68-5.2 15.63 15.63 0 0 0 1.69-2.85l-8.83-4.49 4.49-8.84-.54-.29a18.17 18.17 0 0 0-5.63-1.7 23.46 23.46 0 0 0-4.51-.18l-1.38-4.27a6.77 6.77 0 0 0 1.67-.54 9.35 9.35 0 0 0 2.56-1.85A18.72 18.72 0 0 0 94 28.92a20.12 20.12 0 0 0 2.82-9.69c0-.44 0-.9-.09-1.36a7.87 7.87 0 0 0-.18-1 56.27 56.27 0 0 1 19 58.89 10.54 10.54 0 0 0-.73-1.31zM89.12 94.1a4.63 4.63 0 1 0 4.54 4.64 4.61 4.61 0 0 0-4.54-4.64zm-55.31.22a4.63 4.63 0 1 0 4.63 4.61 4.61 4.61 0 0 0-4.63-4.61zm-17.28-43.2a4.63 4.63 0 1 0-4.61-4.76 4.61 4.61 0 0 0 4.61 4.76zm89.36-9.6a4.63 4.63 0 1 0 4.63 4.64 4.59 4.59 0 0 0-4.63-4.64zM61.09 18.5a4.63 4.63 0 1 0-4.63-4.63 4.64 4.64 0 0 0 4.63 4.63z"
+            />
+          </svg>
+        </a>
+        <div class="links">
+          <a href="/">Home</a>
+          <a href="/about">About</a>
+          <a href="/story">Story</a>
+          <a href="/works">Works</a>
+          <a href="/fonts">Fonts</a>
+        </div>
+      </div>
+    </nav>
+
+    <main>
+      <header class="me">
+        <img
+          class="avatar"
+          src="data:image/webp;base64,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"
+          alt="涼風千秋"
+          width="96"
+          height="96"
+        />
+        <h1>涼風千秋</h1>
+        <p class="bio">Chiaki.C</p>
+      </header>
+
+      <ul>
+        <li>
+          <a
+            class="card"
+            href="https://www.plurk.com/chiakich"
+            target="_blank"
+            rel="noopener"
+          >
+            <span class="badge plurk">P</span>
+            <span class="t"><b>Plurk</b><span>@chiakich</span></span>
+            <span class="arrow">↗</span>
+          </a>
+        </li>
+
+        <li>
+          <a
+            class="card"
+            href="https://x.com/chiakiuk"
+            target="_blank"
+            rel="noopener"
+          >
+            <span class="badge x"
+              ><svg
+                viewBox="0 0 24 24"
+                fill="#fff"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"
+                /></svg
+            ></span>
+            <span class="t"><b>X (Twitter)</b><span>@chiakiuk</span></span>
+            <span class="arrow">↗</span>
+          </a>
+        </li>
+
+        <li>
+          <a
+            class="card"
+            href="https://www.facebook.com/akira002"
+            target="_blank"
+            rel="noopener"
+          >
+            <span class="badge fb"
+              ><svg
+                viewBox="0 0 24 24"
+                fill="#fff"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
+                /></svg
+            ></span>
+            <span class="t"><b>Facebook</b><span>akira002</span></span>
+            <span class="arrow">↗</span>
+          </a>
+        </li>
+
+        <li>
+          <a
+            class="card"
+            href="https://www.instagram.com/akisakuya"
+            target="_blank"
+            rel="noopener"
+          >
+            <span class="badge ig"
+              ><svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#fff"
+                stroke-width="1.9"
+                stroke-linecap="round"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="5" />
+                <circle cx="12" cy="12" r="4.2" />
+                <circle cx="17.4" cy="6.6" r=".4" fill="#fff" stroke="none" />
+                <circle cx="17.4" cy="6.6" r="1.1" stroke-width="1.2" /></svg
+            ></span>
+            <span class="t"><b>Instagram</b><span>@akisakuya</span></span>
+            <span class="arrow">↗</span>
+          </a>
+        </li>
+
+        <li>
+          <a
+            class="card"
+            href="https://www.pixiv.net/users/3341949"
+            target="_blank"
+            rel="noopener"
+          >
+            <span class="badge pixiv">P</span>
+            <span class="t"><b>pixiv</b><span>users/3341949</span></span>
+            <span class="arrow">↗</span>
+          </a>
+        </li>
+
+        <li>
+          <div class="card">
+            <span class="badge dc"
+              ><svg
+                viewBox="0 0 24 24"
+                fill="#fff"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.865-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.058a.082.082 0 0 0 .031.056 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"
+                /></svg
+            ></span>
+            <span class="t"><b>Discord</b><span class="handle">chiakic</span></span>
+            <span class="hint">點選 ID 全選複製</span>
+          </div>
+        </li>
+      </ul>
+    </main>
+
+    <footer><a href="/">chiaki.ch</a></footer>
+  </body>
+</html>
