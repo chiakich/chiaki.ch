@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "panda codegen && panda cssgen --watch & next dev",
-    "build": "panda codegen && panda cssgen && next build && node scripts/generateOgImages.js",
+    "build": "panda codegen && panda cssgen && next build",
+    "build:og": "panda codegen && panda cssgen && next build && node scripts/generateOgImages.js",
     "build:site": "panda codegen && panda cssgen && next build",
     "generate-og-images": "node scripts/generateOgImages.js",
     "start": "next start",

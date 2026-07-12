@@ -67,7 +67,7 @@ const CharacterIntroduction: React.FC = () => {
             「はおーっ！涼風千秋です！」
           </Text>
           <Text fontSize={{ base: 'md', md: 'lg' }} lineHeight="1.8" opacity={0.9}>
-            千秋稲荷社第一研究室室長，兼第▓▓代巫女，棕髮獸耳神使狐狸大小姐。
+            千秋稻荷社第一研究室室長，兼第▓▓代巫女，棕髮獸耳神使狐狸大小姐。
             <br />
             非常善良，喜歡跟人們交流，希望能開心的度過每一天。
             <br />

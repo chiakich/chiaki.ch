@@ -13,17 +13,19 @@ type PageMeta = {
 const pageMetadata: Record<string, PageMeta> = {
   '/': {
     title: '千秋稻荷社 - Chiaki Inari Shrine',
-    description: '千秋的個人網站與作品展示。',
+    description:
+      '千秋稻荷社是專注於技術、字型設計與次文化研究的個人同人社團。誕生於對開源精神與同人文化的熱愛，本社團的主要活動為畫畫、周邊製作發行、軟體工程、開源字體開發及模型製作相關等。期望透過每一場活動，將設計、科技與生活中的次文化樂趣，以最純粹的方式傳遞給同好。',
     image: '/og/home.jpeg',
   },
   '/about': {
     title: '關於千秋 - 千秋稻荷社',
-    description: '認識涼風千秋，以及她喜歡的創作、旅行與日常。',
+    description:
+      '您好！我是涼風千秋。畫畫、做設計師、寫程式的人。永遠都在挖坑與填坑的路上。',
     image: '/og/about.jpeg',
   },
   '/links': {
     title: '連結 - 千秋稻荷社',
-    description: '涼風千秋的社群與網站連結。',
+    description: '社群與網站連結。',
     image: '/og/links.jpeg',
   },
   '/story': {
@@ -48,22 +50,23 @@ const pageMetadata: Record<string, PageMeta> = {
   },
   '/works/chiakey': {
     title: '千秋輸入法 ChiaKey - 千秋稻荷社',
-    description: '以 Yahoo! 奇摩輸入法／KeyKey 開源程式碼為基礎的現代 macOS 繁體中文注音輸入法。',
+    description:
+      '以 Yahoo! 奇摩輸入法開源程式碼為基礎的現代 macOS 繁體中文注音輸入法。',
     image: '/og/works-chiakey.jpeg',
   },
   '/works/kumiko': {
     title: 'Kumiko Font Editor - 千秋稻荷社',
-    description: '完全在瀏覽器運作、以 GitHub 為核心的 CJK 補字工具。',
+    description: '完全在瀏覽器運作的字體編輯與補字工具。',
     image: '/og/works-kumiko.jpeg',
   },
   '/works/tg-jpg': {
     title: 'tg.jpg Telegram Bot - 千秋稻荷社',
-    description: '輸入圖片檔名，就回覆第一張可用搜尋結果的 Telegram bot。',
+    description: '輸入.jpg，回覆第一張可用搜尋結果的 Telegram bot。',
     image: '/og/works-tg-jpg.jpeg',
   },
   '/works/tokyono-sora': {
     title: '東京乃空 Tokyono Sora - 千秋稻荷社',
-    description: '重新設計噗浪時間軸的免費 CSS 佈景。',
+    description: '重新設計噗浪時間軸的 CSS 佈景。',
     image: '/og/works-tokyono-sora.jpeg',
   },
   '/fonts': {
@@ -83,7 +86,7 @@ const pageMetadata: Record<string, PageMeta> = {
   },
   '/fonts/huninn': {
     title: 'jf open 粉圓 - 千秋稻荷社',
-    description: '參與製作的台灣開源圓體。',
+    description: 'justfont 推出的一款台灣開源圓體。',
     image: '/og/fonts-huninn.jpeg',
   },
 }
@@ -104,7 +107,11 @@ const PageMeta = () => {
       <meta key="og:type" property="og:type" content="website" />
       <meta key="og:url" property="og:url" content={canonicalUrl} />
       <meta key="og:title" property="og:title" content={metadata.title} />
-      <meta key="og:description" property="og:description" content={metadata.description} />
+      <meta
+        key="og:description"
+        property="og:description"
+        content={metadata.description}
+      />
       <meta key="og:image" property="og:image" content={imageUrl} />
       <meta key="og:image:width" property="og:image:width" content="1200" />
       <meta key="og:image:height" property="og:image:height" content="630" />
@@ -114,9 +121,17 @@ const PageMeta = () => {
       <meta key="twitter:card" name="twitter:card" content="summary_large_image" />
       <meta key="twitter:url" name="twitter:url" content={canonicalUrl} />
       <meta key="twitter:title" name="twitter:title" content={metadata.title} />
-      <meta key="twitter:description" name="twitter:description" content={metadata.description} />
+      <meta
+        key="twitter:description"
+        name="twitter:description"
+        content={metadata.description}
+      />
       <meta key="twitter:image" name="twitter:image" content={imageUrl} />
-      <meta key="twitter:image:alt" name="twitter:image:alt" content={metadata.title} />
+      <meta
+        key="twitter:image:alt"
+        name="twitter:image:alt"
+        content={metadata.title}
+      />
     </Head>
   )
 }
