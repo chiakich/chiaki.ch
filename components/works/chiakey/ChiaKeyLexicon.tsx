@@ -67,7 +67,9 @@ const LexiconLayers = () => (
     position="relative"
     height={{ base: '450px', md: '450px' }}
     style={{ perspective: '1200px' }}
-    overflow="visible"
+    // 旋轉後的圖層在窄螢幕會超出內容欄，造成整頁可水平捲動。
+    // 手機版裁切裝飾性延伸；桌面仍保留原本的立體出框效果。
+    overflow={{ base: 'hidden', md: 'visible' }}
   >
     {layers.map(({ name, local, fill, border }, index) => (
       <motion.div
