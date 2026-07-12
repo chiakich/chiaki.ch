@@ -1656,6 +1656,18 @@
     background: linear-gradient(180deg, rgba(23,45,59,.24), rgba(8,22,33,.88));
 }
 
+  .bg_silver {
+    background: silver;
+}
+
+  .bd_none {
+    border: var(--borders-none);
+}
+
+  .p_0_12px {
+    padding: 0 12px;
+}
+
   .gap_4 {
     gap: var(--spacing-4);
 }
@@ -2084,6 +2096,10 @@
     padding-block: var(--spacing-12);
 }
 
+  .trs_color_1s\,_text-shadow_1s {
+    transition: color 1s, text-shadow 1s;
+}
+
   .trs_background-color_0\.25s_ease\,_color_0\.25s_ease {
     transition: background-color 0.25s ease, color 0.25s ease;
 }
@@ -2162,6 +2178,42 @@
 
   .bd-t_1px_solid_rgba\(255\,255\,255\,\.06\) {
     border-top: 1px solid rgba(255,255,255,.06);
+}
+
+  .trs_filter_1s {
+    transition: filter 1s;
+}
+
+  .trs_filter_0\.5s {
+    transition: filter 0.5s;
+}
+
+  .trs_filter_0\.5s_ease-in-out {
+    transition: filter 0.5s ease-in-out;
+}
+
+  .trs_filter_0\.3s_ease-in-out {
+    transition: filter 0.3s ease-in-out;
+}
+
+  .trs_filter_0\.1s_0\.3s_ease-in-out {
+    transition: filter 0.1s 0.3s ease-in-out;
+}
+
+  .bdr_0 {
+    border-radius: 0;
+}
+
+  .td_underline {
+    text-decoration: underline;
+}
+
+  .mx_0 {
+    margin-inline: var(--spacing-0);
+}
+
+  .mx_2 {
+    margin-inline: var(--spacing-2);
 }
 
   .d_flex {
@@ -4182,10 +4234,6 @@
     opacity: 0.55;
 }
 
-  .op_0\.76 {
-    opacity: 0.76;
-}
-
   .translate-x_80 {
     --translate-x: var(--spacing-80);
 }
@@ -4244,6 +4292,30 @@
 
   .translate-x_270 {
     --translate-x: 270;
+}
+
+  .bx-sh_inset_-1px_-1px_\#0a0a0a\,_inset_1px_1px_\#fff\,_inset_-2px_-2px_grey\,_inset_2px_2px_\#dfdfdf {
+    box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #fff, inset -2px -2px grey, inset 2px 2px #dfdfdf;
+}
+
+  .bx-s_border-box {
+    box-sizing: border-box;
+}
+
+  .tsh_0_0_\#222 {
+    text-shadow: 0 0 #222;
+}
+
+  .fs_s {
+    font-size: s;
+}
+
+  .ff_cubic11 {
+    font-family: cubic11;
+}
+
+  .fw_500 {
+    font-weight: 500;
 }
 
   .mb_5 {
@@ -5458,10 +5530,6 @@
     max-width: 660px;
 }
 
-  .max-w_220px {
-    max-width: 220px;
-}
-
   .top_4 {
     top: var(--spacing-4);
 }
@@ -5484,6 +5552,14 @@
 
   .w_56 {
     width: var(--sizes-56);
+}
+
+  .min-h_23px {
+    min-height: 23px;
+}
+
+  .min-w_75px {
+    min-width: 75px;
 }
 
   .before\:bg_repeating-linear-gradient\(0deg\,_transparent\,_transparent_50px\,_rgba\(100\,_100\,_100\,_0\.1\)_50px\,_rgba\(100\,_100\,_100\,_0\.1\)_51px\)\,_repeating-linear-gradient\(60deg\,_transparent\,_transparent_50px\,_rgba\(100\,_100\,_100\,_0\.1\)_50px\,_rgba\(100\,_100\,_100\,_0\.1\)_51px\)\,_repeating-linear-gradient\(120deg\,_transparent\,_transparent_50px\,_rgba\(100\,_100\,_100\,_0\.1\)_50px\,_rgba\(100\,_100\,_100\,_0\.1\)_51px\)::before {
@@ -5762,6 +5838,14 @@
     border-color: #febb27;
 }
 
+  .focus\:ring_1px_dotted_\#000:is(:focus, [data-focus]) {
+    outline: 1px dotted #000;
+}
+
+  .focus\:ring-o_-4px:is(:focus, [data-focus]) {
+    outline-offset: -4px;
+}
+
   .hover\:bg_gray\.800:is(:hover, [data-hover]) {
     background: var(--colors-gray-800);
 }
@@ -5784,6 +5868,14 @@
 
   .hover\:bg_rgba\(255\,_255\,_255\,_0\.12\):is(:hover, [data-hover]) {
     background: rgba(255, 255, 255, 0.12);
+}
+
+  .hover\:bg_\#e0e0e0:is(:hover, [data-hover]) {
+    background: #e0e0e0;
+}
+
+  .hover\:bg_silver:is(:hover, [data-hover]) {
+    background: silver;
 }
 
   .hover\:bd-c_\#df8a4288:is(:hover, [data-hover]) {
@@ -5850,8 +5942,32 @@
     transform: translateY(-4px);
 }
 
+  .hover\:bg-c_silver:is(:hover, [data-hover]) {
+    background-color: silver;
+}
+
+  .hover\:filter_brightness\(1\):is(:hover, [data-hover]) {
+    filter: brightness(1);
+}
+
+  .hover\:cursor_pointer:is(:hover, [data-hover]) {
+    cursor: pointer;
+}
+
+  .hover\:cursor_default:is(:hover, [data-hover]) {
+    cursor: default;
+}
+
   .active\:filter_brightness\(1\.5\):is(:active, [data-active]) {
     filter: brightness(1.5);
+}
+
+  .active\:bx-sh_inset_-1px_-1px_\#fff\,_inset_1px_1px_\#0a0a0a\,_inset_-2px_-2px_\#dfdfdf\,_inset_2px_2px_grey:is(:active, [data-active]) {
+    box-shadow: inset -1px -1px #fff, inset 1px 1px #0a0a0a, inset -2px -2px #dfdfdf, inset 2px 2px grey;
+}
+
+  .active\:tsh_1px_1px_\#222:is(:active, [data-active]) {
+    text-shadow: 1px 1px #222;
 }
 
   .hover\:\[\&_\.interest-en\]\:c_\#df8a42:is(:hover, [data-hover]) .interest-en {
@@ -6263,8 +6379,8 @@
     .md\:pb_10 {
       padding-bottom: var(--spacing-10);
 }
-    .md\:h_520px {
-      height: 520px;
+    .md\:h_450px {
+      height: 450px;
 }
     .md\:h_140px {
       height: 140px;
