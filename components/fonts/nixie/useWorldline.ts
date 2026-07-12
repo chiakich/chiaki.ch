@@ -4,7 +4,8 @@ import { WORLDLINES } from './nixieTheme'
 const clockValue = () => {
   const now = new Date()
   const pad = (value: number) => String(value).padStart(2, '0')
-  return `${now.getHours() >= 12 ? 1 : 0}.${pad(now.getMinutes())}${pad(now.getSeconds())}`
+  // 小數點後六位（分分秒秒＋百分之一秒），跟世界線變動率與 $ 背景陰極一樣寬
+  return `${now.getHours() >= 12 ? 1 : 0}.${pad(now.getMinutes())}${pad(now.getSeconds())}${pad(Math.floor(now.getMilliseconds() / 10))}`
 }
 
 export const useWorldline = () => {
