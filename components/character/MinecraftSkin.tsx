@@ -22,7 +22,7 @@ const MinecraftSkin: React.FC = () => {
           })
 
           // Load the skin
-          viewer.loadSkin('/assets/about/mc_skin.png')
+          viewer.loadSkin('/assets/story/character/minecraft-skin.png')
 
           // Set up controls
           viewer.controls.enableRotate = true

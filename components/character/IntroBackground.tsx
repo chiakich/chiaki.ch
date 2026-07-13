@@ -34,7 +34,7 @@ const IntroBackground: React.FC<{ children: React.ReactNode }> = ({ children }) 
         right: 0,
         bottom: 0,
         backgroundAttachment: 'fixed',
-        backgroundImage: 'url(/assets/about/main_1.png)',
+        backgroundImage: 'url(/assets/story/character/gallery/portrait-1.png)',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: {
           base: 'right 10% top 10%',

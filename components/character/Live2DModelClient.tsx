@@ -164,7 +164,7 @@ const Live2DModelClient: React.FC<Live2DModelClientProps> = ({
 
       // Load model
       const model = await Live2DModel.from(
-        '/assets/about/chiakiL2Dv2/chiaki.model3.json',
+        '/assets/story/character/live2d/chiaki.model3.json',
         { autoInteract: false }
       )
 

@@ -44,7 +44,7 @@ const stickers: Sticker[] = [
   {
     id:'oorai',
     kind: 'image',
-    src: '/assets/img/oorai.avif',
+    src: '/assets/about/stickers/oorai.avif',
     size: 150,
     title: 'Proud supporter of 大洗女子学園',
     description: '超級喜歡少女與戰車，大洗已經變成比老家還熟悉的小鎮了。海樂祭、八朔祭，冬天跟夏天都去過了！',
@@ -66,7 +66,7 @@ const stickers: Sticker[] = [
   {
     id:'clip',
     kind: 'image',
-    src: '/assets/img/clip.png',
+    src: '/assets/about/stickers/clip.png',
     size: 100,
     title: 'Clip Studio Paint',
     description: 'Clip Studio Paint 是我最常用的繪圖軟體！',

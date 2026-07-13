@@ -11,9 +11,9 @@ const Image = styled.img
 
 // Character concept art images
 const conceptArts = [
-  '/assets/about/concept1.jpg',
-  '/assets/about/concept2.jpg',
-  '/assets/about/concept3.png',
+  '/assets/story/character/concept-art/default.jpg',
+  '/assets/story/character/concept-art/new-outfit.jpg',
+  '/assets/story/character/concept-art/birthday-outfit.png',
 ]
 
 const conceptTitles = ['設定圖', '新衣裝設定圖', '生日衣裝']

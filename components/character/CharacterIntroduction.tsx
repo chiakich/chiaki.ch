@@ -15,11 +15,11 @@ const CharacterIntroduction: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const characterArts = [
-    '/assets/about/main_1.png',
-    '/assets/about/main_2.png',
-    '/assets/about/main_3.png',
-    '/assets/about/main_4.png',
-    '/assets/about/chiaki.png',
+    '/assets/story/character/gallery/portrait-1.png',
+    '/assets/story/character/gallery/portrait-2.png',
+    '/assets/story/character/gallery/portrait-3.png',
+    '/assets/story/character/gallery/portrait-4.png',
+    '/assets/story/character/gallery/portrait-5.png',
   ]
 
   const slides = characterArts.map((src) => ({
@@ -77,7 +77,7 @@ const CharacterIntroduction: React.FC = () => {
             生日：2月27日
           </Text>
           <Image
-            src="/assets/about/signv2_animated.svg"
+            src="/assets/story/character/signature-animated.svg"
             alt="Chiaki Sign"
             w="50%"
             mt="20px"
