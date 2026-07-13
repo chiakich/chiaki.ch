@@ -7,6 +7,7 @@ export const worksNavItems: SubNavItem[] = [
   { id: 'kumiko', title: 'Kumiko', path: '/works/kumiko' },
   { id: 'tokyono-sora', title: '東京乃空', path: '/works/tokyono-sora' },
   { id: 'tg-jpg', title: 'tg.jpg', path: '/works/tg-jpg' },
+  { id: 'split-flap', title: 'Split Flap', path: '/works/split-flap' },
 ]
 
 const WorksSubNav = () => <SubNav title="Works" items={worksNavItems} />

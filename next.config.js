@@ -2,6 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   output: 'export',
+  // react-split-flap ships type:module with a CJS .js main; bundle it instead of requiring it
+  transpilePackages: ['react-split-flap'],
   images: {
     loader: 'custom',
     loaderFile: './imageLoader.ts',

@@ -1,6 +1,10 @@
+import dynamic from 'next/dynamic'
 import { motion } from 'framer-motion'
 import { Box, Flex, Grid, HStack, styled } from 'styled-system/jsx'
 import VerticalCandidateMenu from 'components/works/chiakey/VerticalCandidateMenu'
+
+// Flap components are client-only (react-split-flap injects styles at runtime)
+export const SplitFlapSpecimen = dynamic(() => import('components/works/split-flap/BoardSpecimen'), { ssr: false })
 
 const Text = styled.p
 const Span = styled.span

@@ -64,6 +64,11 @@ const pageMetadata: Record<string, PageMeta> = {
     description: '輸入.jpg，回覆第一張可用搜尋結果的 Telegram bot。',
     image: '/og/works-tg-jpg.jpeg',
   },
+  '/works/split-flap': {
+    title: 'react-split-flap - 千秋稻荷社',
+    description: '重現車站翻頁顯示器的 React 元件，致敬京急川崎駅的パタパタ發車標。',
+    image: '/og/works-split-flap.jpeg',
+  },
   '/works/tokyono-sora': {
     title: '東京乃空 Tokyono Sora - 千秋稻荷社',
     description: '重新設計噗浪時間軸的 CSS 佈景。',

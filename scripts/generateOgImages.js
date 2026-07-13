@@ -31,6 +31,7 @@ const pages = [
   ['/works', 'works'],
   ['/works/chiakey', 'works-chiakey'],
   ['/works/kumiko', 'works-kumiko'],
+  ['/works/split-flap', 'works-split-flap'],
   ['/works/tg-jpg', 'works-tg-jpg'],
   ['/works/tokyono-sora', 'works-tokyono-sora'],
   ['/fonts', 'fonts'],
