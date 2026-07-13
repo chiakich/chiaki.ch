@@ -9,7 +9,6 @@ const MotionBox = motion(Box)
 const STICKER_SCALE = 0.8
 const PAN_LIMIT_X = 560
 const PAN_LIMIT_Y = 420
-const IMAGE_OUTLINE_PADDING = 8
 
 type StickerBase = {
   id: string
@@ -35,6 +34,7 @@ type ImageSticker = StickerBase & {
   src: string
   size: number
   round?: boolean
+  whiteOutline?: boolean
 }
 
 type Sticker = TextSticker | ImageSticker
@@ -70,9 +70,82 @@ const stickers: Sticker[] = [
     size: 100,
     title: 'Clip Studio Paint',
     description: 'Clip Studio Paint 是我最常用的繪圖軟體！',
-    x: -150,
+    x: -180,
     y: 150,
     rotation: -5,
+    whiteOutline: false,
+  },{
+    id:'WTM',
+    kind: 'image',
+    src: '/assets/about/stickers/wtm.jpg',
+    size: 100,
+    title: 'Google Women Techmakers',
+    description: 'WTM 2023 講者',
+    x: 150,
+    y: -150,
+    rotation: 5,
+  },{
+    id: 'coscup',
+    kind: 'image',
+    src: '/assets/about/stickers/coscup.svg',
+    size: 200,
+    title: 'COSCUP 台灣開源人年會',
+    description: 'COSCUP 資深會眾/審稿委員',
+    x: -180,
+    y: -150,
+    rotation: -8,
+  },{
+    id: 'sitcon',
+    kind: 'image',
+    src: '/assets/about/stickers/sitcon.png',
+    size: 200,
+    title: 'SITCON 學生計算機年會',
+    description: 'SITCON 講者',
+    x: 0,
+    y: -200,
+    rotation: 0,
+  },{
+    id: 'justfont',
+    kind: 'image',
+    src: '/assets/about/stickers/jf.jpg',
+    size: 200,
+    title: 'justfont',
+    description: 'jf ex-member',
+    x: 200,
+    y: 0,
+    rotation: 3,
+  },{
+    id:'glyphs4',
+    kind: 'image',
+    src: '/assets/about/stickers/glyphs4.png',
+    size: 150,
+    title: 'Glyphs 4',
+    description: 'Glyphs 4 zh-Hant Localization Translator',
+    x: -200,
+    y: 0,
+    rotation: -3,
+    whiteOutline: false,
+  },{
+    id:'arctic-code-vault-contributor',
+    kind: 'image',
+    src: '/assets/about/stickers/arctic-code-vault-contributor.png',
+    size: 100,
+    title: 'GitHub Arctic Code Vault Contributor',
+    description: '@chiakich contributed code to several repositories in the 2020 GitHub Archive Program.',
+    x: 70,
+    y: 150,
+    rotation: 4,
+    whiteOutline: false,
+  },{
+    id: 'apple-developer',
+    kind: 'image',
+    src: '/assets/about/stickers/apple-developer.png',
+    size: 150,
+    title: 'Apple Developer',
+    description: 'Apple Developer Program Member',
+    x: -50,
+    y: 150,
+    rotation: -2
   }
 ]
 
@@ -84,17 +157,17 @@ const StickerFace = ({ sticker }: { sticker: Sticker }) => {
         alignItems="center"
         justifyContent="center"
         overflow="visible"
-        style={{
-          width: sticker.size + IMAGE_OUTLINE_PADDING * 2,
-          height: sticker.size + IMAGE_OUTLINE_PADDING * 2,
-        }}
       >
         <styled.img
           src={sticker.src}
           alt={sticker.title}
           style={{
             filter:
-              'drop-shadow(2px 0 white) drop-shadow(-2px 0 white) drop-shadow(0 2px white) drop-shadow(0 -2px white) drop-shadow(1.5px 1.5px white) drop-shadow(-1.5px 1.5px white) drop-shadow(1.5px -1.5px white) drop-shadow(-1.5px -1.5px white) drop-shadow(0 6px 10px rgba(0,0,0,0.5))',
+              sticker.whiteOutline === false
+                ? 'drop-shadow(0 6px 10px rgba(0,0,0,0.5))'
+                : 'drop-shadow(2px 0 white) drop-shadow(-2px 0 white) drop-shadow(0 2px white) drop-shadow(0 -2px white) drop-shadow(1.5px 1.5px white) drop-shadow(-1.5px 1.5px white) drop-shadow(1.5px -1.5px white) drop-shadow(-1.5px -1.5px white) drop-shadow(0 6px 10px rgba(0,0,0,0.5))',
+            maxWidth: sticker.size,
+            maxHeight: sticker.size,
           }}
           objectFit="cover"
           display="block"
