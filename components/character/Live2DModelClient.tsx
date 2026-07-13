@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 import { Box } from 'styled-system/jsx'
 
 // Add type definition for window.PIXI
@@ -23,9 +23,13 @@ const Live2DModelClient: React.FC<Live2DModelClientProps> = ({
   const modelRef = useRef<any>(null)
   const cleanupRef = useRef<(() => void) | null>(null)
   const isInitializingRef = useRef(false)
+  const setupModelAnimationsRef = useRef<(model: any) => void>(() => {})
+  const setupModelInteractionsRef = useRef<
+    (model: any, canvas: HTMLCanvasElement) => void
+  >(() => {})
 
   // Calculate model positioning
-  const calculateModelPosition = (width: number, height: number) => {
+  const calculateModelPosition = useCallback((width: number, height: number) => {
     const modelOriginalWidth = 774
     const modelOriginalHeight = 1593
     const scaleFactor = 0.3
@@ -44,10 +48,10 @@ const Live2DModelClient: React.FC<Live2DModelClientProps> = ({
       positionX: width / 2,
       positionY: -modelScale * 2300,
     }
-  }
+  }, [])
 
   // Update model position and scale
-  const updateModelPosition = (width: number, height: number) => {
+  const updateModelPosition = useCallback((width: number, height: number) => {
     if (!modelRef.current || !appRef.current) return
 
     const { modelScale, anchorX, anchorY, positionX, positionY } =
@@ -58,10 +62,10 @@ const Live2DModelClient: React.FC<Live2DModelClientProps> = ({
     modelRef.current.y = positionY
     modelRef.current.anchor.set(anchorX, anchorY)
     appRef.current.renderer.resize(width, height)
-  }
+  }, [calculateModelPosition])
 
   // Get container dimensions
-  const getContainerDimensions = () => {
+  const getContainerDimensions = useCallback(() => {
     if (!containerRef.current) return { width: 0, height: 0 }
 
     if (fixedWidth && fixedHeight) {
@@ -72,18 +76,18 @@ const Live2DModelClient: React.FC<Live2DModelClientProps> = ({
       width: containerRef.current.offsetWidth,
       height: containerRef.current.offsetHeight,
     }
-  }
+  }, [fixedHeight, fixedWidth])
 
   // Handle resize events
-  const handleResize = () => {
+  const handleResize = useCallback(() => {
     const { width, height } = getContainerDimensions()
     if (width > 0 && height > 0 && modelRef.current) {
       updateModelPosition(width, height)
     }
-  }
+  }, [getContainerDimensions, updateModelPosition])
 
   // Load external scripts
-  const loadScript = (src: string): Promise<void> => {
+  const loadScript = useCallback((src: string): Promise<void> => {
     return new Promise((resolve, reject) => {
       const script = document.createElement('script')
       script.src = src
@@ -91,10 +95,10 @@ const Live2DModelClient: React.FC<Live2DModelClientProps> = ({
       script.onerror = () => reject(new Error(`Failed to load script: ${src}`))
       document.head.appendChild(script)
     })
-  }
+  }, [])
 
   // Initialize Live2D
-  const initializeLive2D = async () => {
+  const initializeLive2D = useCallback(async () => {
     if (isInitializingRef.current) return
 
     const { width, height } = getContainerDimensions()
@@ -177,19 +181,19 @@ const Live2DModelClient: React.FC<Live2DModelClientProps> = ({
       app.stage.addChild(model)
 
       // Setup expressions and animations
-      setupModelAnimations(model)
+      setupModelAnimationsRef.current(model)
 
       // Setup mouse/touch interactions
-      setupModelInteractions(model, canvas)
+      setupModelInteractionsRef.current(model, canvas)
 
       isInitializingRef.current = false
     } catch (error) {
       isInitializingRef.current = false
     }
-  }
+  }, [calculateModelPosition, getContainerDimensions, loadScript])
 
   // Setup model animations
-  const setupModelAnimations = (model: any) => {
+  const setupModelAnimations = useCallback((model: any) => {
     // Initial smile
     setTimeout(() => {
       try {
@@ -309,10 +313,10 @@ const Live2DModelClient: React.FC<Live2DModelClientProps> = ({
       clearInterval(expressionInterval)
       if (originalCleanup) originalCleanup()
     }
-  }
+  }, [])
 
   // Setup model interactions
-  const setupModelInteractions = (model: any, canvas: HTMLCanvasElement) => {
+  const setupModelInteractions = useCallback((model: any, canvas: HTMLCanvasElement) => {
     let targetHeadX = 0
     let targetHeadY = 0
     let currentHeadX = 0
@@ -412,7 +416,10 @@ const Live2DModelClient: React.FC<Live2DModelClientProps> = ({
       modelRef.current = null
       if (originalCleanup) originalCleanup()
     }
-  }
+  }, [])
+
+  setupModelAnimationsRef.current = setupModelAnimations
+  setupModelInteractionsRef.current = setupModelInteractions
 
   // Main effect for initialization and resize handling
   useEffect(() => {
@@ -444,7 +451,7 @@ const Live2DModelClient: React.FC<Live2DModelClientProps> = ({
       clearTimeout(resizeTimer)
       if (cleanupRef.current) cleanupRef.current()
     }
-  }, [fixedWidth, fixedHeight])
+  }, [handleResize, initializeLive2D])
 
   return (
     <Box

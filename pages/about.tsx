@@ -288,6 +288,7 @@ const About: NextPage = () => {
       backgroundColor="black"
       color="white"
       minHeight="100vh"
+      overflowX="hidden"
       onMouseMove={handleMouseMove}
     >
       <TopBar />
@@ -554,27 +555,31 @@ const About: NextPage = () => {
         display="flex"
         alignItems="center"
         justifyContent="center"
-        gap={6}
+        gap={{ base: 3, md: 6 }}
+        px={4}
       >
         <Box
-          width="64px"
+          width={{ base: '32px', sm: '64px' }}
           height="6px"
           background={`repeating-linear-gradient(-45deg, ${ACCENT} 0 8px, transparent 8px 16px)`}
+          flexShrink={0}
         />
         <Span
           fontFamily="mono"
-          fontSize="sm"
+          fontSize={{ base: 'xs', sm: 'sm' }}
           fontWeight="bold"
-          letterSpacing="0.3em"
+          letterSpacing={{ base: '0.15em', sm: '0.3em' }}
           color={`${ACCENT}cc`}
-          whiteSpace="nowrap"
+          textAlign="center"
+          whiteSpace={{ base: 'normal', sm: 'nowrap' }}
         >
           SUZUKAZE CHIAKI // 涼風千秋
         </Span>
         <Box
-          width="64px"
+          width={{ base: '32px', sm: '64px' }}
           height="6px"
           background={`repeating-linear-gradient(-45deg, ${ACCENT} 0 8px, transparent 8px 16px)`}
+          flexShrink={0}
         />
       </Box>
     </Box>
