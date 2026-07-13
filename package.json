@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "panda codegen && panda cssgen --watch & next dev",
+    "dev": "panda codegen && panda cssgen && (panda cssgen --watch & next dev)",
     "build": "panda codegen && panda cssgen && next build",
     "build:og": "panda codegen && panda cssgen && next build && node scripts/generateOgImages.js",
     "build:site": "panda codegen && panda cssgen && next build",

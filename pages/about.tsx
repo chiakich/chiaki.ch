@@ -12,6 +12,7 @@ import Image from 'next/image'
 import NextLink from 'next/link'
 import { useEffect, useRef } from 'react'
 import TopBar from 'components/TopBar'
+import StickerSheet from 'components/about/StickerSheet'
 
 const Heading = styled.h2
 const Text = styled.p
@@ -288,7 +289,7 @@ const About: NextPage = () => {
       backgroundColor="black"
       color="white"
       minHeight="100vh"
-      overflowX="hidden"
+      overflowX="clip"
       onMouseMove={handleMouseMove}
     >
       <TopBar />
@@ -544,6 +545,18 @@ const About: NextPage = () => {
           <CharacterPanel x={x} y={y} />
         </Box>
       </Grid>
+
+      {/* Full-bleed sticker map, kept outside the two-column layout. */}
+      <MotionBox
+        pb="80px"
+        minWidth={0}
+        initial={{ opacity: 0, y: 32 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-80px' }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <StickerSheet />
+      </MotionBox>
 
       {/* Footer strip */}
       <Box
