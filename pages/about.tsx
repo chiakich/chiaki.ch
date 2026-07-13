@@ -369,8 +369,8 @@ const About: NextPage = () => {
               </Box>
               <Text
                 fontFamily="mono"
-                fontSize="sm"
-                letterSpacing="0.35em"
+                fontSize={{ base: 'xs', md: 'sm' }}
+                letterSpacing={{ base: '0.2em', md: '0.35em' }}
                 color={ACCENT}
                 fontWeight="bold"
               >
@@ -548,6 +548,8 @@ const About: NextPage = () => {
 
       {/* Full-bleed sticker map, kept outside the two-column layout. */}
       <MotionBox
+        maxW="1200px"
+        marginX="auto"
         pb="80px"
         minWidth={0}
         initial={{ opacity: 0, y: 32 }}
