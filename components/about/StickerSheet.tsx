@@ -127,7 +127,7 @@ const stickers: Sticker[] = [
     size: 50,
     title: 'GitHub Arctic Code Vault Contributor',
     description:
-      '@chiakich contributed code to several repositories in the 2020 GitHub Archive Program. 我的爛code被永遠保存在北極凍土之下的『末日保險櫃』了',
+      '我的爛code被2020 GitHub Archive Program永遠保存在北極凍土之下的「末日保險櫃」了。將來人類重建文明就靠他們了！',
     whiteOutline: false,
   },
   {
@@ -181,9 +181,10 @@ const stickers: Sticker[] = [
     src: '/assets/about/stickers/wwdc26.png',
     size: 120,
     title: 'WWDC 2026',
-    description: 'WWDC 2026 Attendee',
+    description: 'I joined WWDC 2026 online',
     whiteOutline: false,
-  }, {
+  },
+  {
     id: 'endfield',
     kind: 'image',
     src: '/assets/about/stickers/endfield.webp',
@@ -191,7 +192,8 @@ const stickers: Sticker[] = [
     title: '明日方舟：終末地',
     description: '我是終末地工業的「管理員」',
     whiteOutline: false,
-  }, {
+  },
+  {
     id: 'evil-twin-brewing-nyc',
     kind: 'image',
     src: '/assets/about/stickers/eviltwin.webp',
@@ -199,7 +201,8 @@ const stickers: Sticker[] = [
     title: 'Evil Twin Brewing NYC',
     description: '我愛這家超神精釀啤酒',
     whiteOutline: false,
-  }, {
+  },
+  {
     id: 'flighty',
     kind: 'image',
     src: '/assets/about/stickers/flighty.webp',
@@ -207,15 +210,17 @@ const stickers: Sticker[] = [
     title: 'Flighty Passport',
     description: '我飛過的機場',
     whiteOutline: false,
-  }, {
+  },
+  {
     id: 'toge',
     kind: 'image',
     src: '/assets/about/stickers/toge.svg',
     size: 200,
     title: 'TOGENASHI TOGEARI',
-    description: '我聽《少女樂團吶喊吧》刺刺團',
+    description: '我喜歡刺刺團',
     whiteOutline: false,
-  }, {
+  },
+  {
     id: 'ui_5th',
     kind: 'image',
     src: '/assets/about/stickers/ui_5th.webp',
@@ -223,22 +228,25 @@ const stickers: Sticker[] = [
     title: 'しぐれうい 5th Anniversary',
     description: '我參加了しぐれうい5周年紀念展',
     whiteOutline: false,
-  }, {
+  },
+  {
     id: 'ui_member',
     kind: 'image',
     src: '/assets/about/stickers/ui_member.webp',
     size: 50,
     title: 'しぐれうい メンバーシップ',
-    description: '原稿部屋 第3年',
-  },{
+    description: '羽衣媽媽原稿部屋會員',
+  },
+  {
     id: 'aogiri',
     kind: 'image',
     src: '/assets/about/stickers/aogiri.webp',
     size: 100,
     title: 'あおぎり高校',
-    description: '我喜歡看青桐高校的影片',
+    description: '我箱推青桐高校',
     whiteOutline: false,
-  },{
+  },
+  {
     id: 'rick-and-morty',
     kind: 'image',
     src: '/assets/about/stickers/rm.webp',
@@ -246,15 +254,79 @@ const stickers: Sticker[] = [
     title: 'Rick and Morty',
     description: '我喜歡《瑞克和莫蒂》這部動畫',
     whiteOutline: false,
-  },{
+  },
+  {
     id: 'nico25',
     kind: 'image',
     src: '/assets/about/stickers/nico25.webp',
     size: 100,
     title: 'ニコニコ超会議2025',
-    description: '我參加了Nico Nico超會議2025',
+    description: '我參加了Nico Nico超會議2025！超近距離的小林幸子本人！',
     whiteOutline: false,
-  }
+  },
+  {
+    id: 'teto',
+    kind: 'image',
+    src: '/assets/about/stickers/teto.png',
+    size: 100,
+    title: '重音テト 17th',
+    description: 'Our beloved Teto',
+    whiteOutline: false,
+  },
+  {
+    id: 'kasane',
+    kind: 'image',
+    src: '/assets/about/stickers/kasane.png',
+    size: 250,
+    title: '居酒屋かさね',
+    description: '參加了テト鑽頭酒杯的紀念活動：居酒屋かさね',
+    whiteOutline: false,
+  },
+  {
+    id: 'comiket50',
+    kind: 'image',
+    src: '/assets/about/stickers/comiket50.png',
+    size: 150,
+    title: 'コミックマーケット50周年',
+    description: '我參加了C107的Comiket 50周年紀念',
+    whiteOutline: false,
+  },
+  {
+    id: 'moztw',
+    kind: 'image',
+    src: '/assets/about/stickers/moztw.png',
+    size: 150,
+    title: 'MozTW',
+    description: '已經參與 Mozilla 台灣社群 13+ 年了！',
+    whiteOutline: false,
+  },
+  {
+    id: 'fbosc',
+    kind: 'image',
+    src: '/assets/about/stickers/fbosc.jpg',
+    size: 150,
+    title: 'Facebook Open Source',
+    description: '我曾是Facebook Open Source的開發者',
+    whiteOutline: false,
+  },
+  {
+    id: 'ponfes25',
+    kind: 'image',
+    src: '/assets/about/stickers/ponfes25.jpg',
+    size: 500,
+    title: 'PONFES!2025',
+    description: '我參加了あやぽんず＊ワンマンライブ PONFES!2025',
+    whiteOutline: false,
+  },
+  {
+    id: 'kancolle',
+    kind: 'image',
+    src: '/assets/about/stickers/kancolle.jpg',
+    size: 350,
+    title: '艦隊これくしょん',
+    description: '我是提督',
+    whiteOutline: false,
+  },
 ]
 
 // Small, fast, deterministic PRNG so the layout is identical every render.
@@ -440,13 +512,7 @@ const buildMask = (box: VisualBox, rotationDeg: number): Mask | null => {
   return { w, h, xs, ys }
 }
 
-const fits = (
-  mask: Mask,
-  board: Uint8Array,
-  bw: number,
-  bx: number,
-  by: number
-) => {
+const fits = (mask: Mask, board: Uint8Array, bw: number, bx: number, by: number) => {
   for (let i = 0; i < mask.xs.length; i++) {
     if (board[(by + mask.ys[i]) * bw + bx + mask.xs[i]]) return false
   }
@@ -482,9 +548,7 @@ const placeMask = (
   while (true) {
     const r = 0.5 * theta
     if (r > maxR) return null
-    const bx = Math.round(
-      bw / 2 + Math.cos(theta + phase) * r * aspect - mask.w / 2
-    )
+    const bx = Math.round(bw / 2 + Math.cos(theta + phase) * r * aspect - mask.w / 2)
     const by = Math.round(bh / 2 + Math.sin(theta + phase) * r - mask.h / 2)
     // Step roughly 1.5 cells along the arc per iteration.
     theta += Math.min(0.5, 1.5 / Math.max(r, 1))
@@ -506,9 +570,7 @@ const computeLayout = async (
   const rotations = items.map(() => (rand() * 2 - 1) * MAX_ROTATION)
   const phases = items.map(() => rand() * Math.PI * 2)
   const images = await Promise.all(
-    items.map((s) =>
-      s.kind === 'image' ? loadImage(s.src) : Promise.resolve(null)
-    )
+    items.map((s) => (s.kind === 'image' ? loadImage(s.src) : Promise.resolve(null)))
   )
 
   const margin = Math.min(width, height) * 0.04
@@ -731,9 +793,7 @@ const StickerTooltip = ({
       pointerEvents="none"
       style={{ translateX: `calc(-50% + ${shift}px)` }}
       initial={false}
-      animate={
-        visible ? { opacity: 1, y: 0 } : { opacity: 0, y: above ? -4 : 4 }
-      }
+      animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: above ? -4 : 4 }}
       transition={{ duration: 0.12, ease: 'easeOut' }}
     >
       <Text fontWeight="bold" mb={1}>
