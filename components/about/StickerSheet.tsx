@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Box, Flex, styled } from 'styled-system/jsx'
 
 const Text = styled.p
@@ -7,20 +7,20 @@ const Text = styled.p
 const MotionBox = motion(Box)
 
 // Fraction of the container area the stickers should collectively cover.
-// Leave some room: each sticker has its own collision margin and the layout
-// grows outward from the centre rather than filling every available gap.
-const FILL_RATIO = 0.4
-// Extra clear space on every sticker, in pixels. Two neighbouring stickers
-// therefore keep roughly twice this distance between their visible edges.
-const STICKER_MARGIN = 8
-// Collision circles deliberately fit inside the visual bounds. Using the full
-// diagonal of a rotated square leaves large circular holes between otherwise
-// rectangular stickers, even when STICKER_MARGIN is zero.
-const COLLISION_RADIUS = 0.5
+// Mask-based packing wastes far less space than circle packing, so this can
+// sit higher than before; the layout shrinks and repacks if it can't fit.
+const FILL_RATIO = 0.55
+// Minimum clear space between two stickers' visible edges, in pixels.
+const STICKER_MARGIN = 4
+// Board cell size in css px. Smaller = tighter packing, slower layout.
+const CELL = 2
 // Max absolute rotation applied to each sticker, in degrees.
 const MAX_ROTATION = 12
 // Fixed seed keeps the layout stable across renders (and SSR-safe).
 const LAYOUT_SEED = 20260713
+// When some sticker can't be placed, scale everything down and repack.
+const SHRINK_STEP = 0.93
+const MAX_ATTEMPTS = 8
 
 type StickerBase = {
   id: string
@@ -198,214 +198,306 @@ const mulberry32 = (seed: number) => {
 
 type Placement = { cx: number; cy: number; size: number; rotation: number }
 
-// A deterministic, centre-outward variant of front-chain circle packing.
-// `oorai` anchors the composition. Each later sticker tries positions tangent
-// to the existing outer edge and picks the closest valid one to the centre.
-// This makes the sheet read as a deliberately built cluster, rather than a
-// force simulation that happened to settle in one particular arrangement.
-const computeLayout = (
+// Layout needs the images' pixels for their alpha shapes; cache them so
+// resize-triggered repacks don't refetch.
+const imageCache = new Map<string, Promise<HTMLImageElement | null>>()
+
+const loadImage = (src: string) => {
+  let cached = imageCache.get(src)
+  if (!cached) {
+    cached = new Promise((resolve) => {
+      const img = new Image()
+      img.onload = () => resolve(img)
+      img.onerror = () => resolve(null)
+      img.src = src
+    })
+    imageCache.set(src, cached)
+  }
+  return cached
+}
+
+// A sticker's on-screen footprint (before rotation) plus how to paint its
+// opaque region. Must mirror how StickerFace actually renders each kind.
+type VisualBox = {
+  w: number
+  h: number
+  draw: (ctx: CanvasRenderingContext2D) => void
+}
+
+const fillRoundedRect = (
+  ctx: CanvasRenderingContext2D,
+  w: number,
+  h: number,
+  r: number
+) => {
+  const radius = Math.min(r, w / 2, h / 2)
+  ctx.beginPath()
+  ctx.moveTo(radius, 0)
+  ctx.arcTo(w, 0, w, h, radius)
+  ctx.arcTo(w, h, 0, h, radius)
+  ctx.arcTo(0, h, 0, 0, radius)
+  ctx.arcTo(0, 0, w, 0, radius)
+  ctx.closePath()
+  ctx.fill()
+}
+
+const visualBoxFor = (
+  sticker: Sticker,
+  px: number,
+  img: HTMLImageElement | null
+): VisualBox => {
+  if (sticker.kind === 'text') {
+    // Rough estimate; text stickers are currently unused.
+    const isCircle = sticker.shape === 'circle'
+    const w = isCircle ? 92 : sticker.label.length * 12 + 40
+    const h = isCircle ? 92 : sticker.sub ? 58 : 44
+    const r = isCircle ? w / 2 : sticker.shape === 'pill' ? h / 2 : 4
+    return { w, h, draw: (ctx) => fillRoundedRect(ctx, w, h, r) }
+  }
+
+  const isSvg = sticker.src.endsWith('.svg')
+  const nw = img?.naturalWidth ?? 0
+  const nh = img?.naturalHeight ?? 0
+  // Mirror StickerFace's sizing: SVGs get an explicit width, raster images
+  // are clamped by max-width/max-height and never upscale.
+  let iw = px
+  let ih = px
+  if (isSvg) {
+    ih = nw > 0 && nh > 0 ? Math.min(px, (px * nh) / nw) : px
+  } else if (nw > 0 && nh > 0) {
+    const scale = Math.min(1, px / nw, px / nh)
+    iw = nw * scale
+    ih = nh * scale
+  }
+
+  const useCard = sticker.whiteOutline !== false && !isSvg
+  if (useCard) {
+    const pad = Math.round(px * 0.05)
+    const w = iw + pad * 2
+    const h = ih + pad * 2
+    return { w, h, draw: (ctx) => fillRoundedRect(ctx, w, h, 15) }
+  }
+  return {
+    w: iw,
+    h: ih,
+    draw: (ctx) => {
+      // Transparent stickers collide with their real pixel shape; a failed
+      // image load degrades to a solid rectangle.
+      if (img) ctx.drawImage(img, 0, 0, iw, ih)
+      else ctx.fillRect(0, 0, iw, ih)
+    },
+  }
+}
+
+// Grow the opaque cells by `r` so STICKER_MARGIN is enforced by the mask
+// itself and placement stays a plain overlap test.
+const dilate = (grid: Uint8Array, w: number, h: number, r: number) => {
+  let src = grid
+  for (let pass = 0; pass < r; pass++) {
+    const out = new Uint8Array(src)
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        if (!src[y * w + x]) continue
+        if (x > 0) out[y * w + x - 1] = 1
+        if (x < w - 1) out[y * w + x + 1] = 1
+        if (y > 0) out[(y - 1) * w + x] = 1
+        if (y < h - 1) out[(y + 1) * w + x] = 1
+      }
+    }
+    src = out
+  }
+  return src
+}
+
+// A sticker's rasterised footprint at board resolution, rotation baked in.
+// xs/ys list only the set cells so collision tests skip transparent areas.
+type Mask = { w: number; h: number; xs: Int16Array; ys: Int16Array }
+
+const buildMask = (box: VisualBox, rotationDeg: number): Mask | null => {
+  const rad = (rotationDeg * Math.PI) / 180
+  const cos = Math.abs(Math.cos(rad))
+  const sin = Math.abs(Math.sin(rad))
+  // Pad by the margin so dilation has room to grow into.
+  const w = Math.max(
+    1,
+    Math.ceil((box.w * cos + box.h * sin + STICKER_MARGIN * 2) / CELL)
+  )
+  const h = Math.max(
+    1,
+    Math.ceil((box.w * sin + box.h * cos + STICKER_MARGIN * 2) / CELL)
+  )
+  const canvas = document.createElement('canvas')
+  canvas.width = w
+  canvas.height = h
+  const ctx = canvas.getContext('2d', { willReadFrequently: true })
+  if (!ctx) return null
+  ctx.translate(w / 2, h / 2)
+  ctx.rotate(rad)
+  // Uniform scale commutes with the rotation above.
+  ctx.scale(1 / CELL, 1 / CELL)
+  ctx.translate(-box.w / 2, -box.h / 2)
+  ctx.fillStyle = '#000'
+  box.draw(ctx)
+
+  const data = ctx.getImageData(0, 0, w, h).data
+  let grid: Uint8Array = new Uint8Array(w * h)
+  for (let i = 0; i < w * h; i++) grid[i] = data[i * 4 + 3] > 25 ? 1 : 0
+  grid = dilate(grid, w, h, Math.round(STICKER_MARGIN / CELL))
+
+  let count = 0
+  for (let i = 0; i < w * h; i++) if (grid[i]) count++
+  // An empty mask (e.g. an SVG the browser refused to rasterise) would let
+  // the sticker land anywhere; block its whole bounds instead.
+  if (count === 0) {
+    grid.fill(1)
+    count = w * h
+  }
+  const xs = new Int16Array(count)
+  const ys = new Int16Array(count)
+  let n = 0
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      if (grid[y * w + x]) {
+        xs[n] = x
+        ys[n] = y
+        n++
+      }
+    }
+  }
+  return { w, h, xs, ys }
+}
+
+const fits = (
+  mask: Mask,
+  board: Uint8Array,
+  bw: number,
+  bx: number,
+  by: number
+) => {
+  for (let i = 0; i < mask.xs.length; i++) {
+    if (board[(by + mask.ys[i]) * bw + bx + mask.xs[i]]) return false
+  }
+  return true
+}
+
+const stamp = (
+  mask: Mask,
+  board: Uint8Array,
+  bw: number,
+  bx: number,
+  by: number
+) => {
+  for (let i = 0; i < mask.xs.length; i++) {
+    board[(by + mask.ys[i]) * bw + bx + mask.xs[i]] = 1
+  }
+}
+
+// Walk an Archimedean spiral out from the board centre and return the first
+// position where the mask overlaps nothing already placed (the d3-cloud
+// strategy). The spiral is stretched horizontally so landscape containers
+// fill sideways instead of leaving dead side margins.
+const placeMask = (
+  mask: Mask,
+  board: Uint8Array,
+  bw: number,
+  bh: number,
+  phase: number,
+  aspect: number
+) => {
+  const maxR = Math.hypot(bw, bh) / 2
+  let theta = 0
+  while (true) {
+    const r = 0.5 * theta
+    if (r > maxR) return null
+    const bx = Math.round(
+      bw / 2 + Math.cos(theta + phase) * r * aspect - mask.w / 2
+    )
+    const by = Math.round(bh / 2 + Math.sin(theta + phase) * r - mask.h / 2)
+    // Step roughly 1.5 cells along the arc per iteration.
+    theta += Math.min(0.5, 1.5 / Math.max(r, 1))
+    if (bx < 0 || by < 0 || bx + mask.w > bw || by + mask.h > bh) continue
+    if (fits(mask, board, bw, bx, by)) return { bx, by }
+  }
+}
+
+// Word-cloud style packing (à la d3-cloud): rasterise each sticker into a
+// coarse alpha mask and spiral it out from the centre until it finds a free
+// spot on the board bitmap. Colliding with real pixel shapes lets concave
+// stickers interlock, which the previous circle packing never could.
+const computeLayout = async (
   items: Sticker[],
   width: number,
   height: number
-): Placement[] => {
+): Promise<Placement[]> => {
   const rand = mulberry32(LAYOUT_SEED)
+  const rotations = items.map(() => (rand() * 2 - 1) * MAX_ROTATION)
+  const phases = items.map(() => rand() * Math.PI * 2)
+  const images = await Promise.all(
+    items.map((s) =>
+      s.kind === 'image' ? loadImage(s.src) : Promise.resolve(null)
+    )
+  )
+
   const margin = Math.min(width, height) * 0.04
   const usableW = Math.max(1, width - margin * 2)
   const usableH = Math.max(1, height - margin * 2)
-  const midX = width / 2
-  const midY = height / 2
-  // Pack in a horizontally compressed coordinate space, then map positions
-  // back to the screen. This turns a tight circular cluster into one ellipse
-  // without changing the stickers' own aspect ratios. Portrait screens keep a
-  // circular cluster so the layout does not press against their side edges.
   const ellipseAspect = Math.min(1.5, Math.max(1, (width / height) * 0.75))
 
   // One scale unit so total sticker area ≈ FILL_RATIO of the usable area.
-  // Area scales with size, so the on-screen edge scales with sqrt(size).
   const sumSize = items.reduce((acc, s) => acc + s.size, 0)
-  const unit = Math.sqrt((FILL_RATIO * usableW * usableH) / sumSize)
+  let unit = Math.sqrt((FILL_RATIO * usableW * usableH) / sumSize)
 
-  type Node = {
-    index: number
-    cx: number
-    cy: number
-    r: number // visual collision radius + personal margin
-    br: number // visual bound radius, including rotation/card/shadow allowance
-    px: number
-    rotation: number
-  }
+  // Anchor first, then large to small: big stickers claim space near the
+  // centre and small logos fill the notches left between them.
+  const order = items.map((_, i) => i)
+  order.sort((a, b) =>
+    a === 0 ? -1 : b === 0 ? 1 : items[b].size - items[a].size || a - b
+  )
 
-  const nodes = items.map((s, index): Node => {
-    const px = unit * Math.sqrt(s.size)
-    return {
-      index,
-      cx: midX,
-      cy: midY,
-      // A rotated square's corner is about 0.71 × its edge from its centre.
-      // This slightly conservative bound also reserves room for the shadow.
-      br: px * 0.74,
-      r: px * COLLISION_RADIUS + STICKER_MARGIN,
-      px,
-      rotation: (rand() * 2 - 1) * MAX_ROTATION,
-    }
-  })
+  const bw = Math.ceil(usableW / CELL)
+  const bh = Math.ceil(usableH / CELL)
 
-  const isInside = (p: Node, cx: number, cy: number) => {
-    const loX = margin + p.br
-    const hiX = width - margin - p.br
-    const loY = margin + p.br
-    const hiY = height - margin - p.br
-    return cx >= loX && cx <= hiX && cy >= loY && cy <= hiY
-  }
-
-  const packingDistance = (ax: number, ay: number, bx: number, by: number) =>
-    Math.hypot((ax - bx) / ellipseAspect, ay - by)
-
-  const isFree = (p: Node, cx: number, cy: number, placed: Node[]) =>
-    isInside(p, cx, cy) &&
-    placed.every(
-      (other) => packingDistance(cx, cy, other.cx, other.cy) >= p.r + other.r
-    )
-
-  const angleDistance = (a: number, b: number) => {
-    const delta = Math.abs(a - b) % (Math.PI * 2)
-    return Math.min(delta, Math.PI * 2 - delta)
-  }
-
-  // Put the largest non-anchor stickers down first so smaller logos naturally
-  // fill the contour. The anchor remains at the centre regardless of size.
-  const anchor = nodes[0]
-  const order = [...nodes.slice(1)].sort((a, b) => b.r - a.r || a.index - b.index)
-  const placed = [anchor]
-  const startAngle = rand() * Math.PI * 2
-
-  for (const node of order) {
-    const candidates: Array<{ cx: number; cy: number }> = []
-
-    // Tangency to one sticker supplies the first ring and useful fallback
-    // points; tangency to pairs fills concave spaces on later rings.
-    for (const other of placed) {
-      const distance = node.r + other.r
-      for (let step = 0; step < 24; step++) {
-        const angle = startAngle + (step / 24) * Math.PI * 2
-        candidates.push({
-          cx: other.cx + Math.cos(angle) * distance * ellipseAspect,
-          cy: other.cy + Math.sin(angle) * distance,
-        })
-      }
-    }
-
-    for (let i = 0; i < placed.length; i++) {
-      for (let j = i + 1; j < placed.length; j++) {
-        const a = placed[i]
-        const b = placed[j]
-        const dx = (b.cx - a.cx) / ellipseAspect
-        const dy = b.cy - a.cy
-        const d = Math.hypot(dx, dy)
-        const ra = node.r + a.r
-        const rb = node.r + b.r
-        if (d === 0 || d > ra + rb || d < Math.abs(ra - rb)) continue
-
-        const along = (ra * ra - rb * rb + d * d) / (2 * d)
-        const offset = Math.sqrt(Math.max(0, ra * ra - along * along))
-        const baseX = a.cx + ((along * dx) / d) * ellipseAspect
-        const baseY = a.cy + (along * dy) / d
-        const perpendicularX = ((-dy * offset) / d) * ellipseAspect
-        const perpendicularY = (dx * offset) / d
-        candidates.push(
-          { cx: baseX + perpendicularX, cy: baseY + perpendicularY },
-          { cx: baseX - perpendicularX, cy: baseY - perpendicularY }
-        )
-      }
-    }
-
-    // Measure compactness in the same ellipse coordinate space as collision
-    // detection, so every added sticker reinforces one clean outer silhouette.
-    const availableX = Math.max(1, (width - margin * 2) / 2)
-    const availableY = Math.max(1, (height - margin * 2) / 2)
-    const targetSeparation = (Math.PI * 2) / Math.max(2, placed.length)
-    const score = ({ cx, cy }: { cx: number; cy: number }) => {
-      const dx = cx - midX
-      const dy = cy - midY
-      const radial = Math.hypot(
-        dx / (Math.min(availableX, availableY) * ellipseAspect),
-        dy / Math.min(availableX, availableY)
+  let attempt = 0
+  while (true) {
+    const board = new Uint8Array(bw * bh)
+    const placements = new Array<Placement | null>(items.length).fill(null)
+    let ok = true
+    for (const index of order) {
+      const px = unit * Math.sqrt(items[index].size)
+      const mask = buildMask(
+        visualBoxFor(items[index], px, images[index]),
+        rotations[index]
       )
-      const candidateAngle = Math.atan2(dy, dx)
-      const outerAngles = placed
-        .filter((other) => other !== anchor)
-        .map((other) => Math.atan2(other.cy - midY, other.cx - midX))
-      const nearestAngle = outerAngles.length
-        ? Math.min(
-            ...outerAngles.map((angle) => angleDistance(candidateAngle, angle))
-          )
-        : angleDistance(candidateAngle, startAngle)
-      const angularPenalty =
-        Math.max(0, targetSeparation - nearestAngle) / targetSeparation
-      return radial + angularPenalty * 0.18
+      const spot =
+        mask && placeMask(mask, board, bw, bh, phases[index], ellipseAspect)
+      if (!mask || !spot) {
+        ok = false
+        continue
+      }
+      stamp(mask, board, bw, spot.bx, spot.by)
+      placements[index] = {
+        cx: margin + (spot.bx + mask.w / 2) * CELL,
+        cy: margin + (spot.by + mask.h / 2) * CELL,
+        size: px,
+        rotation: rotations[index],
+      }
     }
-
-    const choice = candidates
-      .filter(({ cx, cy }) => isFree(node, cx, cy, placed))
-      .sort((a, b) => score(a) - score(b))[0]
-    if (choice) {
-      node.cx = choice.cx
-      node.cy = choice.cy
-    } else {
-      // This should only occur in a very small container. Walk outward until a
-      // legal position is found, preserving the centre-outward invariant.
-      let found = false
-      for (let ring = 1; ring < 80 && !found; ring++) {
-        const distance = ring * Math.max(8, node.r / 2)
-        for (let step = 0; step < 48; step++) {
-          const angle = startAngle + (step / 48) * Math.PI * 2
-          const cx = midX + Math.cos(angle) * distance * ellipseAspect
-          const cy = midY + Math.sin(angle) * distance
-          if (isFree(node, cx, cy, placed)) {
-            node.cx = cx
-            node.cy = cy
-            found = true
-            break
+    if (ok || attempt >= MAX_ATTEMPTS - 1) {
+      // Only a pathologically small container reaches this fallback: stack
+      // anything unplaced at the centre so nothing disappears.
+      return items.map(
+        (s, i) =>
+          placements[i] ?? {
+            cx: width / 2,
+            cy: height / 2,
+            size: unit * Math.sqrt(s.size),
+            rotation: rotations[i],
           }
-        }
-      }
-
-      // Never silently leave an unplaced sticker at the centre. If the
-      // container is genuinely too small, choose the candidate with the least
-      // overlap so it remains visible; normal viewport sizes take the branch
-      // above and retain a fully collision-free layout.
-      if (!found) {
-        const leastOverlap = candidates
-          .filter(({ cx, cy }) => isInside(node, cx, cy))
-          .map((candidate) => ({
-            ...candidate,
-            overlap: placed.reduce(
-              (total, other) =>
-                total +
-                Math.max(
-                  0,
-                  node.r +
-                    other.r -
-                    packingDistance(candidate.cx, candidate.cy, other.cx, other.cy)
-                ),
-              0
-            ),
-          }))
-          .sort((a, b) => a.overlap - b.overlap)[0]
-        if (leastOverlap) {
-          node.cx = leastOverlap.cx
-          node.cy = leastOverlap.cy
-        }
-      }
+      )
     }
-    placed.push(node)
+    unit *= SHRINK_STEP
+    attempt++
   }
-
-  const result = new Array<Placement>(items.length)
-  for (const p of nodes) {
-    result[p.index] = { cx: p.cx, cy: p.cy, size: p.px, rotation: p.rotation }
-  }
-  return result
 }
 
 const StickerFace = ({
@@ -508,6 +600,77 @@ const StickerFace = ({
   )
 }
 
+const StickerTooltip = ({
+  id,
+  sticker,
+  place,
+  container,
+  visible,
+}: {
+  id: string
+  sticker: Sticker
+  place: Placement
+  container: { width: number; height: number }
+  visible: boolean
+}) => {
+  const ref = useRef<HTMLDivElement>(null)
+  // Horizontal shift that keeps the tooltip inside the container, so edge
+  // stickers' descriptions aren't clipped by the sheet's overflow: hidden.
+  const [shift, setShift] = useState(0)
+  const [above, setAbove] = useState(false)
+
+  // The tooltip is always in the DOM (just transparent), so it can be
+  // measured whenever the layout or container changes rather than on open.
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const pad = 8
+    const gap = place.size / 2 + 12
+    const idealLeft = place.cx - el.offsetWidth / 2
+    const clampedLeft = Math.min(
+      Math.max(idealLeft, pad),
+      container.width - el.offsetWidth - pad
+    )
+    setShift(clampedLeft - idealLeft)
+    setAbove(place.cy + gap + el.offsetHeight > container.height - pad)
+  }, [place, container])
+
+  const gap = place.size / 2 + 12
+  return (
+    <MotionBox
+      ref={ref}
+      id={id}
+      position="absolute"
+      left="50%"
+      top={above ? undefined : `calc(50% + ${gap}px)`}
+      bottom={above ? `calc(50% + ${gap}px)` : undefined}
+      width="max-content"
+      maxWidth="min(260px, 70vw)"
+      px={3}
+      py={2}
+      backgroundColor="rgba(17,17,17,0.92)"
+      border="1px solid #ffffff33"
+      borderRadius="sm"
+      color="white"
+      fontSize="md"
+      lineHeight="1.5"
+      textAlign="left"
+      pointerEvents="none"
+      style={{ translateX: `calc(-50% + ${shift}px)` }}
+      initial={false}
+      animate={
+        visible ? { opacity: 1, y: 0 } : { opacity: 0, y: above ? -4 : 4 }
+      }
+      transition={{ duration: 0.12, ease: 'easeOut' }}
+    >
+      <Text fontWeight="bold" mb={1}>
+        {sticker.title}
+      </Text>
+      <Text opacity={0.78}>{sticker.description}</Text>
+    </MotionBox>
+  )
+}
+
 const StickerSheet = () => {
   const containerRef = useRef<HTMLDivElement>(null)
   const [size, setSize] = useState<{ width: number; height: number } | null>(null)
@@ -531,10 +694,19 @@ const StickerSheet = () => {
     return () => observer.disconnect()
   }, [])
 
-  const layout = useMemo(
-    () => (size ? computeLayout(stickers, size.width, size.height) : null),
-    [size]
-  )
+  const [layout, setLayout] = useState<Placement[] | null>(null)
+
+  // Mask packing reads image pixels, so the layout arrives asynchronously.
+  useEffect(() => {
+    if (!size) return
+    let cancelled = false
+    computeLayout(stickers, size.width, size.height).then((placements) => {
+      if (!cancelled) setLayout(placements)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [size])
 
   return (
     <Box
@@ -567,6 +739,7 @@ const StickerSheet = () => {
         </Text>
 
         {layout &&
+          size &&
           stickers.map((sticker, i) => {
             const place = layout[i]
             const isTooltipVisible = activeSticker === sticker.id
@@ -641,35 +814,13 @@ const StickerSheet = () => {
                     <StickerFace sticker={sticker} renderSize={place.size} />
                   </MotionBox>
                 </MotionBox>
-                <MotionBox
+                <StickerTooltip
                   id={tooltipId}
-                  position="absolute"
-                  left="50%"
-                  top={`calc(50% + ${place.size / 2 + 12}px)`}
-                  width="max-content"
-                  maxWidth="min(260px, 70vw)"
-                  px={3}
-                  py={2}
-                  backgroundColor="rgba(17,17,17,0.92)"
-                  border="1px solid #ffffff33"
-                  borderRadius="sm"
-                  color="white"
-                  fontSize="md"
-                  lineHeight="1.5"
-                  textAlign="left"
-                  pointerEvents="none"
-                  style={{ translateX: '-50%' }}
-                  initial={false}
-                  animate={
-                    isTooltipVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 4 }
-                  }
-                  transition={{ duration: 0.12, ease: 'easeOut' }}
-                >
-                  <Text fontWeight="bold" mb={1}>
-                    {sticker.title}
-                  </Text>
-                  <Text opacity={0.78}>{sticker.description}</Text>
-                </MotionBox>
+                  sticker={sticker}
+                  place={place}
+                  container={size}
+                  visible={isTooltipVisible}
+                />
               </Box>
             )
           })}
