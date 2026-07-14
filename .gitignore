@@ -51,3 +51,5 @@ tsconfig.tsbuildinfo
 # new rules
 public/assets/character/*/*_thumb_large.jpg
 public/assets/character/*/*_thumb_small.jpg
+
+.claude
