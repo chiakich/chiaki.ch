@@ -44,6 +44,7 @@ type ImageSticker = StickerBase & {
   kind: 'image'
   src: string
   round?: boolean
+  noRadius?: boolean
   whiteOutline?: boolean
 }
 
@@ -67,7 +68,6 @@ const stickers: Sticker[] = [
     title: 'React',
     description:
       'React 是我最常用的前端框架，從 2015 年開始就一直在使用。而且他餵飽了我。我愛 React。',
-    whiteOutline: false,
   },
   {
     id: 'clip',
@@ -76,7 +76,6 @@ const stickers: Sticker[] = [
     size: 30,
     title: 'Clip Studio Paint',
     description: 'Clip Studio Paint 是我最常用的繪圖軟體！',
-    whiteOutline: false,
   },
   {
     id: 'WTM',
@@ -93,7 +92,6 @@ const stickers: Sticker[] = [
     size: 200,
     title: 'COSCUP 台灣開源人年會',
     description: 'COSCUP 資深會眾/審稿委員',
-    whiteOutline: false,
   },
   {
     id: 'sitcon',
@@ -118,7 +116,6 @@ const stickers: Sticker[] = [
     size: 70,
     title: 'Glyphs 4',
     description: 'Glyphs 4 zh-Hant Localization Translator',
-    whiteOutline: false,
   },
   {
     id: 'arctic-code-vault-contributor',
@@ -128,7 +125,6 @@ const stickers: Sticker[] = [
     title: 'GitHub Arctic Code Vault Contributor',
     description:
       '我的爛code被2020 GitHub Archive Program永遠保存在北極凍土之下的「末日保險櫃」了。將來人類重建文明就靠他們了！',
-    whiteOutline: false,
   },
   {
     id: 'isekai',
@@ -137,7 +133,6 @@ const stickers: Sticker[] = [
     size: 100,
     title: '観測者ヰ組',
     description: '意大利麵組',
-    whiteOutline: false,
   },
   {
     id: 'isekai_art',
@@ -146,7 +141,6 @@ const stickers: Sticker[] = [
     size: 150,
     title: 'ヰ世界情緒美術部',
     description: '我會繪製お情的圖',
-    whiteOutline: false,
   },
   {
     id: 'sukonbu',
@@ -155,7 +149,6 @@ const stickers: Sticker[] = [
     size: 100,
     title: '司空部',
     description: 'Hi friends',
-    whiteOutline: false,
   },
   {
     id: 'hinako',
@@ -164,7 +157,6 @@ const stickers: Sticker[] = [
     size: 80,
     title: '妃那子',
     description: '妃那子 Official Fanclub',
-    whiteOutline: false,
   },
   {
     id: 'himehina',
@@ -173,7 +165,6 @@ const stickers: Sticker[] = [
     size: 180,
     title: 'HIMEHINA JOJIGOD',
     description: '強力支持HIMEHINA活動的神級會員',
-    whiteOutline: false,
   },
   {
     id: 'wwdc26',
@@ -182,7 +173,6 @@ const stickers: Sticker[] = [
     size: 120,
     title: 'WWDC 2026',
     description: 'I joined WWDC 2026 online',
-    whiteOutline: false,
   },
   {
     id: 'endfield',
@@ -191,7 +181,7 @@ const stickers: Sticker[] = [
     size: 100,
     title: '明日方舟：終末地',
     description: '我是終末地工業的「管理員」',
-    whiteOutline: false,
+    noRadius: true,
   },
   {
     id: 'evil-twin-brewing-nyc',
@@ -200,7 +190,7 @@ const stickers: Sticker[] = [
     size: 100,
     title: 'Evil Twin Brewing NYC',
     description: '我愛這家超神精釀啤酒',
-    whiteOutline: false,
+    noRadius: true,
   },
   {
     id: 'flighty',
@@ -209,7 +199,6 @@ const stickers: Sticker[] = [
     size: 500,
     title: 'Flighty Passport',
     description: '我飛過的機場',
-    whiteOutline: false,
   },
   {
     id: 'toge',
@@ -218,7 +207,6 @@ const stickers: Sticker[] = [
     size: 200,
     title: 'TOGENASHI TOGEARI',
     description: '我喜歡刺刺團',
-    whiteOutline: false,
   },
   {
     id: 'ui_5th',
@@ -227,7 +215,6 @@ const stickers: Sticker[] = [
     size: 200,
     title: 'しぐれうい 5th Anniversary',
     description: '我參加了しぐれうい5周年紀念展',
-    whiteOutline: false,
   },
   {
     id: 'ui_member',
@@ -244,7 +231,6 @@ const stickers: Sticker[] = [
     size: 100,
     title: 'あおぎり高校',
     description: '我箱推青桐高校',
-    whiteOutline: false,
   },
   {
     id: 'rick-and-morty',
@@ -253,7 +239,6 @@ const stickers: Sticker[] = [
     size: 150,
     title: 'Rick and Morty',
     description: '我喜歡《瑞克和莫蒂》這部動畫',
-    whiteOutline: false,
   },
   {
     id: 'nico25',
@@ -262,7 +247,7 @@ const stickers: Sticker[] = [
     size: 100,
     title: 'ニコニコ超会議2025',
     description: '我參加了Nico Nico超會議2025！超近距離的小林幸子本人！',
-    whiteOutline: false,
+    noRadius: true,
   },
   {
     id: 'teto',
@@ -271,7 +256,6 @@ const stickers: Sticker[] = [
     size: 100,
     title: '重音テト 17th',
     description: 'Our beloved Teto',
-    whiteOutline: false,
   },
   {
     id: 'kasane',
@@ -280,7 +264,6 @@ const stickers: Sticker[] = [
     size: 250,
     title: '居酒屋かさね',
     description: '參加了テト鑽頭酒杯的紀念活動：居酒屋かさね',
-    whiteOutline: false,
   },
   {
     id: 'comiket50',
@@ -289,7 +272,6 @@ const stickers: Sticker[] = [
     size: 150,
     title: 'コミックマーケット50周年',
     description: '我參加了C107的Comiket 50周年紀念',
-    whiteOutline: false,
   },
   {
     id: 'moztw',
@@ -298,7 +280,6 @@ const stickers: Sticker[] = [
     size: 150,
     title: 'MozTW',
     description: '已經參與 Mozilla 台灣社群 13+ 年了！',
-    whiteOutline: false,
   },
   {
     id: 'fbosc',
@@ -307,7 +288,6 @@ const stickers: Sticker[] = [
     size: 150,
     title: 'Facebook Open Source',
     description: '我曾是Facebook Open Source的開發者',
-    whiteOutline: false,
   },
   {
     id: 'ponfes25',
@@ -316,7 +296,6 @@ const stickers: Sticker[] = [
     size: 500,
     title: 'PONFES!2025',
     description: '我參加了あやぽんず＊ワンマンライブ PONFES!2025',
-    whiteOutline: false,
   },
   {
     id: 'kancolle',
@@ -325,7 +304,6 @@ const stickers: Sticker[] = [
     size: 350,
     title: '艦隊これくしょん',
     description: '我是提督',
-    whiteOutline: false,
   },
 ]
 
@@ -415,7 +393,7 @@ const visualBoxFor = (
     ih = nh * scale
   }
 
-  const useCard = sticker.whiteOutline !== false && !isSvg
+  const useCard = sticker.whiteOutline === true && !isSvg
   if (useCard) {
     const pad = Math.round(px * 0.05)
     const w = iw + pad * 2
@@ -653,7 +631,7 @@ const StickerFace = ({
     // box-shadow). SVG logos aren't rectangular, so they carry their own baked
     // white outline in the file and stay transparent with one drop-shadow —
     // same as the go-around stickers (whiteOutline: false).
-    const useCard = sticker.whiteOutline !== false && !isSvg
+    const useCard = sticker.whiteOutline === true && !isSvg
     const pad = Math.round(renderSize * 0.05)
     return (
       <Box
@@ -662,7 +640,7 @@ const StickerFace = ({
         justifyContent="center"
         padding={useCard ? `${pad}px` : 0}
         backgroundColor={useCard ? 'white' : undefined}
-        borderRadius="10px"
+        borderRadius={sticker.noRadius ? undefined : '10px'}
         overflow="hidden"
         style={{
           // A single, GPU-cheap shadow. Card-style stickers get a box-shadow;
@@ -684,7 +662,9 @@ const StickerFace = ({
           }}
           objectFit="cover"
           display="block"
-          borderRadius={sticker.round ? 'full' : undefined}
+          borderRadius={
+            sticker.noRadius ? undefined : sticker.round ? 'full' : undefined
+          }
           draggable={false}
         />
       </Box>
