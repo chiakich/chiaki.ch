@@ -42,6 +42,9 @@ yarn-error.log*
 nextImageExportOptimizer
 next-image-export-optimizer-hashes.json
 
+# panda css generated
+/styled-system
+
 # new rules
 public/assets/character/*/*_thumb_large.jpg
 public/assets/character/*/*_thumb_small.jpg
