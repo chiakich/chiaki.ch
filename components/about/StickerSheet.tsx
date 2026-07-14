@@ -62,11 +62,12 @@ const stickers: Sticker[] = [
   {
     id: 'React',
     kind: 'image',
-    src: '/assets/about/stickers/react-logo.svg',
+    src: '/assets/about/stickers/react-logo.webp',
     size: 100,
     title: 'React',
     description:
       'React 是我最常用的前端框架，從 2015 年開始就一直在使用。而且他餵飽了我。我愛 React。',
+    whiteOutline: false,
   },
   {
     id: 'clip',
@@ -88,10 +89,11 @@ const stickers: Sticker[] = [
   {
     id: 'coscup',
     kind: 'image',
-    src: '/assets/about/stickers/coscup.svg',
+    src: '/assets/about/stickers/coscup.webp',
     size: 200,
     title: 'COSCUP 台灣開源人年會',
     description: 'COSCUP 資深會眾/審稿委員',
+    whiteOutline: false,
   },
   {
     id: 'sitcon',
@@ -149,7 +151,7 @@ const stickers: Sticker[] = [
   {
     id: 'sukonbu',
     kind: 'image',
-    src: '/assets/about/stickers/sukonbu.png',
+    src: '/assets/about/stickers/sukonbu.webp',
     size: 100,
     title: '司空部',
     description: 'Hi friends',
@@ -161,13 +163,13 @@ const stickers: Sticker[] = [
     src: '/assets/about/stickers/hinako.jpeg',
     size: 80,
     title: '妃那子',
-    description: 'Livyatan of 妃那子 Official Fanclub',
+    description: '妃那子 Official Fanclub',
     whiteOutline: false,
   },
   {
     id: 'himehina',
     kind: 'image',
-    src: '/assets/about/stickers/himehina.png',
+    src: '/assets/about/stickers/himehina.webp',
     size: 180,
     title: 'HIMEHINA JOJIGOD',
     description: '強力支持HIMEHINA活動的神級會員',
@@ -181,7 +183,39 @@ const stickers: Sticker[] = [
     title: 'WWDC 2026',
     description: 'WWDC 2026 Attendee',
     whiteOutline: false,
-  },
+  }, {
+    id: 'endfield',
+    kind: 'image',
+    src: '/assets/about/stickers/endfield.webp',
+    size: 100,
+    title: '明日方舟：終末地',
+    description: '終末地工業的「管理員」',
+    whiteOutline: false,
+  }, {
+    id: 'evil-twin-brewing-nyc',
+    kind: 'image',
+    src: '/assets/about/stickers/eviltwin.webp',
+    size: 100,
+    title: 'Evil Twin Brewing NYC',
+    description: '超 神 精 釀 啤 酒',
+    whiteOutline: false,
+  }, {
+    id: 'flighty',
+    kind: 'image',
+    src: '/assets/about/stickers/flighty.webp',
+    size: 500,
+    title: 'Flighty Passport',
+    description: 'The place I have been.',
+    whiteOutline: false,
+  },{
+    id:'toge',
+    kind:'image',
+    src:'/assets/about/stickers/toge.svg',
+    size:200,
+    title:'TOGENASHI TOGEARI',
+    description:'《少女樂團吶喊吧》刺刺團刺民',
+    whiteOutline:false,
+  }
 ]
 
 // Small, fast, deterministic PRNG so the layout is identical every render.
@@ -527,7 +561,7 @@ const StickerFace = ({
         justifyContent="center"
         padding={useCard ? `${pad}px` : 0}
         backgroundColor={useCard ? 'white' : undefined}
-        borderRadius="15px"
+        borderRadius="10px"
         overflow="hidden"
         style={{
           // A single, GPU-cheap shadow. Card-style stickers get a box-shadow;
