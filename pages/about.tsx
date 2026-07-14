@@ -501,11 +501,11 @@ const About: NextPage = () => {
 
             <Section en="GETTING ALONG" title="關於相處">
               <Text>
-                算慢熟，而且事情實在太多了，回訊息會很慢。
+                事情實在太多了，我回訊息會很慢。
                 <br />
-                但「慢」不等於「不想理你」：想找我聊、想傳訊息給我，都非常歡迎，我有空一定會盡量回、盡量看。
+                但「慢」不等於「不想理你」，想找我聊、想傳訊息給我，都非常歡迎，我有空一定會盡量回、盡量看。
                 <br />
-                只是要先跟大家說聲抱歉，我不一定每則貼文都會看到，不是故意已讀或無視，是忙起來真的會漏，這點請多包涵。
+                也先跟大家說聲抱歉，我不一定每則貼文都會看到，不是故意已讀或無視，是忙起來真的會漏，這點請多包涵。
               </Text>
             </Section>
 
@@ -515,20 +515,20 @@ const About: NextPage = () => {
                 <br />
                 我覺得沒有什麼絕對的對錯，很多東西只是被放在錯的地方而已。
                 <br />
-                帶著這樣的善意與尊重，我們應該會很合得來！
+                帶著這樣的善意與尊重，我們會很合得來！
               </Text>
             </Section>
 
-            <Section en="CONTACT" title="找我">
+            <Section en="CONTACT" title="聯絡我">
               <Text>
-                想找我的話，所有聯絡方式都整理在{' '}
+                我的社群平台以及聯絡方式都整理在{' '}
                 <NextLink
-                  href="/links"
+                  href="/sns"
                   style={{ color: ACCENT, borderBottom: `1px solid ${ACCENT}66` }}
                 >
                   這裡
                 </NextLink>
-                。
+                ！
               </Text>
             </Section>
           </VStack>
