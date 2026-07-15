@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { SplitFlap } from 'react-split-flap'
 import { Box, Flex, styled } from 'styled-system/jsx'
 
@@ -91,80 +91,139 @@ const scrambleRows = () =>
     Array.from({ length: W }, () => LETTERS[Math.floor(Math.random() * LETTERS.length)]).join(''),
   )
 
+interface FlapRowProps {
+  row: string
+  baMode: boolean
+}
+
+// A cascading frame changes one row at a time. Keeping the row boundary memoized
+// prevents each timeout from walking all 240 flap components again.
+const FlapRow = memo(({ row, baMode }: FlapRowProps) => (
+  <SplitFlap
+    value={row}
+    chars={baMode ? BA_CHARS : CHARS}
+    length={W}
+    align="left"
+    theme="dark"
+    size="small"
+    timing={baMode ? 10 : 28}
+    fontColor={baMode ? '#f2f2f2' : '#ff5d52'}
+    animateOnMount={false}
+  />
+))
+
+FlapRow.displayName = 'FlapRow'
+
 // 20 × 12 = 240 digits on one shared animation clock, cycling through scenes.
 // Clicking the board plays the Bad Apple frames if the JSON is present.
 const FlapShowcase = () => {
   const [rows, setRows] = useState<string[]>(HEART)
   const [baMode, setBaMode] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
+  const showcaseRef = useRef<HTMLDivElement>(null)
   const baFrames = useRef<string[][] | null>(null)
-  const timers = useRef<ReturnType<typeof setTimeout>[]>([])
+  const baLoading = useRef(false)
+  const baFrameIndex = useRef(0)
+  const sceneIndex = useRef(0)
 
   useEffect(() => {
-    fetch(BA_FRAMES_URL)
-      .then((res) => (res.ok ? res.json() : null))
-      .then((frames) => {
-        if (Array.isArray(frames) && frames.length) baFrames.current = frames
-      })
-      .catch(() => {})
+    const node = showcaseRef.current
+    if (!node || typeof IntersectionObserver === 'undefined') {
+      setIsVisible(true)
+      return
+    }
+
+    const observer = new IntersectionObserver(([entry]) => setIsVisible(entry.isIntersecting), {
+      rootMargin: '200px 0px',
+    })
+    observer.observe(node)
+    return () => observer.disconnect()
   }, [])
+
+  const toggleBadApple = useCallback(async () => {
+    if (baMode) {
+      setBaMode(false)
+      return
+    }
+
+    if (!baFrames.current && !baLoading.current) {
+      baLoading.current = true
+      try {
+        const response = await fetch(BA_FRAMES_URL)
+        const frames = response.ok ? await response.json() : null
+        if (Array.isArray(frames) && frames.length) baFrames.current = frames
+      } catch {
+        // The showcase remains usable when the optional easter egg is unavailable.
+      } finally {
+        baLoading.current = false
+      }
+    }
+
+    if (baFrames.current) {
+      baFrameIndex.current = 0
+      setBaMode(true)
+    }
+  }, [baMode])
 
   // Scene loop: reveal art top-down (rows cascade like the departure board), hold, scramble, next.
   useEffect(() => {
-    if (baMode) return
-    let scene = 0
-    const push = (fn: () => void, delay: number) => timers.current.push(setTimeout(fn, delay))
+    if (!isVisible || baMode) return
+
+    let cancelled = false
+    const timers = new Set<ReturnType<typeof setTimeout>>()
+    const push = (fn: () => void, delay: number) => {
+      const timer = setTimeout(() => {
+        timers.delete(timer)
+        if (!cancelled) fn()
+      }, delay)
+      timers.add(timer)
+    }
     const applyFrame = (frame: string[]) =>
       frame.forEach((row, i) => push(() => setRows((prev) => prev.map((r, j) => (j === i ? row : r))), i * 90))
     const loop = () => {
-      timers.current = []
-      applyFrame(SCENES[scene % SCENES.length])
+      applyFrame(SCENES[sceneIndex.current % SCENES.length])
       push(() => {
         applyFrame(scrambleRows())
-        push(() => { scene += 1; loop() }, 2600)
+        push(() => {
+          sceneIndex.current += 1
+          loop()
+        }, 2600)
       }, 6500)
     }
     loop()
-    return () => timers.current.forEach(clearTimeout)
-  }, [baMode])
+    return () => {
+      cancelled = true
+      timers.forEach(clearTimeout)
+    }
+  }, [baMode, isVisible])
 
   useEffect(() => {
-    if (!baMode || !baFrames.current) return
+    if (!isVisible || !baMode || !baFrames.current) return
     const frames = baFrames.current
-    let index = 0
     const interval = setInterval(() => {
-      if (index >= frames.length) {
+      if (baFrameIndex.current >= frames.length) {
+        baFrameIndex.current = 0
         setBaMode(false)
         return
       }
-      setRows(frames[index])
-      index += 1
+      setRows(frames[baFrameIndex.current])
+      baFrameIndex.current += 1
     }, 200)
     return () => clearInterval(interval)
-  }, [baMode])
+  }, [baMode, isVisible])
 
   return (
-    <Box>
+    <Box ref={showcaseRef}>
       <Box overflowX="auto" pb={2}>
         <Flex
           direction="column"
           gap="3px"
           width="fit-content"
           mx="auto"
-          onClick={() => baFrames.current && setBaMode((mode) => !mode)}
+          onClick={toggleBadApple}
         >
           {rows.map((row, i) => (
-            <SplitFlap
-              key={`${baMode ? 'ba' : 'art'}-${i}`}
-              value={row}
-              chars={baMode ? BA_CHARS : CHARS}
-              length={W}
-              align="left"
-              theme="dark"
-              size="small"
-              timing={baMode ? 10 : 28}
-              fontColor={baMode ? '#f2f2f2' : '#ff5d52'}
-              animateOnMount={false}
-            />
+            <FlapRow key={`${baMode ? 'ba' : 'art'}-${i}`} row={row} baMode={baMode} />
           ))}
         </Flex>
       </Box>
