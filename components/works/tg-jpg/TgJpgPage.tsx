@@ -3,7 +3,6 @@ import TopBar from 'components/TopBar'
 import MotionSection from 'components/portfolio/MotionSection'
 import ProjectLink from 'components/portfolio/ProjectLink'
 import SectionHeading from 'components/portfolio/SectionHeading'
-import WorksSubNav from 'components/works/WorksSubNav'
 import TgJpgHero from './TgJpgHero'
 
 const Heading = styled.h3
@@ -19,7 +18,6 @@ const pipeline = [
 const TgJpgPage = () => (
   <Box backgroundColor="#08121c" color="white" minHeight="100vh">
     <TopBar />
-    <WorksSubNav />
     <TgJpgHero />
     <Container
       maxW="1080px"

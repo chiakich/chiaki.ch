@@ -3,7 +3,6 @@ import TopBar from 'components/TopBar'
 import MotionSection from 'components/portfolio/MotionSection'
 import ProjectLink from 'components/portfolio/ProjectLink'
 import SectionHeading from 'components/portfolio/SectionHeading'
-import WorksSubNav from 'components/works/WorksSubNav'
 import SplitFlapHero from './SplitFlapHero'
 import dynamic from 'next/dynamic'
 
@@ -26,7 +25,6 @@ const engineering = [
 const SplitFlapPage = () => (
   <Box backgroundColor="#0b0b0d" color="white" minHeight="100vh">
     <TopBar />
-    <WorksSubNav />
     <SplitFlapHero />
     <Container maxW="1080px" px={{ base: '24px', md: '40px' }} py={{ base: 16, md: 20 }}>
       <Stack gap={20}>

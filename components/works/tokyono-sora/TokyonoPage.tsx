@@ -3,7 +3,6 @@ import TopBar from 'components/TopBar'
 import MotionSection from 'components/portfolio/MotionSection'
 import ProjectLink from 'components/portfolio/ProjectLink'
 import SectionHeading from 'components/portfolio/SectionHeading'
-import WorksSubNav from 'components/works/WorksSubNav'
 import TokyonoHero from './TokyonoHero'
 
 const Heading = styled.h3
@@ -20,7 +19,6 @@ const features = [
 const TokyonoPage = () => (
   <Box backgroundColor="#081720" color="white" minHeight="100vh">
     <TopBar />
-    <WorksSubNav />
     <TokyonoHero />
     <Container
       maxW="1080px"
