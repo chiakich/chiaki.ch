@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic'
 import { motion } from 'framer-motion'
 import { Box, Container, HStack, Stack, styled } from 'styled-system/jsx'
 import ProjectLink from 'components/portfolio/ProjectLink'
+import { Copy, Check } from 'iconoir-react'
 
 const DepartureBoard = dynamic(() => import('./DepartureBoard'), { ssr: false })
 
@@ -43,7 +44,7 @@ const InstallCommand = () => {
       title="複製安裝指令"
     >
       <Span color={ACCENT}>$</Span> {INSTALL_COMMAND}
-      <Span fontSize="xs" color={copied ? ACCENT : 'rgba(255,255,255,.45)'}>{copied ? '已複製 ✓' : '⧉'}</Span>
+      <Span>{copied ? <Check color="green" /> : <Copy />}</Span>
     </Button>
   )
 }

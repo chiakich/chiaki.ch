@@ -81,7 +81,7 @@ const BoardRow = ({ order, row }: { order: number; row: RowState | null }) => (
     <LongFlap flaps={HOME_FLAPS} displayId="6" digitWidth={62} animateOnMount={false} {...CELL} />
     <LongFlap flaps={KIND_FLAPS} displayId={row ? row.service.kind : 'black'} digitWidth={58} {...CELL} />
     <LongFlap flaps={DEST_FLAPS} displayId={row ? String(row.service.dest) : 'black'} digitWidth={150} {...CELL} />
-    <LongFlap flaps={HOUR_FLAPS} displayId={row ? String(row.departure.getHours()) : '0'} digitWidth={52} {...CELL} />
+    <LongFlap flaps={HOUR_FLAPS} displayId={row ? String(row.departure.getHours()) : '0'} digitWidth={55} {...CELL} />
     <LongFlap flaps={MINUTE_FLAPS} displayId={row ? String(Math.floor(row.departure.getMinutes() / 10)) : '0'} digitWidth={30} {...CELL} />
     <LongFlap flaps={MINUTE_FLAPS} displayId={row ? String(row.departure.getMinutes() % 10) : '0'} digitWidth={30} {...CELL} />
     <LongFlap flaps={CARS_FLAPS} displayId={row ? row.service.cars : '8両'} digitWidth={55} {...CELL} />
