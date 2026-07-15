@@ -28,14 +28,22 @@ const SCHEDULE: Service[] = [
 ]
 
 const KINDS = ['air_exp', 'air_ltd', 'air_rapid_ltd', 'com_ltd', 'exp', 'local', 'ltd', 'out', 'rapid_ltd', 'black']
-const CARS = ['4両', '6両', '8両', '12両']
 
-const flapImage = (src: string) => (
-  <img src={src} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
+const flapImage = (webpSrc: string, pngSrc: string) => (
+  <picture style={{ width: '100%', height: '100%', display: 'block' }}>
+    <source srcSet={webpSrc} type="image/webp" />
+    <img src={pngSrc} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
+  </picture>
 )
 
 const imageFlaps = (dir: string, ids: (string | number)[]) =>
-  ids.map((id) => ({ id: String(id), component: flapImage(`${IMG_BASE}/${dir}/${id}.PNG`) }))
+  ids.map((id) => {
+    const base = `${IMG_BASE}/${dir}/${id}`
+    return {
+      id: String(id),
+      component: flapImage(`${base}.webp`, `${base}.PNG`),
+    }
+  })
 
 // Full physical flap sets (not just the ids we display) so a change travels
 // through many flaps before landing, like the real machine. dest 22/32 don't exist.
@@ -49,10 +57,16 @@ const DEST_FLAPS = imageFlaps('dest', DEST_IDS)
 const BIKOU_FLAPS = imageFlaps('bikou', BIKOU_IDS)
 const HOUR_FLAPS = imageFlaps('hour', Array.from({ length: 24 }, (_, i) => i))
 const MINUTE_FLAPS = imageFlaps('minute', Array.from({ length: 10 }, (_, i) => i))
-const CARS_FLAPS = CARS.map((cars) => ({
-  id: cars,
-  component: <span style={{ fontSize: 15, fontWeight: 700, color: '#f2f2f2', letterSpacing: '.04em' }}>{cars}</span>,
-}))
+const CARS_FLAPS = Array.from({ length: 20 }, (_, i) => {
+  const num = i + 1
+  const id = `${num}両`
+  const hasImage = [4, 6, 8, 10, 12].includes(num)
+  const base = hasImage ? `${IMG_BASE}/cars/${num}` : `${IMG_BASE}/cars/black`
+  return {
+    id,
+    component: flapImage(`${base}.webp`, `${base}.png`),
+  }
+})
 
 interface RowState {
   service: Service
