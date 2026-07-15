@@ -5642,10 +5642,10 @@ react-reconciler@^0.31.0:
   dependencies:
     scheduler "^0.25.0"
 
-react-split-flap@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/react-split-flap/-/react-split-flap-0.2.0.tgz#2d157845d077a01efe85b955af669c4311ffe6dc"
-  integrity sha512-liyyhDVbxObjisI/pMozxWMvlWXRwB0ov70C7sarYa6jID76PQFzn6eTMM2LoJyHIBdQYY14+oWPiSa/WQnEBw==
+react-split-flap@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/react-split-flap/-/react-split-flap-0.2.1.tgz#6c1c08b4b9bcf67a432dda45b80ad3d3ad5f660f"
+  integrity sha512-eXbyb3CEwHk9YhSrqtz3TW0YqoEAe5tcrRw5oqZC5S7k7jEniffhkYR+vXYE0jDpPQJWcOn7q8K3tQn6IyaLgg==
 
 react-use-measure@^2.1.7:
   version "2.1.7"
