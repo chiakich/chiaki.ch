@@ -27,6 +27,10 @@ export default defineConfig({
         },
         fonts: {
           body: { value: '"xingothic-tc", "Noto Sans TC", sans-serif' },
+          default: {
+            value:
+              "'M 翔鶴黑體 TC', 'PingFang TC', 'LiHei Pro', 'Heiti TC', 'Source Han Sans TC', 'Noto Sans TC','Hiragino Sans', 'Century Gothic', 'Microsoft Jhenghei', '微軟正黑體', sans-serif",
+          },
           akitra: { value: 'akitra, "xingothic-tc", sans-serif' },
           nixie: { value: 'nixie, monospace' },
           huninn: { value: 'huninn, "xingothic-tc", sans-serif' },

@@ -63,6 +63,7 @@ const TopBar: React.FC = () => {
       backdropFilter="saturate(180%) blur(20px)"
       borderBottom="1px solid"
       borderColor="gray.800"
+      fontFamily="body"
     >
       <Flex
         maxW="width.section"

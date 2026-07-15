@@ -19,8 +19,13 @@ const Story: NextPage = () => {
   const handleBootDone = useCallback(() => setOpeningDone(true), [])
 
   return (
-    <Box backgroundColor="black" width="100%" minHeight="100%" overflow="clip" fontFamily="'M 翔鶴黑體 TC', 'PingFang TC', 'LiHei Pro', 'Heiti TC', 'Source Han Sans TC', 'Noto Sans TC',
-    'Hiragino Sans', 'Century Gothic', 'Microsoft Jhenghei', '微軟正黑體', sans-serif">
+    <Box
+      backgroundColor="black"
+      width="100%"
+      minHeight="100%"
+      overflow="clip"
+      fontFamily="default"
+    >
       <TopBar />
       <StorySubNav />
       <StoryBootLoader onComplete={handleBootDone} />

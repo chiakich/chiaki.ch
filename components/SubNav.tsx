@@ -41,6 +41,7 @@ const SubNav = ({
       borderColor={borderColor}
       height="48px"
       display={{ base: 'none', md: 'block' }}
+      fontFamily="body"
     >
       <Flex
         maxW="width.section"
