@@ -33,7 +33,7 @@ const ConversionScene = () => (
     </motion.g>
     {/* 4. 送出的瞬間轉成簡體（底線消失） */}
     <motion.g animate={{ opacity: [0, 0, 1, 1] }} transition={{ duration: 8, repeat: Infinity, times: [0, .66, .74, 1] }}>
-      <text x="104" y="182" fontSize="26" fill="#241533">台湾的档案</text>
+      <text x="104" y="182" fontSize="26" fill="#241533" fontFamily='sans-serif'>台湾的档案</text>
       <text x="262" y="182" fontSize="13" fill="#28a04a">✓ 送出時轉成簡體</text>
     </motion.g>
     <text x="104" y="242" fontSize="12" fill="#7c6b90">注音照打、選字照選，只有送出的結果不一樣（單向繁 → 簡）</text>

@@ -13,10 +13,10 @@ const Chip = styled.span
 // 裝到使用者機器上之後，runtime 再疊上使用者詞庫與學習快取。
 // 陣列順序 = 疊放順序（index 0 在最底層）。
 const layers: { name: string; local?: boolean; fill: string; border: string }[] = [
-  { name: '相容性基底詞庫', fill: 'rgba(46,32,66,.94)', border: 'rgba(199,125,255,.22)' },
-  { name: '外部詞庫', fill: 'rgba(66,26,84,.86)', border: 'rgba(199,125,255,.32)' },
-  { name: '專案詞庫', fill: 'rgba(95,16,105,.78)', border: 'rgba(199,125,255,.45)' },
-  { name: '校正層', fill: 'rgba(135,36,148,.72)', border: 'rgba(199,125,255,.58)' },
+  { name: '基底詞庫與外部詞庫', fill: 'rgba(46,32,66,.94)', border: 'rgba(199,125,255,.22)' },
+  { name: '專案大詞庫', fill: 'rgba(66,26,84,.86)', border: 'rgba(199,125,255,.32)' },
+  { name: '自動熱門詞庫', fill: 'rgba(95,16,105,.78)', border: 'rgba(199,125,255,.45)' },
+  { name: '台灣用法校正層', fill: 'rgba(135,36,148,.72)', border: 'rgba(199,125,255,.58)' },
   { name: '使用者詞庫＋學習快取', local: true, fill: 'rgba(178,68,190,.62)', border: 'rgba(236,220,255,.72)' },
 ]
 
@@ -34,12 +34,12 @@ const dataLayers = [
   },
   {
     name: '外部詞庫',
-    goal: '可審查、可再散布的現代繁中詞彙與讀音覆蓋。',
+    goal: '包含新酷音、RIME等輸入法提供，成熟的繁中詞彙與讀音。',
     items: ['libchewing-data', 'rime-essay', 'mozc-emoticon-data'],
   },
   {
     name: '專案詞庫',
-    goal: '專案維護的自定詞庫：修正已知缺漏、指定讀音、調整候選排序，加上台灣用語、合成語料與自動熱門詞提煉的 unigram／bigram 補充。',
+    goal: '由我們維護的自製詞庫：修正已知缺漏、指定讀音、調整候選排序，加上台灣用語、合成語料與自動熱門詞提煉的 unigram／bigram 補充。',
     items: [
       'chiaki-modern-overlay',
       'chiaki-auto-hotwords-overlay',
@@ -49,14 +49,14 @@ const dataLayers = [
   },
   {
     name: '校正層',
-    goal: '小型已審查規則，讓預設繁中（zh-TW）輸出符合語言與地區期待：OpenCC t2tw 之後的 Rime 例外（地名「里」、「里肌」），以及句段碎片權重上限，抑制偷字造成的錯誤斷詞。',
+    goal: '小型已審查規則，讓預設繁中（zh-TW）輸出符合台灣常用用法。以及校正句段碎片權重上限，抑制偷字造成的錯誤斷詞。',
     items: ['chiaki-rime-conversion-policy', 'chiaki-fragment-denylist'],
   },
 ]
 
 const localLayers = [
-  ['使用者詞庫', 'Shift 選取或 Ctrl+n 加入的自訂詞，留在你的機器上，可匯入匯出。'],
-  ['學習快取', '選字紀錄與詞頻。安全輸入欄位不記錄。'],
+  ['使用者詞庫', 'Shift 選取或 Ctrl+[數字鍵] 加入的自訂詞，留在你的機器上，可匯入匯出。'],
+  ['學習快取', '選字紀錄與詞頻。'],
 ]
 
 const spreadY = (index: number) => 115 - index * 105
@@ -67,8 +67,6 @@ const LexiconLayers = () => (
     position="relative"
     height={{ base: '450px', md: '450px' }}
     style={{ perspective: '1200px' }}
-    // 旋轉後的圖層在窄螢幕會超出內容欄，造成整頁可水平捲動。
-    // 手機版裁切裝飾性延伸；桌面仍保留原本的立體出框效果。
     overflow={{ base: 'hidden', md: 'visible' }}
   >
     {layers.map(({ name, local, fill, border }, index) => (
@@ -76,8 +74,8 @@ const LexiconLayers = () => (
         key={name}
         initial={{ y: spreadY(index), opacity: 0 }}
         whileInView={{ y: stackedY(index), opacity: 1 }}
-        viewport={{ once: true, margin: '-120px' }}
-        transition={{ duration: 1, delay: index * 0.14, ease: [0.22, 1, 0.36, 1] }}
+        viewport={{ once: true }}
+        transition={{ duration: 1, delay: index * 0.3, ease: [0.22, 1, 0.36, 1] }}
         style={{
           position: 'absolute',
           left: '50%',
@@ -87,7 +85,7 @@ const LexiconLayers = () => (
       >
         <Box
           width={{ base: '48vw', md: '420px' }}
-          height={{ base: '104px', md: '140px' }}
+          height={{ base: '104px', md: '200px' }}
           borderRadius="22px"
           p={4}
           style={{
@@ -100,7 +98,7 @@ const LexiconLayers = () => (
         >
           <HStack gap={2}>
             <Text
-              fontSize="xs"
+              fontSize="md"
               fontWeight="700"
               letterSpacing=".08em"
               color="rgba(255,255,255,.92)"
@@ -116,35 +114,6 @@ const LexiconLayers = () => (
         </Box>
       </motion.div>
     ))}
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-120px' }}
-      transition={{ duration: 0.7, delay: 1.1 }}
-      style={{
-        position: 'absolute',
-        left: '50%',
-        bottom: 0,
-        transform: 'translateX(-50%)',
-      }}
-    >
-      <HStack
-        gap={3}
-        backgroundColor="#160e23"
-        borderRadius="980px"
-        px={5}
-        py={2.5}
-        whiteSpace="nowrap"
-      >
-        <Text fontSize="sm" opacity={0.75}>
-          依固定順序疊加
-        </Text>
-        <Text color="#c77dff">→</Text>
-        <Text fontSize="sm" fontWeight="700">
-          候選排序
-        </Text>
-      </HStack>
-    </motion.div>
   </Box>
 )
 
@@ -154,7 +123,7 @@ const ChiaKeyLexicon = () => (
       en="Lexicon"
       accent="#c77dff"
       center
-      sub="詞庫不只是一份單一清單。ChiaKey-Lexicon 把資料分成四層，融合了多來源詞庫，智慧選擇最適合台灣日常使用的詞彙；裝進你的 Mac 之後，再疊上屬於你的兩層。"
+      sub="詞庫不只是一份單一清單。千秋輸入法的詞庫為了還原手感，融合了多來源詞庫，智慧選擇最適合台灣日常使用的詞彙；裝進你的 Mac 之後，再疊上屬於你的兩層。"
     >
       層層詞庫，更懂你
     </SectionHeading>
@@ -243,7 +212,7 @@ const ChiaKeyLexicon = () => (
               <Code fontSize=".95em" color="#d49bff">
                 ChiaKey-Lexicon
               </Code>{' '}
-              合成後獨立更新。輸入法會自動檢查最新詞庫並驗證，通過才會啟用。你的自訂詞與選字紀錄一直留在本機的資料庫。
+              合成後獨立更新。輸入法會自動檢查最新詞庫並驗證，通過才會啟用。你的自訂詞與選字紀錄則一直留在本機的資料庫。
             </Text>
           </Stack>
           <HStack

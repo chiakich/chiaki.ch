@@ -7,7 +7,7 @@ type Scene = 'lift' | 'crop' | 'conclusion'
 
 const CLAY = '#d9895c' // Claude Code's clay/orange accent
 const USER_PROMPT = 'Run scheduled tasks #36574'
-const INTRO = '好的。我來再次檢查看看目前的狀態讀數。'
+const INTRO = '喚醒中...檢查目前的狀態讀數。'
 
 const checks: { text: string; scene: Scene }[] = [
   { text: '===升力測試===', scene: 'lift' },
@@ -20,16 +20,15 @@ const checks: { text: string; scene: Scene }[] = [
   { text: '理論產量：120% ／ 實測：34%', scene: 'crop' },
   { text: '錯誤：連續 11,247 日歉收，原因未知。', scene: 'crop' },
   { text: '===綜合診斷===', scene: 'conclusion' },
-  { text: '所有參數均在正常範圍。', scene: 'conclusion' },
+  { text: '未知錯誤', scene: 'conclusion' },
 ]
 const CHECKS_TEXT = checks.map((c) => c.text).join('\n')
 
 const ASSISTANT_REPLY = [
-  '依然不太對勁。',
-  '不過我把所有指標都跑過一遍——大氣、升力、作物產量，',
+  '結論未知。',
+  '我把所有指標都跑過一遍——大氣、升力、作物產量，',
   '數字上全都「成立」，我找不到任何故障點。',
-  '也許出問題的，並不是能被測量的東西。',
-  '=== END OF DIAGNOSTIC ===',
+  '也許出問題的，並不是能被測量的東西。'
 ].join('\n')
 
 const art: Record<Scene, string[]> = {
@@ -64,7 +63,7 @@ const art: Record<Scene, string[]> = {
 
 // Claude's spinner: a sparkle that grows and shrinks
 const SPINNER = ['·', '✢', '✳', '∗', '✻', '✽', '✻', '∗', '✳', '✢']
-const GERUNDS = ['診斷中', '檢查中', '比對數據', '正在推敲原因']
+const GERUNDS = ['診斷中', '檢查中', '比對數據', '推敲原因']
 
 // step: 0 idle · 1 prompt · 2 intro · 3 running checks · 4 reply · 5 done
 const TerminalSelfTest = ({ onComplete }: { onComplete?: () => void }) => {

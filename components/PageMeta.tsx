@@ -29,12 +29,12 @@ const pageMetadata: Record<string, PageMeta> = {
     image: '/og/links.jpeg',
   },
   '/story': {
-    title: '千秋稻荷社的故事',
+    title: '故事 - 千秋稻荷社',
     description: '探索千秋稻荷社、常世與人類記憶交會的故事。',
     image: '/og/story.jpeg',
   },
   '/story/character': {
-    title: '涼風千秋 - 千秋稻荷社',
+    title: '角色介紹 - 千秋稻荷社',
     description: '千秋稻荷社第一研究室室長，兼第▓▓代巫女：涼風千秋。',
     image: '/og/story-character.jpeg',
   },
