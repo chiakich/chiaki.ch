@@ -564,9 +564,11 @@ const About: NextPage = () => {
 
       {/* Full-bleed sticker map, kept outside the two-column layout. */}
       <MotionBox
-        maxW="1200px"
+        width="100%"
+        maxWidth="1800px"
         marginX="auto"
         pb="80px"
+        aspectRatio={{ base: '1 / 2', md: '1.8' }}
         minWidth={0}
         initial={{ opacity: 0, y: 32 }}
         whileInView={{ opacity: 1, y: 0 }}

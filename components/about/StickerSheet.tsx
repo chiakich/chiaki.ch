@@ -331,6 +331,55 @@ const stickers: Sticker[] = [
     title: '大阪・関西万博',
     description: '我參加了2025大阪萬博',
   },
+  {
+    id: 'darjeeling',
+    kind: 'image',
+    src: '/assets/about/stickers/darjeeling.webp',
+    size: 200,
+    title: 'いかなる時も、優雅',
+    description: '我喜歡動畫《少女與戰車》大吉嶺的名言，無時無刻都要保持優雅！',
+  },
+  {
+    id: 'mono',
+    kind: 'image',
+    src: '/assets/about/stickers/mono.svg',
+    size: 100,
+    title: 'mono',
+    description: '我喜歡mono女孩！我也想要360度相機！',
+  },
+  {
+    id: 'yorimo',
+    kind: 'image',
+    src: '/assets/about/stickers/yorimo.webp',
+    size: 200,
+    title: '宇宙よりも遠い場所',
+    description: '我很喜歡《比宇宙更遠的地方》，希望有一天也能踏上南極',
+  },
+  {
+    id: 'suzumiya',
+    kind: 'image',
+    src: '/assets/about/stickers/suzumiya.webp',
+    size: 200,
+    title: '涼宮ハルヒの憂鬱',
+    description: '我喜歡《涼宮春日的憂鬱》，希望能成為其他人的涼宮春日',
+  },
+  {
+    id: 'back2future',
+    kind: 'image',
+    src: '/assets/about/stickers/back2future.webp',
+    size: 200,
+    title: 'Back to the Future',
+    description: '我喜歡《回到未來》這部電影，好想要時光機',
+  },
+  {
+    id: 'yeastken',
+    kind: 'image',
+    src: '/assets/about/stickers/yeastken.webp',
+    size: 150,
+    title: 'いーすとけん。',
+    description:
+      'Yeastken麵包狗是一種長得像麵包和狗的神秘生物，聞起來像剛出爐的麵包，摸起來蓬蓬軟軟，平時假扮成麵包的模樣偷偷躲在麵包屋裡，是一種不可思議的存在。',
+  },
 ]
 
 // Small, fast, deterministic PRNG so the layout is identical every render.
@@ -848,12 +897,7 @@ const StickerSheet = () => {
   }, [size])
 
   return (
-    <Box
-      width="100%"
-      maxWidth="100%"
-      overflow="hidden"
-      height={{ base: '85vh', md: '70vh' }}
-    >
+    <Box width="100%" maxWidth="100%" overflow="hidden" height="100%">
       <Box
         ref={containerRef}
         position="relative"
@@ -891,6 +935,8 @@ const StickerSheet = () => {
                 width={0}
                 height={0}
                 zIndex={isTooltipVisible ? 20 : 10}
+                fontFamily="'M 翔鶴黑體 TC', 'PingFang TC', 'LiHei Pro', 'Heiti TC', 'Source Han Sans TC', 'Noto Sans TC',
+    'Hiragino Sans', 'Century Gothic', 'Microsoft Jhenghei', '微軟正黑體', sans-serif"
               >
                 <MotionBox
                   as="button"
