@@ -10,6 +10,13 @@ const MotionBox = motion(Box)
 // Mask-based packing wastes far less space than circle packing, so this can
 // sit higher than before; the layout shrinks and repacks if it can't fit.
 const FILL_RATIO = 0.55
+// Narrow (mobile) containers are much smaller in raw area than desktop ones
+// despite the taller aspect ratio, which made stickers look tiny even though
+// the fill ratio was "the same". Use a higher ratio below this width so
+// mobile stickers start large and only shrink via the repack loop if they
+// truly don't fit.
+const MOBILE_WIDTH_BREAKPOINT = 640
+const MOBILE_FILL_RATIO = 0.8
 // Minimum clear space between two stickers' visible edges, in pixels.
 const STICKER_MARGIN = 4
 // Board cell size in css px. Smaller = tighter packing, slower layout.
@@ -631,9 +638,10 @@ const computeLayout = async (
   const usableH = Math.max(1, height - margin * 2)
   const ellipseAspect = Math.min(1.5, Math.max(1, (width / height) * 0.75))
 
-  // One scale unit so total sticker area ≈ FILL_RATIO of the usable area.
+  // One scale unit so total sticker area ≈ fillRatio of the usable area.
+  const fillRatio = width < MOBILE_WIDTH_BREAKPOINT ? MOBILE_FILL_RATIO : FILL_RATIO
   const sumSize = items.reduce((acc, s) => acc + s.size, 0)
-  let unit = Math.sqrt((FILL_RATIO * usableW * usableH) / sumSize)
+  let unit = Math.sqrt((fillRatio * usableW * usableH) / sumSize)
 
   // Anchor first, then large to small: big stickers claim space near the
   // centre and small logos fill the notches left between them.
