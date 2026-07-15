@@ -10,7 +10,7 @@ import {
 } from 'framer-motion'
 import Image from 'next/image'
 import NextLink from 'next/link'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import TopBar from 'components/TopBar'
 import StickerSheet from 'components/about/StickerSheet'
 
@@ -149,6 +149,12 @@ const CharacterPanel = ({
 }) => {
   const swayX = useMotionValue(0)
   const breatheY = useMotionValue(0)
+  const [imageLoaded, setImageLoaded] = useState(false)
+  const imgRef = useRef<HTMLImageElement>(null)
+
+  useEffect(() => {
+    if (imgRef.current?.complete) setImageLoaded(true)
+  }, [])
 
   useEffect(() => {
     const swayControls = animate(swayX, [-6, 6, -6], {
@@ -232,6 +238,7 @@ const CharacterPanel = ({
       </MotionBox>
 
       <MotionImg
+        ref={imgRef}
         src="/assets/about/chiaki_v2_web.png"
         alt="涼風千秋 立繪"
         position="absolute"
@@ -240,16 +247,25 @@ const CharacterPanel = ({
         height={{ base: '64vh', lg: '88%' }}
         maxWidth="none"
         filter={`drop-shadow(0 0 40px ${ACCENT}30)`}
+        onLoad={() => setImageLoaded(true)}
         initial={{
           clipPath: 'polygon(0 0, 18% 0, 0 100%, 0 100%)',
           opacity: 0,
           x: '-42%',
         }}
-        animate={{
-          clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
-          opacity: 1,
-          x: '-50%',
-        }}
+        animate={
+          imageLoaded
+            ? {
+                clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
+                opacity: 1,
+                x: '-50%',
+              }
+            : {
+                clipPath: 'polygon(0 0, 18% 0, 0 100%, 0 100%)',
+                opacity: 0,
+                x: '-42%',
+              }
+        }
         transition={{ duration: 1.1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
         style={{ translateX: floatX, translateY: floatY }}
       />

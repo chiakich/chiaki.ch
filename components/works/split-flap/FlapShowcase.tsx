@@ -32,35 +32,41 @@ const center = (rows: string[], fill = ' ') =>
 const art = (pattern: string[], ch: string) =>
   center(pattern.map((row) => row.replace(/X/g, ch).replace(/\./g, ' ')))
 
-const HEART = art([
-  '.XXXX.....XXXX.',
-  'XXXXXX...XXXXXX',
-  'XXXXXXX.XXXXXXX',
-  'XXXXXXXXXXXXXXX',
-  'XXXXXXXXXXXXXXX',
-  '.XXXXXXXXXXXXX.',
-  '..XXXXXXXXXXX..',
-  '...XXXXXXXXX...',
-  '....XXXXXXX....',
-  '.....XXXXX.....',
-  '......XXX......',
-  '.......X.......',
-], '♥')
+const HEART = art(
+  [
+    '.XXXX.....XXXX.',
+    'XXXXXX...XXXXXX',
+    'XXXXXXX.XXXXXXX',
+    'XXXXXXXXXXXXXXX',
+    'XXXXXXXXXXXXXXX',
+    '.XXXXXXXXXXXXX.',
+    '..XXXXXXXXXXX..',
+    '...XXXXXXXXX...',
+    '....XXXXXXX....',
+    '.....XXXXX.....',
+    '......XXX......',
+    '.......X.......',
+  ],
+  '♥'
+)
 
-const INVADER = art([
-  '',
-  '',
-  '..X.....X..',
-  '...X...X...',
-  '..XXXXXXX..',
-  '.XX.XXX.XX.',
-  'XXXXXXXXXXX',
-  'X.XXXXXXX.X',
-  'X.X.....X.X',
-  '...XX.XX...',
-  '',
-  '',
-], '█')
+const INVADER = art(
+  [
+    '',
+    '',
+    '..X.....X..',
+    '...X...X...',
+    '..XXXXXXX..',
+    '.XX.XXX.XX.',
+    'XXXXXXXXXXX',
+    'X.XXXXXXX.X',
+    'X.X.....X.X',
+    '...XX.XX...',
+    '',
+    '',
+  ],
+  '█'
+)
 
 const WORDS = center([
   '',
@@ -77,26 +83,31 @@ const WORDS = center([
   '',
 ])
 
-const STARS = center([
-  '..★.......★....',
-  '.......★.......',
-  '★...........★..',
-  '....★..........',
-  '..........★....',
-  '.★......★......',
-  '......★.....★..',
-  '...★...........',
-  '.........★.....',
-  '★.....★.......★',
-  '.....★.........',
-  '..........★....',
-].map((r) => r.replace(/\./g, ' ')))
+const STARS = center(
+  [
+    '..★.......★....',
+    '.......★.......',
+    '★...........★..',
+    '....★..........',
+    '..........★....',
+    '.★......★......',
+    '......★.....★..',
+    '...★...........',
+    '.........★.....',
+    '★.....★.......★',
+    '.....★.........',
+    '..........★....',
+  ].map((r) => r.replace(/\./g, ' '))
+)
 
 const SCENES = [HEART, INVADER, WORDS, STARS]
 
 const scrambleRows = () =>
   Array.from({ length: H }, () =>
-    Array.from({ length: W }, () => LETTERS[Math.floor(Math.random() * LETTERS.length)]).join(''),
+    Array.from(
+      { length: W },
+      () => LETTERS[Math.floor(Math.random() * LETTERS.length)]
+    ).join('')
   )
 
 // 20 × 12 = 240 digits on one shared animation clock, cycling through scenes.
@@ -118,9 +129,12 @@ const FlapShowcase = () => {
       return
     }
 
-    const observer = new IntersectionObserver(([entry]) => setIsVisible(entry.isIntersecting), {
-      rootMargin: '200px 0px',
-    })
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      {
+        rootMargin: '200px 0px',
+      }
+    )
     observer.observe(node)
     return () => observer.disconnect()
   }, [])
@@ -164,7 +178,12 @@ const FlapShowcase = () => {
       timers.add(timer)
     }
     const applyFrame = (frame: string[]) =>
-      frame.forEach((row, i) => push(() => setRows((prev) => prev.map((r, j) => (j === i ? row : r))), i * 90))
+      frame.forEach((row, i) =>
+        push(
+          () => setRows((prev) => prev.map((r, j) => (j === i ? row : r))),
+          i * 90
+        )
+      )
     const loop = () => {
       applyFrame(SCENES[sceneIndex.current % SCENES.length])
       push(() => {
@@ -208,7 +227,7 @@ const FlapShowcase = () => {
           gap="3px"
           width="fit-content"
           mx="auto"
-          onClick={toggleBadApple}
+          pointerEvents="none"
         >
           <SplitFlap
             key={baMode ? 'ba' : 'art'}
@@ -226,7 +245,9 @@ const FlapShowcase = () => {
           />
         </Flex>
       </Box>
-      <Center mt={4}><Button onClick={toggleBadApple}>🍎</Button></Center>
+      <Center mt={4}>
+        <Button onClick={toggleBadApple}>🍎</Button>
+      </Center>
     </Box>
   )
 }
