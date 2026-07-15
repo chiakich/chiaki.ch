@@ -9,6 +9,8 @@ export default defineConfig({
   theme: {
     extend: {
       breakpoints: {
+        // 極窄機型（< 360px）才退回漢堡選單，其餘一律平鋪主選單文字
+        xs: '22.5em',
         sm: '30em',
         md: '48em',
         lg: '62em',
