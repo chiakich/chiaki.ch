@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { SplitFlap } from 'react-split-flap'
 import { Box, Flex, styled } from 'styled-system/jsx'
 
@@ -10,6 +10,13 @@ const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 // Charset order matters: it is the physical flap order, so distance = flutter length.
 const CHARS = [' ', ...LETTERS, '♥', '★', '█']
 const BA_CHARS = [' ', '█'] // two-flap stack: every change lands in a single flip
+const SHOWCASE_FLAP_STYLE = {
+  display: 'grid',
+  gridTemplateColumns: `repeat(${W}, 1.7ch)`,
+  fontSize: 'clamp(10px, 3.2vw, 20px)',
+  columnGap: '1px',
+  rowGap: '3px',
+}
 
 // Easter egg: drop a frames JSON (string[H][W] of ' '/'█') here to enable playback on click.
 // Generate one with scripts/generateBadAppleFrames.js
@@ -90,29 +97,6 @@ const scrambleRows = () =>
   Array.from({ length: H }, () =>
     Array.from({ length: W }, () => LETTERS[Math.floor(Math.random() * LETTERS.length)]).join(''),
   )
-
-interface FlapRowProps {
-  row: string
-  baMode: boolean
-}
-
-// A cascading frame changes one row at a time. Keeping the row boundary memoized
-// prevents each timeout from walking all 240 flap components again.
-const FlapRow = memo(({ row, baMode }: FlapRowProps) => (
-  <SplitFlap
-    value={row}
-    chars={baMode ? BA_CHARS : CHARS}
-    length={W}
-    align="left"
-    theme="dark"
-    size="small"
-    timing={baMode ? 10 : 28}
-    fontColor={baMode ? '#f2f2f2' : '#ff5d52'}
-    animateOnMount={false}
-  />
-))
-
-FlapRow.displayName = 'FlapRow'
 
 // 20 × 12 = 240 digits on one shared animation clock, cycling through scenes.
 // Clicking the board plays the Bad Apple frames if the JSON is present.
@@ -222,9 +206,20 @@ const FlapShowcase = () => {
           mx="auto"
           onClick={toggleBadApple}
         >
-          {rows.map((row, i) => (
-            <FlapRow key={`${baMode ? 'ba' : 'art'}-${i}`} row={row} baMode={baMode} />
-          ))}
+          <SplitFlap
+            key={baMode ? 'ba' : 'art'}
+            value={rows.join('')}
+            chars={baMode ? BA_CHARS : CHARS}
+            length={W * H}
+            align="left"
+            theme="dark"
+            size="small"
+            className="performance-mode"
+            style={SHOWCASE_FLAP_STYLE}
+            timing={baMode ? 10 : 28}
+            fontColor={baMode ? '#f2f2f2' : '#ff5d52'}
+            animateOnMount={false}
+          />
         </Flex>
       </Box>
       <Text mt={4} textAlign="center" fontSize="xs" opacity={0.45}>

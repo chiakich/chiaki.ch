@@ -19,7 +19,7 @@ const ACCENT = '#ff5d52'
 
 const engineering = [
   ['01', '共用動畫時鐘', '所有翻頁格訂閱同一個 requestAnimationFrame 迴圈，同一幀到期的翻動合併成一次 React commit，幾百格同時翻也只有一次 render。'],
-  ['02', '不重建 DOM', '翻頁動畫透過 Web Animations API 重新啟動，翻頁格保持掛載、不換 key，消除每次翻動的節點汰換。'],
+  ['02', '不重建 DOM', '翻頁格保持掛載、不換 key，並交替使用兩組 CSS animation name 直接從第一幀啟動；不需逐格讀寫 Web Animations API。'],
   ['03', '最小化合成層', '只有正在翻動的上下兩片會提升為 GPU 圖層。約 400 格的場景中合成層減少約 70%、GPU 時間減少約 27%。'],
 ]
 
