@@ -54,7 +54,7 @@ const stickers: Sticker[] = [
   {
     id: 'oorai',
     kind: 'image',
-    src: '/assets/about/stickers/oorai.avif',
+    src: '/assets/about/stickers/oorai.webp',
     size: 150,
     title: 'Proud supporter of 大洗女子学園',
     description:
@@ -72,15 +72,15 @@ const stickers: Sticker[] = [
   {
     id: 'clip',
     kind: 'image',
-    src: '/assets/about/stickers/clip.png',
-    size: 30,
+    src: '/assets/about/stickers/clip.webp',
+    size: 150,
     title: 'Clip Studio Paint',
     description: 'Clip Studio Paint 是我最常用的繪圖軟體！',
   },
   {
     id: 'WTM',
     kind: 'image',
-    src: '/assets/about/stickers/wtm.jpg',
+    src: '/assets/about/stickers/wtm.webp',
     size: 100,
     title: 'Google Women Techmakers',
     description: 'WTM 2023 講者',
@@ -96,7 +96,7 @@ const stickers: Sticker[] = [
   {
     id: 'sitcon',
     kind: 'image',
-    src: '/assets/about/stickers/sitcon.png',
+    src: '/assets/about/stickers/sitcon.webp',
     size: 200,
     title: 'SITCON 學生計算機年會',
     description: 'SITCON 講者',
@@ -104,7 +104,7 @@ const stickers: Sticker[] = [
   {
     id: 'justfont',
     kind: 'image',
-    src: '/assets/about/stickers/jf.jpg',
+    src: '/assets/about/stickers/jf.webp',
     size: 200,
     title: 'justfont',
     description: 'justfont ex-member',
@@ -112,7 +112,7 @@ const stickers: Sticker[] = [
   {
     id: 'glyphs4',
     kind: 'image',
-    src: '/assets/about/stickers/glyphs4.png',
+    src: '/assets/about/stickers/glyphs4.webp',
     size: 70,
     title: 'Glyphs 4',
     description: 'Glyphs 4 zh-Hant Localization Translator',
@@ -120,7 +120,7 @@ const stickers: Sticker[] = [
   {
     id: 'arctic-code-vault-contributor',
     kind: 'image',
-    src: '/assets/about/stickers/arctic-code-vault-contributor.png',
+    src: '/assets/about/stickers/arctic-code-vault-contributor.webp',
     size: 50,
     title: 'GitHub Arctic Code Vault Contributor',
     description:
@@ -129,7 +129,7 @@ const stickers: Sticker[] = [
   {
     id: 'isekai',
     kind: 'image',
-    src: '/assets/about/stickers/isekai.png',
+    src: '/assets/about/stickers/isekai.webp',
     size: 100,
     title: '観測者ヰ組',
     description: '意大利麵組',
@@ -137,7 +137,7 @@ const stickers: Sticker[] = [
   {
     id: 'isekai_art',
     kind: 'image',
-    src: '/assets/about/stickers/isekai_art.jpeg',
+    src: '/assets/about/stickers/isekai_art.webp',
     size: 150,
     title: 'ヰ世界情緒美術部',
     description: '我會繪製お情的圖',
@@ -153,7 +153,7 @@ const stickers: Sticker[] = [
   {
     id: 'hinako',
     kind: 'image',
-    src: '/assets/about/stickers/hinako.jpeg',
+    src: '/assets/about/stickers/hinako.webp',
     size: 80,
     title: '妃那子',
     description: '妃那子 Official Fanclub',
@@ -169,7 +169,7 @@ const stickers: Sticker[] = [
   {
     id: 'wwdc26',
     kind: 'image',
-    src: '/assets/about/stickers/wwdc26.png',
+    src: '/assets/about/stickers/wwdc26.webp',
     size: 120,
     title: 'WWDC 2026',
     description: 'I joined WWDC 2026 online',
@@ -253,7 +253,7 @@ const stickers: Sticker[] = [
   {
     id: 'teto',
     kind: 'image',
-    src: '/assets/about/stickers/teto.png',
+    src: '/assets/about/stickers/teto.webp',
     size: 100,
     title: '重音テト 17th',
     description: 'Our beloved Teto',
@@ -261,7 +261,7 @@ const stickers: Sticker[] = [
   {
     id: 'kasane',
     kind: 'image',
-    src: '/assets/about/stickers/kasane.png',
+    src: '/assets/about/stickers/kasane.webp',
     size: 250,
     title: '居酒屋かさね',
     description: '參加了居酒屋かさね鑽頭酒杯紀念活動',
@@ -269,7 +269,7 @@ const stickers: Sticker[] = [
   {
     id: 'comiket50',
     kind: 'image',
-    src: '/assets/about/stickers/comiket50.png',
+    src: '/assets/about/stickers/comiket50.webp',
     size: 150,
     title: 'コミックマーケット50周年',
     description: '我參加了C107的Comiket 50周年紀念',
@@ -277,7 +277,7 @@ const stickers: Sticker[] = [
   {
     id: 'moztw',
     kind: 'image',
-    src: '/assets/about/stickers/moztw.png',
+    src: '/assets/about/stickers/moztw.webp',
     size: 150,
     title: 'MozTW',
     description: '已經參與 Mozilla 台灣社群 13+ 年了！',
@@ -285,7 +285,7 @@ const stickers: Sticker[] = [
   {
     id: 'fbosc',
     kind: 'image',
-    src: '/assets/about/stickers/fbosc.jpg',
+    src: '/assets/about/stickers/fbosc.webp',
     size: 150,
     title: 'Facebook Open Source',
     description: '我曾是Facebook Open Source的開發者',
@@ -293,7 +293,7 @@ const stickers: Sticker[] = [
   {
     id: 'ponfes25',
     kind: 'image',
-    src: '/assets/about/stickers/ponfes25.jpg',
+    src: '/assets/about/stickers/ponfes25.webp',
     size: 200,
     title: 'PONFES!2025',
     description: '我參加了あやぽんず＊ワンマンライブ PONFES!2025',
@@ -301,7 +301,7 @@ const stickers: Sticker[] = [
   {
     id: 'kancolle',
     kind: 'image',
-    src: '/assets/about/stickers/kancolle.jpg',
+    src: '/assets/about/stickers/kancolle.webp',
     size: 350,
     title: '艦隊これくしょん',
     description: '我是提督',
@@ -309,7 +309,7 @@ const stickers: Sticker[] = [
   {
     id: 'echoesbaa',
     kind: 'image',
-    src: '/assets/about/stickers/echoesbaa.jpg',
+    src: '/assets/about/stickers/echoesbaa.webp',
     size: 200,
     title: '音楽フェス『CENTRAL 2025』',
     description: '我參加了Echoes Baa舞台',
@@ -317,7 +317,7 @@ const stickers: Sticker[] = [
   {
     id: 'amavel',
     kind: 'image',
-    src: '/assets/about/stickers/amavel.png',
+    src: '/assets/about/stickers/amavel.webp',
     size: 200,
     title: 'Amavel',
     description: '我整個衣櫃都是Amavel的衣服',
@@ -326,7 +326,7 @@ const stickers: Sticker[] = [
   {
     id: 'expo2025',
     kind: 'image',
-    src: '/assets/about/stickers/expo2025.png',
+    src: '/assets/about/stickers/expo2025.webp',
     size: 200,
     title: '大阪・関西万博',
     description: '我參加了2025大阪萬博',
