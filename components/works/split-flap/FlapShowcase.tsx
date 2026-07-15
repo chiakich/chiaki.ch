@@ -1,6 +1,7 @@
+import { Button } from 'components/ui/controls'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { SplitFlap } from 'react-split-flap'
-import { Box, Flex, styled } from 'styled-system/jsx'
+import { Box, Center, Flex, styled } from 'styled-system/jsx'
 
 const Text = styled.p
 
@@ -198,6 +199,9 @@ const FlapShowcase = () => {
 
   return (
     <Box ref={showcaseRef}>
+      <Text mb={4} textAlign="center" fontSize="xs" opacity={0.45}>
+        240 flips Demo
+      </Text>
       <Box overflowX="auto" pb={2}>
         <Flex
           direction="column"
@@ -222,9 +226,7 @@ const FlapShowcase = () => {
           />
         </Flex>
       </Box>
-      <Text mt={4} textAlign="center" fontSize="xs" opacity={0.45}>
-        240 片字盤共用同一個動畫時鐘，逐行接續翻出不同畫面。
-      </Text>
+      <Center mt={4}><Button onClick={toggleBadApple}>🍎</Button></Center>
     </Box>
   )
 }
