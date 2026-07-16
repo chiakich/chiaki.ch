@@ -1,10 +1,13 @@
 import { Box, Container, Grid, Stack, styled } from 'styled-system/jsx'
+import { useI18n } from 'i18n'
 
 const Heading = styled.h2
 const Text = styled.p
 
-const SocietyIntro = () => (
-  <Box
+const SocietyIntro = () => {
+  const { t } = useI18n()
+
+  return <Box
     as="section"
     position="relative"
     overflow="hidden"
@@ -51,14 +54,14 @@ const SocietyIntro = () => (
             fontWeight="bold"
             letterSpacing=".22em"
           >
-            ABOUT THE CIRCLE
+            {t('home.eyebrow')}
           </Text>
           <Heading
             fontSize={{ base: '3rem', md: '4.5rem' }}
             lineHeight=".98"
             letterSpacing="-.06em"
           >
-            千秋稻荷社
+            {t('home.title')}
           </Heading>
           <Box width="52px" height="3px" backgroundColor="accent" />
         </Stack>
@@ -69,7 +72,7 @@ const SocietyIntro = () => (
             lineHeight="1.75"
             fontWeight="medium"
           >
-            千秋稻荷社是專注於技術、字型設計與次文化研究的個人同人社團。
+            {t('home.lead')}
           </Text>
           <Text
             maxW="680px"
@@ -77,12 +80,12 @@ const SocietyIntro = () => (
             lineHeight="2"
             color="rgba(255, 255, 255, .72)"
           >
-            誕生於對開源精神與同人文化的熱愛，本社團的主要活動為畫畫、周邊製作發行、軟體工程、開源字體開發及模型製作相關等。期望透過每一場活動，將設計、科技與生活中的次文化樂趣，以最純粹的方式傳遞給同好。
+            {t('home.body')}
           </Text>
         </Stack>
       </Grid>
     </Container>
   </Box>
-)
+}
 
 export default SocietyIntro

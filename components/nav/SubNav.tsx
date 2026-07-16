@@ -1,6 +1,7 @@
 import NextLink from 'next/link'
 import { Box, Flex, HStack, styled } from 'styled-system/jsx'
 import type { NavSection } from './navData'
+import { localizedPath, useI18n } from 'i18n'
 
 const Text = styled.p
 const Link = styled.a
@@ -12,8 +13,10 @@ interface SubNavProps {
 
 // Apple 產品頁式的 local nav：桌面常駐的毛玻璃細列，負責「你在這一區的哪一頁」。
 // 手機隱藏 —— 項目改由 TopBar 的 flyout 呈現。
-const SubNav = ({ section, currentPath }: SubNavProps) => (
-  <Box
+const SubNav = ({ section, currentPath }: SubNavProps) => {
+  const { locale } = useI18n()
+
+  return <Box
     as="nav"
     position="fixed"
     top="44px" // Position below the main TopBar
@@ -45,7 +48,7 @@ const SubNav = ({ section, currentPath }: SubNavProps) => (
           <Link
             as={NextLink}
             key={item.id}
-            href={item.path}
+            href={localizedPath(item.path, locale)}
             fontSize="14px"
             fontWeight="600"
             height="100%"
@@ -62,6 +65,6 @@ const SubNav = ({ section, currentPath }: SubNavProps) => (
       </HStack>
     </Flex>
   </Box>
-)
+}
 
 export default SubNav

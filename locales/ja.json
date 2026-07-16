@@ -1,0 +1,55 @@
+{
+  "nav": {
+    "home": "ホーム",
+    "about": "プロフィール",
+    "story": "物語",
+    "works": "作品",
+    "fonts": "書体",
+    "storyTitle": "千秋稲荷社",
+    "storyIndex": "物語",
+    "character": "キャラクター",
+    "art": "作品集",
+    "worksIndex": "作品集",
+    "fontsIndex": "書体集",
+    "akitra": "台鉄書体",
+    "huninn": "粉圓"
+  },
+  "language": {
+    "label": "言語を切り替える",
+    "tw": "繁體中文",
+    "ja": "日本語",
+    "en": "English"
+  },
+  "accessibility": {
+    "menu": "メニュー",
+    "close": "閉じる",
+    "logo": "千秋稲荷社ホーム"
+  },
+  "meta": {
+    "home": { "title": "千秋稲荷社 - Chiaki Inari Shrine", "description": "技術、書体デザイン、サブカルチャーを研究する個人サークルです。" },
+    "about": { "title": "千秋について - 千秋稲荷社", "description": "こんにちは、涼風千秋です。絵を描き、デザインし、コードを書く人です。" },
+    "links": { "title": "リンク - 千秋稲荷社", "description": "SNS とウェブサイトへのリンク。" },
+    "story": { "title": "物語 - 千秋稲荷社", "description": "千秋稲荷社、常世、そして人の記憶が交わる物語。" },
+    "character": { "title": "キャラクター - 千秋稲荷社", "description": "千秋稲荷社第一研究室の室長、そして第▓▓代巫女・涼風千秋。" },
+    "art": { "title": "涼風千秋の作品 - 千秋稲荷社", "description": "涼風千秋のイラストと創作作品集。" },
+    "works": { "title": "作品集 - 千秋稲荷社", "description": "千秋がデザイン・開発したソフトウェア、ツール、インターフェース。" },
+    "chiakey": { "title": "千秋入力法 ChiaKey - 千秋稲荷社", "description": "Yahoo! 奇摩入力法のオープンソースを基にした、macOS 用の繁体字中国語注音入力法。" },
+    "kumiko": { "title": "Kumiko Font Editor - 千秋稲荷社", "description": "ブラウザだけで動く書体編集・補字ツール。" },
+    "tgJpg": { "title": "tg.jpg Telegram Bot - 千秋稲荷社", "description": ".jpg と入力すると最初の検索結果を返す Telegram bot。" },
+    "splitFlap": { "title": "react-split-flap - 千秋稲荷社", "description": "駅のパタパタ表示器を再現する React コンポーネント。" },
+    "tokyonoSora": { "title": "東京乃空 Tokyono Sora - 千秋稲荷社", "description": "Plurk のタイムラインを再設計した CSS テーマ。" },
+    "fonts": { "title": "書体集 - 千秋稲荷社", "description": "千秋がデザイン、または制作に参加した書体。" },
+    "akitra": { "title": "台鉄客貨車書体 - 千秋稲荷社", "description": "台湾鉄路の客貨車表記を基にデザインした書体。" },
+    "nixie": { "title": "Nixie 数字書体 - 千秋稲荷社", "description": "ニキシー管の暖かなオレンジの光を再現する数字書体。" },
+    "huninn": { "title": "jf open 粉圓 - 千秋稲荷社", "description": "justfont による台湾のオープンソース丸ゴシック体。" }
+  },
+  "home": {
+    "eyebrow": "サークルについて", "title": "千秋稲荷社", "lead": "千秋稲荷社は、技術、書体デザイン、サブカルチャーを研究する個人サークルです。", "body": "オープンソースと同人文化への愛から生まれた私たちは、イラスト、グッズ制作、ソフトウェア開発、オープンソース書体、模型制作に取り組んでいます。"
+  },
+  "worksPage": {
+    "eyebrow": "作品 · デザインとコード", "title": "作品集", "intro": "身近な道具を新しい環境へ届け、複雑な創作を少しやさしくする。あるいは、毎日開く画面を少しだけ美しくする。", "view": "作品を見る"
+  },
+  "fontsPage": {
+    "title": "書体集", "intro": "台湾鉄道の表記、ニキシー管の数字、台湾向けに調整されたオープンソース丸ゴシック体。それぞれの書体は具体的な文化と利用体験から始まります。", "view": "詳細を見る"
+  }
+}

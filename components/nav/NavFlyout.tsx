@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Box, Flex, styled } from 'styled-system/jsx'
 import type { NavSection } from './navData'
+import { localizedPath, useI18n } from 'i18n'
 
 const Text = styled.p
 
@@ -11,8 +12,10 @@ interface NavFlyoutProps {
 }
 
 // Apple 產品選單式的 flyout 內容：圖示 + 標題橫向排列，窄螢幕自動換行。
-const NavFlyout = ({ section, currentPath, onNavigate }: NavFlyoutProps) => (
-  <Box
+const NavFlyout = ({ section, currentPath, onNavigate }: NavFlyoutProps) => {
+  const { locale } = useI18n()
+
+  return <Box
     maxW="width.section"
     mx="auto"
     px={{ base: '20px', md: '40px', lg: '60px' }}
@@ -31,7 +34,7 @@ const NavFlyout = ({ section, currentPath, onNavigate }: NavFlyoutProps) => (
         return (
           <Link
             key={item.id}
-            href={item.path}
+            href={localizedPath(item.path, locale)}
             onClick={onNavigate}
             aria-current={isCurrent ? 'page' : undefined}
           >
@@ -67,6 +70,6 @@ const NavFlyout = ({ section, currentPath, onNavigate }: NavFlyoutProps) => (
       })}
     </Flex>
   </Box>
-)
+}
 
 export default NavFlyout

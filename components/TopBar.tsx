@@ -9,11 +9,13 @@ import {
 } from 'components/ui/controls'
 import { ChevronDownIcon, CloseIcon, HamburgerIcon } from 'components/ui/icons'
 import Link from 'next/link'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
+import { Language, NavArrowDownSolid } from 'iconoir-react'
 import NavFlyout from 'components/nav/NavFlyout'
 import SubNav from 'components/nav/SubNav'
-import { mainLinks, navSections } from 'components/nav/navData'
+import { getMainLinks, getNavSections } from 'components/nav/navData'
+import { localizedPath, pagePathFromLocalePath, useI18n } from 'i18n'
 
 const Image = styled.img
 const Text = styled.p
@@ -29,7 +31,12 @@ const TopBar: React.FC = () => {
   const [isFlyoutOpen, setFlyoutOpen] = useState(false)
   const [isDrawerOpen, setDrawerOpen] = useState(false)
   const [expandedMenu, setExpandedMenu] = useState<string | null>(null)
+  const [isLanguageMenuOpen, setLanguageMenuOpen] = useState(false)
   const currentPath = usePathname()
+  const { locale, t } = useI18n()
+  const mainLinks = useMemo(() => getMainLinks(t), [t])
+  const navSections = useMemo(() => getNavSections(t), [t])
+  const pagePath = pagePathFromLocalePath(currentPath ?? '/')
   const navRef = useRef<HTMLDivElement>(null)
 
   const closeFlyout = useCallback(() => setFlyoutOpen(false), [])
@@ -42,6 +49,7 @@ const TopBar: React.FC = () => {
   // 換頁時收起面板
   useEffect(() => {
     setFlyoutOpen(false)
+    setLanguageMenuOpen(false)
   }, [currentPath])
 
   // 點外圍收回
@@ -67,16 +75,16 @@ const TopBar: React.FC = () => {
     if (!isDrawerOpen) return
 
     const activeParent = mainLinks.find(([, path]) =>
-      path === '/' ? currentPath === '/' : currentPath?.startsWith(path)
+      path === '/' ? pagePath === '/' : pagePath.startsWith(path)
     )?.[0]
 
     if (activeParent && navSections[activeParent]) {
       setExpandedMenu(activeParent)
     }
-  }, [currentPath, isDrawerOpen])
+  }, [pagePath, isDrawerOpen, mainLinks, navSections])
 
   const isActive = (path: string) =>
-    path === '/' ? currentPath === '/' : currentPath?.startsWith(path)
+    path === '/' ? pagePath === '/' : pagePath.startsWith(path)
 
   const handleLinkPointerEnter = (event: React.PointerEvent, label: string) => {
     if (event.pointerType !== 'mouse' || !supportsHover()) return
@@ -99,7 +107,7 @@ const TopBar: React.FC = () => {
   // 常駐 SubNav 直接由網址推導，頁面端不需要各自掛載
   const currentSectionKey = mainLinks.find(
     ([label, path]) =>
-      navSections[label] && path !== '/' && currentPath?.startsWith(path)
+      navSections[label] && path !== '/' && pagePath.startsWith(path)
   )?.[0]
   const currentSection = currentSectionKey ? navSections[currentSectionKey] : null
 
@@ -133,7 +141,7 @@ const TopBar: React.FC = () => {
           {/* Left section */}
           <HStack gap={{ base: 4, md: 8 }}>
             <IconButton
-              aria-label="Menu"
+              aria-label={t('accessibility.menu')}
               icon={<HamburgerIcon color="white" />}
               variant="ghost"
               size="sm"
@@ -145,8 +153,8 @@ const TopBar: React.FC = () => {
                 setDrawerOpen((prev) => !prev)
               }}
             />
-            <Link href="/">
-              <Image src="/assets/icon/logo_white.svg" alt="Logo" height="20px" />
+            <Link href={localizedPath('/', locale)}>
+              <Image src="/assets/icon/logo_white.svg" alt={t('accessibility.logo')} height="20px" />
             </Link>
 
             <HStack
@@ -163,7 +171,7 @@ const TopBar: React.FC = () => {
                 return (
                   <Link
                     key={path}
-                    href={path}
+                    href={localizedPath(path, locale)}
                     onPointerEnter={(event) => handleLinkPointerEnter(event, label)}
                     // 只給鍵盤／滑鼠用。觸控時 focus 會搶在 click 前面觸發，
                     // 讓 click 誤判成「同一區已展開」而收合。
@@ -204,6 +212,82 @@ const TopBar: React.FC = () => {
             </HStack>
           </HStack>
 
+          <Box position="relative" ml="auto" pl={4}>
+            <styled.button
+              type="button"
+              aria-label={t('language.label')}
+              aria-expanded={isLanguageMenuOpen}
+              onClick={() => setLanguageMenuOpen((open) => !open)}
+              display="inline-flex"
+              alignItems="center"
+              gap={1}
+              bg="transparent"
+              border="0"
+              color="white"
+              cursor="pointer"
+              fontSize="13px"
+              fontWeight="600"
+              px={2}
+              py={1}
+              borderRadius="6px"
+              _hover={{ bg: 'rgba(255,255,255,.12)' }}
+            >
+              <Language width={18} height={18} aria-hidden />
+              <Box as="span" display={{ base: 'none', sm: 'inline' }}>
+                {locale.toUpperCase()}
+              </Box>
+              <NavArrowDownSolid
+                width={13}
+                height={13}
+                aria-hidden
+                style={{
+                  transform: isLanguageMenuOpen ? 'rotate(180deg)' : undefined,
+                  transition: 'transform 160ms ease',
+                }}
+              />
+            </styled.button>
+            {isLanguageMenuOpen && (
+              <VStack
+                as="ul"
+                role="menu"
+                position="absolute"
+                right="0"
+                top="calc(100% + 8px)"
+                minW="150px"
+                alignItems="stretch"
+                gap={0}
+                listStyleType="none"
+                m={0}
+                p={1}
+                border="1px solid rgba(255,255,255,.14)"
+                borderRadius="8px"
+                bg="rgba(31,31,34,.98)"
+                boxShadow="0 12px 30px rgba(0,0,0,.3)"
+              >
+                {(['tw', 'ja', 'en'] as const).map((itemLocale) => (
+                  <Box as="li" key={itemLocale} role="none">
+                    <Link
+                      href={localizedPath(pagePath, itemLocale)}
+                      role="menuitem"
+                      onClick={() => setLanguageMenuOpen(false)}
+                      style={{
+                        display: 'block',
+                        padding: '.5rem .65rem',
+                        borderRadius: '5px',
+                        fontSize: '.85rem',
+                        color: 'white',
+                        opacity: itemLocale === locale ? 1 : .68,
+                        background: itemLocale === locale ? 'rgba(255,255,255,.12)' : 'transparent',
+                      }}
+                    >
+                      {t(`language.${itemLocale}`)}
+                    </Link>
+                  </Box>
+                ))}
+              </VStack>
+            )}
+          </Box>
+
           <Drawer
             placement="left"
             size="xs"
@@ -214,7 +298,7 @@ const TopBar: React.FC = () => {
             <DrawerContent backgroundColor="rgba(18,18,20,.98)" color="white">
               <DrawerHeader alignSelf="flex-end" px={3} pt={3} pb={2}>
                 <IconButton
-                  aria-label="Close"
+                  aria-label={t('accessibility.close')}
                   icon={<CloseIcon />}
                   variant="unstyled"
                   onClick={() => setDrawerOpen(false)}
@@ -277,7 +361,7 @@ const TopBar: React.FC = () => {
                           </styled.button>
                         ) : (
                           <Link
-                            href={path}
+                            href={localizedPath(path, locale)}
                             onClick={() => setDrawerOpen(false)}
                             style={{
                               display: 'block',
@@ -311,12 +395,12 @@ const TopBar: React.FC = () => {
                               {subnavItems?.map((item) => (
                                 <Link
                                   key={item.id}
-                                  href={item.path}
+                                  href={localizedPath(item.path, locale)}
                                   onClick={() => setDrawerOpen(false)}
                                   style={{
                                     padding: '.35rem 0',
                                     fontSize: '1.05rem',
-                                    opacity: currentPath === item.path ? 1 : 0.55,
+                                    opacity: pagePath === item.path ? 1 : 0.55,
                                   }}
                                 >
                                   {item.title}
@@ -355,7 +439,7 @@ const TopBar: React.FC = () => {
             {activeSection && (
               <NavFlyout
                 section={activeSection}
-                currentPath={currentPath}
+                currentPath={pagePath}
                 onNavigate={closeFlyout}
               />
             )}
@@ -364,7 +448,7 @@ const TopBar: React.FC = () => {
       </Box>
 
       {currentSection && (
-        <SubNav section={currentSection} currentPath={currentPath} />
+        <SubNav section={currentSection} currentPath={pagePath} />
       )}
     </>
   )

@@ -2,6 +2,7 @@ import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import PageMeta from 'components/PageMeta'
+import { LocaleProvider, type Locale, locales } from 'i18n'
 import '../styled-system/styles.css'
 
 declare global {
@@ -14,6 +15,9 @@ declare global {
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter()
+  const pathnameLocale = router.pathname.split('/')[1]
+  const locale = (pageProps.locale ??
+    (locales.includes(pathnameLocale as Locale) ? pathnameLocale : 'tw')) as Locale
 
   useEffect(() => {
     let frameId: number | undefined
@@ -38,8 +42,10 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <>
-      <Component {...pageProps} />
-      <PageMeta />
+      <LocaleProvider locale={locale}>
+        <Component {...pageProps} />
+        <PageMeta />
+      </LocaleProvider>
     </>
   )
 }

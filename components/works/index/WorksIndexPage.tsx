@@ -3,6 +3,7 @@ import { Box, Container, Stack, styled } from 'styled-system/jsx'
 import TopBar from 'components/TopBar'
 import WorkCard, { WorkCardData } from './WorkCard'
 import { ChiaKeySpecimen, KumikoSpecimen, SplitFlapSpecimen, TgJpgSpecimen, TokyonoSpecimen } from './WorkSpecimens'
+import { useI18n } from 'i18n'
 
 const Heading = styled.h1
 const Text = styled.p
@@ -17,18 +18,20 @@ const works: WorkCardData[] = [
   { id: 'split-flap', title: 'react-split-flap', en: 'REACT COMPONENT', description: '重現車站翻頁顯示器的 React 元件。共用動畫時鐘與 Web Animations API，讓幾百格字盤同時翻動也保持流暢。', tags: ['React', 'npm package', 'Animation'], href: '/works/split-flap', accent: '#ff5d52', specimen: <SplitFlapSpecimen /> },
 ]
 
-const WorksIndexPage = () => (
-  <Box backgroundColor="#070708" color="white" minHeight="100vh">
+const WorksIndexPage = () => {
+  const { t } = useI18n()
+
+  return <Box backgroundColor="#070708" color="white" minHeight="100vh">
     <TopBar />
     <Box pt="96px"><Container maxW="1080px" py={12} px={{ base: '24px', md: '40px' }}>
       <MotionBox initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7 }} mb={16} textAlign="center">
-        <Text fontSize="sm" letterSpacing=".14em" color="#7eb6ff" fontWeight="700" textTransform="uppercase" mb={4}>Works · Design &amp; Code</Text>
-        <Heading fontSize={{ base: '3rem', md: '4.8rem' }} lineHeight={1.05} fontWeight="700" letterSpacing="-.03em" mb={5}>作品<Span color="#7eb6ff">集</Span></Heading>
-        <Text maxW="620px" mx="auto" fontSize={{ base: 'md', md: 'lg' }} opacity={.7} lineHeight="1.9">把熟悉的工具帶到新的系統、讓複雜的創作變得容易，或只是讓一個每天打開的畫面更好看一點。</Text>
+        <Text fontSize="sm" letterSpacing=".14em" color="#7eb6ff" fontWeight="700" textTransform="uppercase" mb={4}>{t('worksPage.eyebrow')}</Text>
+        <Heading fontSize={{ base: '3rem', md: '4.8rem' }} lineHeight={1.05} fontWeight="700" letterSpacing="-.03em" mb={5}>{t('worksPage.title')}</Heading>
+        <Text maxW="620px" mx="auto" fontSize={{ base: 'md', md: 'lg' }} opacity={.7} lineHeight="1.9">{t('worksPage.intro')}</Text>
       </MotionBox>
       <Stack gap={10}>{works.map((work, index) => <WorkCard key={work.id} work={work} index={index} />)}</Stack>
     </Container></Box>
   </Box>
-)
+}
 
 export default WorksIndexPage

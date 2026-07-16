@@ -1,0 +1,58 @@
+{
+  "nav": {
+    "home": "首頁",
+    "about": "關於",
+    "story": "故事",
+    "works": "作品",
+    "fonts": "字體",
+    "storyTitle": "千秋稻荷社",
+    "storyIndex": "故事",
+    "character": "角色介紹",
+    "art": "作品集",
+    "worksIndex": "作品集",
+    "fontsIndex": "字體集",
+    "akitra": "台鐵字體",
+    "huninn": "粉圓"
+  },
+  "language": {
+    "label": "切換語言",
+    "tw": "繁體中文",
+    "ja": "日本語",
+    "en": "English"
+  },
+  "accessibility": {
+    "menu": "選單",
+    "close": "關閉",
+    "logo": "千秋稻荷社首頁"
+  },
+  "meta": {
+    "home": { "title": "千秋稻荷社 - Chiaki Inari Shrine", "description": "千秋稻荷社是專注於技術、字型設計與次文化研究的個人同人社團。" },
+    "about": { "title": "關於千秋 - 千秋稻荷社", "description": "您好！我是涼風千秋。畫畫、做設計師、寫程式的人。永遠都在挖坑與填坑的路上。" },
+    "links": { "title": "連結 - 千秋稻荷社", "description": "社群與網站連結。" },
+    "story": { "title": "故事 - 千秋稻荷社", "description": "探索千秋稻荷社、常世與人類記憶交會的故事。" },
+    "character": { "title": "角色介紹 - 千秋稻荷社", "description": "千秋稻荷社第一研究室室長，兼第▓▓代巫女：涼風千秋。" },
+    "art": { "title": "涼風千秋的作品 - 千秋稻荷社", "description": "涼風千秋的角色插畫與創作作品集。" },
+    "works": { "title": "作品集 - 千秋稻荷社", "description": "千秋設計與開發的軟體、工具與介面作品。" },
+    "chiakey": { "title": "千秋輸入法 ChiaKey - 千秋稻荷社", "description": "以 Yahoo! 奇摩輸入法開源程式碼為基礎的現代 macOS 繁體中文注音輸入法。" },
+    "kumiko": { "title": "Kumiko Font Editor - 千秋稻荷社", "description": "完全在瀏覽器運作的字體編輯與補字工具。" },
+    "tgJpg": { "title": "tg.jpg Telegram Bot - 千秋稻荷社", "description": "輸入.jpg，回覆第一張可用搜尋結果的 Telegram bot。" },
+    "splitFlap": { "title": "react-split-flap - 千秋稻荷社", "description": "重現車站翻頁顯示器的 React 元件，致敬京急川崎駅的パタパタ發車標。" },
+    "tokyonoSora": { "title": "東京乃空 Tokyono Sora - 千秋稻荷社", "description": "重新設計噗浪時間軸的 CSS 佈景。" },
+    "fonts": { "title": "字體集 - 千秋稻荷社", "description": "千秋設計與參與製作的字體作品。" },
+    "akitra": { "title": "台鐵客貨車字體 - 千秋稻荷社", "description": "以台鐵客貨車表記文字為藍本設計的字體。" },
+    "nixie": { "title": "Nixie 數字字體 - 千秋稻荷社", "description": "重現輝光管溫暖橙光的數字字體。" },
+    "huninn": { "title": "jf open 粉圓 - 千秋稻荷社", "description": "justfont 推出的一款台灣開源圓體。" }
+  },
+  "home": {
+    "eyebrow": "關於社團",
+    "title": "千秋稻荷社",
+    "lead": "千秋稻荷社是專注於技術、字型設計與次文化研究的個人同人社團。",
+    "body": "誕生於對開源精神與同人文化的熱愛，本社團的主要活動為畫畫、周邊製作發行、軟體工程、開源字體開發及模型製作相關等。期望透過每一場活動，將設計、科技與生活中的次文化樂趣，以最純粹的方式傳遞給同好。"
+  },
+  "worksPage": {
+    "eyebrow": "作品 · 設計與程式", "title": "作品集", "intro": "把熟悉的工具帶到新的系統、讓複雜的創作變得容易，或只是讓一個每天打開的畫面更好看一點。", "view": "查看作品"
+  },
+  "fontsPage": {
+    "title": "字體集", "intro": "從台灣鐵道上的表記文字、輝光管數字，到為台灣調整的開源圓體。每套字都從一段具體的文化與使用經驗開始。", "view": "查看介紹"
+  }
+}

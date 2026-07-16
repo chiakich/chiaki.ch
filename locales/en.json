@@ -1,0 +1,55 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "story": "Story",
+    "works": "Works",
+    "fonts": "Fonts",
+    "storyTitle": "Chiaki Inari Shrine",
+    "storyIndex": "Story",
+    "character": "Characters",
+    "art": "Gallery",
+    "worksIndex": "Works",
+    "fontsIndex": "Font Collection",
+    "akitra": "Taiwan Railways Typeface",
+    "huninn": "Huninn"
+  },
+  "language": {
+    "label": "Change language",
+    "tw": "Traditional Chinese",
+    "ja": "Japanese",
+    "en": "English"
+  },
+  "accessibility": {
+    "menu": "Menu",
+    "close": "Close",
+    "logo": "Chiaki Inari Shrine home"
+  },
+  "meta": {
+    "home": { "title": "Chiaki Inari Shrine", "description": "An independent circle exploring technology, type design, and subculture." },
+    "about": { "title": "About Chiaki - Chiaki Inari Shrine", "description": "Hello, I’m Chiaki Suzukaze: an illustrator, designer, and programmer." },
+    "links": { "title": "Links - Chiaki Inari Shrine", "description": "Social and website links." },
+    "story": { "title": "Story - Chiaki Inari Shrine", "description": "A story where Chiaki Inari Shrine, Tokoyo, and human memory intersect." },
+    "character": { "title": "Characters - Chiaki Inari Shrine", "description": "Head of Chiaki Inari Shrine’s First Laboratory and the ▓▓th shrine maiden: Chiaki Suzukaze." },
+    "art": { "title": "Chiaki Suzukaze’s Art - Chiaki Inari Shrine", "description": "A gallery of Chiaki Suzukaze’s character illustrations and creative work." },
+    "works": { "title": "Works - Chiaki Inari Shrine", "description": "Software, tools, and interfaces designed and developed by Chiaki." },
+    "chiakey": { "title": "ChiaKey - Chiaki Inari Shrine", "description": "A modern Traditional Chinese Zhuyin input method for macOS, based on Yahoo! KeyKey’s open-source code." },
+    "kumiko": { "title": "Kumiko Font Editor - Chiaki Inari Shrine", "description": "A font editor and glyph-completion tool that runs entirely in the browser." },
+    "tgJpg": { "title": "tg.jpg Telegram Bot - Chiaki Inari Shrine", "description": "A Telegram bot that replies with the first usable image-search result for .jpg." },
+    "splitFlap": { "title": "react-split-flap - Chiaki Inari Shrine", "description": "A React component that recreates station split-flap displays." },
+    "tokyonoSora": { "title": "Tokyono Sora - Chiaki Inari Shrine", "description": "A CSS theme that redesigns the Plurk timeline." },
+    "fonts": { "title": "Fonts - Chiaki Inari Shrine", "description": "Typefaces designed or co-created by Chiaki." },
+    "akitra": { "title": "Taiwan Railways Typeface - Chiaki Inari Shrine", "description": "A typeface based on lettering found on Taiwan Railways rolling stock." },
+    "nixie": { "title": "AkiNixie - Chiaki Inari Shrine", "description": "A numeral typeface that recreates the warm orange glow of Nixie tubes." },
+    "huninn": { "title": "jf open Huninn - Chiaki Inari Shrine", "description": "A Taiwanese open-source rounded typeface by justfont." }
+  },
+  "home": {
+    "eyebrow": "ABOUT THE CIRCLE", "title": "Chiaki Inari Shrine", "lead": "Chiaki Inari Shrine is an independent circle exploring technology, type design, and subculture.", "body": "Born from a love of open source and fan culture, the circle works across illustration, merchandise, software engineering, open-source typefaces, and model making."
+  },
+  "worksPage": {
+    "eyebrow": "WORKS · DESIGN & CODE", "title": "Works", "intro": "Bringing familiar tools to new systems, making complex creation easier, or simply making a screen you open every day a little more beautiful.", "view": "View project"
+  },
+  "fontsPage": {
+    "title": "Fonts", "intro": "From lettering found on Taiwan Railways, to Nixie-tube numerals and an open-source rounded typeface refined for Taiwan, every typeface begins with a particular culture and experience.", "view": "View typeface"
+  }
+}

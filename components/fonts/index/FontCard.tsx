@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Box, Flex, HStack, styled } from 'styled-system/jsx'
+import { localizedPath, useI18n } from 'i18n'
 
 const Heading = styled.h2
 const Text = styled.p
@@ -22,9 +23,11 @@ interface FontCardProps {
   index: number
 }
 
-const FontCard = ({ font, index }: FontCardProps) => (
-  <MotionBox initial={{ opacity: 0, y: 36 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-60px' }} transition={{ duration: .65 }}>
-    <Link href={font.href} style={{ display: 'block' }}>
+const FontCard = ({ font, index }: FontCardProps) => {
+  const { locale, t } = useI18n()
+
+  return <MotionBox initial={{ opacity: 0, y: 36 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-60px' }} transition={{ duration: .65 }}>
+    <Link href={localizedPath(font.href, locale)} style={{ display: 'block' }}>
       <Flex
         direction={{ base: 'column', md: index % 2 ? 'row-reverse' : 'row' }}
         backgroundColor="#101010"
@@ -40,11 +43,11 @@ const FontCard = ({ font, index }: FontCardProps) => (
           <Heading fontSize={{ base: '1.4rem', md: '1.8rem' }}>{font.title}</Heading>
           <Text opacity={.8} lineHeight="1.8">{font.description}</Text>
           <HStack gap={2} flexWrap="wrap">{font.tags.map((tag) => <Span key={tag} fontSize="xs" border="1px solid #333" px={2} py={.5} opacity={.7}>{tag}</Span>)}</HStack>
-          <HStack color="#df8a42" fontWeight="bold"><Span>查看介紹</Span><Span className="arrow" style={{ transition: 'transform .3s ease' }}>→</Span></HStack>
+          <HStack color="#df8a42" fontWeight="bold"><Span>{t('fontsPage.view')}</Span><Span className="arrow" style={{ transition: 'transform .3s ease' }}>→</Span></HStack>
         </Flex>
       </Flex>
     </Link>
   </MotionBox>
-)
+}
 
 export default FontCard

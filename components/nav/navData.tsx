@@ -27,38 +27,40 @@ export interface NavSection {
   items: NavItem[]
 }
 
-export const mainLinks: [string, string][] = [
-  ['Home', '/'],
-  ['About', '/about'],
-  ['Story', '/story'],
-  ['Works', '/works'],
-  ['Fonts', '/fonts'],
+export type Translate = (key: string) => string
+
+export const getMainLinks = (t: Translate): [string, string][] => [
+  [t('nav.home'), '/'],
+  [t('nav.about'), '/about'],
+  [t('nav.story'), '/story'],
+  [t('nav.works'), '/works'],
+  [t('nav.fonts'), '/fonts'],
 ]
 
 // 有 flyout 的區段。每個區段的第一個項目就是該區的 landing page。
-export const navSections: Record<string, NavSection> = {
-  Story: {
-    title: '千秋稻荷社',
+export const getNavSections = (t: Translate): Record<string, NavSection> => ({
+  [t('nav.story')]: {
+    title: t('nav.storyTitle'),
     items: [
-      { id: 'story', title: '故事', path: '/story', icon: <StoryIcon /> },
+      { id: 'story', title: t('nav.storyIndex'), path: '/story', icon: <StoryIcon /> },
       {
         id: 'character',
-        title: '角色介紹',
+        title: t('nav.character'),
         path: '/story/character',
         icon: <CharacterIcon />,
       },
       {
         id: 'art',
-        title: '作品集',
+        title: t('nav.art'),
         path: '/story/character/art',
         icon: <ArtIcon />,
       },
     ],
   },
-  Works: {
-    title: 'Works',
+  [t('nav.works')]: {
+    title: t('nav.works'),
     items: [
-      { id: 'works', title: '作品集', path: '/works', icon: <CollectionIcon /> },
+      { id: 'works', title: t('nav.worksIndex'), path: '/works', icon: <CollectionIcon /> },
       {
         id: 'chiakey',
         title: 'ChiaKey',
@@ -81,18 +83,18 @@ export const navSections: Record<string, NavSection> = {
       },
     ],
   },
-  Fonts: {
-    title: 'Fonts',
+  [t('nav.fonts')]: {
+    title: t('nav.fonts'),
     items: [
-      { id: 'fonts', title: '字體集', path: '/fonts', icon: <CollectionIcon /> },
+      { id: 'fonts', title: t('nav.fontsIndex'), path: '/fonts', icon: <CollectionIcon /> },
       {
         id: 'akitra',
-        title: '台鐵字體',
+        title: t('nav.akitra'),
         path: '/fonts/akitra',
         icon: <AkitraIcon />,
       },
       { id: 'nixie', title: 'Nixie', path: '/fonts/nixie', icon: <NixieIcon /> },
-      { id: 'huninn', title: '粉圓', path: '/fonts/huninn', icon: <HuninnIcon /> },
+      { id: 'huninn', title: t('nav.huninn'), path: '/fonts/huninn', icon: <HuninnIcon /> },
     ],
   },
-}
+})
