@@ -54,5 +54,90 @@
   },
   "fontsPage": {
     "title": "字體集", "intro": "從台灣鐵道上的表記文字、輝光管數字，到為台灣調整的開源圓體。每套字都從一段具體的文化與使用經驗開始。", "view": "查看介紹"
+  },
+  "aboutPage": {
+    "header": {
+      "eyebrow": "ABOUT  //  PROFILE_01",
+      "namePart1": "涼風",
+      "namePart2": "千秋",
+      "tagline": "藉算機以窮妙理，運寸彩以繪芳華",
+      "introLine1": "您好！我是涼風千秋。",
+      "introLine2": "畫畫、做設計師、寫程式的人。永遠都在挖坑與填坑的路上。",
+      "profileAlt": "涼風千秋"
+    },
+    "characterPanel": {
+      "name": "SUZUKAZE CHIAKI",
+      "alt": "涼風千秋 立繪"
+    },
+    "interests": {
+      "design": { "title": "設計", "tag": "DESIGN", "description": "喜歡以人為本、機能與美觀兼顧的設計。曾參與 justfont 粉圓字型，也做過一些平面與網頁設計。" },
+      "drawing": { "title": "繪畫", "tag": "DRAWING", "description": "喜歡畫畫，偶爾會塗鴉。喜歡女僕裝、眼鏡、水手服、獸耳、兔女郎跟競賽泳裝！" },
+      "photo": { "title": "攝影", "tag": "PHOTO", "description": "喜歡用相機留下只存在於那個瞬間的事物。最近主力是底片相機。" },
+      "model": { "title": "模型", "tag": "MODEL", "description": "醉心於極小比例下濃縮的力與美，家裡有空壓機可以噴漆！" },
+      "doujin": { "title": "同人活動", "tag": "DOUJIN", "description": "因為作品大多都是原創，報攤通常只會報小場。喜歡在活動上跟其他創作者交流，或是觀察大家的作品。" },
+      "cosplay": { "title": "Cosplay", "tag": "COSPLAY", "description": "好愛攪拌，但怕熱，通常冬天場才會出角。歡迎約搭角！" },
+      "travel": { "title": "旅行", "tag": "TRAVEL", "description": "研究路線、探索新地區、體驗不同文化。喜歡各地的夜景與在地美食。" },
+      "coding": { "title": "寫程式", "tag": "CODING", "description": "喜歡寫程式、並且把技術開放給他人，進而演變成合作開發的文化。常常可以在COSCUP之類的開源年會上看到我！" },
+      "chill": { "title": "在房間耍廢", "tag": "CHILL", "description": "喜歡日本錢湯的榻榻米休憩區，自己設計、發包裝潢，工時約四個月。" }
+    },
+    "sections": {
+      "nowPlaying": { "tag": "NOW PLAYING", "title": "最近在玩的坑", "item1": "看動畫、打電動，特別吃科幻題材（Cyberpunk、終末地這種）", "item2": "喜歡復古的東西，尤其是 20 世紀前後那個年代的設計感，最近開始收黑膠" },
+      "interests": { "tag": "INTERESTS", "title": "興趣" },
+      "gettingAlong": { "tag": "GETTING ALONG", "title": "關於相處", "line1": "事情實在太多了，我回訊息會很慢。", "line2": "但「慢」不等於「不想理你」，想找我聊、想傳訊息給我，都非常歡迎，我有空一定會盡量回、盡量看。", "line3": "也先跟大家說聲抱歉，我不一定每則貼文都會看到，不是故意已讀或無視，是忙起來真的會漏，這點請多包涵。" },
+      "oneRequest": { "tag": "ONE REQUEST", "title": "一點小小的請求", "line1": "個人不太聊政治、也不太喜歡別人批評東西QQ", "line2": "我覺得沒有什麼絕對的對錯，很多東西只是被放在錯的地方而已。", "line3": "帶著這樣的善意與尊重，我們會很合得來！" },
+      "contact": { "tag": "CONTACT", "title": "聯絡我", "textBefore": "我的社群平台以及聯絡方式都整理在", "linkLabel": "這裡", "textAfter": "！" }
+    },
+    "footer": "SUZUKAZE CHIAKI // 涼風千秋",
+    "stickerSheet": {
+      "wallLabel": "STICKER WALL",
+      "items": {
+        "oorai": { "title": "Proud supporter of 大洗女子学園", "description": "超級喜歡少女與戰車，大洗已經變成比老家還熟悉的小鎮了。海樂祭、八朔祭，冬天跟夏天都去過了！" },
+        "react": { "title": "React", "description": "React 是我最常用的前端框架，從 2015 年開始就一直在使用。而且他餵飽了我。我愛 React。" },
+        "clip": { "title": "Clip Studio Paint", "description": "Clip Studio Paint 是我最常用的繪圖軟體！" },
+        "wtm": { "title": "Google Women Techmakers", "description": "WTM 2023 講者" },
+        "coscup": { "title": "COSCUP 台灣開源人年會", "description": "COSCUP 資深會眾/審稿委員" },
+        "sitcon": { "title": "SITCON 學生計算機年會", "description": "SITCON 講者" },
+        "justfont": { "title": "justfont", "description": "justfont ex-member" },
+        "glyphs4": { "title": "Glyphs 4", "description": "Glyphs 4 zh-Hant Localization Translator" },
+        "arcticVault": { "title": "GitHub Arctic Code Vault Contributor", "description": "我的爛code被2020 GitHub Archive Program永遠保存在北極凍土之下的「末日保險櫃」了。將來人類重建文明就靠他們了！" },
+        "isekai": { "title": "観測者ヰ組", "description": "意大利麵組" },
+        "isekaiArt": { "title": "ヰ世界情緒美術部", "description": "我會繪製お情的圖" },
+        "sukonbu": { "title": "司空部", "description": "Hi friends" },
+        "hinako": { "title": "妃那子", "description": "妃那子 Official Fanclub" },
+        "himehina": { "title": "HIMEHINA JOJIGOD", "description": "強力支持HIMEHINA活動的神級會員" },
+        "wwdc26": { "title": "WWDC 2026", "description": "I joined WWDC 2026 online" },
+        "endfield": { "title": "明日方舟：終末地", "description": "我是終末地工業的「管理員」" },
+        "evilTwinBrewing": { "title": "Evil Twin Brewing NYC", "description": "我愛這家超神精釀啤酒" },
+        "flighty": { "title": "Flighty Passport", "description": "我飛過的機場" },
+        "toge": { "title": "TOGENASHI TOGEARI", "description": "我喜歡刺刺團" },
+        "uiFifthAnniversary": { "title": "しぐれうい 5th Anniversary", "description": "我參加了しぐれうい5周年紀念展" },
+        "uiMembership": { "title": "しぐれうい メンバーシップ", "description": "羽衣媽媽原稿部屋會員" },
+        "aogiri": { "title": "あおぎり高校", "description": "我箱推青桐高校" },
+        "rickAndMorty": { "title": "Rick and Morty", "description": "我喜歡《瑞克和莫蒂》這部動畫" },
+        "nico25": { "title": "ニコニコ超会議2025", "description": "我參加了Nico Nico超會議2025！超近距離的小林幸子本人！" },
+        "teto": { "title": "重音テト 17th", "description": "Our beloved Teto" },
+        "kasane": { "title": "居酒屋かさね", "description": "參加了居酒屋かさね鑽頭酒杯紀念活動" },
+        "comiket50": { "title": "コミックマーケット50周年", "description": "我參加了C107的Comiket 50周年紀念" },
+        "moztw": { "title": "MozTW", "description": "已經參與 Mozilla 台灣社群 13+ 年了！" },
+        "fbosc": { "title": "Facebook Open Source", "description": "我曾是Facebook Open Source的開發者" },
+        "ponfes25": { "title": "PONFES!2025", "description": "我參加了あやぽんず＊ワンマンライブ PONFES!2025" },
+        "kancolle": { "title": "艦隊これくしょん", "description": "我是提督" },
+        "echoesbaa": { "title": "音楽フェス『CENTRAL 2025』", "description": "我參加了Echoes Baa舞台" },
+        "amavel": { "title": "Amavel", "description": "我整個衣櫃都是Amavel的衣服" },
+        "expo2025": { "title": "大阪・関西万博", "description": "我參加了2025大阪萬博" },
+        "darjeeling": { "title": "いかなる時も、優雅", "description": "我喜歡動畫《少女與戰車》大吉嶺的名言，無時無刻都要保持優雅！" },
+        "mono": { "title": "mono", "description": "我喜歡mono女孩！我也想要360度相機！" },
+        "yorimo": { "title": "宇宙よりも遠い場所", "description": "我很喜歡《比宇宙更遠的地方》，希望有一天也能踏上南極" },
+        "suzumiya": { "title": "涼宮ハルヒの憂鬱", "description": "我喜歡《涼宮春日的憂鬱》，希望能成為其他人的涼宮春日" },
+        "back2future": { "title": "Back to the Future", "description": "我喜歡《回到未來》這部電影，好想要時光機" },
+        "yeastken": { "title": "いーすとけん。", "description": "Yeastken麵包狗是一種長得像麵包和狗的神秘生物，聞起來像剛出爐的麵包，摸起來蓬蓬軟軟，平時假扮成麵包的模樣偷偷躲在麵包屋裡，是一種不可思議的存在。" }
+      }
+    }
+  },
+  "linksPage": {
+    "backgroundAlt": "稻荷神社背景照片",
+    "profileAlt": "涼風千秋",
+    "name": "涼風千秋",
+    "website": "官方網站"
   }
 }

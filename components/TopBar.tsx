@@ -11,9 +11,9 @@ import { ChevronDownIcon, CloseIcon, HamburgerIcon } from 'components/ui/icons'
 import Link from 'next/link'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
-import { Language, NavArrowDownSolid } from 'iconoir-react'
 import NavFlyout from 'components/nav/NavFlyout'
 import SubNav from 'components/nav/SubNav'
+import LanguageSwitcher from 'components/nav/LanguageSwitcher'
 import { getMainLinks, getNavSections } from 'components/nav/navData'
 import { localizedPath, pagePathFromLocalePath, useI18n } from 'i18n'
 
@@ -31,7 +31,6 @@ const TopBar: React.FC = () => {
   const [isFlyoutOpen, setFlyoutOpen] = useState(false)
   const [isDrawerOpen, setDrawerOpen] = useState(false)
   const [expandedMenu, setExpandedMenu] = useState<string | null>(null)
-  const [isLanguageMenuOpen, setLanguageMenuOpen] = useState(false)
   const currentPath = usePathname()
   const { locale, t } = useI18n()
   const mainLinks = useMemo(() => getMainLinks(t), [t])
@@ -49,7 +48,6 @@ const TopBar: React.FC = () => {
   // 換頁時收起面板
   useEffect(() => {
     setFlyoutOpen(false)
-    setLanguageMenuOpen(false)
   }, [currentPath])
 
   // 點外圍收回
@@ -212,81 +210,7 @@ const TopBar: React.FC = () => {
             </HStack>
           </HStack>
 
-          <Box position="relative" ml="auto" pl={4}>
-            <styled.button
-              type="button"
-              aria-label={t('language.label')}
-              aria-expanded={isLanguageMenuOpen}
-              onClick={() => setLanguageMenuOpen((open) => !open)}
-              display="inline-flex"
-              alignItems="center"
-              gap={1}
-              bg="transparent"
-              border="0"
-              color="white"
-              cursor="pointer"
-              fontSize="13px"
-              fontWeight="600"
-              px={2}
-              py={1}
-              borderRadius="6px"
-              _hover={{ bg: 'rgba(255,255,255,.12)' }}
-            >
-              <Language width={18} height={18} aria-hidden />
-              <Box as="span" display={{ base: 'none', sm: 'inline' }}>
-                {locale.toUpperCase()}
-              </Box>
-              <NavArrowDownSolid
-                width={13}
-                height={13}
-                aria-hidden
-                style={{
-                  transform: isLanguageMenuOpen ? 'rotate(180deg)' : undefined,
-                  transition: 'transform 160ms ease',
-                }}
-              />
-            </styled.button>
-            {isLanguageMenuOpen && (
-              <VStack
-                as="ul"
-                role="menu"
-                position="absolute"
-                right="0"
-                top="calc(100% + 8px)"
-                minW="150px"
-                alignItems="stretch"
-                gap={0}
-                listStyleType="none"
-                m={0}
-                p={1}
-                border="1px solid rgba(255,255,255,.14)"
-                borderRadius="8px"
-                bg="rgba(31,31,34,.98)"
-                boxShadow="0 12px 30px rgba(0,0,0,.3)"
-              >
-                {(['tw', 'ja', 'en'] as const).map((itemLocale) => (
-                  <Box as="li" key={itemLocale} role="none">
-                    <Link
-                      href={localizedPath(pagePath, itemLocale)}
-                      role="menuitem"
-                      onClick={() => setLanguageMenuOpen(false)}
-                      style={{
-                        display: 'block',
-                        padding: '.5rem .65rem',
-                        borderRadius: '5px',
-                        fontSize: '.85rem',
-                        color: 'white',
-                        opacity: itemLocale === locale ? 1 : .68,
-                        background: itemLocale === locale ? 'rgba(255,255,255,.12)' : 'transparent',
-                      }}
-                    >
-                      {t(`language.${itemLocale}`)}
-                    </Link>
-                  </Box>
-                ))}
-              </VStack>
-            )}
-          </Box>
+          <LanguageSwitcher />
 
           <Drawer
             placement="left"
