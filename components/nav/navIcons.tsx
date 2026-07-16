@@ -29,11 +29,16 @@ export const CollectionIcon = (props: IconProps) => (
 
 // 千秋輸入法：鍵盤
 export const ChiaKeyIcon = (props: IconProps) => (
-  <svg {...svgProps} {...props}>
-    <rect x="6" y="14" width="36" height="21" rx="3" />
-    <path d="M12 20h3M19 20h3M26 20h3M33 20h3" />
-    <path d="M12 26h3M19 26h3M26 26h3M33 26h3" />
-    <path d="M16 31h16" />
+  <svg width="80%" height="80%" viewBox="0 0 22 16" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <mask id="knockout">
+        <rect width="100%" height="100%" fill="white" />
+        <g transform="translate(5.935576, 2.898283) scale(0.011131)">
+          <path d="M 454 909 C 485 909 499 891 499 852 L 499 463 L 856 463 C 892 463 910 450 910 420 C 910 391 891 377 856 377 L 499 377 L 499 135 C 650 120 738 105 766 96 C 807 82 816 47 795 21 C 778 0 743 8 711 17 C 596 49 316 76 119 77 C 84 77 57 91 57 120 C 57 149 74 163 108 163 C 154 163 254 158 408 145 L 408 377 L 53 377 C 17 377 0 390 0 419 C 0 449 18 463 53 463 L 408 463 L 408 852 C 408 891 423 909 454 909 Z" fill="black" stroke="black" stroke-width="43.124354" stroke-linecap="round" stroke-linejoin="round" />
+        </g>
+      </mask>
+    </defs>
+    <rect x="0" y="0" width="22" height="16" rx="4.8" ry="4.8" fill="currentColor" mask="url(#knockout)" />
   </svg>
 )
 
