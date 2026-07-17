@@ -145,5 +145,11 @@
   },
   "nixiePage": {
     "story": "關於這套字", "storyP1": "輝光管是冷戰時期的數字顯示元件：玻璃管裡疊著 0–9 的金屬陰極，通電時氖氣在數字周圍發出溫暖橙光。", "storyP2": "這套字體重現輝光管的字形與氛圍，另附「$」字符作為所有數字疊在一起的背景陰極。", "glyphs": "字符一覽", "glyphsDescription": "全部 13 個數字字符。", "download": "下載與授權", "license": "以 CC BY-SA 4.0 授權釋出，標註來源即可自由使用與改作。", "send": "傳送 D-mail", "downloadButton": "下載"
+  },
+  "akitraPage": {
+    "hero": "臺鐵客貨車表記文字", "story": "關於這套字", "storyP1": "古早的台鐵客貨車車身上，塗著車種代號、車號、自重與載重。這些由油漆工一筆一筆描出的字，有著手工時代特有的力道。", "storyP2": "這套字體以那些表記文字為藍本重新繪製，收錄 284 個常用字符，希望保存逐漸消失在鐵道邊的視覺記憶。", "inUse": "表記範例", "inUseDescription": "車種記號使用注音符號是台鐵獨有的傳統。", "glyphs": "字符一覽", "groups": ["拉丁字母與數字", "注音符號（車種記號）", "漢字（表記用字）", "半形片假名", "符號"], "download": "下載與授權", "license": "以 SIL Open Font License 1.1 釋出，歡迎自由使用於個人與商業專案。", "sourceFiles": "原始檔"
+  },
+  "huninnPage": {
+    "hero": "一款免費開源的台灣圓體，像粉圓一樣圓潤可愛。", "samples": ["視野無限廣，窗外有藍天", "像珍珠一樣", "圓潤有彈性", "打字的好朋友"], "story": "關於這套字", "storyP1": "「jf open 粉圓」是 justfont 發起的開源字型專案，以 Kosugi Maru 和 Varela Round 為基礎，針對台灣字形標準與使用習慣重新調整。", "storyP2": "在 justfont 期間有幸參與製作。能把字體設計成果開放給整個社群，是一段很難得的經驗。", "features": "特色", "tester": "打打看", "testerDescription": "輸入任何想試的字，完整字型會在這裡自動載入。", "more": "下載與更多", "license": "粉圓體由 justfont 維護，以 SIL Open Font License 1.1 釋出。", "official": "官方介紹頁", "placeholder": "輸入想試的字……", "loading": "完整字型載入中……", "loadError": "完整字型載入失敗，僅顯示部分字符", "defaultText": "像珍珠一樣，圓圓的、有點 Q。"
   }
 }

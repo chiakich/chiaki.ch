@@ -7,7 +7,7 @@ export const locales = ['tw', 'ja', 'en'] as const
 export type Locale = (typeof locales)[number]
 
 interface TranslationTree {
-  [key: string]: string | TranslationTree
+  [key: string]: string | string[] | TranslationTree
 }
 
 const resources: Record<Locale, TranslationTree> = { tw, ja, en }
@@ -30,8 +30,9 @@ export const LocaleProvider = ({
 }
 
 const getValue = (tree: TranslationTree, key: string): string | undefined => {
-  const value = key.split('.').reduce<string | TranslationTree | undefined>((node, part) => {
+  const value = key.split('.').reduce<string | string[] | TranslationTree | undefined>((node, part) => {
     if (typeof node === 'string') return undefined
+    if (Array.isArray(node)) return node[Number(part)]
     return node?.[part]
   }, tree)
 

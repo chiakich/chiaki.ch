@@ -1,5 +1,6 @@
 import { Box, Flex, HStack, styled } from 'styled-system/jsx'
 import { useEffect, useRef, useState } from 'react'
+import { useI18n } from 'i18n'
 
 const Text = styled.p
 const Textarea = styled.textarea
@@ -46,9 +47,10 @@ const useFullHuninn = (ref: React.RefObject<HTMLElement | null>) => {
 }
 
 const HuninnTester = () => {
+  const { t } = useI18n()
   const containerRef = useRef<HTMLDivElement>(null)
   const status = useFullHuninn(containerRef)
-  const [text, setText] = useState('像珍珠一樣，圓圓的、有點 Q。')
+  const [text, setText] = useState(() => t('huninnPage.defaultText'))
   const [size, setSize] = useState(48)
 
   return (
@@ -72,7 +74,7 @@ const HuninnTester = () => {
           color="white"
           resize="none"
           _focus={{ outline: 'none', borderColor: '#febb27' }}
-          placeholder="輸入想試的字……"
+          placeholder={t('huninnPage.placeholder')}
         />
         <HStack gap={3} flexShrink={0}>
           <Span fontSize="sm" opacity={0.6} whiteSpace="nowrap">
@@ -108,8 +110,8 @@ const HuninnTester = () => {
             style={{ color: INK }}
           >
             {status === 'error'
-              ? '完整字型載入失敗，僅顯示部分字符'
-              : '完整字型載入中……'}
+              ? t('huninnPage.loadError')
+              : t('huninnPage.loading')}
           </Text>
         )}
         <Text
