@@ -8,7 +8,7 @@ import {
 } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import Barcode from 'components/about/Barcode'
-import { ACCENT, WARN } from 'components/about/theme'
+import { ACCENT } from 'components/about/theme'
 import { useI18n } from 'i18n'
 
 const Text = styled.p
@@ -82,7 +82,7 @@ const CharacterPanel = ({
         right="-5%"
         width="65%"
         height="115%"
-        background={`linear-gradient(200deg, ${ACCENT}2e 0%, ${ACCENT}08 65%, transparent 100%)`}
+        background="linear-gradient(200deg, #ff78292e 0%, #ff782908 65%, transparent 100%)"
         clipPath="polygon(28% 0, 100% 0, 100% 100%, 0 100%)"
         initial={{ opacity: 0, x: 80 }}
         animate={{ opacity: 1, x: 0 }}
@@ -153,7 +153,7 @@ const CharacterPanel = ({
         zIndex={3}
         alignItems="center"
         gap={1}
-        backgroundColor={WARN}
+        backgroundColor="#ffb400"
         color="black"
         px={2}
         py="2px"
@@ -230,7 +230,7 @@ const CharacterPanel = ({
         height={{ base: '64vh', lg: '88%' }}
         maxWidth="none"
         zIndex={1}
-        filter={`drop-shadow(0 0 40px ${ACCENT}30)`}
+        filter="drop-shadow(0 0 40px #ff782930)"
         onLoad={() => setImageLoaded(true)}
         initial={{
           clipPath: 'polygon(0 0, 18% 0, 0 100%, 0 100%)',

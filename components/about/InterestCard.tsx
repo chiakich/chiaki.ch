@@ -1,6 +1,5 @@
 import { Box, styled } from 'styled-system/jsx'
 import { motion } from 'framer-motion'
-import { ACCENT } from 'components/about/theme'
 
 const Text = styled.p
 const Span = styled.span
@@ -35,9 +34,9 @@ const InterestCard = ({
       ease: 'easeOut',
     }}
     _hover={{
-      borderColor: `${ACCENT}88`,
+      borderColor: '#ff782988',
       transform: 'translateY(-3px)',
-      '& .interest-en': { color: ACCENT, opacity: 0.9 },
+      '& .interest-en': { color: '#ff7829', opacity: 0.9 },
     }}
     style={{
       transition: 'transform 0.25s ease, border-color 0.25s ease',
@@ -61,7 +60,7 @@ const InterestCard = ({
       fontSize={{ base: 'md', md: 'lg' }}
       mb={1}
     >
-      <Span color={ACCENT} mr={2} fontSize="sm">
+      <Span color="#ff7829" mr={2} fontSize="sm">
         {String(index + 1).padStart(2, '0')}
       </Span>
       {title}

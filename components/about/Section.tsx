@@ -1,6 +1,5 @@
 import { Box, Flex, styled } from 'styled-system/jsx'
 import { motion } from 'framer-motion'
-import { ACCENT } from 'components/about/theme'
 
 const Heading = styled.h2
 const Span = styled.span
@@ -23,14 +22,14 @@ const SectionTitle = ({
       <Box
         position="absolute"
         inset="0"
-        border={`1px solid ${ACCENT}aa`}
+        border="1px solid #ff7829aa"
         transform="skewX(-6deg) translate(4px, 4px)"
         clipPath="polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)"
         aria-hidden
       />
       <Box
         position="relative"
-        backgroundColor={ACCENT}
+        backgroundColor="#ff7829"
         color="black"
         fontWeight="bold"
         fontSize="xs"
@@ -56,7 +55,7 @@ const SectionTitle = ({
     <Box
       flex="1"
       height="1px"
-      background={`linear-gradient(90deg, ${ACCENT}55, transparent)`}
+      background="linear-gradient(90deg, #ff782955, transparent)"
     />
     <Span
       fontFamily="mono"
