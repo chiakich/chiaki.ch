@@ -24,7 +24,7 @@ const Links: NextPage = () => {
         transition="opacity 1.5s ease-in-out"
       >
         <Image
-          src="/assets/img/takuzosu-inari-shrine.jpg"
+          src="/assets/img/takuzosu-inari-shrine.webp"
           alt={t('linksPage.backgroundAlt')}
           fill
           style={{
@@ -65,7 +65,7 @@ const Links: NextPage = () => {
           >
             <Center mb="30px" position="relative" flexDirection="column">
               <Image
-                src="/assets/img/profile.jpg"
+                src="/assets/img/profile.webp"
                 alt={t('linksPage.profileAlt')}
                 height={100}
                 width={100}

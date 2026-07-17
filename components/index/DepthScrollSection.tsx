@@ -70,8 +70,8 @@ const snowFragmentShader = `
 
 const AutonomousDepthImage = () => {
   const [imageTexture, depthTexture] = useLoader(TextureLoader, [
-    '/assets/index/2x-2.jpg',
-    '/assets/index/2x-2-depthmap.jpg',
+    '/assets/index/2x-2.webp',
+    '/assets/index/2x-2-depthmap.webp',
   ])
   const materialRef = useRef<ShaderMaterial>(null!)
   const meshRef = useRef<Mesh>(null!)
@@ -185,7 +185,7 @@ const DepthScrollSection = ({ started = true }: DepthScrollSectionProps) => (
     width="100%"
     overflow="hidden"
     backgroundColor="#0a1114"
-    backgroundImage="url('/assets/index/2x-2.jpg')"
+    backgroundImage="url('/assets/index/2x-2.webp')"
     backgroundSize="cover"
     backgroundPosition="center"
   >

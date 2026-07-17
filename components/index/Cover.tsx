@@ -17,7 +17,7 @@ const Cover = () => {
         transition="opacity 1.5s ease-in-out, transform 2s ease-in-out"
       >
         <Image
-          src="/assets/img/takuzosu-inari-shrine.jpg"
+          src="/assets/img/takuzosu-inari-shrine.webp"
           alt="bg"
           fill
           style={{ objectFit: 'cover' }}

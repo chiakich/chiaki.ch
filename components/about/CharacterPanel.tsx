@@ -222,7 +222,7 @@ const CharacterPanel = ({
 
       <MotionImg
         ref={imgRef}
-        src="/assets/about/chiaki_v2_web.png"
+        src="/assets/about/chiaki_v2_web.webp"
         alt={t('aboutPage.characterPanel.alt')}
         position="absolute"
         bottom="0"

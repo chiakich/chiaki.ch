@@ -170,7 +170,7 @@ const About: NextPage = () => {
                 flexShrink={0}
               >
                 <Image
-                  src="/assets/img/profile.jpg"
+                  src="/assets/img/profile.webp"
                   alt={t('aboutPage.header.profileAlt')}
                   width={64}
                   height={64}

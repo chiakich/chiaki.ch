@@ -16,7 +16,7 @@ const StoryBootLoader = ({ onComplete }: { onComplete?: () => void }) => {
       setProgress((value) => Math.min(92, value + Math.max(1, (92 - value) * 0.08)))
     }, 90)
 
-    const preload = ['/assets/index/2x-2.jpg', '/assets/index/2x-2-depthmap.jpg'].map(
+    const preload = ['/assets/index/2x-2.webp', '/assets/index/2x-2-depthmap.webp'].map(
       (src) =>
         new Promise<void>((resolve) => {
           const image = new Image()
