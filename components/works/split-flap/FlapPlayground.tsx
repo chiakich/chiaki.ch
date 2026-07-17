@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Presets, SplitFlap } from 'react-split-flap'
 import { Box, Flex, HStack, styled } from 'styled-system/jsx'
+import { useI18n } from 'i18n'
 
 const Text = styled.p
 const Span = styled.span
@@ -37,6 +38,7 @@ export const FlapClock = () => {
 
 const FlapPlayground = () => {
   const [value, setValue] = useState(SAMPLES[0])
+  const { t } = useI18n()
 
   return (
     <Box>
@@ -49,8 +51,8 @@ const FlapPlayground = () => {
         <Input
           value={value}
           onChange={(e) => setValue(e.target.value.toUpperCase().slice(0, 9))}
-          placeholder="輸入文字…"
-          aria-label="翻頁顯示內容"
+          placeholder={t('splitFlapPage.inputPlaceholder')}
+          aria-label={t('splitFlapPage.inputLabel')}
           backgroundColor="rgba(255,255,255,.06)"
           border="1px solid rgba(255,255,255,.14)"
           borderRadius="12px"

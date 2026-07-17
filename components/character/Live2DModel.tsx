@@ -2,28 +2,24 @@ import React, { useState, useEffect } from 'react'
 import dynamic from 'next/dynamic'
 import { Box, Center, styled } from 'styled-system/jsx'
 import { Spinner } from 'components/ui/controls'
+import { useI18n } from 'i18n'
 
 const Text = styled.p
 
 // Dynamically import the Live2D model component with no SSR
+const Loading = () => {
+  const { t } = useI18n()
+  return (
+    <Box width={{ base: '95vw', md: '60vw', lg: '400px' }} height={{ base: '80vh', md: '70vh', lg: '600px' }} display="flex" flexDirection="column" alignItems="center" justifyContent="center" backgroundColor="transparent">
+      <Spinner color="gray.400" />
+      <Text marginTop={4} color="gray.500">{t('characterPage.loading')}</Text>
+    </Box>
+  )
+}
+
 const Live2DModelClient = dynamic(() => import('./Live2DModelClient'), {
   ssr: false,
-  loading: () => (
-    <Box
-      width={{ base: '95vw', md: '60vw', lg: '400px' }}
-      height={{ base: '80vh', md: '70vh', lg: '600px' }}
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
-      backgroundColor="transparent"
-    >
-      <Spinner color="gray.400" />
-      <Text marginTop={4} color="gray.500">
-        載入中...
-      </Text>
-    </Box>
-  ),
+  loading: Loading,
 })
 
 interface Live2DModelProps {
@@ -33,6 +29,7 @@ interface Live2DModelProps {
 
 const Live2DModel: React.FC<Live2DModelProps> = ({ width, height }) => {
   const [isClient, setIsClient] = useState(false)
+  const { t } = useI18n()
 
   useEffect(() => {
     setIsClient(true)
@@ -51,7 +48,7 @@ const Live2DModel: React.FC<Live2DModelProps> = ({ width, height }) => {
       >
         <Spinner color="gray.400" />
         <Text marginTop={4} color="gray.500">
-          初始化中...
+          {t('characterPage.initializing')}
         </Text>
       </Box>
     )
@@ -73,7 +70,7 @@ const Live2DModel: React.FC<Live2DModelProps> = ({ width, height }) => {
           marginX={{ base: '20px', md: '40px', lg: '60px' }}
           fontSize="14px"
         >
-          嘗試自己做了Live2D模型，移動滑鼠的話，眼睛會跟著動喔！
+          {t('characterPage.live2dDescription')}
         </Text>
       </Box>
       <Center>

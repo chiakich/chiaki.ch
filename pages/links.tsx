@@ -6,11 +6,13 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import DotBackground from 'components/index/DotBackground'
 import AnimatedLogo from 'components/index/AnimatedLogo'
+import { useI18n } from 'i18n'
 
 const Link = styled.a
 
 const Links: NextPage = () => {
   const [isBgLoaded, setBgLoaded] = useState(false)
+  const { t } = useI18n()
   return (
     <Box width="100vw" height="100vh" overflow="hidden">
       <Box
@@ -23,7 +25,7 @@ const Links: NextPage = () => {
       >
         <Image
           src="/assets/img/takuzosu-inari-shrine.jpg"
-          alt="bg"
+          alt={t('linksPage.backgroundAlt')}
           fill
           style={{
             objectFit: 'cover',
@@ -64,7 +66,7 @@ const Links: NextPage = () => {
             <Center mb="30px" position="relative" flexDirection="column">
               <Image
                 src="/assets/img/profile.jpg"
-                alt="Icon"
+                alt={t('linksPage.profileAlt')}
                 height={100}
                 width={100}
                 style={{
@@ -72,7 +74,7 @@ const Links: NextPage = () => {
                 }}
               />
               <Box fontSize={30} my="20px">
-                涼風千秋
+                {t('linksPage.name')}
               </Box>
             </Center>
           </motion.div>
@@ -126,7 +128,7 @@ const Links: NextPage = () => {
                   bgColor="rgba(50, 50, 50, 0.5)"
                   href="/"
                 >
-                  Website
+                  {t('linksPage.website')}
                 </Button>
               </Center>
             </Box>

@@ -10,21 +10,20 @@ const Text = styled.p
 const Span = styled.span
 const MotionBox = motion(Box)
 
-const fonts: FontCardData[] = [
-  { id: 'akitra', title: '台鐵客貨車字體', en: 'AKITRA', description: '以台鐵客貨車表記文字為藍本，保存鐵道車號、載重與車種記號的視覺記憶。', tags: ['自製字體', 'SIL OFL 1.1', '284 字符'], href: '/fonts/akitra', specimen: <AkitraSpecimen /> },
-  { id: 'nixie', title: 'Nixie 數字字體', en: 'AKINIXIE', description: '重現輝光管顯示器溫暖橙光的數字字體，適合時鐘與復古科技場景。', tags: ['自製字體', 'CC BY-SA 4.0', '數字專用'], href: '/fonts/nixie', specimen: <NixieSpecimen /> },
-  { id: 'huninn', title: 'jf open 粉圓', en: 'OPEN HUNINN', description: '在 justfont 參與製作的台灣開源圓體，像粉圓一樣圓潤而有彈性。', tags: ['參與設計', 'SIL OFL 1.1', 'justfont'], href: '/fonts/huninn', specimen: <HuninnSpecimen /> },
-]
-
 const FontsIndexPage = () => {
   const { t } = useI18n()
+  const fonts: FontCardData[] = [
+    { id: 'akitra', title: t('fontsPage.items.akitra.title'), en: 'AKITRA', description: t('fontsPage.items.akitra.description'), tags: [t('fontsPage.items.akitra.tags.0'), 'SIL OFL 1.1', t('fontsPage.items.akitra.tags.1')], href: '/fonts/akitra', specimen: <AkitraSpecimen /> },
+    { id: 'nixie', title: t('fontsPage.items.nixie.title'), en: 'AKINIXIE', description: t('fontsPage.items.nixie.description'), tags: [t('fontsPage.items.nixie.tags.0'), 'CC BY-SA 4.0', t('fontsPage.items.nixie.tags.1')], href: '/fonts/nixie', specimen: <NixieSpecimen /> },
+    { id: 'huninn', title: t('fontsPage.items.huninn.title'), en: 'OPEN HUNINN', description: t('fontsPage.items.huninn.description'), tags: [t('fontsPage.items.huninn.tags.0'), 'SIL OFL 1.1', 'justfont'], href: '/fonts/huninn', specimen: <HuninnSpecimen /> },
+  ]
 
   return <Box backgroundColor="black" color="white" minHeight="100vh">
     <TopBar />
     <Box pt="96px">
       <Container maxW="1080px" py={12} px={{ base: '24px', md: '40px' }}>
         <MotionBox initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7 }} mb={14}>
-          <Text fontFamily="mono" fontSize="sm" letterSpacing=".35em" color="#df8a42" fontWeight="bold" mb={3}>FONTS&nbsp;&nbsp;//&nbsp;&nbsp;TYPEFACES</Text>
+          <Text fontFamily="mono" fontSize="sm" letterSpacing=".35em" color="#df8a42" fontWeight="bold" mb={3}>{t('fontsPage.eyebrow')}</Text>
           <Heading fontSize={{ base: '3rem', md: '4.5rem' }} lineHeight={1.05} fontWeight="900" mb={5}>{t('fontsPage.title')}</Heading>
           <Box width="180px" height="8px" mb={5} background="repeating-linear-gradient(-45deg, #df8a42 0 10px, transparent 10px 20px)" />
           <Text maxW="600px" fontSize={{ base: 'md', md: 'lg' }} opacity={.85} lineHeight="1.9">{t('fontsPage.intro')}</Text>

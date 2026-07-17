@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { LongFlap } from 'react-split-flap'
 import { Box, Flex, HStack, styled } from 'styled-system/jsx'
+import { useI18n } from 'i18n'
 
 const Text = styled.p
 const Span = styled.span
@@ -245,6 +246,7 @@ const BoardRow = ({
 
 const AnalogClock = () => {
   const [now, setNow] = useState<Date | null>(null)
+  const { t } = useI18n()
 
   useEffect(() => {
     setNow(new Date())
@@ -262,7 +264,7 @@ const AnalogClock = () => {
       height="104"
       viewBox="0 0 100 100"
       role="img"
-      aria-label="現在時刻"
+      aria-label={t('splitFlapPage.currentTime')}
     >
       <circle cx="50" cy="50" r="48" fill="#f5f5f2" />
       {Array.from({ length: 12 }, (_, i) => {
@@ -321,6 +323,7 @@ const DepartureBoard = () => {
   const [rows, setRows] = useState<(RowState | null)[]>([null, null, null])
   const [ready, setReady] = useState(false)
   const queueIndex = useRef(3)
+  const { t } = useI18n()
 
   useEffect(() => {
     let cancelled = false
@@ -406,7 +409,7 @@ const DepartureBoard = () => {
                   letterSpacing=".3em"
                   color="#f2f2f2"
                 >
-                  羽田空港　品川　新橋　浅草　方面
+                  {t('splitFlapPage.boardDestinations')}
                 </Span>
                 <Span
                   display={{ base: 'none', md: 'inline' }}
@@ -434,7 +437,7 @@ const DepartureBoard = () => {
         opacity={0.45}
         letterSpacing=".08em"
       >
-        致敬 2022 年退役的京急川崎駅「パタパタ」發車標
+        {t('splitFlapPage.boardCaption')}
       </Text>
     </Box>
   )

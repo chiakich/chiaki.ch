@@ -4,19 +4,21 @@ import MotionSection from 'components/portfolio/MotionSection'
 import ProjectLink from 'components/portfolio/ProjectLink'
 import SectionHeading from 'components/portfolio/SectionHeading'
 import TgJpgHero from './TgJpgHero'
+import { useI18n } from 'i18n'
 
 const Heading = styled.h3
 const Text = styled.p
 const Image = styled.img
 
-const pipeline = [
-  ['01', '辨識檔名', '監聽以 .jpg、.png 或 .gif 結尾的訊息。'],
-  ['02', '檢查搜尋來源', '啟動時執行健康檢查，只啟用當下可用的引擎。'],
-  ['03', '搶先回覆', '跨來源搜尋，第一張 Telegram 能傳送的結果立刻勝出。'],
-]
+const TgJpgPage = () => {
+  const { t } = useI18n()
+  const pipeline = [0, 1, 2].map((index) => [
+    String(index + 1).padStart(2, '0'),
+    t(`tgJpgPage.steps.${index}.0`),
+    t(`tgJpgPage.steps.${index}.1`),
+  ])
 
-const TgJpgPage = () => (
-  <Box backgroundColor="#08121c" color="white" minHeight="100vh">
+  return <Box backgroundColor="#08121c" color="white" minHeight="100vh">
     <TopBar />
     <TgJpgHero />
     <Container
@@ -27,7 +29,7 @@ const TgJpgPage = () => (
       <Stack gap={20}>
         <MotionSection>
           <SectionHeading en="IDEA" accent="#57b5ff">
-            把搜尋縮成一個檔名
+            {t('tgJpgPage.idea')}
           </SectionHeading>
           <Text
             maxW="760px"
@@ -35,14 +37,12 @@ const TgJpgPage = () => (
             lineHeight="2"
             opacity={0.78}
           >
-            不用離開對話開瀏覽器找圖。tg.jpg 接上 Google、DuckDuckGo、Bing
-            三個免費來源，以及可選的 Serper 與 SerpAPI；設定了 Serper API key
-            時，它會排在最高優先。
+            {t('tgJpgPage.ideaText')}
           </Text>
         </MotionSection>
         <Box>
           <SectionHeading en="PIPELINE" accent="#57b5ff">
-            快速回覆
+            {t('tgJpgPage.pipeline')}
           </SectionHeading>
           <Grid columns={{ base: 1, md: 3 }} gap={4}>
             {pipeline.map(([number, title, description], index) => (
@@ -72,19 +72,17 @@ const TgJpgPage = () => (
             <Box borderRadius="24px" overflow="hidden">
               <Image
                 src="/assets/works/tg-jpg/chat.webp"
-                alt="tg.jpg 在 Telegram 回覆 mic drop GIF"
+                alt={t('tgJpgPage.chatAlt')}
                 width="100%"
                 display="block"
               />
             </Box>
             <Box>
               <SectionHeading en="BUILT WITH RUST" accent="#57b5ff">
-                以 Rust 編寫
+                {t('tgJpgPage.rust')}
               </SectionHeading>
               <Text lineHeight="1.9" opacity={0.75} mb={6}>
-                以 Rust 重寫，Teloxide 接 Telegram、Reqwest
-                抓搜尋結果。啟動時對每個搜尋來源做健康檢查，掛掉的來源直接停用，其餘照優先序輪流試到有結果為止。附
-                Docker 與 Fly.io 部署設定。
+                {t('tgJpgPage.rustText')}
               </Text>
               <ProjectLink
                 href="https://github.com/chiakich/rust-tg.jpg"
@@ -97,6 +95,6 @@ const TgJpgPage = () => (
       </Stack>
     </Container>
   </Box>
-)
+}
 
 export default TgJpgPage

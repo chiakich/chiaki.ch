@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { Box, Container, HStack, Stack, styled } from 'styled-system/jsx'
 import ProjectLink from 'components/portfolio/ProjectLink'
 import { Copy, Check } from 'iconoir-react'
+import { useI18n } from 'i18n'
 
 const DepartureBoard = dynamic(() => import('./DepartureBoard'), { ssr: false })
 
@@ -18,6 +19,7 @@ const INSTALL_COMMAND = 'npm i react-split-flap'
 
 const InstallCommand = () => {
   const [copied, setCopied] = useState(false)
+  const { t } = useI18n()
 
   return (
     <Button
@@ -41,7 +43,7 @@ const InstallCommand = () => {
       letterSpacing=".02em"
       _hover={{ borderColor: ACCENT }}
       style={{ transition: 'border-color .2s ease' }}
-      title="複製安裝指令"
+      title={t('splitFlapPage.copyInstallCommand')}
     >
       <Span color={ACCENT}>$</Span> {INSTALL_COMMAND}
       <Span>{copied ? <Check color="green" /> : <Copy />}</Span>
@@ -49,7 +51,9 @@ const InstallCommand = () => {
   )
 }
 
-const SplitFlapHero = () => (
+const SplitFlapHero = () => {
+  const { t } = useI18n()
+  return (
   <Box
     pt="96px"
     background="radial-gradient(circle at 30% 15%, #3a1815, #17100f 46%, #0b0b0d 100%)"
@@ -59,7 +63,7 @@ const SplitFlapHero = () => (
       <Stack gap={12}>
         <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75 }}>
           <Text color={ACCENT} letterSpacing=".14em" fontSize="sm" fontWeight="700" textTransform="uppercase">
-            Split-flap display for React
+            {t('splitFlapPage.eyebrow')}
           </Text>
           <Heading
             fontSize={{ base: '2.6rem', md: '5rem' }}
@@ -71,13 +75,12 @@ const SplitFlapHero = () => (
             react<Span color={ACCENT}>-</Span>split<Span color={ACCENT}>-</Span>flap
           </Heading>
           <Text mt={5} maxW="660px" fontSize={{ base: 'lg', md: 'xl' }} lineHeight="1.85" opacity={0.82}>
-            重現車站與機場翻頁顯示器的 React 元件。純 CSS transform
-            翻頁動畫，幾百格同時翻動也能保持流暢。
+            {t('splitFlapPage.hero')}
           </Text>
           <HStack mt={7} flexWrap="wrap" gap={3}>
             <InstallCommand />
             <ProjectLink href="https://www.npmjs.com/package/react-split-flap" label="npm" detail="react-split-flap" solid accent={ACCENT} />
-            <ProjectLink href="https://github.com/chiakich/react-split-flap" label="查看原始碼" detail="TypeScript" accent={ACCENT} />
+            <ProjectLink href="https://github.com/chiakich/react-split-flap" label={t('splitFlapPage.source')} detail="TypeScript" accent={ACCENT} />
           </HStack>
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75, delay: 0.2 }}>
@@ -86,6 +89,7 @@ const SplitFlapHero = () => (
       </Stack>
     </Container>
   </Box>
-)
+  )
+}
 
 export default SplitFlapHero

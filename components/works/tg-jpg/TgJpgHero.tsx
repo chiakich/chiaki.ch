@@ -2,13 +2,15 @@ import { motion } from 'framer-motion'
 import { Box, Container, HStack, Stack, styled } from 'styled-system/jsx'
 import ProjectLink from 'components/portfolio/ProjectLink'
 import SearchChatDemo from './SearchChatDemo'
+import { useI18n } from 'i18n'
 
 const Heading = styled.h1
 const Text = styled.p
 const Span = styled.span
 
-const TgJpgHero = () => (
-  <Box
+const TgJpgHero = () => {
+  const { t } = useI18n()
+  return <Box
     pt="96px"
     background="radial-gradient(circle at 70% 20%, #1e4c70, #101d2a 48%, #071019 100%)"
     overflow="hidden"
@@ -49,18 +51,18 @@ const TgJpgHero = () => (
             lineHeight="1.85"
             opacity={0.82}
           >
-            在聊天裡打出 .jpg，機器人幫你回覆哏圖。支援 .jpg、.png、.gif。
+            {t('tgJpgPage.hero')}
           </Text>
           <HStack mt={7}>
             <ProjectLink
               href="https://t.me/tgjpg_bot"
-              label="加入 Telegram"
+              label={t('tgJpgPage.join')}
               solid
               accent="#57b5ff"
             />
             <ProjectLink
               href="https://github.com/chiakich/rust-tg.jpg"
-              label="查看原始碼"
+              label={t('tgJpgPage.source')}
               detail="Rust"
               accent="#57b5ff"
             />
@@ -70,6 +72,6 @@ const TgJpgHero = () => (
       </Stack>
     </Container>
   </Box>
-)
+}
 
 export default TgJpgHero
