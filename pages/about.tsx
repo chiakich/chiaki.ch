@@ -1,7 +1,6 @@
 import type { NextPage } from 'next'
 import { Box, Flex, Grid, HStack, VStack, styled } from 'styled-system/jsx'
 import {
-  animate,
   motion,
   useMotionValue,
   useSpring,
@@ -10,9 +9,14 @@ import {
 } from 'framer-motion'
 import Image from 'next/image'
 import NextLink from 'next/link'
-import { useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
 import TopBar from 'components/TopBar'
+import Barcode from 'components/about/Barcode'
+import CharacterPanel from 'components/about/CharacterPanel'
+import InterestCard from 'components/about/InterestCard'
+import Section from 'components/about/Section'
 import StickerSheet from 'components/about/StickerSheet'
+import { ACCENT, ACCENT_SOFT } from 'components/about/theme'
 import { useI18n } from 'i18n'
 
 const Heading = styled.h2
@@ -22,221 +26,10 @@ const ListItem = styled.li
 const Span = styled.span
 
 const MotionBox = motion(Box)
-const MotionImg = motion(styled.img)
-
-const ACCENT = '#ff7829'
-const ACCENT_SOFT = '#f5c8a1'
 
 const interestIds = [
   'design', 'drawing', 'photo', 'model', 'doujin', 'cosplay', 'travel', 'coding', 'chill',
 ]
-
-// Skewed P5-style tag + heading
-const SectionTitle = ({
-  en,
-  children,
-}: {
-  en: string
-  children: React.ReactNode
-}) => (
-  <Flex alignItems="center" gap={4} mb={5}>
-    <Box
-      backgroundColor={ACCENT}
-      color="black"
-      fontWeight="bold"
-      fontSize="xs"
-      letterSpacing="0.2em"
-      px={3}
-      py={1}
-      transform="skewX(-12deg)"
-      flexShrink={0}
-    >
-      <Box transform="skewX(12deg)">{en}</Box>
-    </Box>
-    <Heading
-      as="h2"
-      fontSize={{ base: 'xl', md: '2xl' }}
-      fontWeight="bold"
-      letterSpacing="0.05em"
-    >
-      {children}
-    </Heading>
-    <Box
-      flex="1"
-      height="1px"
-      background={`linear-gradient(90deg, ${ACCENT}55, transparent)`}
-    />
-  </Flex>
-)
-
-const Section = ({
-  en,
-  title,
-  children,
-}: {
-  en: string
-  title: string
-  children: React.ReactNode
-}) => (
-  <MotionBox
-    width="100%"
-    initial={{ opacity: 0, y: 32 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: '-80px' }}
-    transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-  >
-    <SectionTitle en={en}>{title}</SectionTitle>
-    <Box fontSize={{ base: 'md', md: 'lg' }} lineHeight="1.9" opacity={0.92}>
-      {children}
-    </Box>
-  </MotionBox>
-)
-
-// Sticky character visual with wipe-in entrance and mouse parallax
-const CharacterPanel = ({
-  x,
-  y,
-}: {
-  x: ReturnType<typeof useSpring>
-  y: ReturnType<typeof useSpring>
-}) => {
-  const { t } = useI18n()
-  const swayX = useMotionValue(0)
-  const breatheY = useMotionValue(0)
-  const [imageLoaded, setImageLoaded] = useState(false)
-  const imgRef = useRef<HTMLImageElement>(null)
-
-  useEffect(() => {
-    if (imgRef.current?.complete) setImageLoaded(true)
-  }, [])
-
-  useEffect(() => {
-    const swayControls = animate(swayX, [-6, 6, -6], {
-      duration: 7,
-      ease: 'easeInOut',
-      repeat: Infinity,
-      repeatType: 'loop',
-    })
-
-    const breatheControls = animate(breatheY, [0, -2, 0], {
-      duration: 5.5,
-      ease: 'easeInOut',
-      repeat: Infinity,
-      repeatType: 'loop',
-    })
-
-    return () => {
-      swayControls.stop()
-      breatheControls.stop()
-    }
-  }, [swayX, breatheY])
-
-  const floatX = useTransform(() => x.get() + swayX.get())
-  const floatY = useTransform(() => y.get() + breatheY.get())
-
-  const bgX = useTransform(floatX, (v: number) => v * -1.6)
-  const bgY = useTransform(floatY, (v: number) => v * -1.6)
-
-  return (
-    <Box
-      position="relative"
-      width="100%"
-      height={{ base: '68vh', lg: 'calc(100vh - 44px)' }}
-    >
-      {/* Slanted accent panel */}
-      <MotionBox
-        position="absolute"
-        top="-5%"
-        right="-5%"
-        width="65%"
-        height="115%"
-        background={`linear-gradient(200deg, ${ACCENT}2e 0%, ${ACCENT}08 65%, transparent 100%)`}
-        clipPath="polygon(28% 0, 100% 0, 100% 100%, 0 100%)"
-        initial={{ opacity: 0, x: 80 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-      />
-      {/* Halftone dots */}
-      <Box
-        position="absolute"
-        inset="0"
-        backgroundImage="radial-gradient(rgba(255,255,255,0.07) 1px, transparent 1.5px)"
-        backgroundSize="22px 22px"
-        maskImage="linear-gradient(115deg, transparent 30%, black 75%)"
-      />
-      {/* Outline name behind the character */}
-      <MotionBox
-        position="absolute"
-        top="2%"
-        right="2%"
-        fontSize={{ base: '4rem', lg: '6.5rem' }}
-        fontWeight="900"
-        letterSpacing="0.02em"
-        lineHeight="0.95"
-        textTransform="uppercase"
-        color="transparent"
-        style={{
-          x: bgX,
-          y: bgY,
-          WebkitTextStroke: `1px ${ACCENT}59`,
-          writingMode: 'vertical-rl',
-        }}
-        whiteSpace="nowrap"
-        userSelect="none"
-        aria-hidden
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5, duration: 1 }}
-      >
-        {t('aboutPage.characterPanel.name')}
-      </MotionBox>
-
-      <MotionImg
-        ref={imgRef}
-        src="/assets/about/chiaki_v2_web.png"
-        alt={t('aboutPage.characterPanel.alt')}
-        position="absolute"
-        bottom="0"
-        left="50%"
-        height={{ base: '64vh', lg: '88%' }}
-        maxWidth="none"
-        filter={`drop-shadow(0 0 40px ${ACCENT}30)`}
-        onLoad={() => setImageLoaded(true)}
-        initial={{
-          clipPath: 'polygon(0 0, 18% 0, 0 100%, 0 100%)',
-          opacity: 0,
-          x: '-42%',
-        }}
-        animate={
-          imageLoaded
-            ? {
-                clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
-                opacity: 1,
-                x: '-50%',
-              }
-            : {
-                clipPath: 'polygon(0 0, 18% 0, 0 100%, 0 100%)',
-                opacity: 0,
-                x: '-42%',
-              }
-        }
-        transition={{ duration: 1.1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-        style={{ translateX: floatX, translateY: floatY }}
-      />
-
-      {/* Blend the feet into the page bottom */}
-      <Box
-        position="absolute"
-        bottom="0"
-        left="0"
-        right="0"
-        height="18%"
-        background="linear-gradient(transparent, black)"
-        display={{ base: 'block', lg: 'none' }}
-      />
-    </Box>
-  )
-}
 
 const About: NextPage = () => {
   const { t } = useI18n()
@@ -267,8 +60,25 @@ const About: NextPage = () => {
       color="white"
       minHeight="100vh"
       overflowX="clip"
+      position="relative"
       onMouseMove={handleMouseMove}
     >
+      {/* Orange dot grid, same as the index society section */}
+      <Box
+        position="fixed"
+        top="0"
+        left="0"
+        right="0"
+        height="100vh"
+        opacity=".2"
+        backgroundImage="radial-gradient(rgba(244, 142, 44, .2) 1px, transparent 1px)"
+        backgroundSize="18px 18px"
+        maskImage="linear-gradient(to bottom, black 40%, transparent)"
+        pointerEvents="none"
+        zIndex={0}
+        aria-hidden
+      />
+
       <TopBar />
 
       {/* Decorative diagonal bars, parallax on scroll */}
@@ -297,6 +107,29 @@ const About: NextPage = () => {
         zIndex={0}
       />
 
+      {/* Left rail with serial markings, desktop only */}
+      <Box
+        position="fixed"
+        left="8px"
+        top="50%"
+        transform="translateY(-50%)"
+        zIndex={0}
+        pointerEvents="none"
+        display={{ base: 'none', xl: 'block' }}
+        aria-hidden
+      >
+        <Text
+          fontFamily="mono"
+          fontSize="0.58rem"
+          letterSpacing="0.35em"
+          opacity={0.3}
+          whiteSpace="nowrap"
+          style={{ writingMode: 'vertical-rl' }}
+        >
+          CHIAKI.CH // 091145.18.163 ▸▸ WHATEVER YOU DESIGN, MAKE SURE IT&apos;s HAPPY ▸▸
+        </Text>
+      </Box>
+
       <Grid
         gridTemplateColumns={{
           base: '1fr',
@@ -318,7 +151,7 @@ const About: NextPage = () => {
         <Box
           order={{ base: 1, lg: 0 }}
           px={{ base: '24px', md: '48px' }}
-          pt={{ base: 6, lg: 20 }}
+          pt={{ base: 0, lg: 20 }}
           pb="80px"
         >
           {/* Header */}
@@ -353,6 +186,9 @@ const About: NextPage = () => {
               >
                 {t('aboutPage.header.eyebrow')}
               </Text>
+              <Span color={ACCENT} fontWeight="900" letterSpacing="-0.05em" aria-hidden>
+                ⟩⟩⟩
+              </Span>
             </HStack>
 
             <Heading
@@ -365,26 +201,64 @@ const About: NextPage = () => {
             >
               {t('aboutPage.header.namePart1')}
               <Span position="relative" display="inline-block" mx="0.1em">
+                {/* Offset outline echo */}
+                <Span
+                  position="absolute"
+                  inset="0.05em -0.08em -0.02em"
+                  border={`2px solid ${ACCENT}88`}
+                  transform="skewX(-6deg) translate(0.07em, 0.07em)"
+                  clipPath="polygon(0 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%)"
+                  zIndex={0}
+                  aria-hidden
+                />
+                {/* Solid block with clipped corner and inner hairline */}
                 <Span
                   position="absolute"
                   inset="0.05em -0.08em -0.02em"
                   backgroundColor={ACCENT}
-                  transform="skewX(-8deg)"
+                  transform="skewX(-6deg)"
+                  clipPath="polygon(0 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%)"
+                  outline="1px solid rgba(0,0,0,0.3)"
+                  outlineOffset="-6px"
                   zIndex={0}
                 />
+                {/* Serial microtext on the block edge */}
+                <Span
+                  position="absolute"
+                  bottom="0.02em"
+                  left="0"
+                  fontFamily="mono"
+                  fontSize="0.6rem"
+                  fontWeight="normal"
+                  letterSpacing="0.18em"
+                  lineHeight="1"
+                  color="rgba(0,0,0,0.55)"
+                  transform="skewX(-6deg)"
+                  zIndex={1}
+                  aria-hidden
+                >
+                  CK-02
+                </Span>
                 <Span position="relative" zIndex={1} color="black">
                   {t('aboutPage.header.namePart2')}
                 </Span>
               </Span>
             </Heading>
 
-            {/* Hazard stripe, Endfield-style */}
-            <Box
-              width="180px"
-              height="8px"
-              mb={5}
-              background={`repeating-linear-gradient(-45deg, ${ACCENT} 0 10px, transparent 10px 20px)`}
-            />
+            {/* Barcode + serial, pass-card style */}
+            <Flex alignItems="center" gap={4} mb={5} flexWrap="wrap">
+              <Barcode seed="SUZUKAZE-CHIAKI" width={72} height={16} color="rgba(255,255,255,0.55)" />
+              <Span
+                fontFamily="mono"
+                fontSize="0.6rem"
+                letterSpacing="0.18em"
+                opacity={0.5}
+                whiteSpace="nowrap"
+                aria-hidden
+              >
+                NO.091145.18.163 // R-2.6
+              </Span>
+            </Flex>
             <Text
               fontSize={{ base: 'lg', md: 'xl' }}
               fontWeight="medium"
@@ -401,7 +275,7 @@ const About: NextPage = () => {
           </MotionBox>
 
           <VStack gap={16} alignItems="start">
-            <Section en={t('aboutPage.sections.nowPlaying.tag')} title={t('aboutPage.sections.nowPlaying.title')}>
+            <Section en={t('aboutPage.sections.nowPlaying.tag')} code="SEC.01" title={t('aboutPage.sections.nowPlaying.title')}>
               <List display="flex" flexDirection="column" gap={3} pl="1.5rem">
                 <ListItem>
                   {t('aboutPage.sections.nowPlaying.item1')}
@@ -412,71 +286,21 @@ const About: NextPage = () => {
               </List>
             </Section>
 
-            <Section en={t('aboutPage.sections.interests.tag')} title={t('aboutPage.sections.interests.title')}>
+            <Section en={t('aboutPage.sections.interests.tag')} code="SEC.02" title={t('aboutPage.sections.interests.title')}>
               <Grid columns={{ base: 1, md: 2 }} gap={4} mt={2}>
                 {interests.map((item, i) => (
-                  <MotionBox
+                  <InterestCard
                     key={item.id}
-                    position="relative"
-                    backgroundColor="#111"
-                    border="1px solid #222"
-                    clipPath="polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)"
-                    px={5}
-                    py={4}
-                    overflow="hidden"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: '-40px' }}
-                    transition={{
-                      duration: 0.5,
-                      delay: (i % 2) * 0.08,
-                      ease: 'easeOut',
-                    }}
-                    _hover={{
-                      borderColor: `${ACCENT}88`,
-                      transform: 'translateY(-3px)',
-                      '& .interest-en': { color: ACCENT, opacity: 0.9 },
-                    }}
-                    style={{
-                      transition: 'transform 0.25s ease, border-color 0.25s ease',
-                    }}
-                  >
-                    <Text
-                      className="interest-en"
-                      position="absolute"
-                      top={2}
-                      right={4}
-                      fontSize="xs"
-                      fontWeight="900"
-                      letterSpacing="0.2em"
-                      opacity={0.3}
-                      style={{ transition: 'color 0.25s ease, opacity 0.25s ease' }}
-                    >
-                      {item.en}
-                    </Text>
-                    <Text
-                      fontWeight="bold"
-                      fontSize={{ base: 'md', md: 'lg' }}
-                      mb={1}
-                    >
-                      <Span color={ACCENT} mr={2} fontSize="sm">
-                        {String(i + 1).padStart(2, '0')}
-                      </Span>
-                      {item.title}
-                    </Text>
-                    <Text
-                      fontSize={{ base: 'sm', md: 'md' }}
-                      opacity={0.85}
-                      lineHeight="1.8"
-                    >
-                      {item.description}
-                    </Text>
-                  </MotionBox>
+                    index={i}
+                    title={item.title}
+                    en={item.en}
+                    description={item.description}
+                  />
                 ))}
               </Grid>
             </Section>
 
-            <Section en={t('aboutPage.sections.gettingAlong.tag')} title={t('aboutPage.sections.gettingAlong.title')}>
+            <Section en={t('aboutPage.sections.gettingAlong.tag')} code="SEC.03" title={t('aboutPage.sections.gettingAlong.title')}>
               <Text>
                 {t('aboutPage.sections.gettingAlong.line1')}
                 <br />
@@ -486,7 +310,7 @@ const About: NextPage = () => {
               </Text>
             </Section>
 
-            <Section en={t('aboutPage.sections.oneRequest.tag')} title={t('aboutPage.sections.oneRequest.title')}>
+            <Section en={t('aboutPage.sections.oneRequest.tag')} code="SEC.04" title={t('aboutPage.sections.oneRequest.title')}>
               <Text>
                 {t('aboutPage.sections.oneRequest.line1')}
                 <br />
@@ -496,7 +320,7 @@ const About: NextPage = () => {
               </Text>
             </Section>
 
-            <Section en={t('aboutPage.sections.contact.tag')} title={t('aboutPage.sections.contact.title')}>
+            <Section en={t('aboutPage.sections.contact.tag')} code="SEC.05" title={t('aboutPage.sections.contact.title')}>
               <Text>
                 {t('aboutPage.sections.contact.textBefore')}{' '}
                 <NextLink
