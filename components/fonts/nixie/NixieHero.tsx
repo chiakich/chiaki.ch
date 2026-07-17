@@ -3,6 +3,7 @@ import { Box, styled } from 'styled-system/jsx'
 import { Button } from 'components/ui/controls'
 import { NIXIE, NIXIE_BRIGHT, NIXIE_GLOW, WORLDLINES } from './nixieTheme'
 import { useWorldline } from './useWorldline'
+import { useI18n } from 'i18n'
 
 const Text = styled.p
 const Span = styled.span
@@ -41,6 +42,7 @@ const RetroButton = ({ onClick, label }: { onClick: () => void; label: string })
 // 動態色彩一律走 inline style：Panda 無法靜態抽取 import 進來的常數。
 const NixieHero = () => {
   const { display, shifting, shift } = useWorldline()
+  const { t } = useI18n()
   return (
     <>
       <Box
@@ -93,12 +95,12 @@ const NixieHero = () => {
             </Text>
           </Box>
           <Box>
-            <RetroButton onClick={shift} label="Dメール送信" />
+            <RetroButton onClick={shift} label={t('nixiePage.send')} />
             <RetroButton
               onClick={() => {
                 window.open('/assets/fonts/AkiNixie.ttf')
               }}
-              label="ダウンロード"
+              label={t('nixiePage.downloadButton')}
             />
             <Text mt={2} opacity={0.35} fontSize="xs">
               El Psy Kongroo

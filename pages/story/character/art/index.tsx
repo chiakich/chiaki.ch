@@ -4,8 +4,10 @@ import TopBar from 'components/TopBar'
 import CharacterIntroduction from 'components/character/CharacterIntroduction'
 import ProjectGallery from 'components/character/ProjectGallery'
 import { useState, useEffect } from 'react'
+import { useI18n } from 'i18n'
 
 const CharacterArtPage: NextPage = () => {
+  const { t } = useI18n()
   const [showR18, setShowR18] = useState(false)
   const [ageConfirmed, setAgeConfirmed] = useState(false)
 
@@ -21,7 +23,7 @@ const CharacterArtPage: NextPage = () => {
     if (!ageConfirmed) {
       // Show age confirmation dialog
       const confirmed = window.confirm(
-        '此內容包含成人內容，僅限18歲以上觀看。\n\n您是否已滿18歲？'
+        `${t('characterPage.r18Description')}\n\n${t('characterPage.r18Question')}`
       )
       if (confirmed) {
         setAgeConfirmed(true)

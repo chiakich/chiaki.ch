@@ -5,11 +5,13 @@ import { SearchIcon } from 'components/ui/icons'
 import Lightbox from 'yet-another-react-lightbox'
 import Zoom from 'yet-another-react-lightbox/plugins/zoom'
 import 'yet-another-react-lightbox/styles.css'
+import { useI18n } from 'i18n'
 
 const Text = styled.p
 const Image = styled.img
 
 const CharacterIntroduction: React.FC = () => {
+  const { t } = useI18n()
   // State for current character art
   const [currentArtIndex, setCurrentArtIndex] = useState(0)
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -24,7 +26,7 @@ const CharacterIntroduction: React.FC = () => {
 
   const slides = characterArts.map((src) => ({
     src,
-    alt: 'Character art',
+    alt: t('characterPage.artAlt'),
   }))
 
   const delicateWirePatternStyles = {
@@ -57,28 +59,29 @@ const CharacterIntroduction: React.FC = () => {
             fontWeight="bold"
             mb="20px"
           >
-            涼風千秋
+            {t('characterPage.name')}
           </Text>
           <Text
             fontSize={{ base: 'lg', md: 'xl' }}
             lineHeight="1.8"
             fontWeight="medium"
           >
-            「はおーっ！涼風千秋です！」
+            {t('characterPage.greeting')}
           </Text>
           <Text fontSize={{ base: 'md', md: 'lg' }} lineHeight="1.8" opacity={0.9}>
-            千秋稻荷社第一研究室室長，兼第▓▓代巫女，棕髮獸耳神使狐狸大小姐。
-            <br />
-            非常善良，喜歡跟人們交流，希望能開心的度過每一天。
-            <br />
-            雖然是戰後出生的，但非常喜歡收集戰前人類的遺留物。也喜歡自己動手做點小東西，對各種可愛的事物沒有抵抗力。
+            {t('characterPage.description').split('\n').map((line, index) => (
+              <React.Fragment key={line}>
+                {index > 0 && <br />}
+                {line}
+              </React.Fragment>
+            ))}
           </Text>
           <Text fontSize={{ base: 'md', md: 'lg' }} lineHeight="1.8" opacity={0.9}>
-            生日：2月27日
+            {t('characterPage.birthday')}
           </Text>
           <Image
             src="/assets/story/character/signature-animated.svg"
-            alt="Chiaki Sign"
+            alt={t('characterPage.signatureAlt')}
             w="50%"
             mt="20px"
             alignSelf="flex-end"
@@ -99,13 +102,13 @@ const CharacterIntroduction: React.FC = () => {
           >
             <Image
               src={characterArts[currentArtIndex]}
-              alt={`Character art ${currentArtIndex + 1}`}
+              alt={`${t('characterPage.artAlt')} ${currentArtIndex + 1}`}
               w="100%"
               h="100%"
               objectFit="contain"
             />
             <IconButton
-              aria-label="View full size"
+              aria-label={t('characterPage.viewFullSize')}
               icon={<SearchIcon />}
               position="absolute"
               bottom="16px"
@@ -140,7 +143,7 @@ const CharacterIntroduction: React.FC = () => {
               >
                 <Image
                   src={art}
-                  alt={`Thumbnail ${index + 1}`}
+                  alt={`${t('characterPage.thumbnailAlt')} ${index + 1}`}
                   w="100%"
                   h="100%"
                   objectFit="cover"

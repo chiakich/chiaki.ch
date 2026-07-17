@@ -13,6 +13,7 @@ import NextLink from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import TopBar from 'components/TopBar'
 import StickerSheet from 'components/about/StickerSheet'
+import { useI18n } from 'i18n'
 
 const Heading = styled.h2
 const Text = styled.p
@@ -26,56 +27,8 @@ const MotionImg = motion(styled.img)
 const ACCENT = '#ff7829'
 const ACCENT_SOFT = '#f5c8a1'
 
-const interests: { title: string; en: string; description: string }[] = [
-  {
-    title: '設計',
-    en: 'DESIGN',
-    description:
-      '喜歡以人為本、機能與美觀兼顧的設計。曾參與 justfont 粉圓字型，也做過一些平面與網頁設計。',
-  },
-  {
-    title: '繪畫',
-    en: 'DRAWING',
-    description:
-      '喜歡畫畫，偶爾會塗鴉。喜歡女僕裝、眼鏡、水手服、獸耳、兔女郎跟競賽泳裝！',
-  },
-  {
-    title: '攝影',
-    en: 'PHOTO',
-    description: '喜歡用相機留下只存在於那個瞬間的事物。最近主力是底片相機。',
-  },
-  {
-    title: '模型',
-    en: 'MODEL',
-    description: '醉心於極小比例下濃縮的力與美，家裡有空壓機可以噴漆！',
-  },
-  {
-    title: '同人活動',
-    en: 'DOUJIN',
-    description:
-      '因為作品大多都是原創，報攤通常只會報小場。喜歡在活動上跟其他創作者交流，或是觀察大家的作品。',
-  },
-  {
-    title: 'Cosplay',
-    en: 'COSPLAY',
-    description: '好愛攪拌，但怕熱，通常冬天場才會出角。歡迎約搭角！',
-  },
-  {
-    title: '旅行',
-    en: 'TRAVEL',
-    description: '研究路線、探索新地區、體驗不同文化。喜歡各地的夜景與在地美食。',
-  },
-  {
-    title: '寫程式',
-    en: 'CODING',
-    description:
-      '喜歡寫程式、並且把技術開放給他人，進而演變成合作開發的文化。常常可以在COSCUP之類的開源年會上看到我！',
-  },
-  {
-    title: '在房間耍廢',
-    en: 'CHILL',
-    description: '喜歡日本錢湯的榻榻米休憩區，自己設計、發包裝潢，工時約四個月。',
-  },
+const interestIds = [
+  'design', 'drawing', 'photo', 'model', 'doujin', 'cosplay', 'travel', 'coding', 'chill',
 ]
 
 // Skewed P5-style tag + heading
@@ -147,6 +100,7 @@ const CharacterPanel = ({
   x: ReturnType<typeof useSpring>
   y: ReturnType<typeof useSpring>
 }) => {
+  const { t } = useI18n()
   const swayX = useMotionValue(0)
   const breatheY = useMotionValue(0)
   const [imageLoaded, setImageLoaded] = useState(false)
@@ -234,13 +188,13 @@ const CharacterPanel = ({
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5, duration: 1 }}
       >
-        SUZUKAZE CHIAKI
+        {t('aboutPage.characterPanel.name')}
       </MotionBox>
 
       <MotionImg
         ref={imgRef}
         src="/assets/about/chiaki_v2_web.png"
-        alt="涼風千秋 立繪"
+        alt={t('aboutPage.characterPanel.alt')}
         position="absolute"
         bottom="0"
         left="50%"
@@ -285,6 +239,7 @@ const CharacterPanel = ({
 }
 
 const About: NextPage = () => {
+  const { t } = useI18n()
   const rootRef = useRef<HTMLDivElement>(null)
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
@@ -293,6 +248,12 @@ const About: NextPage = () => {
 
   const { scrollYProgress } = useScroll()
   const barY = useTransform(scrollYProgress, [0, 1], ['0%', '-30%'])
+  const interests = interestIds.map((id) => ({
+    id,
+    title: t(`aboutPage.interests.${id}.title`),
+    en: t(`aboutPage.interests.${id}.tag`),
+    description: t(`aboutPage.interests.${id}.description`),
+  }))
 
   const handleMouseMove = (e: React.MouseEvent) => {
     mouseX.set((e.clientX / window.innerWidth - 0.5) * 14)
@@ -377,7 +338,7 @@ const About: NextPage = () => {
               >
                 <Image
                   src="/assets/img/profile.jpg"
-                  alt="涼風千秋"
+                  alt={t('aboutPage.header.profileAlt')}
                   width={64}
                   height={64}
                   style={{ objectFit: 'cover', width: '100%', height: '100%' }}
@@ -390,7 +351,7 @@ const About: NextPage = () => {
                 color={ACCENT}
                 fontWeight="bold"
               >
-                ABOUT&nbsp;&nbsp;//&nbsp;&nbsp;PROFILE_01
+                {t('aboutPage.header.eyebrow')}
               </Text>
             </HStack>
 
@@ -402,7 +363,7 @@ const About: NextPage = () => {
               letterSpacing="-0.02em"
               mb={4}
             >
-              涼風
+              {t('aboutPage.header.namePart1')}
               <Span position="relative" display="inline-block" mx="0.1em">
                 <Span
                   position="absolute"
@@ -412,7 +373,7 @@ const About: NextPage = () => {
                   zIndex={0}
                 />
                 <Span position="relative" zIndex={1} color="black">
-                  千秋
+                  {t('aboutPage.header.namePart2')}
                 </Span>
               </Span>
             </Heading>
@@ -430,32 +391,32 @@ const About: NextPage = () => {
               color={ACCENT_SOFT}
               mb={5}
             >
-              藉算機以窮妙理，運寸彩以繪芳華
+              {t('aboutPage.header.tagline')}
             </Text>
             <Text fontSize={{ base: 'md', md: 'lg' }} lineHeight="1.9" maxW="520px">
-              您好！我是涼風千秋。
+              {t('aboutPage.header.introLine1')}
               <br />
-              畫畫、做設計師、寫程式的人。永遠都在挖坑與填坑的路上。
+              {t('aboutPage.header.introLine2')}
             </Text>
           </MotionBox>
 
           <VStack gap={16} alignItems="start">
-            <Section en="NOW PLAYING" title="最近在玩的坑">
+            <Section en={t('aboutPage.sections.nowPlaying.tag')} title={t('aboutPage.sections.nowPlaying.title')}>
               <List display="flex" flexDirection="column" gap={3} pl="1.5rem">
                 <ListItem>
-                  看動畫、打電動，特別吃科幻題材（Cyberpunk、終末地這種）
+                  {t('aboutPage.sections.nowPlaying.item1')}
                 </ListItem>
                 <ListItem>
-                  喜歡復古的東西，尤其是 20 世紀前後那個年代的設計感，最近開始收黑膠
+                  {t('aboutPage.sections.nowPlaying.item2')}
                 </ListItem>
               </List>
             </Section>
 
-            <Section en="INTERESTS" title="興趣">
+            <Section en={t('aboutPage.sections.interests.tag')} title={t('aboutPage.sections.interests.title')}>
               <Grid columns={{ base: 1, md: 2 }} gap={4} mt={2}>
                 {interests.map((item, i) => (
                   <MotionBox
-                    key={item.title}
+                    key={item.id}
                     position="relative"
                     backgroundColor="#111"
                     border="1px solid #222"
@@ -515,36 +476,36 @@ const About: NextPage = () => {
               </Grid>
             </Section>
 
-            <Section en="GETTING ALONG" title="關於相處">
+            <Section en={t('aboutPage.sections.gettingAlong.tag')} title={t('aboutPage.sections.gettingAlong.title')}>
               <Text>
-                事情實在太多了，我回訊息會很慢。
+                {t('aboutPage.sections.gettingAlong.line1')}
                 <br />
-                但「慢」不等於「不想理你」，想找我聊、想傳訊息給我，都非常歡迎，我有空一定會盡量回、盡量看。
+                {t('aboutPage.sections.gettingAlong.line2')}
                 <br />
-                也先跟大家說聲抱歉，我不一定每則貼文都會看到，不是故意已讀或無視，是忙起來真的會漏，這點請多包涵。
+                {t('aboutPage.sections.gettingAlong.line3')}
               </Text>
             </Section>
 
-            <Section en="ONE REQUEST" title="一點小小的請求">
+            <Section en={t('aboutPage.sections.oneRequest.tag')} title={t('aboutPage.sections.oneRequest.title')}>
               <Text>
-                個人不太聊政治、也不太喜歡別人批評東西QQ
+                {t('aboutPage.sections.oneRequest.line1')}
                 <br />
-                我覺得沒有什麼絕對的對錯，很多東西只是被放在錯的地方而已。
+                {t('aboutPage.sections.oneRequest.line2')}
                 <br />
-                帶著這樣的善意與尊重，我們會很合得來！
+                {t('aboutPage.sections.oneRequest.line3')}
               </Text>
             </Section>
 
-            <Section en="CONTACT" title="聯絡我">
+            <Section en={t('aboutPage.sections.contact.tag')} title={t('aboutPage.sections.contact.title')}>
               <Text>
-                我的社群平台以及聯絡方式都整理在{' '}
+                {t('aboutPage.sections.contact.textBefore')}{' '}
                 <NextLink
                   href="/sns"
                   style={{ color: ACCENT, borderBottom: `1px solid ${ACCENT}66` }}
                 >
-                  這裡
+                  {t('aboutPage.sections.contact.linkLabel')}
                 </NextLink>
-                ！
+                {t('aboutPage.sections.contact.textAfter')}
               </Text>
             </Section>
           </VStack>
@@ -606,7 +567,7 @@ const About: NextPage = () => {
           textAlign="center"
           whiteSpace={{ base: 'normal', sm: 'nowrap' }}
         >
-          SUZUKAZE CHIAKI // 涼風千秋
+          {t('aboutPage.footer')}
         </Span>
         <Box
           width={{ base: '32px', sm: '64px' }}

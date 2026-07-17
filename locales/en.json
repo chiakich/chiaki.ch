@@ -51,5 +51,34 @@
   },
   "fontsPage": {
     "title": "Fonts", "intro": "From lettering found on Taiwan Railways, to Nixie-tube numerals and an open-source rounded typeface refined for Taiwan, every typeface begins with a particular culture and experience.", "view": "View typeface"
+  },
+  "characterPage": {
+    "moreArt": "More artwork", "name": "Chiaki Suzukaze", "greeting": "“Hao! I’m Chiaki Suzukaze!”", "description": "Head of Chiaki Inari Shrine’s First Laboratory and the ▓▓th shrine maiden: a brown-haired fox lady with animal ears, a divine messenger.\nShe is kind, loves talking with people, and hopes every day can be a happy one.\nThough born after the war, she loves collecting things left behind by prewar humanity, making little things by hand, and anything cute.", "birthday": "Birthday: February 27", "signatureAlt": "Chiaki’s signature", "artAlt": "Character artwork", "thumbnailAlt": "Character artwork thumbnail", "viewFullSize": "View full size", "conceptHeading": "Concept art", "conceptDefault": "Character sheet", "conceptNewOutfit": "New outfit sheet", "conceptBirthday": "Birthday outfit", "r18Toggle": "Show R18 content", "r18Enabled": "⚠️ Adult content is visible", "r18Title": "Adult content confirmation", "r18Description": "This content contains adult material and is restricted to viewers aged 18 or over.", "r18Question": "Are you 18 or older?", "cancel": "Cancel", "confirmAge": "I am 18 or older"
+  },
+  "aboutPage": {
+    "header": { "eyebrow": "ABOUT  //  PROFILE_01", "namePart1": "Chiaki", "namePart2": "Suzukaze", "tagline": "Exploring reason through computation, painting grace one stroke at a time", "introLine1": "Hello, I’m Chiaki Suzukaze.", "introLine2": "I draw, design, and write code—always starting new things and gradually bringing them to life.", "profileAlt": "Chiaki Suzukaze" },
+    "characterPanel": { "name": "SUZUKAZE CHIAKI", "alt": "Full-body illustration of Chiaki Suzukaze" },
+    "interests": {
+      "design": { "title": "Design", "tag": "DESIGN", "description": "I like human-centered design that balances function and beauty. I contributed to justfont’s Huninn typeface and have also worked on graphic and web design." },
+      "drawing": { "title": "Drawing", "tag": "DRAWING", "description": "I love drawing and occasional doodling—especially maid outfits, glasses, sailor uniforms, animal ears, bunny girls, and competitive swimsuits!" },
+      "photo": { "title": "Photography", "tag": "PHOTO", "description": "I like using a camera to preserve things that only exist in a particular instant. Lately, I mainly shoot film." },
+      "model": { "title": "Models", "tag": "MODEL", "description": "I’m fascinated by the power and beauty condensed into tiny scales. I even have an airbrush at home for painting!" },
+      "doujin": { "title": "Doujin events", "tag": "DOUJIN", "description": "Most of my work is original, so I usually join smaller events. I enjoy talking with other creators and looking at everyone’s work." },
+      "cosplay": { "title": "Cosplay", "tag": "COSPLAY", "description": "I love coordinating cosplays, though I don’t handle heat well, so I usually cosplay at winter events. Let’s plan a matching costume!" },
+      "travel": { "title": "Travel", "tag": "TRAVEL", "description": "I enjoy researching routes, exploring new places, and experiencing different cultures—especially night views and local food." },
+      "coding": { "title": "Coding", "tag": "CODING", "description": "I enjoy writing code and sharing technology so it can grow into a culture of collaborative development. You’ll often spot me at open-source conferences such as COSCUP!" },
+      "chill": { "title": "Staying in", "tag": "CHILL", "description": "I love the tatami rest areas at Japanese bathhouses, so I designed and commissioned one for my own room. The renovation took about four months." }
+    },
+    "sections": {
+      "nowPlaying": { "tag": "NOW PLAYING", "title": "What I’m into lately", "item1": "Anime and video games, especially science-fiction works such as cyberpunk and Endfield.", "item2": "Retro things—particularly the design sensibility around the 20th century. I’ve recently started collecting vinyl records." },
+      "interests": { "tag": "INTERESTS", "title": "Interests" },
+      "gettingAlong": { "tag": "GETTING ALONG", "title": "Keeping in touch", "line1": "I have a lot on my plate, so I can be slow to reply.", "line2": "But “slow” never means “I don’t want to talk.” You’re always welcome to chat or send a message; I’ll read it and reply as soon as I can.", "line3": "I may not see every post, especially when I’m busy. It’s never intentional, so thank you for understanding." },
+      "oneRequest": { "tag": "ONE REQUEST", "title": "A small request", "line1": "I don’t talk about politics much, and I don’t enjoy harshly criticizing things.", "line2": "I don’t think there are many absolute rights or wrongs; often, things have simply been put in the wrong place.", "line3": "With that kindness and respect, I think we’ll get along well!" },
+      "contact": { "tag": "CONTACT", "title": "Contact", "textBefore": "My social profiles and contact details are collected", "linkLabel": "here", "textAfter": "." }
+    },
+    "footer": "SUZUKAZE CHIAKI // Chiaki Suzukaze"
+  },
+  "nixiePage": {
+    "story": "About this typeface", "storyP1": "Nixie tubes are numerical display components from the Cold War era: metal cathodes for 0–9 are stacked inside a glass tube, and neon gas glows warmly around a digit when powered.", "storyP2": "This typeface recreates their forms and atmosphere, including a “$” glyph that represents the background cathode formed by all digits layered together.", "glyphs": "Glyphs", "glyphsDescription": "All 13 numeral glyphs.", "download": "Download & license", "license": "Released under CC BY-SA 4.0. You are free to use and adapt it with attribution.", "send": "Send D-mail", "downloadButton": "Download"
   }
 }

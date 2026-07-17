@@ -5,6 +5,7 @@ import { SearchIcon } from 'components/ui/icons'
 import Lightbox from 'yet-another-react-lightbox'
 import Zoom from 'yet-another-react-lightbox/plugins/zoom'
 import 'yet-another-react-lightbox/styles.css'
+import { useI18n } from 'i18n'
 
 const Text = styled.p
 const Image = styled.img
@@ -16,16 +17,16 @@ const conceptArts = [
   '/assets/story/character/concept-art/birthday-outfit.png',
 ]
 
-const conceptTitles = ['設定圖', '新衣裝設定圖', '生日衣裝']
-
-const slides = conceptArts.map((src, index) => ({
-  src,
-  alt: conceptTitles[index],
-}))
-
 const CharacterConceptArt: React.FC = () => {
+  const { t } = useI18n()
   const [currentConceptIndex, setCurrentConceptIndex] = useState(0)
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const conceptTitles = [
+    t('characterPage.conceptDefault'),
+    t('characterPage.conceptNewOutfit'),
+    t('characterPage.conceptBirthday'),
+  ]
+  const slides = conceptArts.map((src, index) => ({ src, alt: conceptTitles[index] }))
 
   return (
     <Box
@@ -44,7 +45,7 @@ const CharacterConceptArt: React.FC = () => {
         fontWeight="bold"
         mb="20px"
       >
-        設定圖集
+        {t('characterPage.conceptHeading')}
       </Text>
       {/* Concept Art Gallery */}
       <Box>
@@ -66,7 +67,7 @@ const CharacterConceptArt: React.FC = () => {
             bg="rgba(255, 255, 255, 0.9)"
           />
           <IconButton
-            aria-label="View full size"
+            aria-label={t('characterPage.viewFullSize')}
             icon={<SearchIcon />}
             position="absolute"
             bottom="16px"

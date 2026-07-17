@@ -8,6 +8,7 @@ import {
   AlertDialogOverlay,
   Button,
 } from 'components/ui/controls'
+import { useI18n } from 'i18n'
 
 interface R18DialogProps {
   isOpen: boolean
@@ -21,8 +22,10 @@ const R18Dialog: React.FC<R18DialogProps> = ({
   onClose,
   onConfirm,
   cancelRef,
-}) => (
-  <AlertDialog
+}) => {
+  const { t } = useI18n()
+
+  return <AlertDialog
     isOpen={isOpen}
     leastDestructiveRef={cancelRef}
     onClose={onClose}
@@ -31,12 +34,12 @@ const R18Dialog: React.FC<R18DialogProps> = ({
     <AlertDialogOverlay>
       <AlertDialogContent bg="gray.800" color="white">
         <AlertDialogHeader fontSize="lg" fontWeight="bold">
-          成人內容確認
+          {t('characterPage.r18Title')}
         </AlertDialogHeader>
         <AlertDialogBody>
-          此內容包含成人內容，僅限18歲以上觀看。
+          {t('characterPage.r18Description')}
           <br />
-          您是否已滿18歲？
+          {t('characterPage.r18Question')}
         </AlertDialogBody>
         <AlertDialogFooter>
           <Button
@@ -45,15 +48,15 @@ const R18Dialog: React.FC<R18DialogProps> = ({
             variant="ghost"
             colorScheme="gray"
           >
-            取消
+            {t('characterPage.cancel')}
           </Button>
           <Button colorScheme="red" onClick={onConfirm} ml={3}>
-            確認已滿18歲
+            {t('characterPage.confirmAge')}
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialogOverlay>
   </AlertDialog>
-)
+}
 
 export default R18Dialog

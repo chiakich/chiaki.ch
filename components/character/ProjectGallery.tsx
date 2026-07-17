@@ -3,6 +3,7 @@ import { Box, Flex, VStack, styled } from 'styled-system/jsx'
 import { Switch } from 'components/ui/controls'
 import { getAllProjects } from 'components/character/characterAssetsIndex'
 import ProjectCard from './ProjectCard'
+import { useI18n } from 'i18n'
 
 const Text = styled.p
 const FormLabel = styled.label
@@ -18,6 +19,7 @@ const ProjectGallery: React.FC<ProjectGalleryProps> = ({
   ageConfirmed,
   onR18Toggle,
 }) => {
+  const { t } = useI18n()
   const projects = getAllProjects()
 
   return (
@@ -32,7 +34,7 @@ const ProjectGallery: React.FC<ProjectGalleryProps> = ({
             color="white"
             fontSize="sm"
           >
-            顯示 R18 內容
+            {t('characterPage.r18Toggle')}
           </FormLabel>
           <Switch
             id="r18-toggle"
@@ -50,7 +52,7 @@ const ProjectGallery: React.FC<ProjectGalleryProps> = ({
             marginTop={2}
             opacity={0.8}
           >
-            ⚠️ 已開啟成人內容顯示
+            {t('characterPage.r18Enabled')}
           </Text>
         )}
       </Box>

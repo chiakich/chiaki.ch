@@ -139,5 +139,11 @@
     "profileAlt": "涼風千秋",
     "name": "涼風千秋",
     "website": "官方網站"
+  },
+  "characterPage": {
+    "moreArt": "更多作品", "name": "涼風千秋", "greeting": "「はおーっ！涼風千秋です！」", "description": "千秋稻荷社第一研究室室長，兼第▓▓代巫女，棕髮獸耳神使狐狸大小姐。\n非常善良，喜歡跟人們交流，希望能開心的度過每一天。\n雖然是戰後出生的，但非常喜歡收集戰前人類的遺留物。也喜歡自己動手做點小東西，對各種可愛的事物沒有抵抗力。", "birthday": "生日：2月27日", "signatureAlt": "千秋簽名", "artAlt": "角色插畫", "thumbnailAlt": "角色插畫縮圖", "viewFullSize": "查看原尺寸", "conceptHeading": "設定圖集", "conceptDefault": "設定圖", "conceptNewOutfit": "新衣裝設定圖", "conceptBirthday": "生日衣裝", "r18Toggle": "顯示 R18 內容", "r18Enabled": "⚠️ 已開啟成人內容顯示", "r18Title": "成人內容確認", "r18Description": "此內容包含成人內容，僅限18歲以上觀看。", "r18Question": "您是否已滿18歲？", "cancel": "取消", "confirmAge": "確認已滿18歲"
+  },
+  "nixiePage": {
+    "story": "關於這套字", "storyP1": "輝光管是冷戰時期的數字顯示元件：玻璃管裡疊著 0–9 的金屬陰極，通電時氖氣在數字周圍發出溫暖橙光。", "storyP2": "這套字體重現輝光管的字形與氛圍，另附「$」字符作為所有數字疊在一起的背景陰極。", "glyphs": "字符一覽", "glyphsDescription": "全部 13 個數字字符。", "download": "下載與授權", "license": "以 CC BY-SA 4.0 授權釋出，標註來源即可自由使用與改作。", "send": "傳送 D-mail", "downloadButton": "下載"
   }
 }

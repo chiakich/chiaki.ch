@@ -8,8 +8,10 @@ import CharacterConceptArt from 'components/character/CharacterConceptArt'
 import Live2DModel from 'components/character/Live2DModel'
 import IntroBackground from 'components/character/IntroBackground'
 import MinecraftSkin from 'components/character/MinecraftSkin'
+import { localizedPath, useI18n } from 'i18n'
 
 const CharacterOverviewPage: NextPage = () => {
+  const { locale, t } = useI18n()
   return (
     <Box
       bg="black"
@@ -27,9 +29,9 @@ const CharacterOverviewPage: NextPage = () => {
       <Live2DModel />
       <MinecraftSkin />
       <Center py="100px">
-        <NextLink href="/story/character/art">
+        <NextLink href={localizedPath('/story/character/art', locale)}>
           <Button colorScheme="whiteAlpha" variant="outline">
-            更多作品
+            {t('characterPage.moreArt')}
           </Button>
         </NextLink>
       </Center>
