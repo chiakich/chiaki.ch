@@ -34,10 +34,6 @@
       "title": "千秋について - 千秋稲荷社",
       "description": "こんにちは、涼風千秋です。絵を描き、デザインし、コードを書く人です。オープンソース書体と同人文化にも取り組んでいます。"
     },
-    "links": {
-      "title": "リンク - 千秋稲荷社",
-      "description": "SNS とウェブサイトへのリンク。涼風千秋と千秋稲荷社の公式サイト、Plurk、Instagram などをまとめています。"
-    },
     "story": {
       "title": "物語 - 千秋稲荷社",
       "description": "千秋稲荷社、常世、そして人の記憶が交わる物語。戦後の世界を舞台にしたオリジナルストーリーです。"
@@ -352,12 +348,6 @@
     "chatAlt": "tg.jpg が Telegram で mic drop GIF を返信する画面",
     "rust": "Rust で構築",
     "rustText": "Rust で書き直し、Teloxide で Telegram に接続、Reqwest で検索結果を取得。起動時に各ソースをヘルスチェックし、落ちているものは無効化します。Docker と Fly.io のデプロイ設定も付属します。"
-  },
-  "linksPage": {
-    "backgroundAlt": "稲荷神社の背景写真",
-    "profileAlt": "涼風千秋",
-    "name": "涼風千秋",
-    "website": "公式サイト"
   },
   "tokyonoPage": {
     "eyebrow": "Plurk UI リデザイン",

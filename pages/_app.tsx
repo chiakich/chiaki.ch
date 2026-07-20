@@ -3,6 +3,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import PageMeta from 'components/PageMeta'
+import TopBar from 'components/TopBar'
 import { LocaleProvider, type Locale, locales } from 'i18n'
 import '../styled-system/styles.css'
 
@@ -47,6 +48,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <LocaleProvider locale={locale}>
+        <TopBar />
         <Component {...pageProps} />
         <PageMeta />
       </LocaleProvider>

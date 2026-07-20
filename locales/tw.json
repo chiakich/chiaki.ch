@@ -34,10 +34,6 @@
       "title": "關於千秋 - 千秋稻荷社",
       "description": "您好！我是涼風千秋。畫畫、做設計師、寫程式的人，永遠都在挖坑與填坑的路上。參與開源字體與同人文化。"
     },
-    "links": {
-      "title": "連結 - 千秋稻荷社",
-      "description": "社群與網站連結：涼風千秋與千秋稻荷社的官方網站、Plurk、Instagram 與其他平台。"
-    },
     "story": {
       "title": "故事 - 千秋稻荷社",
       "description": "探索千秋稻荷社、常世與人類記憶交會的故事。以戰後世界為舞台的原創作品。"
@@ -415,12 +411,6 @@
         }
       }
     }
-  },
-  "linksPage": {
-    "backgroundAlt": "稻荷神社背景照片",
-    "profileAlt": "涼風千秋",
-    "name": "涼風千秋",
-    "website": "官方網站"
   },
   "characterPage": {
     "moreArt": "更多作品",

@@ -3,7 +3,6 @@ import { useCallback, useState } from 'react'
 import { Box } from 'styled-system/jsx'
 import DepthScrollSection from 'components/index/DepthScrollSection'
 import ProjectSection from 'components/index/ProjectSection'
-import TopBar from 'components/TopBar'
 import StoryAtmosphere from 'components/story/StoryAtmosphere'
 import StoryProgress from 'components/story/StoryProgress'
 import StoryBootLoader from 'components/story/StoryBootLoader'
@@ -25,7 +24,6 @@ const Story: NextPage = () => {
       overflow="clip"
       fontFamily="default"
     >
-      <TopBar />
       <StoryBootLoader onComplete={handleBootDone} />
       <StoryAtmosphere />
       <StoryProgress />

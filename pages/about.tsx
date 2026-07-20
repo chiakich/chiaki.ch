@@ -10,7 +10,6 @@ import {
 import Image from 'next/image'
 import NextLink from 'next/link'
 import { useRef } from 'react'
-import TopBar from 'components/TopBar'
 import Barcode from 'components/about/Barcode'
 import CharacterPanel from 'components/about/CharacterPanel'
 import InterestCard from 'components/about/InterestCard'
@@ -77,8 +76,6 @@ const About: NextPage = () => {
         zIndex={0}
         aria-hidden
       />
-
-      <TopBar />
 
       {/* Decorative diagonal bars, parallax on scroll */}
       <MotionBox

@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion'
 import { Box, Container, Stack, styled } from 'styled-system/jsx'
-import TopBar from 'components/TopBar'
 import FontCard, { FontCardData } from './FontCard'
 import { AkitraSpecimen, HuninnSpecimen, NixieSpecimen } from './FontSpecimens'
 import { useI18n } from 'i18n'
@@ -19,7 +18,6 @@ const FontsIndexPage = () => {
   ]
 
   return <Box backgroundColor="black" color="white" minHeight="100vh">
-    <TopBar />
     <Box pt="96px">
       <Container maxW="1080px" py={12} px={{ base: '24px', md: '40px' }}>
         <MotionBox initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7 }} mb={14}>

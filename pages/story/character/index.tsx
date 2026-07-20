@@ -2,7 +2,6 @@ import type { NextPage } from 'next'
 import { Box, Center } from 'styled-system/jsx'
 import { Button } from 'components/ui/controls'
 import NextLink from 'next/link'
-import TopBar from 'components/TopBar'
 import CharacterIntroduction from 'components/character/CharacterIntroduction'
 import CharacterConceptArt from 'components/character/CharacterConceptArt'
 import Live2DModel from 'components/character/Live2DModel'
@@ -19,7 +18,6 @@ const CharacterOverviewPage: NextPage = () => {
       minHeight="100vh"
       cursor="url('https://images.plurk.com/i4BLwuGEg7v4dgyVOufB7.gif'), default"
     >
-      <TopBar />
       <Box pt="88px" pb="40px">
         <IntroBackground>
           <CharacterIntroduction />

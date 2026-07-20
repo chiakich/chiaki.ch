@@ -1,5 +1,4 @@
 import { Box, Container, Grid, HStack, Stack, styled } from 'styled-system/jsx'
-import TopBar from 'components/TopBar'
 import MotionSection from 'components/portfolio/MotionSection'
 import ProjectLink from 'components/portfolio/ProjectLink'
 import SectionHeading from 'components/portfolio/SectionHeading'
@@ -15,7 +14,6 @@ const TokyonoPage = () => {
   const features = ['LAYOUT', 'GLASS', 'RWD', 'NIXIE'].map((name, index) => [name, t(`tokyonoPage.features.${index}.title`), t(`tokyonoPage.features.${index}.description`)])
   return (
   <Box backgroundColor="#081720" color="white" minHeight="100vh">
-    <TopBar />
     <TokyonoHero />
     <Container
       maxW="1080px"

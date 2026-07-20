@@ -1,5 +1,4 @@
 import { Box, Container, Grid, HStack, Stack, styled } from 'styled-system/jsx'
-import TopBar from 'components/TopBar'
 import MotionSection from 'components/portfolio/MotionSection'
 import ProjectLink from 'components/portfolio/ProjectLink'
 import SectionHeading from 'components/portfolio/SectionHeading'
@@ -17,7 +16,7 @@ const KumikoPage = () => {
   const { t } = useI18n()
   const features = featureLabels.map((label, index) => [label, t(`kumikoPage.features.${index}.0`), t(`kumikoPage.features.${index}.1`)])
   return <Box backgroundColor="#101114" color="white" minHeight="100vh">
-    <TopBar /><KumikoHero />
+    <KumikoHero />
     <Container maxW="1080px" px={{ base: '24px', md: '40px' }} py={{ base: 16, md: 20 }}><Stack gap={20}>
       <MotionSection><SectionHeading en="WHY KUMIKO" accent="#ffea2f">{t('kumikoPage.idea')}</SectionHeading><Text maxW="760px" fontSize={{ base: 'md', md: 'lg' }} lineHeight="2" opacity={.78}>{t('kumikoPage.ideaText')}</Text></MotionSection>
       <MotionSection><SectionHeading en="WORKFLOW" accent="#ffea2f">{t('kumikoPage.workflow')}</SectionHeading><Box overflowX="auto"><Box minW="680px"><KumikoWorkflow /></Box></Box></MotionSection>

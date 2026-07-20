@@ -3,7 +3,6 @@ import type { ComponentType } from 'react'
 import type { Locale } from 'i18n'
 import Home from 'pages/index'
 import About from 'pages/about'
-import Links from 'pages/links'
 import Story from 'pages/story'
 import Character from 'pages/story/character'
 import CharacterArt from 'pages/story/character/art'
@@ -21,7 +20,6 @@ import Nixie from 'pages/fonts/nixie'
 const routes: Record<string, ComponentType> = {
   '': Home,
   about: About,
-  links: Links,
   story: Story,
   'story/character': Character,
   'story/character/art': CharacterArt,

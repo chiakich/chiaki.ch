@@ -13,7 +13,6 @@ type PageMeta = {
 const pageMetadata: Record<string, PageMeta> = {
   '/': { key: 'home', image: '/og/home.jpeg' },
   '/about': { key: 'about', image: '/og/about.jpeg' },
-  '/links': { key: 'links', image: '/og/links.jpeg' },
   '/story': { key: 'story', image: '/og/story.jpeg' },
   '/story/character': { key: 'character', image: '/og/story-character.jpeg' },
   '/story/character/art': { key: 'art', image: '/og/story-character-art.jpeg' },

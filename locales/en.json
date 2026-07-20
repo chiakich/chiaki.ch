@@ -34,10 +34,6 @@
       "title": "About Chiaki - Chiaki Inari Shrine",
       "description": "Hello, I’m Chiaki Suzukaze: an illustrator, designer, and programmer. I also work across open-source type, independent creative work, and fan culture."
     },
-    "links": {
-      "title": "Links - Chiaki Inari Shrine",
-      "description": "Social and website links for Chiaki Suzukaze and Chiaki Inari Shrine, including the official site, Plurk, and Instagram."
-    },
     "story": {
       "title": "Story - Chiaki Inari Shrine",
       "description": "A story where Chiaki Inari Shrine, Tokoyo, and human memory intersect—an original work set in a postwar world."
@@ -352,12 +348,6 @@
     "chatAlt": "tg.jpg replying with a mic drop GIF in Telegram",
     "rust": "Built with Rust",
     "rustText": "Rewritten in Rust, with Teloxide for Telegram and Reqwest for search results. Each source is health-checked on startup; failed sources are disabled and the rest are tried in priority order. Includes Docker and Fly.io deployment configuration."
-  },
-  "linksPage": {
-    "backgroundAlt": "Inari shrine background photograph",
-    "profileAlt": "Chiaki Suzukaze",
-    "name": "Chiaki Suzukaze",
-    "website": "Official website"
   },
   "tokyonoPage": {
     "eyebrow": "Plurk UI Redesign",

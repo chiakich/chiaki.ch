@@ -6,6 +6,12 @@ export default defineConfig({
   exclude: [],
   outdir: 'styled-system',
   jsxFramework: 'react',
+  conditions: {
+    extend: {
+      // xingothic-tc 缺日文字符，非中文頁面要把 Source Han Sans TC 排到它前面
+      jaEn: 'html:lang(ja) &, html:lang(en) &',
+    },
+  },
   theme: {
     extend: {
       breakpoints: {
@@ -28,21 +34,45 @@ export default defineConfig({
           },
         },
         fonts: {
-          body: { value: '"xingothic-tc", "Noto Sans TC", sans-serif' },
           default: {
             value:
               "'M 翔鶴黑體 TC', 'PingFang TC', 'LiHei Pro', 'Heiti TC', 'Source Han Sans TC', 'Noto Sans TC','Hiragino Sans', 'Century Gothic', 'Microsoft Jhenghei', '微軟正黑體', sans-serif",
           },
-          akitra: { value: 'akitra, "xingothic-tc", sans-serif' },
           nixie: { value: 'nixie, monospace' },
-          huninn: { value: 'huninn, "xingothic-tc", sans-serif' },
-          cubic: { value: 'cubic, "xingothic-tc", monospace' },
         },
         colors: {
           accent: { value: '#df8a42' },
           accentSoft: { value: '#f5c8a1' },
           aboutAccent: { value: '#ff7829' },
           aboutAccentSoft: { value: '#f5c8a1' },
+        },
+      },
+      semanticTokens: {
+        fonts: {
+          body: {
+            value: {
+              base: '"xingothic-tc", "Noto Sans TC", sans-serif',
+              _jaEn: '"Source Han Sans TC", "xingothic-tc", "Noto Sans TC", sans-serif',
+            },
+          },
+          akitra: {
+            value: {
+              base: 'akitra, "xingothic-tc", sans-serif',
+              _jaEn: 'akitra, "Source Han Sans TC", "xingothic-tc", sans-serif',
+            },
+          },
+          huninn: {
+            value: {
+              base: 'huninn, "xingothic-tc", sans-serif',
+              _jaEn: 'huninn, "Source Han Sans TC", "xingothic-tc", sans-serif',
+            },
+          },
+          cubic: {
+            value: {
+              base: 'cubic, "xingothic-tc", monospace',
+              _jaEn: 'cubic, "Source Han Sans TC", "xingothic-tc", monospace',
+            },
+          },
         },
       },
       keyframes: {

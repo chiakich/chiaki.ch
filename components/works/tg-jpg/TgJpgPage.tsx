@@ -1,5 +1,4 @@
 import { Box, Container, Grid, Stack, styled } from 'styled-system/jsx'
-import TopBar from 'components/TopBar'
 import MotionSection from 'components/portfolio/MotionSection'
 import ProjectLink from 'components/portfolio/ProjectLink'
 import SectionHeading from 'components/portfolio/SectionHeading'
@@ -19,7 +18,6 @@ const TgJpgPage = () => {
   ])
 
   return <Box backgroundColor="#08121c" color="white" minHeight="100vh">
-    <TopBar />
     <TgJpgHero />
     <Container
       maxW="1080px"

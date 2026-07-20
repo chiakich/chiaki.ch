@@ -1,5 +1,4 @@
 import { Box, Container, Flex, Grid, Stack, styled } from 'styled-system/jsx'
-import TopBar from 'components/TopBar'
 import MotionSection from 'components/portfolio/MotionSection'
 import ProjectLink from 'components/portfolio/ProjectLink'
 import SectionHeading from 'components/portfolio/SectionHeading'
@@ -23,7 +22,6 @@ const SplitFlapPage = () => {
 
   return (
   <Box backgroundColor="#0b0b0d" color="white" minHeight="100vh">
-    <TopBar />
     <SplitFlapHero />
     <Container maxW="1080px" px={{ base: '24px', md: '40px' }} py={{ base: 16, md: 20 }}>
       <Stack gap={20}>
