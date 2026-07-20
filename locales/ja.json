@@ -26,71 +26,445 @@
     "logo": "千秋稲荷社ホーム"
   },
   "meta": {
-    "home": { "title": "千秋稲荷社 - Chiaki Inari Shrine", "description": "技術、書体デザイン、サブカルチャーを研究する個人サークルです。" },
-    "about": { "title": "千秋について - 千秋稲荷社", "description": "こんにちは、涼風千秋です。絵を描き、デザインし、コードを書く人です。" },
-    "links": { "title": "リンク - 千秋稲荷社", "description": "SNS とウェブサイトへのリンク。" },
-    "story": { "title": "物語 - 千秋稲荷社", "description": "千秋稲荷社、常世、そして人の記憶が交わる物語。" },
-    "character": { "title": "キャラクター - 千秋稲荷社", "description": "千秋稲荷社第一研究室の室長、そして第▓▓代巫女・涼風千秋。" },
-    "art": { "title": "涼風千秋の作品 - 千秋稲荷社", "description": "涼風千秋のイラストと創作作品集。" },
-    "works": { "title": "作品集 - 千秋稲荷社", "description": "千秋がデザイン・開発したソフトウェア、ツール、インターフェース。" },
-    "chiakey": { "title": "千秋入力法 ChiaKey - 千秋稲荷社", "description": "Yahoo! 奇摩入力法のオープンソースを基にした、macOS 用の繁体字中国語注音入力法。" },
-    "kumiko": { "title": "Kumiko Font Editor - 千秋稲荷社", "description": "ブラウザだけで動く書体編集・補字ツール。" },
-    "tgJpg": { "title": "tg.jpg Telegram Bot - 千秋稲荷社", "description": ".jpg と入力すると最初の検索結果を返す Telegram bot。" },
-    "splitFlap": { "title": "react-split-flap - 千秋稲荷社", "description": "駅のパタパタ表示器を再現する React コンポーネント。" },
-    "tokyonoSora": { "title": "東京乃空 Tokyono Sora - 千秋稲荷社", "description": "Plurk のタイムラインを再設計した CSS テーマ。" },
-    "fonts": { "title": "書体集 - 千秋稲荷社", "description": "千秋がデザイン、または制作に参加した書体。" },
-    "akitra": { "title": "台鉄客貨車書体 - 千秋稲荷社", "description": "台湾鉄路の客貨車表記を基にデザインした書体。" },
-    "nixie": { "title": "Nixie 数字書体 - 千秋稲荷社", "description": "ニキシー管の暖かなオレンジの光を再現する数字書体。" },
-    "huninn": { "title": "jf open 粉圓 - 千秋稲荷社", "description": "justfont による台湾のオープンソース丸ゴシック体。" }
+    "home": {
+      "title": "千秋稲荷社 - Chiaki Inari Shrine",
+      "description": "技術、書体デザイン、サブカルチャーを研究する個人サークルです。涼風千秋がイラストとオープンソースソフトウェアも手がけています。"
+    },
+    "about": {
+      "title": "千秋について - 千秋稲荷社",
+      "description": "こんにちは、涼風千秋です。絵を描き、デザインし、コードを書く人です。オープンソース書体と同人文化にも取り組んでいます。"
+    },
+    "links": {
+      "title": "リンク - 千秋稲荷社",
+      "description": "SNS とウェブサイトへのリンク。涼風千秋と千秋稲荷社の公式サイト、Plurk、Instagram などをまとめています。"
+    },
+    "story": {
+      "title": "物語 - 千秋稲荷社",
+      "description": "千秋稲荷社、常世、そして人の記憶が交わる物語。戦後の世界を舞台にしたオリジナルストーリーです。"
+    },
+    "character": {
+      "title": "キャラクター - 千秋稲荷社",
+      "description": "千秋稲荷社第一研究室の室長、そして第▓▓代巫女・涼風千秋。狐耳のオリジナルキャラクターの設定と作品を紹介します。"
+    },
+    "art": {
+      "title": "涼風千秋の作品 - 千秋稲荷社",
+      "description": "涼風千秋のイラストと創作作品集。オリジナルキャラクターの設定画、衣装別の作品を収録しています。"
+    },
+    "works": {
+      "title": "作品集 - 千秋稲荷社",
+      "description": "千秋がデザイン・開発したソフトウェア、ツール、インターフェース。オープンソースツール、書体エディタ、Reactコンポーネントを掲載。"
+    },
+    "chiakey": {
+      "title": "千秋入力法 ChiaKey - 千秋稲荷社",
+      "description": "Yahoo! 奇摩入力法のオープンソースを基にした、macOS 用の繁体字中国語注音入力法。Apple SiliconとIntel Macに対応し、KeyKeyの変換感を受け継ぎます。"
+    },
+    "kumiko": {
+      "title": "Kumiko Font Editor - 千秋稲荷社",
+      "description": "ブラウザだけで動く書体編集・補字ツール。KumikoはGitHubからUFOを読み込み、IDS部品で補字してpull requestを送れます。"
+    },
+    "tgJpg": {
+      "title": "tg.jpg Telegram Bot - 千秋稲荷社",
+      "description": ".jpg と入力すると最初の検索結果を返す Telegram bot。.pngと.gifにも対応し、送信可能な最初の画像を返信します。"
+    },
+    "splitFlap": {
+      "title": "react-split-flap - 千秋稲荷社",
+      "description": "駅のパタパタ表示器を再現する React コンポーネント。多数の文字盤を滑らかに動かすアニメーションも備えています。"
+    },
+    "tokyonoSora": {
+      "title": "東京乃空 Tokyono Sora - 千秋稲荷社",
+      "description": "Plurk のタイムラインを再設計した CSS テーマ。Tokyono Soraは無料・オープンソースで、ガラス調パネルとレスポンシブな読みやすさを整えます。"
+    },
+    "fonts": {
+      "title": "書体集 - 千秋稲荷社",
+      "description": "千秋がデザイン、または制作に参加した書体。台鉄客貨車書体、AkiNixie数字書体、jf open 粉圓を紹介します。"
+    },
+    "akitra": {
+      "title": "台鉄客貨車書体 - 千秋稲荷社",
+      "description": "台湾鉄路の客貨車表記を基にデザインした書体。車種記号、数字、漢字を含む284のよく使うグリフを収録。"
+    },
+    "nixie": {
+      "title": "Nixie 数字書体 - 千秋稲荷社",
+      "description": "ニキシー管の暖かなオレンジの光を再現する数字書体。AkiNixieは時計、計器、レトロフューチャーなUIに適しています。"
+    },
+    "huninn": {
+      "title": "jf open 粉圓 - 千秋稲荷社",
+      "description": "justfont による台湾のオープンソース丸ゴシック体。台湾の字形と日常の読みやすさに合わせ、涼風千秋はjustfont在籍時に制作へ参加しました。"
+    }
   },
   "home": {
-    "eyebrow": "サークルについて", "title": "千秋稲荷社", "lead": "千秋稲荷社は、技術、書体デザイン、サブカルチャーを研究する個人サークルです。", "body": "オープンソースと同人文化への愛から生まれた私たちは、イラスト、グッズ制作、ソフトウェア開発、オープンソース書体、模型制作に取り組んでいます。"
+    "eyebrow": "サークルについて",
+    "title": "千秋稲荷社",
+    "lead": "イラスト、書体デザイン、オープンソースソフトウェア、サブカルチャー研究をひとつの机で育てる個人創作サークルです。",
+    "body": "涼風千秋が運営する千秋稲荷社では、オリジナルイラストとグッズから、macOS入力法、ウェブツール、オープンソース書体まで、好きな文化を使えて共有できる作品にしています。"
   },
   "worksPage": {
-    "eyebrow": "作品 · デザインとコード", "title": "作品集", "intro": "身近な道具を新しい環境へ届け、複雑な創作を少しやさしくする。あるいは、毎日開く画面を少しだけ美しくする。", "view": "作品を見る", "items": {"chiakey":{"title":"千秋入力法","description":"Yahoo!奇摩入力法／KeyKey のオープンソースコードを基にした macOS 用注音入力法です。慣れ親しんだ変換感と候補ウィンドウを保ち、現代のシステムでメンテナンスしています。","tag":"入力法","tag2":"オープンソースの復活"},"kumiko":{"description":"インストール不要のウェブ書体エディタ。GitHub から UFO を読み込み、IDS 部品でブラウザ上で補字し、pull request を送れます。"},"tokyono":{"title":"東京乃空","description":"無料の Plurk CSS テーマ。ガラス調パネル、ニキシー管カルマ値、レスポンシブレイアウトを CSS 一つで適用できます。"},"tgJpg":{"description":"Telegram で画像ファイル名を打つと、ボットが複数の検索ソースを優先順に調べ、送信可能な最初の画像を返します。"},"splitFlap":{"description":"駅のパタパタ表示器を再現する React コンポーネント。共有アニメーション時計と Web Animations API により、数百の文字盤を同時に滑らかに動かします。"}}
+    "eyebrow": "作品 · デザインとコード",
+    "title": "作品集",
+    "intro": "繁体字中国語入力法、ブラウザ書体ツール、Reactコンポーネント、UIテーマまで。身近な道具を新しい環境へ届け、創作と毎日開く画面を少し使いやすくします。",
+    "view": "作品を見る",
+    "items": {
+      "chiakey": {
+        "title": "千秋入力法",
+        "description": "Yahoo!奇摩入力法／KeyKey のオープンソースコードを基にした macOS 用注音入力法です。慣れ親しんだ変換感と候補ウィンドウを保ち、現代のシステムでメンテナンスしています。Apple SiliconとIntel Macに対応。",
+        "tag": "入力法",
+        "tag2": "オープンソースの復活"
+      },
+      "kumiko": {
+        "description": "インストール不要のウェブ書体エディタ。GitHub から UFO を読み込み、IDS 部品でブラウザ上で補字し、pull request を送れます。オープンソースCJK書体への参加を身近にします。"
+      },
+      "tokyono": {
+        "title": "東京乃空",
+        "description": "無料の Plurk CSS テーマ。ガラス調パネル、ニキシー管カルマ値、レスポンシブレイアウトを CSS 一つで適用できます。オープンソースでタイムラインの読みやすさも整えます。"
+      },
+      "tgJpg": {
+        "description": "Telegram で画像ファイル名を打つと、ボットが複数の検索ソースを優先順に調べ、送信可能な最初の画像を返します。.jpg、.png、.gifに対応。"
+      },
+      "splitFlap": {
+        "description": "駅のパタパタ表示器を再現する React コンポーネント。共有アニメーション時計と Web Animations API により、数百の文字盤を同時に滑らかに動かします。空港や駅風の動的な案内板にも使えます。"
+      }
+    }
   },
   "fontsPage": {
-    "title": "書体集", "intro": "台湾鉄道の表記、ニキシー管の数字、台湾向けに調整されたオープンソース丸ゴシック体。それぞれの書体は具体的な文化と利用体験から始まります。", "view": "詳細を見る"
+    "eyebrow": "FONTS  //  TYPEFACES",
+    "title": "書体集",
+    "intro": "台湾鉄道の表記、ニキシー管の数字、台湾向けに調整されたオープンソース丸ゴシック体。それぞれの書体は具体的な文化と利用体験から始まります。",
+    "view": "詳細を見る",
+    "items": {
+      "akitra": {
+        "title": "台鉄客貨車書体",
+        "description": "台湾鉄路の客貨車表記を基に、車番・積載量・車種記号の視覚的記憶を残す書体です。",
+        "tags": [
+          "自作書体",
+          "284 グリフ"
+        ]
+      },
+      "nixie": {
+        "title": "Nixie 数字書体",
+        "description": "ニキシー管ディスプレイの暖かなオレンジの光を再現する数字書体。時計やレトロフューチャーな場面に適しています。",
+        "tags": [
+          "自作書体",
+          "数字専用"
+        ]
+      },
+      "huninn": {
+        "title": "jf open 粉圓",
+        "description": "justfont で制作に参加した、タピオカのように丸く弾力のある台湾のオープンソース丸ゴシック体です。",
+        "tags": [
+          "制作参加"
+        ]
+      }
+    }
   },
   "characterPage": {
-    "moreArt": "もっと見る", "name": "涼風千秋", "greeting": "「はおーっ！涼風千秋です！」", "description": "千秋稲荷社第一研究室の室長、兼第▓▓代巫女。茶髪に獣耳を持つ、神の使いの狐のお嬢様です。\nとても優しく、人との交流が大好き。毎日を楽しく過ごしたいと思っています。\n戦後生まれですが、戦前の人類が残したものを集めるのが大好きです。手作りも、かわいいものも大好きです。", "birthday": "誕生日：2月27日", "signatureAlt": "千秋のサイン", "artAlt": "キャラクターイラスト", "thumbnailAlt": "キャラクターイラストのサムネイル", "viewFullSize": "原寸で見る", "conceptHeading": "設定画集", "conceptDefault": "設定画", "conceptNewOutfit": "新衣装設定画", "conceptBirthday": "誕生日衣装", "r18Toggle": "R18 コンテンツを表示", "r18Enabled": "⚠️ 成人向けコンテンツを表示中", "r18Title": "成人向けコンテンツの確認", "r18Description": "このコンテンツには成人向けの内容が含まれます。18歳未満の方は閲覧できません。", "r18Question": "あなたは18歳以上ですか？", "cancel": "キャンセル", "confirmAge": "18歳以上です", "loading": "読み込み中…", "initializing": "初期化中…", "live2dDescription": "自作の Live2D モデルです。マウスを動かすと目も追いかけます！"
+    "moreArt": "もっと見る",
+    "name": "涼風千秋",
+    "greeting": "「はおーっ！涼風千秋です！」",
+    "description": "千秋稲荷社第一研究室の室長、兼第▓▓代巫女。茶髪に獣耳を持つ、神の使いの狐のお嬢様です。\nとても優しく、人との交流が大好き。毎日を楽しく過ごしたいと思っています。\n戦後生まれですが、戦前の人類が残したものを集めるのが大好きです。手作りも、かわいいものも大好きです。",
+    "birthday": "誕生日：2月27日",
+    "signatureAlt": "千秋のサイン",
+    "artAlt": "キャラクターイラスト",
+    "thumbnailAlt": "キャラクターイラストのサムネイル",
+    "viewFullSize": "原寸で見る",
+    "conceptHeading": "設定画集",
+    "conceptDefault": "設定画",
+    "conceptNewOutfit": "新衣装設定画",
+    "conceptBirthday": "誕生日衣装",
+    "r18Toggle": "R18 コンテンツを表示",
+    "r18Enabled": "⚠️ 成人向けコンテンツを表示中",
+    "r18Title": "成人向けコンテンツの確認",
+    "r18Description": "このコンテンツには成人向けの内容が含まれます。18歳未満の方は閲覧できません。",
+    "r18Question": "あなたは18歳以上ですか？",
+    "cancel": "キャンセル",
+    "confirmAge": "18歳以上です",
+    "loading": "読み込み中…",
+    "initializing": "初期化中…",
+    "live2dDescription": "自作の Live2D モデルです。マウスを動かすと目も追いかけます！"
   },
   "aboutPage": {
-    "header": { "eyebrow": "ABOUT  //  PROFILE_01", "namePart1": "涼風", "namePart2": "千秋", "tagline": "計算で理を究め、筆先で彩りを描く", "introLine1": "こんにちは、涼風千秋です。", "introLine2": "絵を描き、デザインし、コードを書く人です。いつも新しいことを始めては、少しずつ形にしています。", "profileAlt": "涼風千秋" },
-    "characterPanel": { "name": "SUZUKAZE CHIAKI", "alt": "涼風千秋の立ち絵" },
+    "header": {
+      "eyebrow": "ABOUT  //  PROFILE_01",
+      "namePart1": "涼風",
+      "namePart2": "千秋",
+      "tagline": "計算で理を究め、筆先で彩りを描く",
+      "introLine1": "こんにちは、涼風千秋です。",
+      "introLine2": "絵を描き、デザインし、コードを書く人です。いつも新しいことを始めては、少しずつ形にしています。",
+      "profileAlt": "涼風千秋"
+    },
+    "characterPanel": {
+      "name": "SUZUKAZE CHIAKI",
+      "alt": "涼風千秋の立ち絵"
+    },
     "interests": {
-      "design": { "title": "デザイン", "tag": "DESIGN", "description": "人を中心に、機能と美しさを両立するデザインが好きです。justfont の Huninn 書体にも参加し、グラフィックやウェブも手がけてきました。" },
-      "drawing": { "title": "お絵描き", "tag": "DRAWING", "description": "絵を描くこと、ときどき落書きすることが好きです。メイド服、眼鏡、セーラー服、獣耳、バニーガール、競泳水着が大好きです！" },
-      "photo": { "title": "写真", "tag": "PHOTO", "description": "その瞬間にしかないものをカメラに残すのが好きです。最近はフィルムカメラが中心です。" },
-      "model": { "title": "模型", "tag": "MODEL", "description": "小さなスケールに凝縮された力と美に夢中です。家には塗装用のエアブラシがあります！" },
-      "doujin": { "title": "同人活動", "tag": "DOUJIN", "description": "作品の多くがオリジナルなので、参加するのは小規模なイベントが中心です。ほかの創作者と話したり、皆の作品を見るのが好きです。" },
-      "cosplay": { "title": "コスプレ", "tag": "COSPLAY", "description": "合わせが大好きですが暑さには弱く、だいたい冬のイベントでコスプレします。一緒に合わせましょう！" },
-      "travel": { "title": "旅行", "tag": "TRAVEL", "description": "ルートを調べ、新しい場所を探索し、違う文化に触れることが好きです。夜景と現地のおいしいものが大好きです。" },
-      "coding": { "title": "プログラミング", "tag": "CODING", "description": "コードを書き、技術を共有し、そこから協働開発の文化が生まれることが好きです。COSCUP のようなオープンソースイベントでよく見かけます！" },
-      "chill": { "title": "部屋でのんびり", "tag": "CHILL", "description": "日本の銭湯にある畳の休憩スペースが大好きで、自分で設計して内装を発注しました。工期は約4か月です。" }
+      "design": {
+        "title": "デザイン",
+        "tag": "DESIGN",
+        "description": "人を中心に、機能と美しさを両立するデザインが好きです。justfont の Huninn 書体にも参加し、グラフィックやウェブも手がけてきました。"
+      },
+      "drawing": {
+        "title": "お絵描き",
+        "tag": "DRAWING",
+        "description": "絵を描くこと、ときどき落書きすることが好きです。メイド服、眼鏡、セーラー服、獣耳、バニーガール、競泳水着が大好きです！"
+      },
+      "photo": {
+        "title": "写真",
+        "tag": "PHOTO",
+        "description": "その瞬間にしかないものをカメラに残すのが好きです。最近はフィルムカメラが中心です。"
+      },
+      "model": {
+        "title": "模型",
+        "tag": "MODEL",
+        "description": "小さなスケールに凝縮された力と美に夢中です。家には塗装用のエアブラシがあります！"
+      },
+      "doujin": {
+        "title": "同人活動",
+        "tag": "DOUJIN",
+        "description": "作品の多くがオリジナルなので、参加するのは小規模なイベントが中心です。ほかの創作者と話したり、皆の作品を見るのが好きです。"
+      },
+      "cosplay": {
+        "title": "コスプレ",
+        "tag": "COSPLAY",
+        "description": "合わせが大好きですが暑さには弱く、だいたい冬のイベントでコスプレします。一緒に合わせましょう！"
+      },
+      "travel": {
+        "title": "旅行",
+        "tag": "TRAVEL",
+        "description": "ルートを調べ、新しい場所を探索し、違う文化に触れることが好きです。夜景と現地のおいしいものが大好きです。"
+      },
+      "coding": {
+        "title": "プログラミング",
+        "tag": "CODING",
+        "description": "コードを書き、技術を共有し、そこから協働開発の文化が生まれることが好きです。COSCUP のようなオープンソースイベントでよく見かけます！"
+      },
+      "chill": {
+        "title": "部屋でのんびり",
+        "tag": "CHILL",
+        "description": "日本の銭湯にある畳の休憩スペースが大好きで、自分で設計して内装を発注しました。工期は約4か月です。"
+      }
     },
     "sections": {
-      "nowPlaying": { "tag": "NOW PLAYING", "title": "最近楽しんでいること", "item1": "アニメやゲーム。特にサイバーパンクや終末地のようなSF作品が好きです。", "item2": "レトロなもの、特に20世紀前後のデザインが好きで、最近はレコードを集め始めました。" },
-      "interests": { "tag": "INTERESTS", "title": "好きなこと" },
-      "gettingAlong": { "tag": "GETTING ALONG", "title": "交流について", "line1": "やることが多く、返信はとてもゆっくりです。", "line2": "でも「遅い」は「話したくない」という意味ではありません。気軽に話しかけたり、メッセージを送ったりしてください。時間ができたら必ず読み、できる限り返信します。", "line3": "すべての投稿を見られるとは限らず、忙しいと見落としてしまうこともあります。意図的に無視しているわけではないので、どうかご容赦ください。" },
-      "oneRequest": { "tag": "ONE REQUEST", "title": "小さなお願い", "line1": "政治の話はあまりしませんし、何かを強く批判することもあまり好きではありません。", "line2": "絶対的な正解や不正解は少なく、多くのことは置かれた場所が違うだけだと思っています。", "line3": "そんな善意と敬意を持って接すれば、きっと仲良くなれます！" },
-      "contact": { "tag": "CONTACT", "title": "連絡先", "textBefore": "SNS と連絡先は", "linkLabel": "こちら", "textAfter": "にまとめています。" }
+      "nowPlaying": {
+        "tag": "NOW PLAYING",
+        "title": "最近楽しんでいること",
+        "item1": "アニメやゲーム。特にサイバーパンクや終末地のようなSF作品が好きです。",
+        "item2": "レトロなもの、特に20世紀前後のデザインが好きで、最近はレコードを集め始めました。"
+      },
+      "interests": {
+        "tag": "INTERESTS",
+        "title": "好きなこと"
+      },
+      "gettingAlong": {
+        "tag": "GETTING ALONG",
+        "title": "交流について",
+        "line1": "やることが多く、返信はとてもゆっくりです。",
+        "line2": "でも「遅い」は「話したくない」という意味ではありません。気軽に話しかけたり、メッセージを送ったりしてください。時間ができたら必ず読み、できる限り返信します。",
+        "line3": "すべての投稿を見られるとは限らず、忙しいと見落としてしまうこともあります。意図的に無視しているわけではないので、どうかご容赦ください。"
+      },
+      "oneRequest": {
+        "tag": "ONE REQUEST",
+        "title": "小さなお願い",
+        "line1": "政治の話はあまりしませんし、何かを強く批判することもあまり好きではありません。",
+        "line2": "絶対的な正解や不正解は少なく、多くのことは置かれた場所が違うだけだと思っています。",
+        "line3": "そんな善意と敬意を持って接すれば、きっと仲良くなれます！"
+      },
+      "contact": {
+        "tag": "CONTACT",
+        "title": "連絡先",
+        "textBefore": "SNS と連絡先は",
+        "linkLabel": "こちら",
+        "textAfter": "にまとめています。"
+      }
     },
     "footer": "SUZUKAZE CHIAKI // 涼風千秋"
   },
   "nixiePage": {
-    "story": "この書体について", "storyP1": "ニキシー管は冷戦時代の数字表示部品です。ガラス管の中には0から9までの金属陰極が重なり、通電するとネオンガスが数字の周りに暖かな橙色の光を放ちます。", "storyP2": "この書体はニキシー管の字形と雰囲気を再現し、すべての数字が重なった背景陰極として「$」も収録しています。", "glyphs": "グリフ一覧", "glyphsDescription": "数字用グリフは全13種類です。", "download": "ダウンロードとライセンス", "license": "CC BY-SA 4.0 で公開しています。出典を明記すれば、自由に利用・改変できます。", "send": "Dメール送信", "downloadButton": "ダウンロード"
+    "story": "この書体について",
+    "storyP1": "ニキシー管は冷戦時代の数字表示部品です。ガラス管の中には0から9までの金属陰極が重なり、通電するとネオンガスが数字の周りに暖かな橙色の光を放ちます。",
+    "storyP2": "この書体はニキシー管の字形と雰囲気を再現し、すべての数字が重なった背景陰極として「$」も収録しています。",
+    "glyphs": "グリフ一覧",
+    "glyphsDescription": "数字用グリフは全13種類です。",
+    "download": "ダウンロードとライセンス",
+    "license": "CC BY-SA 4.0 で公開しています。出典を明記すれば、自由に利用・改変できます。",
+    "send": "Dメール送信",
+    "downloadButton": "ダウンロード"
   },
   "akitraPage": {
-    "hero": "台湾鉄路客貨車表記文字", "story": "この書体について", "storyP1": "かつての台湾鉄路の客貨車には、車種記号、車番、自重、積載量が塗装されていました。ペンキ職人が一本ずつ描いた文字には、手仕事の時代ならではの力強さがあります。", "storyP2": "この書体はその表記をもとに描き直し、284のよく使われるグリフを収録しました。鉄道沿いから消えつつある視覚的な記憶を残したいと考えています。", "inUse": "表記例", "inUseDescription": "車種記号に注音符号を用いるのは、台湾鉄路ならではの伝統です。", "glyphs": "グリフ一覧", "groups": ["ラテン文字と数字", "注音符号（車種記号）", "漢字（表記用字）", "半角カタカナ", "記号"], "download": "ダウンロードとライセンス", "license": "SIL Open Font License 1.1 で公開しています。個人・商用を問わず自由に利用できます。", "sourceFiles": "ソースファイル"
+    "hero": "台湾鉄路客貨車表記文字",
+    "story": "この書体について",
+    "storyP1": "かつての台湾鉄路の客貨車には、車種記号、車番、自重、積載量が塗装されていました。ペンキ職人が一本ずつ描いた文字には、手仕事の時代ならではの力強さがあります。",
+    "storyP2": "この書体はその表記をもとに描き直し、284のよく使われるグリフを収録しました。鉄道沿いから消えつつある視覚的な記憶を残したいと考えています。",
+    "inUse": "表記例",
+    "inUseDescription": "車種記号に注音符号を用いるのは、台湾鉄路ならではの伝統です。",
+    "glyphs": "グリフ一覧",
+    "groups": [
+      "ラテン文字と数字",
+      "注音符号（車種記号）",
+      "漢字（表記用字）",
+      "半角カタカナ",
+      "記号"
+    ],
+    "download": "ダウンロードとライセンス",
+    "license": "SIL Open Font License 1.1 で公開しています。個人・商用を問わず自由に利用できます。",
+    "sourceFiles": "ソースファイル"
   },
   "huninnPage": {
-    "hero": "タピオカのように丸くてかわいい、無料の台湾オープンソース丸ゴシック体。", "samples": ["視野はどこまでも広く、窓の外には青空", "真珠のように", "丸くて弾力がある", "タイピングの友だち"], "story": "この書体について", "storyP1": "「jf open 粉圓」は justfont が始めたオープンソース書体プロジェクトです。Kosugi Maru と Varela Round を基に、台湾の字形基準と利用習慣に合わせて調整されています。", "storyP2": "justfont 在籍中に制作に参加できました。書体デザインの成果をコミュニティ全体に開くことは、とても貴重な経験でした。", "features": "特徴", "tester": "試し打ち", "testerDescription": "試したい文字を入力すると、完全版の書体がここで自動的に読み込まれます。", "more": "ダウンロードと詳細", "license": "粉圓体は justfont がメンテナンスし、SIL Open Font License 1.1 で公開しています。", "official": "公式紹介ページ", "placeholder": "試したい文字を入力……", "loading": "完全版フォントを読み込み中……", "loadError": "完全版フォントの読み込みに失敗しました。利用可能な文字のみ表示します。", "defaultText": "真珠のように、まるくて少しもちもち。"
+    "hero": "タピオカのように丸くてかわいい、無料の台湾オープンソース丸ゴシック体。",
+    "samples": [
+      "視野はどこまでも広く、窓の外には青空",
+      "真珠のように",
+      "丸くて弾力がある",
+      "タイピングの友だち"
+    ],
+    "story": "この書体について",
+    "storyP1": "「jf open 粉圓」は justfont が始めたオープンソース書体プロジェクトです。Kosugi Maru と Varela Round を基に、台湾の字形基準と利用習慣に合わせて調整されています。",
+    "storyP2": "justfont 在籍中に制作に参加できました。書体デザインの成果をコミュニティ全体に開くことは、とても貴重な経験でした。",
+    "features": "特徴",
+    "tester": "試し打ち",
+    "testerDescription": "試したい文字を入力すると、完全版の書体がここで自動的に読み込まれます。",
+    "more": "ダウンロードと詳細",
+    "license": "粉圓体は justfont がメンテナンスし、SIL Open Font License 1.1 で公開しています。",
+    "official": "公式紹介ページ",
+    "placeholder": "試したい文字を入力……",
+    "loading": "完全版フォントを読み込み中……",
+    "loadError": "完全版フォントの読み込みに失敗しました。利用可能な文字のみ表示します。",
+    "defaultText": "真珠のように、まるくて少しもちもち。"
   },
-  "tgJpgPage": { "hero": "チャットで .jpg と入力するだけ。ボットがミーム画像を返します。.jpg、.png、.gif に対応。", "join": "Telegram に参加", "source": "ソースを見る", "idea": "検索をファイル名ひとつに", "ideaText": "チャットを離れてブラウザで画像を探す必要はありません。tg.jpg は Google、DuckDuckGo、Bing の無料ソースと、任意の Serper・SerpAPI に対応。Serper API key を設定すると最優先になります。", "pipeline": "素早い返信", "steps": [["ファイル名を認識", ".jpg、.png、.gif で終わるメッセージを監視します。"], ["検索ソースを確認", "起動時にヘルスチェックを実行し、利用可能なエンジンだけを有効にします。"], ["先に返信", "複数ソースを横断検索し、Telegram で送信できる最初の結果がすぐに勝ちます。"]], "chatAlt": "tg.jpg が Telegram で mic drop GIF を返信する画面", "rust": "Rust で構築", "rustText": "Rust で書き直し、Teloxide で Telegram に接続、Reqwest で検索結果を取得。起動時に各ソースをヘルスチェックし、落ちているものは無効化します。Docker と Fly.io のデプロイ設定も付属します。" },
-  "linksPage": {"backgroundAlt":"稲荷神社の背景写真","profileAlt":"涼風千秋","name":"涼風千秋","website":"公式サイト"},
-  "tokyonoPage": {"eyebrow":"Plurk UI リデザイン","title":"東京乃空","hero":"無料で自由に使える Plurk 用 CSS テーマ。タイムライン、ガラス調パネル、レスポンシブレイアウトを組み替え、CSS を貼るだけで使えます。","getCss":"テーマ CSS を入手","design":"もっと心地よいタイムライン","designText":"東京乃空は Plurk の中心的な操作を変えず、情報階層、配色、余白、背景とインターフェースの関係を描き直します。純粋な CSS テーマで、「カスタムテーマスタイル」に貼り付ければ有効になります。","details":"タイムラインに隠れたデザイン","features":[{"title":"タイムラインを組み直す","description":"行間、表示名、アバターの位置、配色、投稿欄の幅を調整し、タイムラインを読みやすくします。"},{"title":"背景と UI をなじませる","description":"リアルタイムにぼかした半透明パネルで、アップロードした背景を本当にインターフェースの一部にします。"},{"title":"どの向きでも読みやすく","description":"縦長の画面やブラウザの拡大縮小にも対応し、レイアウトが崩れません。"},{"title":"ニキシー管のカルマ値","description":"カルマ値を自作のニキシー数字書体で表示し、custom.css で世界線変動率スタイルに切り替えられます。"}],"showcase":"画面例","profileAlt":"ガラス調プロフィールパネルと世界線変動率スタイルのカルマ値","karmaAlt":"ニキシー管書体で表示したカルマ値のクローズアップ","profileCaption":"プロフィールパネルとニキシー管のカルマ値。世界線変動率スタイルには custom.css を一段追加するだけです。","rwdAlt":"縦長画面のレスポンシブレイアウト","rwdCaption":"縦長画面でのレイアウト。投稿欄の幅と要素の位置がウィンドウに合わせて調整されます。","install":"CSS を貼るだけで使える","installText":"テーマ CSS を Plurk の「カスタムテーマ → カスタムテーマスタイル」に貼り付けます。リアルタイムぼかしには GPU を使います。ハードウェアアクセラレーションがない端末では、静的ぼかし画像生成ツールで背景をあらかじめ処理できます。ダークモードとトップバー用の追加 CSS も付属します。","mainCss":"メイン CSS","blurGenerator":"静的ぼかし生成ツール","installGuide":"導入ガイド","light":"ライト","dark":"ダーク","lightAlt":"東京乃空のライト UI","darkAlt":"東京乃空のダーク UI"},
-  "kumikoPage": {"hero":"ブラウザを開くだけで、GitHub 上のオープンソース中国語書体にグリフを追加できます。","try":"オンラインで試す","imageAlt":"Kumiko のグリフ・コンポーネント編集画面","idea":"グリフ追加のハードルを URL 一つまで下げる","ideaText":"オープンソース CJK 書体には数千字が欠けることがありますが、補字したい人が完全な書体ツールチェーンを組みたいとは限りません。Kumiko は GitHub から UFO プロジェクトを読み込み、ブラウザで編集し、変更を pull request として返します。インストールも専用バックエンドも不要です。","workflow":"字庫から Pull Request まで","ids":"部品から不足グリフを組み立てる","idsText":"IDS（Ideographic Description Sequence）分解エンジンを内蔵しています。たとえば「編」を補う場合、⿰糹扁 を調べ、既存の「糹」と「扁」を組み合わせます。グリフ追加は一文字を最初から描く作業から部品の微調整へ変わります。","architecture":"ユーザー体験から考えたアーキテクチャ","features":[["インストール不要","完全にウェブ上でローカル動作。ブラウザだけで始められます。"],["多様な形式に対応",".ufo、.designspace、.glyphs、.glyphspackage、バイナリフォントをサポートし、GitHub の UFO も直接読み込めます。"],["ブラウザ内コンパイル","Pyodide で fontTools を実行するため、ローカル Python 環境は不要です。"],["オフライン下書き","編集内容はブラウザの IndexedDB に保存され、オフラインやタブを閉じても失われません。"]],"open":"今すぐ一文字を開く","tryKumiko":"Kumiko を試す","source":"ソースを見る"},
-  "fontsPage": {"eyebrow":"FONTS  //  TYPEFACES","title":"書体集","intro":"台湾鉄道の表記、ニキシー管の数字、台湾向けに調整されたオープンソース丸ゴシック体。それぞれの書体は具体的な文化と利用体験から始まります。","view":"詳細を見る","items":{"akitra":{"title":"台鉄客貨車書体","description":"台湾鉄路の客貨車表記を基に、車番・積載量・車種記号の視覚的記憶を残す書体です。","tags":["自作書体","284 グリフ"]},"nixie":{"title":"Nixie 数字書体","description":"ニキシー管ディスプレイの暖かなオレンジの光を再現する数字書体。時計やレトロフューチャーな場面に適しています。","tags":["自作書体","数字専用"]},"huninn":{"title":"jf open 粉圓","description":"justfont で制作に参加した、タピオカのように丸く弾力のある台湾のオープンソース丸ゴシック体です。","tags":["制作参加"]}}},
-  "splitFlapPage":{"eyebrow":"React 用パタパタ表示器","hero":"駅や空港のパタパタ表示器を再現する React コンポーネント。純粋な CSS transform によるめくりアニメーションで、数百のパネルを同時に滑らかに動かせます。","source":"ソースを見る","copyInstallCommand":"インストールコマンドをコピー","idea":"パタパタをウェブに残す","ideaText":"京急川崎駅のパタパタ式発車標は 2022 年に引退しましたが、機械式の音とリズムは今も魅力的です。react-split-flap は CSS transform でその質感を再現します。SplitFlap は文字列を一文字ずつ、LongFlap は ReactNode 全体を一枚のパネルとしてめくれます。","playground":"入力してみる","playgroundDescription":"文字を入力して、パネルが目標の文字へ一枚ずつめくれる様子を見てみましょう。","inputPlaceholder":"文字を入力…","inputLabel":"フラップに表示する内容","clock":"フラップ時計","clockText":"毎秒一度めくれるリアルタイム時計。タブがバックグラウンドになると粗いタイマーへ戻り、前面に復帰しても正しい時刻を表示します。","engineeringTitle":"大量のパネルのために","engineering":[{"title":"共有アニメーション時計","description":"すべてのパネルが同じ requestAnimationFrame ループを購読し、同じフレームで期限を迎える動きを一度の React commit にまとめます。数百枚が同時にめくれても render は一度だけです。"},{"title":"DOM を再構築しない","description":"パネルは mounted のまま key を変えず、二組の CSS animation name を交互に使って先頭フレームから開始します。Web Animations API を一枚ずつ読み書きする必要はありません。"},{"title":"合成レイヤーを最小化","description":"GPU レイヤーへ昇格するのは動いている上下の二枚だけです。約400枚の場面では合成レイヤーを約70%、GPU 時間を約27%削減します。"}],"getStarted":"今すぐ試す","fullDemo":"完全なデモ","currentTime":"現在時刻","boardDestinations":"羽田空港　品川　新橋　浅草　方面","boardCaption":"2022 年に引退した京急川崎駅「パタパタ」発車標へのオマージュ"}
+  "tgJpgPage": {
+    "hero": "チャットで .jpg と入力するだけ。ボットがミーム画像を返します。.jpg、.png、.gif に対応。",
+    "join": "Telegram に参加",
+    "source": "ソースを見る",
+    "idea": "検索をファイル名ひとつに",
+    "ideaText": "チャットを離れてブラウザで画像を探す必要はありません。tg.jpg は Google、DuckDuckGo、Bing の無料ソースと、任意の Serper・SerpAPI に対応。Serper API key を設定すると最優先になります。",
+    "pipeline": "素早い返信",
+    "steps": [
+      [
+        "ファイル名を認識",
+        ".jpg、.png、.gif で終わるメッセージを監視します。"
+      ],
+      [
+        "検索ソースを確認",
+        "起動時にヘルスチェックを実行し、利用可能なエンジンだけを有効にします。"
+      ],
+      [
+        "先に返信",
+        "複数ソースを横断検索し、Telegram で送信できる最初の結果がすぐに勝ちます。"
+      ]
+    ],
+    "chatAlt": "tg.jpg が Telegram で mic drop GIF を返信する画面",
+    "rust": "Rust で構築",
+    "rustText": "Rust で書き直し、Teloxide で Telegram に接続、Reqwest で検索結果を取得。起動時に各ソースをヘルスチェックし、落ちているものは無効化します。Docker と Fly.io のデプロイ設定も付属します。"
+  },
+  "linksPage": {
+    "backgroundAlt": "稲荷神社の背景写真",
+    "profileAlt": "涼風千秋",
+    "name": "涼風千秋",
+    "website": "公式サイト"
+  },
+  "tokyonoPage": {
+    "eyebrow": "Plurk UI リデザイン",
+    "title": "東京乃空",
+    "hero": "無料で自由に使える Plurk 用 CSS テーマ。タイムライン、ガラス調パネル、レスポンシブレイアウトを組み替え、CSS を貼るだけで使えます。",
+    "getCss": "テーマ CSS を入手",
+    "design": "もっと心地よいタイムライン",
+    "designText": "東京乃空は Plurk の中心的な操作を変えず、情報階層、配色、余白、背景とインターフェースの関係を描き直します。純粋な CSS テーマで、「カスタムテーマスタイル」に貼り付ければ有効になります。",
+    "details": "タイムラインに隠れたデザイン",
+    "features": [
+      {
+        "title": "タイムラインを組み直す",
+        "description": "行間、表示名、アバターの位置、配色、投稿欄の幅を調整し、タイムラインを読みやすくします。"
+      },
+      {
+        "title": "背景と UI をなじませる",
+        "description": "リアルタイムにぼかした半透明パネルで、アップロードした背景を本当にインターフェースの一部にします。"
+      },
+      {
+        "title": "どの向きでも読みやすく",
+        "description": "縦長の画面やブラウザの拡大縮小にも対応し、レイアウトが崩れません。"
+      },
+      {
+        "title": "ニキシー管のカルマ値",
+        "description": "カルマ値を自作のニキシー数字書体で表示し、custom.css で世界線変動率スタイルに切り替えられます。"
+      }
+    ],
+    "showcase": "画面例",
+    "profileAlt": "ガラス調プロフィールパネルと世界線変動率スタイルのカルマ値",
+    "karmaAlt": "ニキシー管書体で表示したカルマ値のクローズアップ",
+    "profileCaption": "プロフィールパネルとニキシー管のカルマ値。世界線変動率スタイルには custom.css を一段追加するだけです。",
+    "rwdAlt": "縦長画面のレスポンシブレイアウト",
+    "rwdCaption": "縦長画面でのレイアウト。投稿欄の幅と要素の位置がウィンドウに合わせて調整されます。",
+    "install": "CSS を貼るだけで使える",
+    "installText": "テーマ CSS を Plurk の「カスタムテーマ → カスタムテーマスタイル」に貼り付けます。リアルタイムぼかしには GPU を使います。ハードウェアアクセラレーションがない端末では、静的ぼかし画像生成ツールで背景をあらかじめ処理できます。ダークモードとトップバー用の追加 CSS も付属します。",
+    "mainCss": "メイン CSS",
+    "blurGenerator": "静的ぼかし生成ツール",
+    "installGuide": "導入ガイド",
+    "light": "ライト",
+    "dark": "ダーク",
+    "lightAlt": "東京乃空のライト UI",
+    "darkAlt": "東京乃空のダーク UI"
+  },
+  "kumikoPage": {
+    "hero": "ブラウザを開くだけで、GitHub 上のオープンソース中国語書体にグリフを追加できます。",
+    "try": "オンラインで試す",
+    "imageAlt": "Kumiko のグリフ・コンポーネント編集画面",
+    "idea": "グリフ追加のハードルを URL 一つまで下げる",
+    "ideaText": "オープンソース CJK 書体には数千字が欠けることがありますが、補字したい人が完全な書体ツールチェーンを組みたいとは限りません。Kumiko は GitHub から UFO プロジェクトを読み込み、ブラウザで編集し、変更を pull request として返します。インストールも専用バックエンドも不要です。",
+    "workflow": "字庫から Pull Request まで",
+    "ids": "部品から不足グリフを組み立てる",
+    "idsText": "IDS（Ideographic Description Sequence）分解エンジンを内蔵しています。たとえば「編」を補う場合、⿰糹扁 を調べ、既存の「糹」と「扁」を組み合わせます。グリフ追加は一文字を最初から描く作業から部品の微調整へ変わります。",
+    "architecture": "ユーザー体験から考えたアーキテクチャ",
+    "features": [
+      [
+        "インストール不要",
+        "完全にウェブ上でローカル動作。ブラウザだけで始められます。"
+      ],
+      [
+        "多様な形式に対応",
+        ".ufo、.designspace、.glyphs、.glyphspackage、バイナリフォントをサポートし、GitHub の UFO も直接読み込めます。"
+      ],
+      [
+        "ブラウザ内コンパイル",
+        "Pyodide で fontTools を実行するため、ローカル Python 環境は不要です。"
+      ],
+      [
+        "オフライン下書き",
+        "編集内容はブラウザの IndexedDB に保存され、オフラインやタブを閉じても失われません。"
+      ]
+    ],
+    "open": "今すぐ一文字を開く",
+    "tryKumiko": "Kumiko を試す",
+    "source": "ソースを見る"
+  },
+  "splitFlapPage": {
+    "eyebrow": "React 用パタパタ表示器",
+    "hero": "駅や空港のパタパタ表示器を再現する React コンポーネント。純粋な CSS transform によるめくりアニメーションで、数百のパネルを同時に滑らかに動かせます。",
+    "source": "ソースを見る",
+    "copyInstallCommand": "インストールコマンドをコピー",
+    "idea": "パタパタをウェブに残す",
+    "ideaText": "京急川崎駅のパタパタ式発車標は 2022 年に引退しましたが、機械式の音とリズムは今も魅力的です。react-split-flap は CSS transform でその質感を再現します。SplitFlap は文字列を一文字ずつ、LongFlap は ReactNode 全体を一枚のパネルとしてめくれます。",
+    "playground": "入力してみる",
+    "playgroundDescription": "文字を入力して、パネルが目標の文字へ一枚ずつめくれる様子を見てみましょう。",
+    "inputPlaceholder": "文字を入力…",
+    "inputLabel": "フラップに表示する内容",
+    "clock": "フラップ時計",
+    "clockText": "毎秒一度めくれるリアルタイム時計。タブがバックグラウンドになると粗いタイマーへ戻り、前面に復帰しても正しい時刻を表示します。",
+    "engineeringTitle": "大量のパネルのために",
+    "engineering": [
+      {
+        "title": "共有アニメーション時計",
+        "description": "すべてのパネルが同じ requestAnimationFrame ループを購読し、同じフレームで期限を迎える動きを一度の React commit にまとめます。数百枚が同時にめくれても render は一度だけです。"
+      },
+      {
+        "title": "DOM を再構築しない",
+        "description": "パネルは mounted のまま key を変えず、二組の CSS animation name を交互に使って先頭フレームから開始します。Web Animations API を一枚ずつ読み書きする必要はありません。"
+      },
+      {
+        "title": "合成レイヤーを最小化",
+        "description": "GPU レイヤーへ昇格するのは動いている上下の二枚だけです。約400枚の場面では合成レイヤーを約70%、GPU 時間を約27%削減します。"
+      }
+    ],
+    "getStarted": "今すぐ試す",
+    "fullDemo": "完全なデモ",
+    "currentTime": "現在時刻",
+    "boardDestinations": "羽田空港　品川　新橋　浅草　方面",
+    "boardCaption": "2022 年に引退した京急川崎駅「パタパタ」発車標へのオマージュ"
+  }
 }

@@ -26,71 +26,445 @@
     "logo": "Chiaki Inari Shrine home"
   },
   "meta": {
-    "home": { "title": "Chiaki Inari Shrine", "description": "An independent circle exploring technology, type design, and subculture." },
-    "about": { "title": "About Chiaki - Chiaki Inari Shrine", "description": "Hello, I’m Chiaki Suzukaze: an illustrator, designer, and programmer." },
-    "links": { "title": "Links - Chiaki Inari Shrine", "description": "Social and website links." },
-    "story": { "title": "Story - Chiaki Inari Shrine", "description": "A story where Chiaki Inari Shrine, Tokoyo, and human memory intersect." },
-    "character": { "title": "Characters - Chiaki Inari Shrine", "description": "Head of Chiaki Inari Shrine’s First Laboratory and the ▓▓th shrine maiden: Chiaki Suzukaze." },
-    "art": { "title": "Chiaki Suzukaze’s Art - Chiaki Inari Shrine", "description": "A gallery of Chiaki Suzukaze’s character illustrations and creative work." },
-    "works": { "title": "Works - Chiaki Inari Shrine", "description": "Software, tools, and interfaces designed and developed by Chiaki." },
-    "chiakey": { "title": "ChiaKey - Chiaki Inari Shrine", "description": "A modern Traditional Chinese Zhuyin input method for macOS, based on Yahoo! KeyKey’s open-source code." },
-    "kumiko": { "title": "Kumiko Font Editor - Chiaki Inari Shrine", "description": "A font editor and glyph-completion tool that runs entirely in the browser." },
-    "tgJpg": { "title": "tg.jpg Telegram Bot - Chiaki Inari Shrine", "description": "A Telegram bot that replies with the first usable image-search result for .jpg." },
-    "splitFlap": { "title": "react-split-flap - Chiaki Inari Shrine", "description": "A React component that recreates station split-flap displays." },
-    "tokyonoSora": { "title": "Tokyono Sora - Chiaki Inari Shrine", "description": "A CSS theme that redesigns the Plurk timeline." },
-    "fonts": { "title": "Fonts - Chiaki Inari Shrine", "description": "Typefaces designed or co-created by Chiaki." },
-    "akitra": { "title": "Taiwan Railways Typeface - Chiaki Inari Shrine", "description": "A typeface based on lettering found on Taiwan Railways rolling stock." },
-    "nixie": { "title": "AkiNixie - Chiaki Inari Shrine", "description": "A numeral typeface that recreates the warm orange glow of Nixie tubes." },
-    "huninn": { "title": "jf open Huninn - Chiaki Inari Shrine", "description": "A Taiwanese open-source rounded typeface by justfont." }
+    "home": {
+      "title": "Chiaki Inari Shrine",
+      "description": "An independent circle exploring technology, type design, and subculture. Run by Chiaki Suzukaze, it also creates illustration and open-source software."
+    },
+    "about": {
+      "title": "About Chiaki - Chiaki Inari Shrine",
+      "description": "Hello, I’m Chiaki Suzukaze: an illustrator, designer, and programmer. I also work across open-source type, independent creative work, and fan culture."
+    },
+    "links": {
+      "title": "Links - Chiaki Inari Shrine",
+      "description": "Social and website links for Chiaki Suzukaze and Chiaki Inari Shrine, including the official site, Plurk, and Instagram."
+    },
+    "story": {
+      "title": "Story - Chiaki Inari Shrine",
+      "description": "A story where Chiaki Inari Shrine, Tokoyo, and human memory intersect—an original work set in a postwar world."
+    },
+    "character": {
+      "title": "Characters - Chiaki Inari Shrine",
+      "description": "Head of Chiaki Inari Shrine’s First Laboratory and the ▓▓th shrine maiden: Chiaki Suzukaze. Meet this original fox-eared character and her setting."
+    },
+    "art": {
+      "title": "Chiaki Suzukaze’s Art - Chiaki Inari Shrine",
+      "description": "A gallery of Chiaki Suzukaze’s character illustrations and creative work, including original concept art, outfits, and visual projects."
+    },
+    "works": {
+      "title": "Works - Chiaki Inari Shrine",
+      "description": "Software, tools, and interfaces designed and developed by Chiaki, including open-source tools, font editors, and React components."
+    },
+    "chiakey": {
+      "title": "ChiaKey - Chiaki Inari Shrine",
+      "description": "A modern Traditional Chinese Zhuyin input method for macOS, based on Yahoo! KeyKey’s open-source code. It supports Apple Silicon and Intel Macs while preserving KeyKey’s familiar feel."
+    },
+    "kumiko": {
+      "title": "Kumiko Font Editor - Chiaki Inari Shrine",
+      "description": "A font editor and glyph-completion tool that runs entirely in the browser. Kumiko loads UFOs from GitHub, builds glyphs with IDS components, and submits pull requests."
+    },
+    "tgJpg": {
+      "title": "tg.jpg Telegram Bot - Chiaki Inari Shrine",
+      "description": "A Telegram bot that replies with the first usable image-search result for .jpg. It also supports .png and .gif, returning the first image Telegram can send."
+    },
+    "splitFlap": {
+      "title": "react-split-flap - Chiaki Inari Shrine",
+      "description": "A React component that recreates station split-flap displays. It also animates large boards of flaps smoothly for station and airport-style displays."
+    },
+    "tokyonoSora": {
+      "title": "Tokyono Sora - Chiaki Inari Shrine",
+      "description": "A CSS theme that redesigns the Plurk timeline. Tokyono Sora is free and open source, with glass panels and responsive reading."
+    },
+    "fonts": {
+      "title": "Fonts - Chiaki Inari Shrine",
+      "description": "Typefaces designed or co-created by Chiaki, including Taiwan Railways lettering, AkiNixie numerals, and jf open Huninn."
+    },
+    "akitra": {
+      "title": "Taiwan Railways Typeface - Chiaki Inari Shrine",
+      "description": "A typeface based on lettering found on Taiwan Railways rolling stock, with type marks, numerals, CJK characters, and 284 frequently used glyphs."
+    },
+    "nixie": {
+      "title": "AkiNixie - Chiaki Inari Shrine",
+      "description": "A numeral typeface that recreates the warm orange glow of Nixie tubes. AkiNixie is suited to clocks, instruments, and retro-futurist interfaces."
+    },
+    "huninn": {
+      "title": "jf open Huninn - Chiaki Inari Shrine",
+      "description": "A Taiwanese open-source rounded typeface by justfont, refined for Taiwanese forms and everyday reading. Chiaki contributed while at justfont."
+    }
   },
   "home": {
-    "eyebrow": "ABOUT THE CIRCLE", "title": "Chiaki Inari Shrine", "lead": "Chiaki Inari Shrine is an independent circle exploring technology, type design, and subculture.", "body": "Born from a love of open source and fan culture, the circle works across illustration, merchandise, software engineering, open-source typefaces, and model making."
+    "eyebrow": "ABOUT THE CIRCLE",
+    "title": "Chiaki Inari Shrine",
+    "lead": "An independent creative circle where illustration, type design, open-source software, and subculture research share the same worktable.",
+    "body": "Run by Chiaki Suzukaze, Chiaki Inari Shrine turns favorite cultures into things to use, read, and share—from original illustration and merchandise to macOS input methods, web tools, and open-source typefaces."
   },
   "worksPage": {
-    "eyebrow": "WORKS · DESIGN & CODE", "title": "Works", "intro": "Bringing familiar tools to new systems, making complex creation easier, or simply making a screen you open every day a little more beautiful.", "view": "View project", "items": {"chiakey":{"title":"ChiaKey","description":"A macOS Zhuyin input method based on the open-source Yahoo! KeyKey codebase, preserving its familiar composition feel and candidate window while maintaining it for modern systems.","tag":"Input method","tag2":"Open-source revival"},"kumiko":{"description":"A zero-install web font editor: load a UFO from GitHub, complete glyphs with IDS components in the browser, then submit a pull request."},"tokyono":{"title":"Tokyono Sora","description":"A free Plurk CSS theme with glass panels, Nixie-tube karma, and responsive layout—apply it with one block of CSS."},"tgJpg":{"description":"Type an image filename in Telegram and the bot searches several sources in priority order, returning the first image it can send."},"splitFlap":{"description":"A React component that recreates station split-flap displays. A shared animation clock and the Web Animations API keep hundreds of flaps moving smoothly together."}}
+    "eyebrow": "WORKS · DESIGN & CODE",
+    "title": "Works",
+    "intro": "From Traditional Chinese input methods and browser font tools to React components and interface themes, these projects bring familiar tools to new systems and make creative work easier to return to.",
+    "view": "View project",
+    "items": {
+      "chiakey": {
+        "title": "ChiaKey",
+        "description": "A macOS Zhuyin input method based on the open-source Yahoo! KeyKey codebase, preserving its familiar composition feel and candidate window while maintaining it for modern systems. Supports Apple Silicon and Intel Macs.",
+        "tag": "Input method",
+        "tag2": "Open-source revival"
+      },
+      "kumiko": {
+        "description": "A zero-install web font editor: load a UFO from GitHub, complete glyphs with IDS components in the browser, then submit a pull request—making open-source CJK font work easier to join."
+      },
+      "tokyono": {
+        "title": "Tokyono Sora",
+        "description": "A free Plurk CSS theme with glass panels, Nixie-tube karma, and responsive layout—apply it with one block of CSS. It is open source and designed for a clearer timeline."
+      },
+      "tgJpg": {
+        "description": "Type an image filename in Telegram and the bot searches several sources in priority order, returning the first image it can send. Supports .jpg, .png, and .gif."
+      },
+      "splitFlap": {
+        "description": "A React component that recreates station split-flap displays. A shared animation clock and the Web Animations API keep hundreds of flaps moving smoothly together, including airport- and station-style boards."
+      }
+    }
   },
   "fontsPage": {
-    "title": "Fonts", "intro": "From lettering found on Taiwan Railways, to Nixie-tube numerals and an open-source rounded typeface refined for Taiwan, every typeface begins with a particular culture and experience.", "view": "View typeface"
+    "eyebrow": "FONTS  //  TYPEFACES",
+    "title": "Fonts",
+    "intro": "From lettering found on Taiwan Railways, to Nixie-tube numerals and an open-source rounded typeface refined for Taiwan, every typeface begins with a particular culture and experience.",
+    "view": "View typeface",
+    "items": {
+      "akitra": {
+        "title": "Taiwan Railways Typeface",
+        "description": "Based on lettering found on Taiwan Railways rolling stock, preserving visual memories of car numbers, weights, and type marks.",
+        "tags": [
+          "Original typeface",
+          "284 glyphs"
+        ]
+      },
+      "nixie": {
+        "title": "Nixie Numeral Typeface",
+        "description": "Warm Nixie-display numerals for clocks and retro-futurist interfaces.",
+        "tags": [
+          "Original typeface",
+          "Numerals only"
+        ]
+      },
+      "huninn": {
+        "title": "jf open Huninn",
+        "description": "A Taiwanese open-source rounded typeface, co-created at justfont and soft and springy like tapioca pearls.",
+        "tags": [
+          "Design contributor"
+        ]
+      }
+    }
   },
   "characterPage": {
-    "moreArt": "More artwork", "name": "Chiaki Suzukaze", "greeting": "“Hao! I’m Chiaki Suzukaze!”", "description": "Head of Chiaki Inari Shrine’s First Laboratory and the ▓▓th shrine maiden: a brown-haired fox lady with animal ears, a divine messenger.\nShe is kind, loves talking with people, and hopes every day can be a happy one.\nThough born after the war, she loves collecting things left behind by prewar humanity, making little things by hand, and anything cute.", "birthday": "Birthday: February 27", "signatureAlt": "Chiaki’s signature", "artAlt": "Character artwork", "thumbnailAlt": "Character artwork thumbnail", "viewFullSize": "View full size", "conceptHeading": "Concept art", "conceptDefault": "Character sheet", "conceptNewOutfit": "New outfit sheet", "conceptBirthday": "Birthday outfit", "r18Toggle": "Show R18 content", "r18Enabled": "⚠️ Adult content is visible", "r18Title": "Adult content confirmation", "r18Description": "This content contains adult material and is restricted to viewers aged 18 or over.", "r18Question": "Are you 18 or older?", "cancel": "Cancel", "confirmAge": "I am 18 or older", "loading": "Loading…", "initializing": "Initializing…", "live2dDescription": "I tried making a Live2D model—move the mouse and its eyes will follow!"
+    "moreArt": "More artwork",
+    "name": "Chiaki Suzukaze",
+    "greeting": "“Hao! I’m Chiaki Suzukaze!”",
+    "description": "Head of Chiaki Inari Shrine’s First Laboratory and the ▓▓th shrine maiden: a brown-haired fox lady with animal ears, a divine messenger.\nShe is kind, loves talking with people, and hopes every day can be a happy one.\nThough born after the war, she loves collecting things left behind by prewar humanity, making little things by hand, and anything cute.",
+    "birthday": "Birthday: February 27",
+    "signatureAlt": "Chiaki’s signature",
+    "artAlt": "Character artwork",
+    "thumbnailAlt": "Character artwork thumbnail",
+    "viewFullSize": "View full size",
+    "conceptHeading": "Concept art",
+    "conceptDefault": "Character sheet",
+    "conceptNewOutfit": "New outfit sheet",
+    "conceptBirthday": "Birthday outfit",
+    "r18Toggle": "Show R18 content",
+    "r18Enabled": "⚠️ Adult content is visible",
+    "r18Title": "Adult content confirmation",
+    "r18Description": "This content contains adult material and is restricted to viewers aged 18 or over.",
+    "r18Question": "Are you 18 or older?",
+    "cancel": "Cancel",
+    "confirmAge": "I am 18 or older",
+    "loading": "Loading…",
+    "initializing": "Initializing…",
+    "live2dDescription": "I tried making a Live2D model—move the mouse and its eyes will follow!"
   },
   "aboutPage": {
-    "header": { "eyebrow": "ABOUT  //  PROFILE_01", "namePart1": "Chiaki", "namePart2": "Suzukaze", "tagline": "Exploring reason through computation, painting grace one stroke at a time", "introLine1": "Hello, I’m Chiaki Suzukaze.", "introLine2": "I draw, design, and write code—always starting new things and gradually bringing them to life.", "profileAlt": "Chiaki Suzukaze" },
-    "characterPanel": { "name": "SUZUKAZE CHIAKI", "alt": "Full-body illustration of Chiaki Suzukaze" },
+    "header": {
+      "eyebrow": "ABOUT  //  PROFILE_01",
+      "namePart1": "Chiaki",
+      "namePart2": "Suzukaze",
+      "tagline": "Exploring reason through computation, painting grace one stroke at a time",
+      "introLine1": "Hello, I’m Chiaki Suzukaze.",
+      "introLine2": "I draw, design, and write code—always starting new things and gradually bringing them to life.",
+      "profileAlt": "Chiaki Suzukaze"
+    },
+    "characterPanel": {
+      "name": "SUZUKAZE CHIAKI",
+      "alt": "Full-body illustration of Chiaki Suzukaze"
+    },
     "interests": {
-      "design": { "title": "Design", "tag": "DESIGN", "description": "I like human-centered design that balances function and beauty. I contributed to justfont’s Huninn typeface and have also worked on graphic and web design." },
-      "drawing": { "title": "Drawing", "tag": "DRAWING", "description": "I love drawing and occasional doodling—especially maid outfits, glasses, sailor uniforms, animal ears, bunny girls, and competitive swimsuits!" },
-      "photo": { "title": "Photography", "tag": "PHOTO", "description": "I like using a camera to preserve things that only exist in a particular instant. Lately, I mainly shoot film." },
-      "model": { "title": "Models", "tag": "MODEL", "description": "I’m fascinated by the power and beauty condensed into tiny scales. I even have an airbrush at home for painting!" },
-      "doujin": { "title": "Doujin events", "tag": "DOUJIN", "description": "Most of my work is original, so I usually join smaller events. I enjoy talking with other creators and looking at everyone’s work." },
-      "cosplay": { "title": "Cosplay", "tag": "COSPLAY", "description": "I love coordinating cosplays, though I don’t handle heat well, so I usually cosplay at winter events. Let’s plan a matching costume!" },
-      "travel": { "title": "Travel", "tag": "TRAVEL", "description": "I enjoy researching routes, exploring new places, and experiencing different cultures—especially night views and local food." },
-      "coding": { "title": "Coding", "tag": "CODING", "description": "I enjoy writing code and sharing technology so it can grow into a culture of collaborative development. You’ll often spot me at open-source conferences such as COSCUP!" },
-      "chill": { "title": "Staying in", "tag": "CHILL", "description": "I love the tatami rest areas at Japanese bathhouses, so I designed and commissioned one for my own room. The renovation took about four months." }
+      "design": {
+        "title": "Design",
+        "tag": "DESIGN",
+        "description": "I like human-centered design that balances function and beauty. I contributed to justfont’s Huninn typeface and have also worked on graphic and web design."
+      },
+      "drawing": {
+        "title": "Drawing",
+        "tag": "DRAWING",
+        "description": "I love drawing and occasional doodling—especially maid outfits, glasses, sailor uniforms, animal ears, bunny girls, and competitive swimsuits!"
+      },
+      "photo": {
+        "title": "Photography",
+        "tag": "PHOTO",
+        "description": "I like using a camera to preserve things that only exist in a particular instant. Lately, I mainly shoot film."
+      },
+      "model": {
+        "title": "Models",
+        "tag": "MODEL",
+        "description": "I’m fascinated by the power and beauty condensed into tiny scales. I even have an airbrush at home for painting!"
+      },
+      "doujin": {
+        "title": "Doujin events",
+        "tag": "DOUJIN",
+        "description": "Most of my work is original, so I usually join smaller events. I enjoy talking with other creators and looking at everyone’s work."
+      },
+      "cosplay": {
+        "title": "Cosplay",
+        "tag": "COSPLAY",
+        "description": "I love coordinating cosplays, though I don’t handle heat well, so I usually cosplay at winter events. Let’s plan a matching costume!"
+      },
+      "travel": {
+        "title": "Travel",
+        "tag": "TRAVEL",
+        "description": "I enjoy researching routes, exploring new places, and experiencing different cultures—especially night views and local food."
+      },
+      "coding": {
+        "title": "Coding",
+        "tag": "CODING",
+        "description": "I enjoy writing code and sharing technology so it can grow into a culture of collaborative development. You’ll often spot me at open-source conferences such as COSCUP!"
+      },
+      "chill": {
+        "title": "Staying in",
+        "tag": "CHILL",
+        "description": "I love the tatami rest areas at Japanese bathhouses, so I designed and commissioned one for my own room. The renovation took about four months."
+      }
     },
     "sections": {
-      "nowPlaying": { "tag": "NOW PLAYING", "title": "What I’m into lately", "item1": "Anime and video games, especially science-fiction works such as cyberpunk and Endfield.", "item2": "Retro things—particularly the design sensibility around the 20th century. I’ve recently started collecting vinyl records." },
-      "interests": { "tag": "INTERESTS", "title": "Interests" },
-      "gettingAlong": { "tag": "GETTING ALONG", "title": "Keeping in touch", "line1": "I have a lot on my plate, so I can be slow to reply.", "line2": "But “slow” never means “I don’t want to talk.” You’re always welcome to chat or send a message; I’ll read it and reply as soon as I can.", "line3": "I may not see every post, especially when I’m busy. It’s never intentional, so thank you for understanding." },
-      "oneRequest": { "tag": "ONE REQUEST", "title": "A small request", "line1": "I don’t talk about politics much, and I don’t enjoy harshly criticizing things.", "line2": "I don’t think there are many absolute rights or wrongs; often, things have simply been put in the wrong place.", "line3": "With that kindness and respect, I think we’ll get along well!" },
-      "contact": { "tag": "CONTACT", "title": "Contact", "textBefore": "My social profiles and contact details are collected", "linkLabel": "here", "textAfter": "." }
+      "nowPlaying": {
+        "tag": "NOW PLAYING",
+        "title": "What I’m into lately",
+        "item1": "Anime and video games, especially science-fiction works such as cyberpunk and Endfield.",
+        "item2": "Retro things—particularly the design sensibility around the 20th century. I’ve recently started collecting vinyl records."
+      },
+      "interests": {
+        "tag": "INTERESTS",
+        "title": "Interests"
+      },
+      "gettingAlong": {
+        "tag": "GETTING ALONG",
+        "title": "Keeping in touch",
+        "line1": "I have a lot on my plate, so I can be slow to reply.",
+        "line2": "But “slow” never means “I don’t want to talk.” You’re always welcome to chat or send a message; I’ll read it and reply as soon as I can.",
+        "line3": "I may not see every post, especially when I’m busy. It’s never intentional, so thank you for understanding."
+      },
+      "oneRequest": {
+        "tag": "ONE REQUEST",
+        "title": "A small request",
+        "line1": "I don’t talk about politics much, and I don’t enjoy harshly criticizing things.",
+        "line2": "I don’t think there are many absolute rights or wrongs; often, things have simply been put in the wrong place.",
+        "line3": "With that kindness and respect, I think we’ll get along well!"
+      },
+      "contact": {
+        "tag": "CONTACT",
+        "title": "Contact",
+        "textBefore": "My social profiles and contact details are collected",
+        "linkLabel": "here",
+        "textAfter": "."
+      }
     },
     "footer": "SUZUKAZE CHIAKI // Chiaki Suzukaze"
   },
   "nixiePage": {
-    "story": "About this typeface", "storyP1": "Nixie tubes are numerical display components from the Cold War era: metal cathodes for 0–9 are stacked inside a glass tube, and neon gas glows warmly around a digit when powered.", "storyP2": "This typeface recreates their forms and atmosphere, including a “$” glyph that represents the background cathode formed by all digits layered together.", "glyphs": "Glyphs", "glyphsDescription": "All 13 numeral glyphs.", "download": "Download & license", "license": "Released under CC BY-SA 4.0. You are free to use and adapt it with attribution.", "send": "Send D-mail", "downloadButton": "Download"
+    "story": "About this typeface",
+    "storyP1": "Nixie tubes are numerical display components from the Cold War era: metal cathodes for 0–9 are stacked inside a glass tube, and neon gas glows warmly around a digit when powered.",
+    "storyP2": "This typeface recreates their forms and atmosphere, including a “$” glyph that represents the background cathode formed by all digits layered together.",
+    "glyphs": "Glyphs",
+    "glyphsDescription": "All 13 numeral glyphs.",
+    "download": "Download & license",
+    "license": "Released under CC BY-SA 4.0. You are free to use and adapt it with attribution.",
+    "send": "Send D-mail",
+    "downloadButton": "Download"
   },
   "akitraPage": {
-    "hero": "Taiwan Railways Rolling Stock Lettering", "story": "About this typeface", "storyP1": "Older Taiwan Railways passenger and freight cars were painted with type codes, car numbers, tare weights, and load capacities. Lettered stroke by stroke, they carry the distinctive force of a handmade era.", "storyP2": "This typeface redraws that lettering and includes 284 frequently used glyphs, preserving visual memories that are gradually disappearing from the railway.", "inUse": "Lettering examples", "inUseDescription": "Using Zhuyin symbols for rolling-stock type marks is a distinctive Taiwan Railways tradition.", "glyphs": "Glyphs", "groups": ["Latin letters & numerals", "Zhuyin (rolling-stock marks)", "CJK ideographs", "Half-width katakana", "Symbols"], "download": "Download & license", "license": "Released under the SIL Open Font License 1.1 for free use in personal and commercial projects.", "sourceFiles": "Source files"
+    "hero": "Taiwan Railways Rolling Stock Lettering",
+    "story": "About this typeface",
+    "storyP1": "Older Taiwan Railways passenger and freight cars were painted with type codes, car numbers, tare weights, and load capacities. Lettered stroke by stroke, they carry the distinctive force of a handmade era.",
+    "storyP2": "This typeface redraws that lettering and includes 284 frequently used glyphs, preserving visual memories that are gradually disappearing from the railway.",
+    "inUse": "Lettering examples",
+    "inUseDescription": "Using Zhuyin symbols for rolling-stock type marks is a distinctive Taiwan Railways tradition.",
+    "glyphs": "Glyphs",
+    "groups": [
+      "Latin letters & numerals",
+      "Zhuyin (rolling-stock marks)",
+      "CJK ideographs",
+      "Half-width katakana",
+      "Symbols"
+    ],
+    "download": "Download & license",
+    "license": "Released under the SIL Open Font License 1.1 for free use in personal and commercial projects.",
+    "sourceFiles": "Source files"
   },
   "huninnPage": {
-    "hero": "A free, open-source Taiwanese rounded typeface—soft and lovable like tapioca pearls.", "samples": ["The horizon is wide and the sky outside is blue", "Like a pearl", "Round and springy", "A friend for typing"], "story": "About this typeface", "storyP1": "jf open Huninn is an open-source typeface project initiated by justfont. Based on Kosugi Maru and Varela Round, it was refined for Taiwanese character standards and everyday use.", "storyP2": "I was fortunate to contribute while at justfont. Opening type-design work to the whole community was a truly valuable experience.", "features": "Features", "tester": "Try it", "testerDescription": "Type anything you want to test; the complete font will load here automatically.", "more": "Download & more", "license": "Huninn is maintained by justfont and released under the SIL Open Font License 1.1.", "official": "Official page", "placeholder": "Type something to try…", "loading": "Loading the complete font…", "loadError": "The complete font could not be loaded; only available glyphs are shown.", "defaultText": "Like a pearl—round, soft, and springy."
+    "hero": "A free, open-source Taiwanese rounded typeface—soft and lovable like tapioca pearls.",
+    "samples": [
+      "The horizon is wide and the sky outside is blue",
+      "Like a pearl",
+      "Round and springy",
+      "A friend for typing"
+    ],
+    "story": "About this typeface",
+    "storyP1": "jf open Huninn is an open-source typeface project initiated by justfont. Based on Kosugi Maru and Varela Round, it was refined for Taiwanese character standards and everyday use.",
+    "storyP2": "I was fortunate to contribute while at justfont. Opening type-design work to the whole community was a truly valuable experience.",
+    "features": "Features",
+    "tester": "Try it",
+    "testerDescription": "Type anything you want to test; the complete font will load here automatically.",
+    "more": "Download & more",
+    "license": "Huninn is maintained by justfont and released under the SIL Open Font License 1.1.",
+    "official": "Official page",
+    "placeholder": "Type something to try…",
+    "loading": "Loading the complete font…",
+    "loadError": "The complete font could not be loaded; only available glyphs are shown.",
+    "defaultText": "Like a pearl—round, soft, and springy."
   },
-  "tgJpgPage": { "hero": "Type .jpg in a chat and let the bot reply with a meme. Supports .jpg, .png, and .gif.", "join": "Join Telegram", "source": "View source", "idea": "Search, reduced to a filename", "ideaText": "No need to leave the conversation to search for images. tg.jpg connects to Google, DuckDuckGo, and Bing, plus optional Serper and SerpAPI; with a Serper API key, it takes top priority.", "pipeline": "Fast replies", "steps": [["Recognize the filename", "Listens for messages ending in .jpg, .png, or .gif."], ["Check search sources", "Runs health checks on startup and enables only currently available engines."], ["Reply first", "Searches across sources; the first result Telegram can send wins immediately."]], "chatAlt": "tg.jpg replying with a mic drop GIF in Telegram", "rust": "Built with Rust", "rustText": "Rewritten in Rust, with Teloxide for Telegram and Reqwest for search results. Each source is health-checked on startup; failed sources are disabled and the rest are tried in priority order. Includes Docker and Fly.io deployment configuration." },
-  "linksPage": {"backgroundAlt":"Inari shrine background photograph","profileAlt":"Chiaki Suzukaze","name":"Chiaki Suzukaze","website":"Official website"},
-  "tokyonoPage": {"eyebrow":"Plurk UI Redesign","title":"Tokyono Sora","hero":"A free and open CSS theme for Plurk. Rework the timeline, glass panels, and responsive layout—just paste in the CSS.","getCss":"Get the theme CSS","design":"A more comfortable timeline","designText":"Tokyono Sora leaves Plurk’s core interactions intact and redraws its appearance: information hierarchy, color, spacing, and the relationship between the background and interface. It is pure CSS; paste it into Plurk’s custom theme style field to apply it.","details":"Design hidden in the timeline","features":[{"title":"Reworking the timeline","description":"Line height, display names, avatar placement, color, and post width are all adjusted for easier scanning."},{"title":"Blending background and UI","description":"Translucent panels with live blur make an uploaded background genuinely part of the interface."},{"title":"Readable in every orientation","description":"Supports portrait screens and browser zoom without letting the layout fall apart."},{"title":"Nixie-tube karma","description":"Karma is displayed in a custom Nixie numeral typeface; custom.css can switch it to a world-line divergence style."}],"showcase":"In use","profileAlt":"Glass profile panel with world-line-divergence karma styling","karmaAlt":"Close-up of karma rendered in a Nixie numeral typeface","profileCaption":"The profile panel and Nixie karma. Add one more custom.css block to switch to world-line-divergence styling.","rwdAlt":"Responsive layout on a portrait screen","rwdCaption":"Portrait-screen layout. Post width and component placement adapt to the window.","install":"Use it by pasting CSS","installText":"Paste the theme CSS into Plurk’s Custom Theme → Custom Theme Style. Live blur uses the GPU; machines without hardware acceleration can precompute a background with the static blur generator. Extensions for dark mode and the top bar are included too.","mainCss":"Main CSS","blurGenerator":"Static blur generator","installGuide":"Installation guide","light":"Light","dark":"Dark","lightAlt":"Tokyono Sora light interface","darkAlt":"Tokyono Sora dark interface"},
-  "kumikoPage": {"hero":"Open a browser and add missing glyphs to open-source Chinese fonts on GitHub.","try":"Try online","imageAlt":"Kumiko glyph and component editing interface","idea":"Lower the barrier to glyph completion to a URL","ideaText":"Open-source CJK fonts can be missing thousands of glyphs, but people who want to help may not want to assemble a full font toolchain. Kumiko loads a UFO project from GitHub, edits glyphs in the browser, and sends changes back as a pull request. No installation and no backend to run.","workflow":"From font source to pull request","ids":"Build missing glyphs from components","idsText":"It includes an IDS (Ideographic Description Sequence) decomposition engine. To add 編, look up ⿰糹扁 and combine the existing 糹 and 扁 components. Completing a glyph becomes component adjustment rather than drawing a whole character from scratch.","architecture":"Architecture shaped by the user experience","features":[["Zero install","Runs locally on the web. A browser is all you need."],["Multiple formats","Supports .ufo, .designspace, .glyphs, .glyphspackage, and binary fonts, or loads UFO directly from GitHub."],["Browser compilation","Runs fontTools through Pyodide, so no local Python environment is needed."],["Offline drafts","Edits are stored in browser IndexedDB and survive being offline or closing the tab."]],"open":"Open a glyph now","tryKumiko":"Try Kumiko online","source":"View source"},
-  "fontsPage": {"eyebrow":"FONTS  //  TYPEFACES","title":"Fonts","intro":"From lettering found on Taiwan Railways, to Nixie-tube numerals and an open-source rounded typeface refined for Taiwan, every typeface begins with a particular culture and experience.","view":"View typeface","items":{"akitra":{"title":"Taiwan Railways Typeface","description":"Based on lettering found on Taiwan Railways rolling stock, preserving visual memories of car numbers, weights, and type marks.","tags":["Original typeface","284 glyphs"]},"nixie":{"title":"Nixie Numeral Typeface","description":"Warm Nixie-display numerals for clocks and retro-futurist interfaces.","tags":["Original typeface","Numerals only"]},"huninn":{"title":"jf open Huninn","description":"A Taiwanese open-source rounded typeface, co-created at justfont and soft and springy like tapioca pearls.","tags":["Design contributor"]}}},
-  "splitFlapPage":{"eyebrow":"Split-flap display for React","hero":"A React component that recreates station and airport split-flap displays. Pure CSS transform animations keep hundreds of flaps turning smoothly at once.","source":"View source","copyInstallCommand":"Copy install command","idea":"Keeping pata-pata on the web","ideaText":"Keikyu Kawasaki’s split-flap departure board retired in 2022, but the sound and rhythm of its mechanical motion remain captivating. react-split-flap recreates that feeling with CSS transforms: SplitFlap turns a string one character at a time, while LongFlap can turn an entire ReactNode—an image, icon, or a full layout—as one panel.","playground":"Try typing","playgroundDescription":"Type a few characters and watch each flap turn toward its target character.","inputPlaceholder":"Type text…","inputLabel":"Text shown on the split-flap display","clock":"Flap clock","clockText":"A live clock that turns once per second. When the tab is in the background, its animation clock falls back to a coarse timer; it still shows the correct time when the tab returns to the foreground.","engineeringTitle":"Built for lots of flaps","engineering":[{"title":"Shared animation clock","description":"Every flap subscribes to one requestAnimationFrame loop. Turns that expire in the same frame are merged into a single React commit, so hundreds of simultaneous flaps render only once."},{"title":"No DOM reconstruction","description":"Flaps remain mounted without changing keys, alternating between two CSS animation names to start directly from the first frame. There is no per-flap Web Animations API read/write cycle."},{"title":"Minimal compositing layers","description":"Only the moving top and bottom halves are promoted to GPU layers. In a scene of about 400 flaps, this cuts compositing layers by about 70% and GPU time by about 27%."}],"getStarted":"Get started","fullDemo":"Full demo","currentTime":"Current time","boardDestinations":"For Haneda Airport, Shinagawa, Shimbashi & Asakusa","boardCaption":"A tribute to Keikyu Kawasaki Station’s pata-pata departure board, retired in 2022"}
+  "tgJpgPage": {
+    "hero": "Type .jpg in a chat and let the bot reply with a meme. Supports .jpg, .png, and .gif.",
+    "join": "Join Telegram",
+    "source": "View source",
+    "idea": "Search, reduced to a filename",
+    "ideaText": "No need to leave the conversation to search for images. tg.jpg connects to Google, DuckDuckGo, and Bing, plus optional Serper and SerpAPI; with a Serper API key, it takes top priority.",
+    "pipeline": "Fast replies",
+    "steps": [
+      [
+        "Recognize the filename",
+        "Listens for messages ending in .jpg, .png, or .gif."
+      ],
+      [
+        "Check search sources",
+        "Runs health checks on startup and enables only currently available engines."
+      ],
+      [
+        "Reply first",
+        "Searches across sources; the first result Telegram can send wins immediately."
+      ]
+    ],
+    "chatAlt": "tg.jpg replying with a mic drop GIF in Telegram",
+    "rust": "Built with Rust",
+    "rustText": "Rewritten in Rust, with Teloxide for Telegram and Reqwest for search results. Each source is health-checked on startup; failed sources are disabled and the rest are tried in priority order. Includes Docker and Fly.io deployment configuration."
+  },
+  "linksPage": {
+    "backgroundAlt": "Inari shrine background photograph",
+    "profileAlt": "Chiaki Suzukaze",
+    "name": "Chiaki Suzukaze",
+    "website": "Official website"
+  },
+  "tokyonoPage": {
+    "eyebrow": "Plurk UI Redesign",
+    "title": "Tokyono Sora",
+    "hero": "A free and open CSS theme for Plurk. Rework the timeline, glass panels, and responsive layout—just paste in the CSS.",
+    "getCss": "Get the theme CSS",
+    "design": "A more comfortable timeline",
+    "designText": "Tokyono Sora leaves Plurk’s core interactions intact and redraws its appearance: information hierarchy, color, spacing, and the relationship between the background and interface. It is pure CSS; paste it into Plurk’s custom theme style field to apply it.",
+    "details": "Design hidden in the timeline",
+    "features": [
+      {
+        "title": "Reworking the timeline",
+        "description": "Line height, display names, avatar placement, color, and post width are all adjusted for easier scanning."
+      },
+      {
+        "title": "Blending background and UI",
+        "description": "Translucent panels with live blur make an uploaded background genuinely part of the interface."
+      },
+      {
+        "title": "Readable in every orientation",
+        "description": "Supports portrait screens and browser zoom without letting the layout fall apart."
+      },
+      {
+        "title": "Nixie-tube karma",
+        "description": "Karma is displayed in a custom Nixie numeral typeface; custom.css can switch it to a world-line divergence style."
+      }
+    ],
+    "showcase": "In use",
+    "profileAlt": "Glass profile panel with world-line-divergence karma styling",
+    "karmaAlt": "Close-up of karma rendered in a Nixie numeral typeface",
+    "profileCaption": "The profile panel and Nixie karma. Add one more custom.css block to switch to world-line-divergence styling.",
+    "rwdAlt": "Responsive layout on a portrait screen",
+    "rwdCaption": "Portrait-screen layout. Post width and component placement adapt to the window.",
+    "install": "Use it by pasting CSS",
+    "installText": "Paste the theme CSS into Plurk’s Custom Theme → Custom Theme Style. Live blur uses the GPU; machines without hardware acceleration can precompute a background with the static blur generator. Extensions for dark mode and the top bar are included too.",
+    "mainCss": "Main CSS",
+    "blurGenerator": "Static blur generator",
+    "installGuide": "Installation guide",
+    "light": "Light",
+    "dark": "Dark",
+    "lightAlt": "Tokyono Sora light interface",
+    "darkAlt": "Tokyono Sora dark interface"
+  },
+  "kumikoPage": {
+    "hero": "Open a browser and add missing glyphs to open-source Chinese fonts on GitHub.",
+    "try": "Try online",
+    "imageAlt": "Kumiko glyph and component editing interface",
+    "idea": "Lower the barrier to glyph completion to a URL",
+    "ideaText": "Open-source CJK fonts can be missing thousands of glyphs, but people who want to help may not want to assemble a full font toolchain. Kumiko loads a UFO project from GitHub, edits glyphs in the browser, and sends changes back as a pull request. No installation and no backend to run.",
+    "workflow": "From font source to pull request",
+    "ids": "Build missing glyphs from components",
+    "idsText": "It includes an IDS (Ideographic Description Sequence) decomposition engine. To add 編, look up ⿰糹扁 and combine the existing 糹 and 扁 components. Completing a glyph becomes component adjustment rather than drawing a whole character from scratch.",
+    "architecture": "Architecture shaped by the user experience",
+    "features": [
+      [
+        "Zero install",
+        "Runs locally on the web. A browser is all you need."
+      ],
+      [
+        "Multiple formats",
+        "Supports .ufo, .designspace, .glyphs, .glyphspackage, and binary fonts, or loads UFO directly from GitHub."
+      ],
+      [
+        "Browser compilation",
+        "Runs fontTools through Pyodide, so no local Python environment is needed."
+      ],
+      [
+        "Offline drafts",
+        "Edits are stored in browser IndexedDB and survive being offline or closing the tab."
+      ]
+    ],
+    "open": "Open a glyph now",
+    "tryKumiko": "Try Kumiko online",
+    "source": "View source"
+  },
+  "splitFlapPage": {
+    "eyebrow": "Split-flap display for React",
+    "hero": "A React component that recreates station and airport split-flap displays. Pure CSS transform animations keep hundreds of flaps turning smoothly at once.",
+    "source": "View source",
+    "copyInstallCommand": "Copy install command",
+    "idea": "Keeping pata-pata on the web",
+    "ideaText": "Keikyu Kawasaki’s split-flap departure board retired in 2022, but the sound and rhythm of its mechanical motion remain captivating. react-split-flap recreates that feeling with CSS transforms: SplitFlap turns a string one character at a time, while LongFlap can turn an entire ReactNode—an image, icon, or a full layout—as one panel.",
+    "playground": "Try typing",
+    "playgroundDescription": "Type a few characters and watch each flap turn toward its target character.",
+    "inputPlaceholder": "Type text…",
+    "inputLabel": "Text shown on the split-flap display",
+    "clock": "Flap clock",
+    "clockText": "A live clock that turns once per second. When the tab is in the background, its animation clock falls back to a coarse timer; it still shows the correct time when the tab returns to the foreground.",
+    "engineeringTitle": "Built for lots of flaps",
+    "engineering": [
+      {
+        "title": "Shared animation clock",
+        "description": "Every flap subscribes to one requestAnimationFrame loop. Turns that expire in the same frame are merged into a single React commit, so hundreds of simultaneous flaps render only once."
+      },
+      {
+        "title": "No DOM reconstruction",
+        "description": "Flaps remain mounted without changing keys, alternating between two CSS animation names to start directly from the first frame. There is no per-flap Web Animations API read/write cycle."
+      },
+      {
+        "title": "Minimal compositing layers",
+        "description": "Only the moving top and bottom halves are promoted to GPU layers. In a scene of about 400 flaps, this cuts compositing layers by about 70% and GPU time by about 27%."
+      }
+    ],
+    "getStarted": "Get started",
+    "fullDemo": "Full demo",
+    "currentTime": "Current time",
+    "boardDestinations": "For Haneda Airport, Shinagawa, Shimbashi & Asakusa",
+    "boardCaption": "A tribute to Keikyu Kawasaki Station’s pata-pata departure board, retired in 2022"
+  }
 }
