@@ -34,7 +34,7 @@ const BoardSpecimen = () => {
         <Span color="#ff5d52" fontWeight="700">:</Span>
         <SplitFlap value={time.slice(2, 4)} chars={Presets.NUM} length={2} theme="dark" size="medium" animateOnMount={false} />
       </HStack>
-      <SplitFlap value={destination} chars={DESTINATIONS} mode="words" theme="dark" size="large" timing={80} />
+      <SplitFlap value={destination} chars={DESTINATIONS} mode="words" theme="dark" size="large" timing={80} digitWidth={300} />
       <Text fontSize="9px" letterSpacing=".3em" color="#ff5d52">PATA PATA</Text>
     </Flex>
   )
