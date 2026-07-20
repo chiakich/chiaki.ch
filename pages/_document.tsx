@@ -1,9 +1,20 @@
-import Document, { Html, Head, Main, NextScript } from 'next/document'
+import Document, { Html, Head, Main, NextScript, type DocumentContext } from 'next/document'
+
+type DocumentProps = { lang: string }
 
 class MyDocument extends Document {
+  static async getInitialProps(ctx: DocumentContext) {
+    const initialProps = await Document.getInitialProps(ctx)
+    const locale = typeof ctx.query.locale === 'string' ? ctx.query.locale : 'tw'
+    const lang = locale === 'ja' ? 'ja' : locale === 'en' ? 'en' : 'zh-TW'
+
+    return { ...initialProps, lang }
+  }
+
   render() {
+    const { lang } = this.props as typeof this.props & DocumentProps
     return (
-      <Html lang="zh-TW">
+      <Html lang={lang}>
         <Head>
           <meta charSet="utf-8" />
           <meta name="keywords" content="千秋,稻荷社,Chiaki,個人網站,作品集" />

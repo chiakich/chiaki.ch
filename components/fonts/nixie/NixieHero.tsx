@@ -6,6 +6,7 @@ import { useWorldline } from './useWorldline'
 import { useI18n } from 'i18n'
 
 const Text = styled.p
+const Heading = styled.h1
 const Span = styled.span
 const MotionBox = motion(Box)
 
@@ -60,14 +61,14 @@ const NixieHero = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 1.2 }}
         >
-          <Text
+          <Heading
             letterSpacing=".4em"
             fontWeight="bold"
             mb={6}
             style={{ color: NIXIE }}
           >
             AKINIXIE NUMBER FONT
-          </Text>
+          </Heading>
           <Box
             position="relative"
             display="inline-block"

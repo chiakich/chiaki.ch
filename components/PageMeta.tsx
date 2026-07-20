@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { pagePathFromLocalePath, useI18n } from 'i18n'
+import { localizedPath, pagePathFromLocalePath, type Locale, useI18n } from 'i18n'
 
 const SITE_URL = 'https://chiaki.ch'
 const SITE_NAME = '千秋稻荷社'
@@ -31,6 +31,26 @@ const pageMetadata: Record<string, PageMeta> = {
 
 const fallbackMetadata = pageMetadata['/']
 
+const languageTags: Record<Locale, string> = {
+  tw: 'zh-TW',
+  ja: 'ja',
+  en: 'en',
+}
+
+const pageSchemaType: Record<string, string> = {
+  '/about': 'AboutPage',
+  '/works': 'CollectionPage',
+  '/fonts': 'CollectionPage',
+  '/works/chiakey': 'SoftwareApplication',
+  '/works/kumiko': 'SoftwareApplication',
+  '/works/tg-jpg': 'SoftwareSourceCode',
+  '/works/split-flap': 'SoftwareSourceCode',
+  '/works/tokyono-sora': 'SoftwareSourceCode',
+  '/fonts/akitra': 'CreativeWork',
+  '/fonts/nixie': 'CreativeWork',
+  '/fonts/huninn': 'CreativeWork',
+}
+
 const PageMeta = () => {
   const { asPath } = useRouter()
   const { locale, t } = useI18n()
@@ -41,12 +61,57 @@ const PageMeta = () => {
   const description = t(`meta.${metadata.key}.description`)
   const canonicalUrl = `${SITE_URL}${pathname === '/' ? '' : pathname}`
   const imageUrl = `${SITE_URL}${metadata.image}`
+  const schemaType = pageSchemaType[pagePath] ?? 'WebPage'
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'WebSite',
+        '@id': `${SITE_URL}/#website`,
+        url: SITE_URL,
+        name: SITE_NAME,
+        inLanguage: languageTags[locale],
+      },
+      ...(pagePath === '/'
+        ? [{
+            '@type': 'Person',
+            '@id': `${SITE_URL}/#chiaki`,
+            name: '千秋',
+            url: SITE_URL,
+            sameAs: [
+              'https://www.plurk.com/chiakich',
+              'https://instagram.com/akisakuya',
+              'https://github.com/chiakich',
+            ],
+          }]
+        : []),
+      {
+        '@type': schemaType,
+        '@id': `${canonicalUrl}#webpage`,
+        url: canonicalUrl,
+        name: title,
+        description,
+        image: imageUrl,
+        inLanguage: languageTags[locale],
+        isPartOf: { '@id': `${SITE_URL}/#website` },
+      },
+    ],
+  }
 
   return (
     <Head>
       <title key="title">{title}</title>
       <meta key="description" name="description" content={description} />
       <link key="canonical" rel="canonical" href={canonicalUrl} />
+      {(['tw', 'ja', 'en'] as Locale[]).map((alternateLocale) => (
+        <link
+          key={`alternate-${alternateLocale}`}
+          rel="alternate"
+          hrefLang={languageTags[alternateLocale]}
+          href={`${SITE_URL}${localizedPath(pagePath, alternateLocale)}`}
+        />
+      ))}
+      <link key="alternate-default" rel="alternate" hrefLang="x-default" href={`${SITE_URL}${pagePath === '/' ? '' : pagePath}`} />
       <meta key="og:type" property="og:type" content="website" />
       <meta key="og:url" property="og:url" content={canonicalUrl} />
       <meta key="og:title" property="og:title" content={title} />
@@ -74,6 +139,11 @@ const PageMeta = () => {
         key="twitter:image:alt"
         name="twitter:image:alt"
         content={title}
+      />
+      <script
+        key="structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
     </Head>
   )

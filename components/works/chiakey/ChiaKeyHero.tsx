@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Box, Container, HStack, Stack, styled } from 'styled-system/jsx'
 import ProjectLink from 'components/portfolio/ProjectLink'
+import { useI18n } from 'i18n'
 import VerticalCandidateMenu from './VerticalCandidateMenu'
 
 const Text = styled.p
+const Heading = styled.h1
 const Span = styled.span
 const Kbd = styled.kbd
 
@@ -155,6 +157,7 @@ const useLatestPkg = () => {
 
 const ChiaKeyHero = () => {
   const pkg = useLatestPkg()
+  const { t } = useI18n()
 
   return (
     <Box
@@ -176,7 +179,7 @@ const ChiaKeyHero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <Text
+            <Heading
               fontFamily="mono"
               letterSpacing=".28em"
               color="#dcb8ff"
@@ -184,8 +187,8 @@ const ChiaKeyHero = () => {
               fontWeight="900"
               mb={8}
             >
-              ChiaKey · on modern macOS
-            </Text>
+              {t('meta.chiakey.title')}
+            </Heading>
             <TypingTitle />
             <Text
               mt={8}

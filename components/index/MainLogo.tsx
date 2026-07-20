@@ -2,9 +2,11 @@ import { Box, Center } from 'styled-system/jsx'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import AnimatedLogo from 'components/index/AnimatedLogo'
 import LogoText from '@icon/logo_text_light.svg'
+import { useI18n } from 'i18n'
 
 const MainLogo = () => {
   const { scrollY } = useScroll()
+  const { t } = useI18n()
 
   // Different parallax speeds for different elements
   const leftLogoY = useTransform(scrollY, [0, 1000], [0, -200])
@@ -18,6 +20,20 @@ const MainLogo = () => {
       filter="drop-shadow(5px 5px 15px #000)"
       opacity={0.9}
     >
+      <Box
+        as="h1"
+        position="absolute"
+        width="1px"
+        height="1px"
+        p="0"
+        m="-1px"
+        overflow="hidden"
+        clip="rect(0, 0, 0, 0)"
+        whiteSpace="nowrap"
+        border="0"
+      >
+        {t('meta.home.title')}
+      </Box>
       <motion.div
         initial={{ x: 70 }}
         animate={{ x: 0 }}

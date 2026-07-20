@@ -8,6 +8,7 @@ import 'yet-another-react-lightbox/styles.css'
 import { useI18n } from 'i18n'
 
 const Text = styled.p
+const Heading = styled.h1
 const Image = styled.img
 
 const CharacterIntroduction: React.FC = () => {
@@ -54,13 +55,13 @@ const CharacterIntroduction: React.FC = () => {
       {/* Left Column - Character Introduction */}
       <GridItem my={{ base: '10px', md: '150px' }}>
         <VStack gap={4} alignItems="start">
-          <Text
+          <Heading
             fontSize={{ base: '2xl', md: '3xl', lg: '4xl' }}
             fontWeight="bold"
             mb="20px"
           >
             {t('characterPage.name')}
-          </Text>
+          </Heading>
           <Text
             fontSize={{ base: 'lg', md: 'xl' }}
             lineHeight="1.8"

@@ -73,7 +73,7 @@ const Links: NextPage = () => {
                   borderRadius: '50px',
                 }}
               />
-              <Box fontSize={30} my="20px">
+              <Box as="h1" fontSize={30} my="20px">
                 {t('linksPage.name')}
               </Box>
             </Center>

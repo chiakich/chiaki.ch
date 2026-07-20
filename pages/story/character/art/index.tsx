@@ -44,6 +44,16 @@ const CharacterArtPage: NextPage = () => {
         paddingX={{ base: '20px', md: '40px', lg: '60px' }}
         paddingBottom="40px"
       >
+        <Box
+          as="h1"
+          color="white"
+          fontSize={{ base: '2xl', md: '4xl' }}
+          fontWeight="bold"
+          textAlign="center"
+          mb={8}
+        >
+          {t('meta.art.title')}
+        </Box>
         <ProjectGallery
           showR18={showR18}
           ageConfirmed={ageConfirmed}
