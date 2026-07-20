@@ -7,7 +7,7 @@ interface MotionSectionProps {
   spanColumns?: boolean
 }
 
-const MotionBox = motion(Box)
+const MotionBox = motion.create(Box)
 
 const MotionSection = ({ children, delay = 0, spanColumns = false }: MotionSectionProps) => (
   <MotionBox

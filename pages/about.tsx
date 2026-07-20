@@ -16,7 +16,6 @@ import CharacterPanel from 'components/about/CharacterPanel'
 import InterestCard from 'components/about/InterestCard'
 import Section from 'components/about/Section'
 import StickerSheet from 'components/about/StickerSheet'
-import { ACCENT, ACCENT_SOFT } from 'components/about/theme'
 import { useI18n } from 'i18n'
 
 const Heading = styled.h2
@@ -25,7 +24,7 @@ const List = styled.ul
 const ListItem = styled.li
 const Span = styled.span
 
-const MotionBox = motion(Box)
+const MotionBox = motion.create(Box)
 
 const interestIds = [
   'design', 'drawing', 'photo', 'model', 'doujin', 'cosplay', 'travel', 'coding', 'chill',
@@ -88,7 +87,7 @@ const About: NextPage = () => {
         left="-6%"
         width="46%"
         height="10px"
-        background={`linear-gradient(90deg, ${ACCENT}66, transparent)`}
+        background="linear-gradient(90deg, color-mix(in srgb, var(--colors-about-accent) 40%, transparent), transparent)"
         transform="rotate(-18deg)"
         style={{ y: barY }}
         pointerEvents="none"
@@ -100,7 +99,7 @@ const About: NextPage = () => {
         left="-10%"
         width="36%"
         height="4px"
-        background={`linear-gradient(90deg, ${ACCENT}40, transparent)`}
+        background="linear-gradient(90deg, color-mix(in srgb, var(--colors-about-accent) 25%, transparent), transparent)"
         transform="rotate(-18deg)"
         style={{ y: barY }}
         pointerEvents="none"
@@ -166,7 +165,7 @@ const About: NextPage = () => {
                 borderRadius="full"
                 overflow="hidden"
                 boxSize="64px"
-                border={`2px solid ${ACCENT}`}
+                border="2px solid var(--colors-about-accent)"
                 flexShrink={0}
               >
                 <Image
@@ -181,12 +180,12 @@ const About: NextPage = () => {
                 fontFamily="mono"
                 fontSize={{ base: 'xs', md: 'sm' }}
                 letterSpacing={{ base: '0.2em', md: '0.35em' }}
-                color={ACCENT}
+                color="aboutAccent"
                 fontWeight="bold"
               >
                 {t('aboutPage.header.eyebrow')}
               </Text>
-              <Span color={ACCENT} fontWeight="900" letterSpacing="-0.05em" aria-hidden>
+              <Span color="aboutAccent" fontWeight="900" letterSpacing="-0.05em" aria-hidden>
                 ⟩⟩⟩
               </Span>
             </HStack>
@@ -205,7 +204,7 @@ const About: NextPage = () => {
                 <Span
                   position="absolute"
                   inset="0.05em -0.08em -0.02em"
-                  border={`2px solid ${ACCENT}88`}
+                  border="2px solid color-mix(in srgb, var(--colors-about-accent) 53%, transparent)"
                   transform="skewX(-6deg) translate(0.07em, 0.07em)"
                   clipPath="polygon(0 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%)"
                   zIndex={0}
@@ -215,7 +214,7 @@ const About: NextPage = () => {
                 <Span
                   position="absolute"
                   inset="0.05em -0.08em -0.02em"
-                  backgroundColor={ACCENT}
+                  backgroundColor="aboutAccent"
                   transform="skewX(-6deg)"
                   clipPath="polygon(0 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%)"
                   outline="1px solid rgba(0,0,0,0.3)"
@@ -262,7 +261,7 @@ const About: NextPage = () => {
             <Text
               fontSize={{ base: 'lg', md: 'xl' }}
               fontWeight="medium"
-              color={ACCENT_SOFT}
+              color="aboutAccentSoft"
               mb={5}
             >
               {t('aboutPage.header.tagline')}
@@ -325,7 +324,10 @@ const About: NextPage = () => {
                 {t('aboutPage.sections.contact.textBefore')}{' '}
                 <NextLink
                   href="/sns"
-                  style={{ color: ACCENT, borderBottom: `1px solid ${ACCENT}66` }}
+                  style={{
+                    color: 'var(--colors-about-accent)',
+                    borderBottom: '1px solid color-mix(in srgb, var(--colors-about-accent) 40%, transparent)',
+                  }}
                 >
                   {t('aboutPage.sections.contact.linkLabel')}
                 </NextLink>
@@ -365,7 +367,7 @@ const About: NextPage = () => {
 
       {/* Footer strip */}
       <Box
-        borderTop={`1px solid ${ACCENT}33`}
+        borderTop="1px solid color-mix(in srgb, var(--colors-about-accent) 20%, transparent)"
         py={4}
         position="relative"
         zIndex={1}
@@ -379,7 +381,7 @@ const About: NextPage = () => {
         <Box
           width={{ base: '32px', sm: '64px' }}
           height="6px"
-          background={`repeating-linear-gradient(-45deg, ${ACCENT} 0 8px, transparent 8px 16px)`}
+          background="repeating-linear-gradient(-45deg, var(--colors-about-accent) 0 8px, transparent 8px 16px)"
           flexShrink={0}
         />
         <Span
@@ -387,7 +389,7 @@ const About: NextPage = () => {
           fontSize={{ base: 'xs', sm: 'sm' }}
           fontWeight="bold"
           letterSpacing={{ base: '0.15em', sm: '0.3em' }}
-          color={`${ACCENT}cc`}
+          color="color-mix(in srgb, var(--colors-about-accent) 80%, transparent)"
           textAlign="center"
           whiteSpace={{ base: 'normal', sm: 'nowrap' }}
         >
@@ -396,7 +398,7 @@ const About: NextPage = () => {
         <Box
           width={{ base: '32px', sm: '64px' }}
           height="6px"
-          background={`repeating-linear-gradient(-45deg, ${ACCENT} 0 8px, transparent 8px 16px)`}
+          background="repeating-linear-gradient(-45deg, var(--colors-about-accent) 0 8px, transparent 8px 16px)"
           flexShrink={0}
         />
       </Box>

@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 const Text = styled.p
 const Span = styled.span
 
-const MotionBox = motion(Box)
+const MotionBox = motion.create(Box)
 
 const InterestCard = ({
   index,

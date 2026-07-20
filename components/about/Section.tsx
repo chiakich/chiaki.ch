@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 const Heading = styled.h2
 const Span = styled.span
 
-const MotionBox = motion(Box)
+const MotionBox = motion.create(Box)
 
 // Skewed P5-style tag + heading, with a trailing serial code
 const SectionTitle = ({

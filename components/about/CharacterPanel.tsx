@@ -15,8 +15,8 @@ const Text = styled.p
 const Span = styled.span
 const Img = styled.img
 
-const MotionBox = motion(Box)
-const MotionImg = motion(styled.img)
+const MotionBox = motion.create(Box)
+const MotionImg = motion.create(styled.img)
 
 // Sticky character visual styled as an acrylic authorization pass
 const CharacterPanel = ({
@@ -74,6 +74,7 @@ const CharacterPanel = ({
       position="relative"
       width="100%"
       height={{ base: '68vh', lg: 'calc(100vh - 44px)' }}
+      overflowY="hidden"
     >
       {/* Slanted accent panel */}
       <MotionBox

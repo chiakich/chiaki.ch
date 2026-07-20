@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 
 const Text = styled.p
 const Span = styled.span
-const MotionText = motion(Text)
+const MotionText = motion.create(Text)
 
 export const AkitraSpecimen = () => (
   <Box width="100%" height="100%" backgroundColor="#20242e" position="relative" overflow="hidden">

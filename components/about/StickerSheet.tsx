@@ -4,7 +4,7 @@ import { Box, Flex, styled } from 'styled-system/jsx'
 
 const Text = styled.p
 
-const MotionBox = motion(Box)
+const MotionBox = motion.create(Box)
 
 // Fraction of the container area the stickers should collectively cover.
 // Mask-based packing wastes far less space than circle packing, so this can

@@ -6,7 +6,7 @@ import { localizedPath, useI18n } from 'i18n'
 const Heading = styled.h2
 const Text = styled.p
 const Span = styled.span
-const MotionBox = motion(Box)
+const MotionBox = motion.create(Box)
 
 export interface WorkCardData {
   id: string

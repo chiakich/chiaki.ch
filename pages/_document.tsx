@@ -21,7 +21,6 @@ class MyDocument extends Document {
           <meta name="author" content="千秋" />
           <meta name="robots" content="index, follow" />
 
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta name="format-detection" content="telephone=no" />
           <meta name="application-name" content="千秋稻荷社" />
           <meta name="apple-mobile-web-app-title" content="千秋稻荷社" />
