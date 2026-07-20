@@ -9,6 +9,7 @@ const Text = styled.p
 const Heading = styled.h1
 const Span = styled.span
 const Kbd = styled.kbd
+const Image = styled.img
 
 // 大標題本身就是輸入過程：逐鍵打注音，
 // 打到 ㄕㄨ 時 unigram 先猜「書」（顯示「千秋書」），
@@ -30,7 +31,7 @@ const frames: { pressed: string; buffer: string; note?: string; menu?: boolean; 
   { pressed: 'ˋ', buffer: '千秋輸入', note: '「入」出現，書 → 輸', hold: 620 },
   { pressed: 'ㄈ', buffer: '千秋輸入ㄈ', hold: 130 },
   { pressed: 'ㄚ', buffer: '千秋輸入ㄈㄚ', hold: 130 },
-  { pressed: 'ˇ', buffer: '千秋輸入法', note: '整句組好', menu: true, hold: 3800 },
+  { pressed: 'ˇ', buffer: '千秋輸入法', note: '整句組好', menu: true, hold: 10000 },
 ]
 
 const menuItems = ['輸入法', '法', '髮', '琺', '砝', '鍅', '灋', '珐']
@@ -88,8 +89,8 @@ const TypingTitle = () => {
               left: 'calc(100% - 1.1em)',
               top: '100%',
               zIndex: 5,
-              WebkitMaskImage: 'linear-gradient(180deg, #000 52%, transparent 96%)',
-              maskImage: 'linear-gradient(180deg, #000 52%, transparent 96%)',
+              WebkitMaskImage: 'linear-gradient(180deg, #000 26%, transparent 72%)',
+              maskImage: 'linear-gradient(180deg, #000 26%, transparent 65%)',
             }}
           >
             <VerticalCandidateMenu items={menuItems} page="1/2" />
@@ -128,7 +129,7 @@ const TypingTitle = () => {
         </Text>
       </HStack>
       {/* 候選窗的保留區：選字框（下緣漸層淡出）浮在這塊空間裡，不會蓋到副標與按鈕 */}
-      <Box height="230px" width="100%" aria-hidden />
+      <Box height={{ base: '90px', md: '100px' }} width="100%" aria-hidden />
     </Stack>
   )
 }
@@ -179,6 +180,16 @@ const ChiaKeyHero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
+            <Image
+              src="/assets/works/chiakey/chiakey-icon.webp"
+              alt="ChiaKey 輸入法圖示"
+              width={{ base: '76px', md: '104px' }}
+              height={{ base: '76px', md: '104px' }}
+              mx="auto"
+              mb={5}
+              borderRadius={{ base: '17px', md: '23px' }}
+              boxShadow="0 18px 40px rgba(7,2,14,.38)"
+            />
             <Heading
               fontFamily="mono"
               letterSpacing=".28em"

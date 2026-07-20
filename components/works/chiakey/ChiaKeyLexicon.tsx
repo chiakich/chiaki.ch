@@ -8,6 +8,7 @@ const Heading = styled.h3
 const Text = styled.p
 const Code = styled.code
 const Chip = styled.span
+const Image = styled.img
 
 // ChiaKey-Lexicon 的四個資料層（release builder 依固定順序疊加），
 // 裝到使用者機器上之後，runtime 再疊上使用者詞庫與學習快取。
@@ -119,6 +120,16 @@ const LexiconLayers = () => (
 
 const ChiaKeyLexicon = () => (
   <Stack gap={2}>
+    <Image
+      src="/assets/works/chiakey/chiakey-lexicon-icon.webp"
+      alt="ChiaKey-Lexicon 圖示"
+      width={{ base: '76px', md: '104px' }}
+      height={{ base: '76px', md: '104px' }}
+      mx="auto"
+      mb={2}
+      borderRadius={{ base: '17px', md: '23px' }}
+      boxShadow="0 18px 40px rgba(7,2,14,.32)"
+    />
     <SectionHeading
       en="Lexicon"
       accent="#c77dff"
