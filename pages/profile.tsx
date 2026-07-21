@@ -55,7 +55,7 @@ const DeferredStickerSheet = () => {
 }
 
 const interestIds = [
-  'design', 'drawing', 'photo', 'model', 'doujin', 'cosplay', 'travel', 'coding', 'chill',
+  'design', 'drawing', 'photo', 'model', 'doujin', 'cosplay', 'lolita', 'travel', 'opensource', 'electronics', 'food', 'mini',
 ]
 
 const Profile: NextPage = () => {
@@ -316,6 +316,7 @@ const Profile: NextPage = () => {
                 {interests.map((item, i) => (
                   <InterestCard
                     key={item.id}
+                    id={item.id}
                     index={i}
                     title={item.title}
                     en={item.en}

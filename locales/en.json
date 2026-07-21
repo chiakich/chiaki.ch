@@ -134,25 +134,17 @@
       "akitra": {
         "title": "Taiwan Railways Typeface",
         "description": "Based on lettering found on Taiwan Railways rolling stock, preserving visual memories of car numbers, weights, and type marks.",
-        "tags": [
-          "Original typeface",
-          "284 glyphs"
-        ]
+        "tags": ["Original typeface", "284 glyphs"]
       },
       "nixie": {
         "title": "Nixie Numeral Typeface",
         "description": "Warm Nixie-display numerals for clocks and retro-futurist interfaces.",
-        "tags": [
-          "Original typeface",
-          "Numerals only"
-        ]
+        "tags": ["Original typeface", "Numerals only"]
       },
       "huninn": {
         "title": "jf open Huninn",
         "description": "A Taiwanese open-source rounded typeface, co-created at justfont and soft and springy like tapioca pearls.",
-        "tags": [
-          "Design contributor"
-        ]
+        "tags": ["Design contributor"]
       }
     }
   },
@@ -186,7 +178,32 @@
     "images": "{count} images",
     "r18Images": "{count} R18 images",
     "files": "{count} files",
-    "projects": { "20250505_眼睛條": "Eye stripe", "20250326_廢墟桌布": "Simulated game scene", "20250325_黑白小漫畫": "Outdoor hot spring!", "20250322_油畫桌布": "After the war", "20250127_抱枕": "Body pillow", "20250123_废墟": "Girls' Last Tour", "20250123_テトリス": "Tetris", "20240601_ 瀬世ナギ_泳裝": "Swimsuit", "20240329_SinnraArt_平塗立繪": "Flat-color character art", "20231226_動態貼圖": "Animated stickers", "20231214_亞莓生日賀圖": "Birthday illustration", "20231128_游標像素": "Cursor pixel art", "20230906_迷你像素gif": "Pixel-art idle animation", "20230726_鳳梨_黏土人": "I made a Nendoroid!", "20230614_shONe": "Yay", "20230215_NAiK_NSFW": "O-michi Play", "20221022_庸庸系_卡面圖": "Card illustration", "20220920_Q版": "Chibi", "20220916_BYO": "Car illustration pack", "20220812_shONe": "Character art", "20220810_夏伊": "Shai floral avatar", "20220703_rizu_頭貼": "Avatar", "20200622_咩替_打歌服設計": "Stage outfit design", "20180329_亞莓頭貼": "Amei avatar" }
+    "projects": {
+      "20250505_眼睛條": "Eye stripe",
+      "20250326_廢墟桌布": "Simulated game scene",
+      "20250325_黑白小漫畫": "Outdoor hot spring!",
+      "20250322_油畫桌布": "After the war",
+      "20250127_抱枕": "Body pillow",
+      "20250123_废墟": "Girls' Last Tour",
+      "20250123_テトリス": "Tetris",
+      "20240601_ 瀬世ナギ_泳裝": "Swimsuit",
+      "20240329_SinnraArt_平塗立繪": "Flat-color character art",
+      "20231226_動態貼圖": "Animated stickers",
+      "20231214_亞莓生日賀圖": "Birthday illustration",
+      "20231128_游標像素": "Cursor pixel art",
+      "20230906_迷你像素gif": "Pixel-art idle animation",
+      "20230726_鳳梨_黏土人": "I made a Nendoroid!",
+      "20230614_shONe": "Yay",
+      "20230215_NAiK_NSFW": "O-michi Play",
+      "20221022_庸庸系_卡面圖": "Card illustration",
+      "20220920_Q版": "Chibi",
+      "20220916_BYO": "Car illustration pack",
+      "20220812_shONe": "Character art",
+      "20220810_夏伊": "Shai floral avatar",
+      "20220703_rizu_頭貼": "Avatar",
+      "20200622_咩替_打歌服設計": "Stage outfit design",
+      "20180329_亞莓頭貼": "Amei avatar"
+    }
   },
   "blogPage": {
     "eyebrow": "BLOG",
@@ -231,27 +248,42 @@
       "doujin": {
         "title": "Doujin events",
         "tag": "DOUJIN",
-        "description": "Most of my work is original, so I usually join smaller events. I enjoy talking with other creators and looking at everyone’s work."
+        "description": "I regularly attend FF, CWT, Comiket, and the like, and I set up a booth when I can. I love joining these events and chatting with everyone."
       },
       "cosplay": {
         "title": "Cosplay",
         "tag": "COSPLAY",
         "description": "I love coordinating cosplays, though I don’t handle heat well, so I usually cosplay at winter events. Let’s plan a matching costume!"
       },
+      "lolita": {
+        "title": "Lolita fashion",
+        "tag": "LOLITA",
+        "description": "I love cute little dresses, especially Classic and Military Lolita, and also Amavel’s academic style and jirai-kei outfits!"
+      },
       "travel": {
         "title": "Travel",
         "tag": "TRAVEL",
         "description": "I enjoy researching routes, exploring new places, and experiencing different cultures—especially night views and local food."
       },
-      "coding": {
-        "title": "Coding",
-        "tag": "CODING",
-        "description": "I enjoy writing code and sharing technology so it can grow into a culture of collaborative development. You’ll often spot me at open-source conferences such as COSCUP!"
+      "opensource": {
+        "title": "Open source",
+        "tag": "OPEN SOURCE",
+        "description": "I love writing code, and I also love sharing what I’ve learned and connecting with people. You’ll often spot me at open-source conferences such as COSCUP!"
       },
-      "chill": {
-        "title": "Staying in",
-        "tag": "CHILL",
-        "description": "I love the tatami rest areas at Japanese bathhouses, so I designed and commissioned one for my own room. The renovation took about four months."
+      "electronics": {
+        "title": "Electronics",
+        "tag": "ELECTRONICS",
+        "description": "I love drawing circuits and soldering all kinds of boards. I’ve built things like amplifiers and a Nixie-tube clock."
+      },
+      "food": {
+        "title": "Good food",
+        "tag": "FOOD",
+        "description": "I love taking Mr. Walrus out to try cuisines from around the world in search of amazing flavors. I also enjoy cooking and mixing cocktails myself."
+      },
+      "mini": {
+        "title": "Austin Mini",
+        "tag": "AUSTIN MINI",
+        "description": "I own a 1989 classic Austin Mini and love the raw, mechanical feel of the old Mini. Curious folks are always welcome to chat!"
       }
     },
     "sections": {
@@ -419,10 +451,7 @@
     "idsText": "It includes an IDS (Ideographic Description Sequence) decomposition engine. To add 編, look up ⿰糹扁 and combine the existing 糹 and 扁 components. Completing a glyph becomes component adjustment rather than drawing a whole character from scratch.",
     "architecture": "Architecture shaped by the user experience",
     "features": [
-      [
-        "Zero install",
-        "Runs locally on the web. A browser is all you need."
-      ],
+      ["Zero install", "Runs locally on the web. A browser is all you need."],
       [
         "Multiple formats",
         "Supports .ufo, .designspace, .glyphs, .glyphspackage, and binary fonts, or loads UFO directly from GitHub."
@@ -475,55 +504,177 @@
     "boardCaption": "A tribute to Keikyu Kawasaki Station’s pata-pata departure board, retired in 2022"
   },
   "chiakeyPage": {
-    "hero": { "iconAlt": "ChiaKey input method icon", "lead": "The familiar composing experience and candidate window, now with Apple Silicon support.", "download": "Download", "source": "View source" },
+    "hero": {
+      "iconAlt": "ChiaKey input method icon",
+      "lead": "The familiar composing experience and candidate window, now with Apple Silicon support.",
+      "download": "Download",
+      "source": "View source"
+    },
     "features": {
-      "english": "Features", "title": "The familiar way, made easier", "description": "Careful refinements preserve the familiar feel while improving security and performance.",
+      "english": "Features",
+      "title": "The familiar way, made easier",
+      "description": "Careful refinements preserve the familiar feel while improving security and performance.",
       "items": [
-        { "title": "Adaptive candidates", "description": "Candidate order combines the language model with your selection history. Frequently chosen characters rise to the top." },
-        { "title": "Add phrases", "description": "Hold Shift and press ← to expand the selection one character at a time, then press Enter to add it to your user dictionary. Ctrl+3 adds the three characters before the cursor directly (Ctrl+1–9 sets the length)." },
-        { "title": "Symbol table", "description": "Control+Command+. opens the symbol table. When the composition area is empty, Ctrl+0 also shows punctuation candidates." },
-        { "title": "Traditional-to-Simplified Chinese", "description": "Control+Command+G toggles the output filter: type Bopomofo as usual and commit Simplified Chinese. Command+Shift+Space toggles full-width Latin characters." },
-        { "title": "Tab segmentation", "description": "Move the cursor to where you want a break while composing and press Tab to force segmentation—the sentence is then recomposed around that boundary." },
-        { "title": "The old friends are still here", "description": "The default is smart Bopomofo composition, while the traditional Bopomofo, Cangjie, and Simple modules from the OpenVanilla era remain available." }
+        {
+          "title": "Adaptive candidates",
+          "description": "Candidate order combines the language model with your selection history. Frequently chosen characters rise to the top."
+        },
+        {
+          "title": "Add phrases",
+          "description": "Hold Shift and press ← to expand the selection one character at a time, then press Enter to add it to your user dictionary. Ctrl+3 adds the three characters before the cursor directly (Ctrl+1–9 sets the length)."
+        },
+        {
+          "title": "Symbol table",
+          "description": "Control+Command+. opens the symbol table. When the composition area is empty, Ctrl+0 also shows punctuation candidates."
+        },
+        {
+          "title": "Traditional-to-Simplified Chinese",
+          "description": "Control+Command+G toggles the output filter: type Bopomofo as usual and commit Simplified Chinese. Command+Shift+Space toggles full-width Latin characters."
+        },
+        {
+          "title": "Tab segmentation",
+          "description": "Move the cursor to where you want a break while composing and press Tab to force segmentation—the sentence is then recomposed around that boundary."
+        },
+        {
+          "title": "The old friends are still here",
+          "description": "The default is smart Bopomofo composition, while the traditional Bopomofo, Cangjie, and Simple modules from the OpenVanilla era remain available."
+        }
       ]
     },
     "history": {
-      "english": "History", "title": "What is ChiaKey?", "description": "ChiaKey is a free, open-source revival of Yahoo! KeyKey, made to repair and improve it while recreating a lexicon with a familiar feel.", "imageAlt": "ChiaKey About screen", "body": "After ending the project, Yahoo! released its code as open source. ChiaKey starts from that codebase: replacing obsolete APIs, repairing missing pieces, and carefully improving functionality and performance so it can once again build, install, and type on modern macOS—and continue to be maintained.",
+      "english": "History",
+      "title": "What is ChiaKey?",
+      "description": "ChiaKey is a free, open-source revival of Yahoo! KeyKey, made to repair and improve it while recreating a lexicon with a familiar feel.",
+      "imageAlt": "ChiaKey About screen",
+      "body": "After ending the project, Yahoo! released its code as open source. ChiaKey starts from that codebase: replacing obsolete APIs, repairing missing pieces, and carefully improving functionality and performance so it can once again build, install, and type on modern macOS—and continue to be maintained.",
       "timeline": [
-        { "title": "Yahoo! KeyKey launches", "description": "A free, cross-platform intelligent input method." },
-        { "title": "Project closes; source code opens", "description": "Released under a BSD-style license on GitHub (YahooArchive/KeyKey). The final installer has been continuously adapted by the community ever since." },
-        { "title": "Apple announces the end of x86 support", "description": "The final-generation installer will no longer install on macOS 26 and later." },
-        { "title": "ChiaKey", "description": "Repairs the app and organizes compatible lexicons for Apple Silicon and modern macOS." }
+        {
+          "title": "Yahoo! KeyKey launches",
+          "description": "A free, cross-platform intelligent input method."
+        },
+        {
+          "title": "Project closes; source code opens",
+          "description": "Released under a BSD-style license on GitHub (YahooArchive/KeyKey). The final installer has been continuously adapted by the community ever since."
+        },
+        {
+          "title": "Apple announces the end of x86 support",
+          "description": "The final-generation installer will no longer install on macOS 26 and later."
+        },
+        {
+          "title": "ChiaKey",
+          "description": "Repairs the app and organizes compatible lexicons for Apple Silicon and modern macOS."
+        }
       ],
       "principles": [
-        { "title": "Keep the familiar feel", "description": "The first goal is to retain Yahoo! KeyKey’s composition, candidate window, and language model—the same way of typing." },
-        { "title": "Modernize carefully", "description": "Improve security and algorithms with modern APIs and compile for Apple Silicon." },
-        { "title": "A conservative pace", "description": "ChiaKey is not trying to compete on features with modern input methods. Its focus is stability." }
+        {
+          "title": "Keep the familiar feel",
+          "description": "The first goal is to retain Yahoo! KeyKey’s composition, candidate window, and language model—the same way of typing."
+        },
+        {
+          "title": "Modernize carefully",
+          "description": "Improve security and algorithms with modern APIs and compile for Apple Silicon."
+        },
+        {
+          "title": "A conservative pace",
+          "description": "ChiaKey is not trying to compete on features with modern input methods. Its focus is stability."
+        }
       ]
     },
     "lexicon": {
-      "english": "Lexicon", "title": "Layered lexicons that understand you", "description": "A lexicon is more than one list. To restore the familiar feel, ChiaKey combines multiple sources and selects vocabulary suited to everyday Taiwanese usage; after installation on your Mac, it adds two layers that are yours.", "iconAlt": "ChiaKey-Lexicon icon", "localMachine": "your machine",
-      "layers": ["Base and external lexicons", "Project lexicon", "Automatic trending words", "Taiwan usage corrections", "User dictionary + learning cache"],
+      "english": "Lexicon",
+      "title": "Layered lexicons that understand you",
+      "description": "A lexicon is more than one list. To restore the familiar feel, ChiaKey combines multiple sources and selects vocabulary suited to everyday Taiwanese usage; after installation on your Mac, it adds two layers that are yours.",
+      "iconAlt": "ChiaKey-Lexicon icon",
+      "localMachine": "your machine",
+      "layers": [
+        "Base and external lexicons",
+        "Project lexicon",
+        "Automatic trending words",
+        "Taiwan usage corrections",
+        "User dictionary + learning cache"
+      ],
       "dataLayers": [
-        { "title": "Compatibility base", "description": "Maintains compatibility with the ChiaKey runtime, existing schemas, and module tables." },
-        { "title": "External lexicons", "description": "Mature Traditional Chinese vocabulary and readings from input methods such as Chewing and RIME." },
-        { "title": "Project lexicon", "description": "Our maintained lexicon: fixes known gaps, specifies readings, tunes candidate order, and adds Taiwanese usage, synthetic corpora, and unigram/bigram supplements extracted from trending words." },
-        { "title": "Correction layer", "description": "Small reviewed rules keep default zh-TW output aligned with common Taiwanese usage and cap fragment weights to prevent incorrect segmentation caused by character stealing." }
+        {
+          "title": "Compatibility base",
+          "description": "Maintains compatibility with the ChiaKey runtime, existing schemas, and module tables."
+        },
+        {
+          "title": "External lexicons",
+          "description": "Mature Traditional Chinese vocabulary and readings from input methods such as Chewing and RIME."
+        },
+        {
+          "title": "Project lexicon",
+          "description": "Our maintained lexicon: fixes known gaps, specifies readings, tunes candidate order, and adds Taiwanese usage, synthetic corpora, and unigram/bigram supplements extracted from trending words."
+        },
+        {
+          "title": "Correction layer",
+          "description": "Small reviewed rules keep default zh-TW output aligned with common Taiwanese usage and cap fragment weights to prevent incorrect segmentation caused by character stealing."
+        }
       ],
       "localLayers": [
-        { "title": "User dictionary", "description": "Custom phrases added with Shift selection or Ctrl+[number] stay on your machine and can be imported or exported." },
-        { "title": "Learning cache", "description": "Your candidate selection history and word frequencies." }
+        {
+          "title": "User dictionary",
+          "description": "Custom phrases added with Shift selection or Ctrl+[number] stay on your machine and can be imported or exported."
+        },
+        {
+          "title": "Learning cache",
+          "description": "Your candidate selection history and word frequencies."
+        }
       ],
-      "update": { "title": "Update lexicons without reinstalling", "before": "The four data-layer lexicons are independently updated after", "after": "builds ChiaKey-Lexicon. The input method automatically checks and validates the newest lexicon before enabling it. Your custom phrases and selection history remain in the local database.", "contribute": "Contribute words" }
+      "update": {
+        "title": "Update lexicons without reinstalling",
+        "before": "The four data-layer lexicons are independently updated after",
+        "after": "builds ChiaKey-Lexicon. The input method automatically checks and validates the newest lexicon before enabling it. Your custom phrases and selection history remain in the local database.",
+        "contribute": "Contribute words"
+      }
     },
     "scenes": {
-      "addPhrase": { "title": "Add phrases", "ariaLabel": "Hold Shift and press the left arrow three times to select the phrase, then press Enter to add it to the user dictionary" },
-      "conversion": { "title": "Traditional-to-Simplified Chinese", "ariaLabel": "Press Control, Command, and G to enable Traditional-to-Simplified conversion; committed text becomes Simplified Chinese", "composing": "still Traditional while composing", "committed": "converts when committed", "note": "Type and select candidates as usual; only committed output changes (Traditional → Simplified)" },
-      "engines": { "title": "Input modules", "ariaLabel": "Typing demonstrations for smart Bopomofo, traditional Bopomofo, Cangjie, and Simple input modules", "input": "Input" },
-      "learning": { "title": "Adaptive candidates", "ariaLabel": "After selecting a candidate, it moves to the first position next time", "first": "First time: choose the 2nd candidate", "next": "Next time: it is already 1st" },
-      "segmentation": { "title": "Tab segmentation", "ariaLabel": "Move the cursor between words and press Tab to resegment the composition", "note": "Force a boundary at the cursor and recompose the sentence" },
-      "symbols": { "title": "Symbol table", "ariaLabel": "Press Control, Command, and period to open the symbol table" }
+      "addPhrase": {
+        "title": "Add phrases",
+        "ariaLabel": "Hold Shift and press the left arrow three times to select the phrase, then press Enter to add it to the user dictionary"
+      },
+      "conversion": {
+        "title": "Traditional-to-Simplified Chinese",
+        "ariaLabel": "Press Control, Command, and G to enable Traditional-to-Simplified conversion; committed text becomes Simplified Chinese",
+        "composing": "still Traditional while composing",
+        "committed": "converts when committed",
+        "note": "Type and select candidates as usual; only committed output changes (Traditional → Simplified)"
+      },
+      "engines": {
+        "title": "Input modules",
+        "ariaLabel": "Typing demonstrations for smart Bopomofo, traditional Bopomofo, Cangjie, and Simple input modules",
+        "input": "Input"
+      },
+      "learning": {
+        "title": "Adaptive candidates",
+        "ariaLabel": "After selecting a candidate, it moves to the first position next time",
+        "first": "First time: choose the 2nd candidate",
+        "next": "Next time: it is already 1st"
+      },
+      "segmentation": {
+        "title": "Tab segmentation",
+        "ariaLabel": "Move the cursor between words and press Tab to resegment the composition",
+        "note": "Force a boundary at the cursor and recompose the sentence"
+      },
+      "symbols": {
+        "title": "Symbol table",
+        "ariaLabel": "Press Control, Command, and period to open the symbol table"
+      }
     },
-    "download": { "english": "DOWNLOAD", "title": "Install", "description": "Download and install the .pkg, then add ChiaKey in System Settings → Keyboard → Input Sources. Apple Silicon is supported.", "latest": "Latest release", "source": "Source code", "disclaimer": "ChiaKey is not an official Yahoo product. Its source is released under a BSD-style license; the Yahoo! name and contributor names may not endorse derivative products without written permission.", "audienceTitle": "Is this for you?", "imageAlt": "Animated Chiaki character", "audiences": ["You miss the feel of Yahoo! KeyKey", "You want to preserve or study the KeyKey/OpenVanilla engine", "You want a stable Bopomofo input method that does not change often"] }
+    "download": {
+      "english": "DOWNLOAD",
+      "title": "Install",
+      "description": "Download and install the .pkg, then add ChiaKey in System Settings → Keyboard → Input Sources. Apple Silicon is supported.",
+      "latest": "Latest release",
+      "source": "Source code",
+      "disclaimer": "ChiaKey is not an official Yahoo product. Its source is released under a BSD-style license; the Yahoo! name and contributor names may not endorse derivative products without written permission.",
+      "audienceTitle": "Is this for you?",
+      "imageAlt": "Animated Chiaki character",
+      "audiences": [
+        "You miss the feel of Yahoo! KeyKey",
+        "You want to preserve or study the KeyKey/OpenVanilla engine",
+        "You want a stable Bopomofo input method that does not change often"
+      ]
+    }
   }
 }
