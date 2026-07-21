@@ -21,7 +21,7 @@ const cameraMoves: Record<string, Move> = {
   photo: { from: { pos: '0% 50%', scale: 1 }, to: { pos: '100% 50%', scale: 1.2 } },
   doujin: { from: { pos: '100% 50%', scale: 1 }, to: { pos: '0% 50%', scale: 1.2 } },
   food: { from: { pos: '100% 50%', scale: 1 }, to: { pos: '0% 50%', scale: 1.2 } },
-  mini: { from: { pos: '0% 50%', scale: 1 }, to: { pos: '100% 50%', scale: 1.2 } },
+  mini: { from: { pos: '0% 50%', scale: 1.2 }, to: { pos: '100% 50%', scale: 1.3 } },
   cosplay: {
     from: { pos: '55% 50%', scale: 1 },
     to: { pos: '15% 50%', scale: 1 },
@@ -41,11 +41,11 @@ const cameraMoves: Record<string, Move> = {
   },
   // Portrait — top→bottom pan (starts flush with the top edge)
   opensource: {
-    from: { pos: '50% 85%', scale: 1 },
-    to: { pos: '70% 60%', scale: 1.15 },
+    from: { pos: '50% 65%', scale: 1 },
+    to: { pos: '70% 50%', scale: 1.15 },
   },
   drawing: { from: { pos: '50% 15%', scale: 1 }, to: { pos: '50% 50%', scale: 1 } },
-  lolita: { from: { pos: '50% 40%', scale: 1 }, to: { pos: '50% 90%', scale: 1 } },
+  lolita: { from: { pos: '50% 45%', scale: 1 }, to: { pos: '50% 75%', scale: 1 } },
   travel: { from: { pos: '50% 90%', scale: 1 }, to: { pos: '50% 60%', scale: 1 } },
 }
 
