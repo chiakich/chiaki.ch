@@ -1,3 +1,12 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": "next/core-web-vitals",
+  "rules": {
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "JSXAttribute[name.name='fontWeight'] Literal[raw!=/^['\"](regular|medium|bold|black)['\"]$/]",
+        "message": "fontWeight only accepts the design tokens: regular (400), medium (600), bold (700), black (900)."
+      }
+    ]
+  }
 }
