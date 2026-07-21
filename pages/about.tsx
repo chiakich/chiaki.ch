@@ -9,12 +9,12 @@ import {
 } from 'framer-motion'
 import Image from 'next/image'
 import NextLink from 'next/link'
-import { useRef } from 'react'
+import dynamic from 'next/dynamic'
+import { useEffect, useRef, useState } from 'react'
 import Barcode from 'components/about/Barcode'
 import CharacterPanel from 'components/about/CharacterPanel'
 import InterestCard from 'components/about/InterestCard'
 import Section from 'components/about/Section'
-import StickerSheet from 'components/about/StickerSheet'
 import { useI18n } from 'i18n'
 
 const Heading = styled.h2
@@ -24,6 +24,35 @@ const ListItem = styled.li
 const Span = styled.span
 
 const MotionBox = motion.create(Box)
+const StickerSheet = dynamic(() => import('components/about/StickerSheet'), {
+  ssr: false,
+})
+
+const DeferredStickerSheet = () => {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [isNearViewport, setIsNearViewport] = useState(false)
+
+  useEffect(() => {
+    const element = containerRef.current
+    if (!element) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return
+        setIsNearViewport(true)
+        observer.disconnect()
+      },
+      { rootMargin: '200px' }
+    )
+    observer.observe(element)
+    return () => observer.disconnect()
+  }, [])
+
+  return (
+    <Box ref={containerRef} width="100%" height="100%">
+      {isNearViewport && <StickerSheet />}
+    </Box>
+  )
+}
 
 const interestIds = [
   'design', 'drawing', 'photo', 'model', 'doujin', 'cosplay', 'travel', 'coding', 'chill',
@@ -359,7 +388,7 @@ const About: NextPage = () => {
         viewport={{ once: true, margin: '-80px' }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       >
-        <StickerSheet />
+        <DeferredStickerSheet />
       </MotionBox>
 
       {/* Footer strip */}

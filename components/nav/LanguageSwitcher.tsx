@@ -20,7 +20,7 @@ const LanguageSwitcher: React.FC = () => {
     <Box position="relative" ml="auto" pl={4}>
       <styled.button
         type="button"
-        aria-label={t('language.label')}
+        aria-label={`${t('language.label')}: ${locale.toUpperCase()}`}
         aria-expanded={isOpen}
         onClick={() => setOpen((open) => !open)}
         display="inline-flex"

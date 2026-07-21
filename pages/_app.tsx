@@ -49,7 +49,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Head>
       <LocaleProvider locale={locale}>
         <TopBar />
-        <Component {...pageProps} />
+        <main>
+          <Component {...pageProps} />
+        </main>
         <PageMeta />
       </LocaleProvider>
     </>

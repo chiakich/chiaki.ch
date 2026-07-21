@@ -155,7 +155,12 @@ const TopBar: React.FC = () => {
               }}
             />
             <Link href={localizedPath('/', locale)}>
-              <Image src="/assets/icon/logo_white.svg" alt={t('accessibility.logo')} height="20px" />
+              <Image
+                src="/assets/icon/logo_white.svg"
+                alt={t('accessibility.logo')}
+                width="20px"
+                height="20px"
+              />
             </Link>
 
             <HStack
