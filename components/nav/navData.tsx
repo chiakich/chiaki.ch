@@ -31,7 +31,7 @@ export type Translate = (key: string) => string
 
 export const getMainLinks = (t: Translate): [string, string][] => [
   [t('nav.home'), '/'],
-  [t('nav.about'), '/about'],
+  [t('nav.profile'), '/profile'],
   [t('nav.story'), '/story'],
   [t('nav.works'), '/works'],
   [t('nav.fonts'), '/fonts'],

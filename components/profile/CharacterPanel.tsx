@@ -7,8 +7,8 @@ import {
   type MotionValue,
 } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
-import Barcode from 'components/about/Barcode'
-import { ACCENT } from 'components/about/theme'
+import Barcode from 'components/profile/Barcode'
+import { ACCENT } from 'components/profile/theme'
 import { useI18n } from 'i18n'
 
 const Text = styled.p
@@ -122,7 +122,7 @@ const CharacterPanel = ({
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5, duration: 1 }}
       >
-        {t('aboutPage.characterPanel.name')}
+        {t('profilePage.characterPanel.name')}
       </MotionBox>
 
       {/* Top-left strip: barcode + label */}
@@ -190,7 +190,7 @@ const CharacterPanel = ({
             whiteSpace="nowrap"
             style={{ writingMode: 'vertical-rl' }}
           >
-            {t('aboutPage.characterPanel.name')}
+            {t('profilePage.characterPanel.name')}
           </Box>
           <Text
             fontWeight="black"
@@ -223,8 +223,8 @@ const CharacterPanel = ({
 
       <MotionImg
         ref={imgRef}
-        src="/assets/about/chiaki_v2_web.webp"
-        alt={t('aboutPage.characterPanel.alt')}
+        src="/assets/profile/chiaki_v2_web.webp"
+        alt={t('profilePage.characterPanel.alt')}
         position="absolute"
         bottom="0"
         left="50%"

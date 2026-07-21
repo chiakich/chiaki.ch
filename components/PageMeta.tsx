@@ -12,7 +12,7 @@ type PageMeta = {
 
 const pageMetadata: Record<string, PageMeta> = {
   '/': { key: 'home', image: '/og/home.jpeg' },
-  '/about': { key: 'about', image: '/og/about.jpeg' },
+  '/profile': { key: 'profile', image: '/og/profile.jpeg' },
   '/story': { key: 'story', image: '/og/story.jpeg' },
   '/story/character': { key: 'character', image: '/og/story-character.jpeg' },
   '/story/character/art': { key: 'art', image: '/og/story-character-art.jpeg' },
@@ -37,7 +37,7 @@ const languageTags: Record<Locale, string> = {
 }
 
 const pageSchemaType: Record<string, string> = {
-  '/about': 'AboutPage',
+  '/profile': 'ProfilePage',
   '/works': 'CollectionPage',
   '/fonts': 'CollectionPage',
   '/works/chiakey': 'SoftwareApplication',

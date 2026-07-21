@@ -52,8 +52,8 @@ export default defineConfig({
         colors: {
           accent: { value: '#df8a42' },
           accentSoft: { value: '#f5c8a1' },
-          aboutAccent: { value: '#ff7829' },
-          aboutAccentSoft: { value: '#f5c8a1' },
+          profileAccent: { value: '#ff7829' },
+          profileAccentSoft: { value: '#f5c8a1' },
         },
       },
       semanticTokens: {

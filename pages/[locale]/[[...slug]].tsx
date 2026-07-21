@@ -7,7 +7,7 @@ import dynamic from 'next/dynamic'
 // but split into its own chunk so one locale page doesn't bundle every route's JS.
 const routes: Record<string, ComponentType> = {
   '': dynamic(() => import('pages/index')),
-  about: dynamic(() => import('pages/about')),
+  profile: dynamic(() => import('pages/profile')),
   story: dynamic(() => import('pages/story')),
   'story/character': dynamic(() => import('pages/story/character')),
   'story/character/art': dynamic(() => import('pages/story/character/art')),

@@ -23,7 +23,7 @@ const captureDelay = Number(process.env.OG_CAPTURE_DELAY || 6000)
 
 const pages = [
   ['/', 'home'],
-  ['/about', 'about'],
+  ['/profile', 'profile'],
   ['/links', 'links'],
   ['/story', 'story'],
   ['/story/character', 'story-character'],

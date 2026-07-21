@@ -1,7 +1,7 @@
 {
   "nav": {
     "home": "首頁",
-    "about": "關於",
+    "profile": "自介",
     "story": "故事",
     "works": "作品",
     "fonts": "字體",
@@ -30,7 +30,7 @@
       "title": "千秋稻荷社 - Chiaki Inari Shrine",
       "description": "千秋稻荷社是專注於技術、字型設計與次文化研究的個人同人社團；由涼風千秋經營，創作平面設計、插畫與開源軟體。"
     },
-    "about": {
+    "profile": {
       "title": "關於千秋 - 千秋稻荷社",
       "description": "您好！我是涼風千秋。畫畫、做設計師、寫程式的人，永遠都在挖坑與填坑的路上。參與開源字體與同人文化。"
     },
@@ -151,7 +151,7 @@
       }
     }
   },
-  "aboutPage": {
+  "profilePage": {
     "header": {
       "eyebrow": "ABOUT  //  PROFILE_01",
       "namePart1": "涼風",

@@ -11,10 +11,10 @@ import Image from 'next/image'
 import NextLink from 'next/link'
 import dynamic from 'next/dynamic'
 import { useEffect, useRef, useState } from 'react'
-import Barcode from 'components/about/Barcode'
-import CharacterPanel from 'components/about/CharacterPanel'
-import InterestCard from 'components/about/InterestCard'
-import Section from 'components/about/Section'
+import Barcode from 'components/profile/Barcode'
+import CharacterPanel from 'components/profile/CharacterPanel'
+import InterestCard from 'components/profile/InterestCard'
+import Section from 'components/profile/Section'
 import { useI18n } from 'i18n'
 
 const Heading = styled.h2
@@ -24,7 +24,7 @@ const ListItem = styled.li
 const Span = styled.span
 
 const MotionBox = motion.create(Box)
-const StickerSheet = dynamic(() => import('components/about/StickerSheet'), {
+const StickerSheet = dynamic(() => import('components/profile/StickerSheet'), {
   ssr: false,
 })
 
@@ -58,7 +58,7 @@ const interestIds = [
   'design', 'drawing', 'photo', 'model', 'doujin', 'cosplay', 'travel', 'coding', 'chill',
 ]
 
-const About: NextPage = () => {
+const Profile: NextPage = () => {
   const { t } = useI18n()
   const rootRef = useRef<HTMLDivElement>(null)
   const mouseX = useMotionValue(0)
@@ -70,9 +70,9 @@ const About: NextPage = () => {
   const barY = useTransform(scrollYProgress, [0, 1], ['0%', '-30%'])
   const interests = interestIds.map((id) => ({
     id,
-    title: t(`aboutPage.interests.${id}.title`),
-    en: t(`aboutPage.interests.${id}.tag`),
-    description: t(`aboutPage.interests.${id}.description`),
+    title: t(`profilePage.interests.${id}.title`),
+    en: t(`profilePage.interests.${id}.tag`),
+    description: t(`profilePage.interests.${id}.description`),
   }))
 
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -113,7 +113,7 @@ const About: NextPage = () => {
         left="-6%"
         width="46%"
         height="10px"
-        background="linear-gradient(90deg, color-mix(in srgb, var(--colors-about-accent) 40%, transparent), transparent)"
+        background="linear-gradient(90deg, color-mix(in srgb, var(--colors-profile-accent) 40%, transparent), transparent)"
         transform="rotate(-18deg)"
         style={{ y: barY }}
         pointerEvents="none"
@@ -125,7 +125,7 @@ const About: NextPage = () => {
         left="-10%"
         width="36%"
         height="4px"
-        background="linear-gradient(90deg, color-mix(in srgb, var(--colors-about-accent) 25%, transparent), transparent)"
+        background="linear-gradient(90deg, color-mix(in srgb, var(--colors-profile-accent) 25%, transparent), transparent)"
         transform="rotate(-18deg)"
         style={{ y: barY }}
         pointerEvents="none"
@@ -191,12 +191,12 @@ const About: NextPage = () => {
                 borderRadius="full"
                 overflow="hidden"
                 boxSize="64px"
-                border="2px solid var(--colors-about-accent)"
+                border="2px solid var(--colors-profile-accent)"
                 flexShrink={0}
               >
                 <Image
                   src="/assets/img/profile.webp"
-                  alt={t('aboutPage.header.profileAlt')}
+                  alt={t('profilePage.header.profileAlt')}
                   width={64}
                   height={64}
                   style={{ objectFit: 'cover', width: '100%', height: '100%' }}
@@ -206,12 +206,12 @@ const About: NextPage = () => {
                 fontFamily="mono"
                 fontSize={{ base: 'xs', md: 'sm' }}
                 letterSpacing={{ base: '0.2em', md: '0.35em' }}
-                color="aboutAccent"
+                color="profileAccent"
                 fontWeight="bold"
               >
-                {t('aboutPage.header.eyebrow')}
+                {t('profilePage.header.eyebrow')}
               </Text>
-              <Span color="aboutAccent" fontWeight="black" letterSpacing="-0.05em" aria-hidden>
+              <Span color="profileAccent" fontWeight="black" letterSpacing="-0.05em" aria-hidden>
                 ⟩⟩⟩
               </Span>
             </HStack>
@@ -224,13 +224,13 @@ const About: NextPage = () => {
               letterSpacing="-0.02em"
               mb={4}
             >
-              {t('aboutPage.header.namePart1')}
+              {t('profilePage.header.namePart1')}
               <Span position="relative" display="inline-block" mx="0.1em">
                 {/* Offset outline echo */}
                 <Span
                   position="absolute"
                   inset="0.05em -0.08em -0.02em"
-                  border="2px solid color-mix(in srgb, var(--colors-about-accent) 53%, transparent)"
+                  border="2px solid color-mix(in srgb, var(--colors-profile-accent) 53%, transparent)"
                   transform="skewX(-6deg) translate(0.07em, 0.07em)"
                   clipPath="polygon(0 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%)"
                   zIndex={0}
@@ -240,7 +240,7 @@ const About: NextPage = () => {
                 <Span
                   position="absolute"
                   inset="0.05em -0.08em -0.02em"
-                  backgroundColor="aboutAccent"
+                  backgroundColor="profileAccent"
                   transform="skewX(-6deg)"
                   clipPath="polygon(0 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%)"
                   outline="1px solid rgba(0,0,0,0.3)"
@@ -265,7 +265,7 @@ const About: NextPage = () => {
                   CK-02
                 </Span>
                 <Span position="relative" zIndex={1} color="black">
-                  {t('aboutPage.header.namePart2')}
+                  {t('profilePage.header.namePart2')}
                 </Span>
               </Span>
             </Heading>
@@ -287,31 +287,31 @@ const About: NextPage = () => {
             <Text
               fontSize={{ base: 'lg', md: 'xl' }}
               fontWeight="regular"
-              color="aboutAccentSoft"
+              color="profileAccentSoft"
               mb={5}
             >
-              {t('aboutPage.header.tagline')}
+              {t('profilePage.header.tagline')}
             </Text>
             <Text fontSize={{ base: 'md', md: 'lg' }} lineHeight="1.9" maxW="520px">
-              {t('aboutPage.header.introLine1')}
+              {t('profilePage.header.introLine1')}
               <br />
-              {t('aboutPage.header.introLine2')}
+              {t('profilePage.header.introLine2')}
             </Text>
           </MotionBox>
 
           <VStack gap={16} alignItems="start">
-            <Section en={t('aboutPage.sections.nowPlaying.tag')} code="SEC.01" title={t('aboutPage.sections.nowPlaying.title')}>
+            <Section en={t('profilePage.sections.nowPlaying.tag')} code="SEC.01" title={t('profilePage.sections.nowPlaying.title')}>
               <List display="flex" flexDirection="column" gap={3} pl="1.5rem">
                 <ListItem>
-                  {t('aboutPage.sections.nowPlaying.item1')}
+                  {t('profilePage.sections.nowPlaying.item1')}
                 </ListItem>
                 <ListItem>
-                  {t('aboutPage.sections.nowPlaying.item2')}
+                  {t('profilePage.sections.nowPlaying.item2')}
                 </ListItem>
               </List>
             </Section>
 
-            <Section en={t('aboutPage.sections.interests.tag')} code="SEC.02" title={t('aboutPage.sections.interests.title')}>
+            <Section en={t('profilePage.sections.interests.tag')} code="SEC.02" title={t('profilePage.sections.interests.title')}>
               <Grid columns={{ base: 1, md: 2 }} gap={4} mt={2}>
                 {interests.map((item, i) => (
                   <InterestCard
@@ -325,39 +325,39 @@ const About: NextPage = () => {
               </Grid>
             </Section>
 
-            <Section en={t('aboutPage.sections.gettingAlong.tag')} code="SEC.03" title={t('aboutPage.sections.gettingAlong.title')}>
+            <Section en={t('profilePage.sections.gettingAlong.tag')} code="SEC.03" title={t('profilePage.sections.gettingAlong.title')}>
               <Text>
-                {t('aboutPage.sections.gettingAlong.line1')}
+                {t('profilePage.sections.gettingAlong.line1')}
                 <br />
-                {t('aboutPage.sections.gettingAlong.line2')}
+                {t('profilePage.sections.gettingAlong.line2')}
                 <br />
-                {t('aboutPage.sections.gettingAlong.line3')}
+                {t('profilePage.sections.gettingAlong.line3')}
               </Text>
             </Section>
 
-            <Section en={t('aboutPage.sections.oneRequest.tag')} code="SEC.04" title={t('aboutPage.sections.oneRequest.title')}>
+            <Section en={t('profilePage.sections.oneRequest.tag')} code="SEC.04" title={t('profilePage.sections.oneRequest.title')}>
               <Text>
-                {t('aboutPage.sections.oneRequest.line1')}
+                {t('profilePage.sections.oneRequest.line1')}
                 <br />
-                {t('aboutPage.sections.oneRequest.line2')}
+                {t('profilePage.sections.oneRequest.line2')}
                 <br />
-                {t('aboutPage.sections.oneRequest.line3')}
+                {t('profilePage.sections.oneRequest.line3')}
               </Text>
             </Section>
 
-            <Section en={t('aboutPage.sections.contact.tag')} code="SEC.05" title={t('aboutPage.sections.contact.title')}>
+            <Section en={t('profilePage.sections.contact.tag')} code="SEC.05" title={t('profilePage.sections.contact.title')}>
               <Text>
-                {t('aboutPage.sections.contact.textBefore')}{' '}
+                {t('profilePage.sections.contact.textBefore')}{' '}
                 <NextLink
                   href="/sns"
                   style={{
-                    color: 'var(--colors-about-accent)',
-                    borderBottom: '1px solid color-mix(in srgb, var(--colors-about-accent) 40%, transparent)',
+                    color: 'var(--colors-profile-accent)',
+                    borderBottom: '1px solid color-mix(in srgb, var(--colors-profile-accent) 40%, transparent)',
                   }}
                 >
-                  {t('aboutPage.sections.contact.linkLabel')}
+                  {t('profilePage.sections.contact.linkLabel')}
                 </NextLink>
-                {t('aboutPage.sections.contact.textAfter')}
+                {t('profilePage.sections.contact.textAfter')}
               </Text>
             </Section>
           </VStack>
@@ -393,7 +393,7 @@ const About: NextPage = () => {
 
       {/* Footer strip */}
       <Box
-        borderTop="1px solid color-mix(in srgb, var(--colors-about-accent) 20%, transparent)"
+        borderTop="1px solid color-mix(in srgb, var(--colors-profile-accent) 20%, transparent)"
         py={4}
         position="relative"
         zIndex={1}
@@ -407,7 +407,7 @@ const About: NextPage = () => {
         <Box
           width={{ base: '32px', sm: '64px' }}
           height="6px"
-          background="repeating-linear-gradient(-45deg, var(--colors-about-accent) 0 8px, transparent 8px 16px)"
+          background="repeating-linear-gradient(-45deg, var(--colors-profile-accent) 0 8px, transparent 8px 16px)"
           flexShrink={0}
         />
         <Span
@@ -415,16 +415,16 @@ const About: NextPage = () => {
           fontSize={{ base: 'xs', sm: 'sm' }}
           fontWeight="bold"
           letterSpacing={{ base: '0.15em', sm: '0.3em' }}
-          color="color-mix(in srgb, var(--colors-about-accent) 80%, transparent)"
+          color="color-mix(in srgb, var(--colors-profile-accent) 80%, transparent)"
           textAlign="center"
           whiteSpace={{ base: 'normal', sm: 'nowrap' }}
         >
-          {t('aboutPage.footer')}
+          {t('profilePage.footer')}
         </Span>
         <Box
           width={{ base: '32px', sm: '64px' }}
           height="6px"
-          background="repeating-linear-gradient(-45deg, var(--colors-about-accent) 0 8px, transparent 8px 16px)"
+          background="repeating-linear-gradient(-45deg, var(--colors-profile-accent) 0 8px, transparent 8px 16px)"
           flexShrink={0}
         />
       </Box>
@@ -432,4 +432,4 @@ const About: NextPage = () => {
   )
 }
 
-export default About
+export default Profile
