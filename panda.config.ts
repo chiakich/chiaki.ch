@@ -52,25 +52,25 @@ export default defineConfig({
           body: {
             value: {
               base: '"xingothic-tc", "Noto Sans TC", sans-serif',
-              _jaEn: '"Source Han Sans TC", "xingothic-tc", "Noto Sans TC", sans-serif',
+              _jaEn: '"sourcehansans-tc", "xingothic-tc", "Noto Sans TC", sans-serif',
             },
           },
           akitra: {
             value: {
               base: 'akitra, "xingothic-tc", sans-serif',
-              _jaEn: 'akitra, "Source Han Sans TC", "xingothic-tc", sans-serif',
+              _jaEn: 'akitra, "sourcehansans-tc", "xingothic-tc", sans-serif',
             },
           },
           huninn: {
             value: {
               base: 'huninn, "xingothic-tc", sans-serif',
-              _jaEn: 'huninn, "Source Han Sans TC", "xingothic-tc", sans-serif',
+              _jaEn: 'huninn, "sourcehansans-tc", "xingothic-tc", sans-serif',
             },
           },
           cubic: {
             value: {
               base: 'cubic, "xingothic-tc", monospace',
-              _jaEn: 'cubic, "Source Han Sans TC", "xingothic-tc", monospace',
+              _jaEn: 'cubic, "sourcehansans-tc", "xingothic-tc", monospace',
             },
           },
         },
