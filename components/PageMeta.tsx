@@ -26,6 +26,7 @@ const pageMetadata: Record<string, PageMeta> = {
   '/fonts/akitra': { key: 'akitra', image: '/og/fonts-akitra.jpeg' },
   '/fonts/nixie': { key: 'nixie', image: '/og/fonts-nixie.jpeg' },
   '/fonts/huninn': { key: 'huninn', image: '/og/fonts-huninn.jpeg' },
+  '/blog': { key: 'blog', image: '/og/blog.jpeg' },
 }
 
 const fallbackMetadata = pageMetadata['/']
@@ -38,6 +39,7 @@ const languageTags: Record<Locale, string> = {
 
 const pageSchemaType: Record<string, string> = {
   '/profile': 'ProfilePage',
+  '/blog': 'Blog',
   '/works': 'CollectionPage',
   '/fonts': 'CollectionPage',
   '/works/chiakey': 'SoftwareApplication',

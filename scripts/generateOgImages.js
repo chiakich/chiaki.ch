@@ -38,6 +38,7 @@ const pages = [
   ['/fonts/akitra', 'fonts-akitra'],
   ['/fonts/nixie', 'fonts-nixie'],
   ['/fonts/huninn', 'fonts-huninn'],
+  ['/blog', 'blog'],
 ]
 
 if (!existsSync(outputDir)) throw new Error('找不到 out 目錄。請先執行 next build。')

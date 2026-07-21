@@ -74,7 +74,7 @@ const CharacterPanel = ({
       position="relative"
       width="100%"
       height={{ base: '68vh', lg: 'calc(100vh - 44px)' }}
-      overflowY="hidden"
+      overflow="hidden"
     >
       {/* Slanted accent panel */}
       <MotionBox

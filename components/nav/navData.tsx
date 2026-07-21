@@ -29,12 +29,13 @@ export interface NavSection {
 
 export type Translate = (key: string) => string
 
+// Home is reachable via the logo, so it is intentionally absent here to keep the top bar compact.
 export const getMainLinks = (t: Translate): [string, string][] => [
-  [t('nav.home'), '/'],
   [t('nav.profile'), '/profile'],
   [t('nav.story'), '/story'],
   [t('nav.works'), '/works'],
   [t('nav.fonts'), '/fonts'],
+  [t('nav.blog'), '/blog'],
 ]
 
 // 有 flyout 的區段。每個區段的第一個項目就是該區的 landing page。

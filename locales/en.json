@@ -5,6 +5,7 @@
     "story": "Story",
     "works": "Works",
     "fonts": "Fonts",
+    "blog": "Blog",
     "storyTitle": "Chiaki Inari Shrine",
     "storyIndex": "Story",
     "character": "Characters",
@@ -16,8 +17,8 @@
   },
   "language": {
     "label": "Change language",
-    "tw": "Traditional Chinese",
-    "ja": "Japanese",
+    "tw": "繁體中文",
+    "ja": "日本語",
     "en": "English"
   },
   "accessibility": {
@@ -73,6 +74,10 @@
     "fonts": {
       "title": "Fonts - Chiaki Inari Shrine",
       "description": "Typefaces designed or co-created by Chiaki, including Taiwan Railways lettering, AkiNixie numerals, and jf open Huninn."
+    },
+    "blog": {
+      "title": "Blog - Chiaki Inari Shrine",
+      "description": "Notes and journal entries by Chiaki."
     },
     "akitra": {
       "title": "Taiwan Railways Typeface - Chiaki Inari Shrine",
@@ -182,6 +187,11 @@
     "r18Images": "{count} R18 images",
     "files": "{count} files",
     "projects": { "20250505_眼睛條": "Eye stripe", "20250326_廢墟桌布": "Simulated game scene", "20250325_黑白小漫畫": "Outdoor hot spring!", "20250322_油畫桌布": "After the war", "20250127_抱枕": "Body pillow", "20250123_废墟": "Girls' Last Tour", "20250123_テトリス": "Tetris", "20240601_ 瀬世ナギ_泳裝": "Swimsuit", "20240329_SinnraArt_平塗立繪": "Flat-color character art", "20231226_動態貼圖": "Animated stickers", "20231214_亞莓生日賀圖": "Birthday illustration", "20231128_游標像素": "Cursor pixel art", "20230906_迷你像素gif": "Pixel-art idle animation", "20230726_鳳梨_黏土人": "I made a Nendoroid!", "20230614_shONe": "Yay", "20230215_NAiK_NSFW": "O-michi Play", "20221022_庸庸系_卡面圖": "Card illustration", "20220920_Q版": "Chibi", "20220916_BYO": "Car illustration pack", "20220812_shONe": "Character art", "20220810_夏伊": "Shai floral avatar", "20220703_rizu_頭貼": "Avatar", "20200622_咩替_打歌服設計": "Stage outfit design", "20180329_亞莓頭貼": "Amei avatar" }
+  },
+  "blogPage": {
+    "eyebrow": "BLOG",
+    "title": "Blog",
+    "comingSoon": "Coming soon."
   },
   "profilePage": {
     "header": {

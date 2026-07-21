@@ -1,10 +1,11 @@
 {
   "nav": {
     "home": "首頁",
-    "profile": "自介",
+    "profile": "關於我",
     "story": "故事",
     "works": "作品",
     "fonts": "字體",
+    "blog": "雜記",
     "storyTitle": "千秋稻荷社",
     "storyIndex": "故事",
     "character": "角色介紹",
@@ -73,6 +74,10 @@
     "fonts": {
       "title": "字體集 - 千秋稻荷社",
       "description": "千秋設計與參與製作的字體作品，包括台鐵客貨車字體、AkiNixie 數字字體與 jf open 粉圓。"
+    },
+    "blog": {
+      "title": "網誌 - 千秋稻荷社",
+      "description": "千秋的日常隨筆與筆記。"
     },
     "akitra": {
       "title": "台鐵客貨車字體 - 千秋稻荷社",
@@ -150,6 +155,11 @@
         ]
       }
     }
+  },
+  "blogPage": {
+    "eyebrow": "BLOG",
+    "title": "網誌",
+    "comingSoon": "內容整理中，近期上線。"
   },
   "profilePage": {
     "header": {

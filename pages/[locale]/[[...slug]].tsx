@@ -21,6 +21,7 @@ const routes: Record<string, ComponentType> = {
   'fonts/akitra': dynamic(() => import('pages/fonts/akitra')),
   'fonts/huninn': dynamic(() => import('pages/fonts/huninn')),
   'fonts/nixie': dynamic(() => import('pages/fonts/nixie')),
+  blog: dynamic(() => import('pages/blog')),
 }
 
 type LocalePageProps = { locale: Locale; route: string }

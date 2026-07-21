@@ -164,10 +164,10 @@ const TopBar: React.FC = () => {
             </Link>
 
             <HStack
-              gap={{ base: '12px', sm: '18px', md: '28px' }}
+              gap={{ base: '10px', sm: '16px', md: '28px' }}
               display={{ base: 'none', xs: 'flex' }}
               color="#F5F5F7"
-              fontSize="17px"
+              fontSize={{ base: '14px', sm: '15px', md: '17px' }}
               fontWeight="medium"
             >
               {mainLinks.map(([label, path]) => {
