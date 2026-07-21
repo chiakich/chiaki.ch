@@ -1,19 +1,22 @@
 import { motion } from 'framer-motion'
 import { SceneBackground } from '../ChiaKeySvgPrimitives'
+import { useI18n } from 'i18n'
 
 // 依實際行為：游標在句尾，按住 Shift、每按一次 ← 往前多選一個字，
 // 按三次選到「鹽酥雞」，Enter 加入使用者詞庫；或直接按 Ctrl+3。
 // 提示文字取自輸入法本體的 tooltip。
 const stepTimes = [0, .12, .16, .24, .28, .36, .4, 1]
 
-const AddPhraseScene = () => (
+const AddPhraseScene = () => {
+  const { t } = useI18n()
+  return (
   <svg
     viewBox="0 0 640 300"
     width="100%"
     role="img"
-    aria-label="按住 Shift 按三次左方向鍵，逐字選取「鹽酥雞」後按 Enter 加入使用者詞庫"
+    aria-label={t('chiakeyPage.scenes.addPhrase.ariaLabel')}
   >
-    <SceneBackground title="加入新詞" />
+    <SceneBackground title={t('chiakeyPage.scenes.addPhrase.title')} />
     {/* 選取範圍一格一格由句尾往前長 */}
     <motion.rect
       y="106"
@@ -151,6 +154,7 @@ const AddPhraseScene = () => (
       趕時間的話：control + 3 直接把游標前三個字加入
     </text>
   </svg>
-)
+  )
+}
 
 export default AddPhraseScene

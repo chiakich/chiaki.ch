@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { Keycap, SceneBackground } from '../ChiaKeySvgPrimitives'
+import { useI18n } from 'i18n'
 
 // 依實際行為：底線反映目前的斷詞（查｜相干｜純），
 // ← 讓游標一格一格往左跳到相干之間，按 Tab 強制斷詞，
@@ -7,9 +8,11 @@ import { Keycap, SceneBackground } from '../ChiaKeySvgPrimitives'
 // 字寬 30px：查104 相134 干164 純194（結尾 224）。
 const stepTimes = { jump1: .18, jump2: .32, tab: .48, swap: .56 }
 
-const SegmentationScene = () => (
-  <svg viewBox="0 0 640 300" width="100%" role="img" aria-label="游標一格一格移到相干之間按 Tab，「查 相干 純」重新斷詞成「茶香 甘醇」">
-    <SceneBackground title="Tab 斷詞" />
+const SegmentationScene = () => {
+  const { t } = useI18n()
+  return (
+  <svg viewBox="0 0 640 300" width="100%" role="img" aria-label={t('chiakeyPage.scenes.segmentation.ariaLabel')}>
+    <SceneBackground title={t('chiakeyPage.scenes.segmentation.title')} />
     {/* 斷詞前：查｜相干｜純 三段底線 */}
     <motion.g animate={{ opacity: [1, 1, 0, 0] }} transition={{ duration: 7, repeat: Infinity, times: [0, stepTimes.swap, stepTimes.swap + .06, 1] }}>
       <text x="104" y="140" fontSize="30" fill="#241533">查相干純</text>
@@ -38,8 +41,9 @@ const SegmentationScene = () => (
     <motion.g animate={{ opacity: [0, 0, 1, 1, 0] }} transition={{ duration: 7, repeat: Infinity, times: [0, stepTimes.tab - .06, stepTimes.tab, stepTimes.swap + .04, stepTimes.swap + .1] }}>
       <Keycap x={104} y={196} width={56} label="tab ⇥" />
     </motion.g>
-    <motion.text x="240" y="220" fontSize="13" fill="#7c6b90" animate={{ opacity: [0, 0, 1, 1] }} transition={{ duration: 7, repeat: Infinity, times: [0, stepTimes.swap + .06, stepTimes.swap + .14, 1] }}>在游標處強制斷詞，整句重新組字</motion.text>
+    <motion.text x="240" y="220" fontSize="13" fill="#7c6b90" animate={{ opacity: [0, 0, 1, 1] }} transition={{ duration: 7, repeat: Infinity, times: [0, stepTimes.swap + .06, stepTimes.swap + .14, 1] }}>{t('chiakeyPage.scenes.segmentation.note')}</motion.text>
   </svg>
-)
+  )
+}
 
 export default SegmentationScene

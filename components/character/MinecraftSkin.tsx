@@ -1,10 +1,12 @@
 import React, { useEffect, useRef } from 'react'
 import { Box, VStack, Center, styled } from 'styled-system/jsx'
+import { useI18n } from 'i18n'
 
 const Text = styled.p
 
 const MinecraftSkin: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const { t } = useI18n()
 
   useEffect(() => {
     // Use dynamic import to avoid SSR issues
@@ -56,7 +58,7 @@ const MinecraftSkin: React.FC = () => {
         {/* Section Title */}
         <VStack gap={6} marginBottom="40px" alignItems="start">
           <Text fontSize={{ base: '2xl', md: '3xl', lg: '4xl' }} fontWeight="bold">
-            Minecraft Skin
+            {t('characterPage.minecraftHeading')}
           </Text>
         </VStack>
 

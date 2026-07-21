@@ -3,6 +3,7 @@ import { Box, Flex, Grid, HStack, Stack, styled } from 'styled-system/jsx'
 import MotionSection from 'components/portfolio/MotionSection'
 import ProjectLink from 'components/portfolio/ProjectLink'
 import SectionHeading from 'components/portfolio/SectionHeading'
+import { useI18n } from 'i18n'
 
 const Heading = styled.h3
 const Text = styled.p
@@ -13,57 +14,10 @@ const Image = styled.img
 // ChiaKey-Lexicon 的四個資料層（release builder 依固定順序疊加），
 // 裝到使用者機器上之後，runtime 再疊上使用者詞庫與學習快取。
 // 陣列順序 = 疊放順序（index 0 在最底層）。
-const layers: { name: string; local?: boolean; fill: string; border: string }[] = [
-  { name: '基底詞庫與外部詞庫', fill: 'rgba(46,32,66,.94)', border: 'rgba(199,125,255,.22)' },
-  { name: '專案大詞庫', fill: 'rgba(66,26,84,.86)', border: 'rgba(199,125,255,.32)' },
-  { name: '自動熱門詞庫', fill: 'rgba(95,16,105,.78)', border: 'rgba(199,125,255,.45)' },
-  { name: '台灣用法校正層', fill: 'rgba(135,36,148,.72)', border: 'rgba(199,125,255,.58)' },
-  { name: '使用者詞庫＋學習快取', local: true, fill: 'rgba(178,68,190,.62)', border: 'rgba(236,220,255,.72)' },
-]
-
-const dataLayers = [
-  {
-    name: '相容性基底詞庫',
-    goal: '維持 ChiaKey runtime、既有 schema 與模組表的相容性。',
-    items: [
-      'keykey-boneyard-bootstrap',
-      'keykey-punctuations-cin',
-      'keykey-module-cin',
-      'keykey-prepopulated-service-data',
-      'bpmf-ext-cin',
-    ],
-  },
-  {
-    name: '外部詞庫',
-    goal: '包含新酷音、RIME等輸入法提供，成熟的繁中詞彙與讀音。',
-    items: ['libchewing-data', 'rime-essay', 'mozc-emoticon-data'],
-  },
-  {
-    name: '專案詞庫',
-    goal: '由我們維護的自製詞庫：修正已知缺漏、指定讀音、調整候選排序，加上台灣用語、合成語料與自動熱門詞提煉的 unigram／bigram 補充。',
-    items: [
-      'chiaki-modern-overlay',
-      'chiaki-auto-hotwords-overlay',
-      'chiaki-synthetic-overlay',
-      '...',
-    ],
-  },
-  {
-    name: '校正層',
-    goal: '小型已審查規則，讓預設繁中（zh-TW）輸出符合台灣常用用法。以及校正句段碎片權重上限，抑制偷字造成的錯誤斷詞。',
-    items: ['chiaki-rime-conversion-policy', 'chiaki-fragment-denylist'],
-  },
-]
-
-const localLayers = [
-  ['使用者詞庫', 'Shift 選取或 Ctrl+[數字鍵] 加入的自訂詞，留在你的機器上，可匯入匯出。'],
-  ['學習快取', '選字紀錄與詞頻。'],
-]
-
 const spreadY = (index: number) => 115 - index * 105
 const stackedY = (index: number) => 10 - index * 39
 
-const LexiconLayers = () => (
+const LexiconLayers = ({ layers, localMachine }: { layers: { name: string; local?: boolean; fill: string; border: string }[]; localMachine: string }) => (
   <Box
     position="relative"
     height={{ base: '450px', md: '450px' }}
@@ -108,7 +62,7 @@ const LexiconLayers = () => (
             </Text>
             {local && (
               <Text fontSize="10px" color="rgba(236,220,255,.7)">
-                · 你的機器
+                · {localMachine}
               </Text>
             )}
           </HStack>
@@ -118,11 +72,29 @@ const LexiconLayers = () => (
   </Box>
 )
 
-const ChiaKeyLexicon = () => (
+const ChiaKeyLexicon = () => {
+  const { t } = useI18n()
+  const layers = [
+    { name: t('chiakeyPage.lexicon.layers.0'), fill: 'rgba(46,32,66,.94)', border: 'rgba(199,125,255,.22)' },
+    { name: t('chiakeyPage.lexicon.layers.1'), fill: 'rgba(66,26,84,.86)', border: 'rgba(199,125,255,.32)' },
+    { name: t('chiakeyPage.lexicon.layers.2'), fill: 'rgba(95,16,105,.78)', border: 'rgba(199,125,255,.45)' },
+    { name: t('chiakeyPage.lexicon.layers.3'), fill: 'rgba(135,36,148,.72)', border: 'rgba(199,125,255,.58)' },
+    { name: t('chiakeyPage.lexicon.layers.4'), local: true, fill: 'rgba(178,68,190,.62)', border: 'rgba(236,220,255,.72)' },
+  ]
+  const dataLayerItems = [
+    ['keykey-boneyard-bootstrap', 'keykey-punctuations-cin', 'keykey-module-cin', 'keykey-prepopulated-service-data', 'bpmf-ext-cin'],
+    ['libchewing-data', 'rime-essay', 'mozc-emoticon-data'],
+    ['chiaki-modern-overlay', 'chiaki-auto-hotwords-overlay', 'chiaki-synthetic-overlay', '...'],
+    ['chiaki-rime-conversion-policy', 'chiaki-fragment-denylist'],
+  ]
+  const dataLayers = dataLayerItems.map((items, index) => ({ name: t(`chiakeyPage.lexicon.dataLayers.${index}.title`), goal: t(`chiakeyPage.lexicon.dataLayers.${index}.description`), items }))
+  const localLayers = [0, 1].map((index) => [t(`chiakeyPage.lexicon.localLayers.${index}.title`), t(`chiakeyPage.lexicon.localLayers.${index}.description`)])
+
+  return (
   <Stack gap={2}>
     <Image
       src="/assets/works/chiakey/chiakey-lexicon-icon.webp"
-      alt="ChiaKey-Lexicon 圖示"
+      alt={t('chiakeyPage.lexicon.iconAlt')}
       width={{ base: '76px', md: '104px' }}
       height={{ base: '76px', md: '104px' }}
       mx="auto"
@@ -131,15 +103,15 @@ const ChiaKeyLexicon = () => (
       boxShadow="0 18px 40px rgba(7,2,14,.32)"
     />
     <SectionHeading
-      en="Lexicon"
+      en={t('chiakeyPage.lexicon.english')}
       accent="#c77dff"
       center
-      sub="詞庫不只是一份單一清單。千秋輸入法的詞庫為了還原手感，融合了多來源詞庫，智慧選擇最適合台灣日常使用的詞彙；裝進你的 Mac 之後，再疊上屬於你的兩層。"
+      sub={t('chiakeyPage.lexicon.description')}
     >
-      層層詞庫，更懂你
+      {t('chiakeyPage.lexicon.title')}
     </SectionHeading>
     <MotionSection>
-      <LexiconLayers />
+      <LexiconLayers layers={layers} localMachine={t('chiakeyPage.lexicon.localMachine')} />
     </MotionSection>
     <Grid columns={{ base: 1, md: 2 }} gap={4} mt={{ base: 8, md: 12 }}>
       {dataLayers.map(({ name, goal, items }, index) => (
@@ -196,7 +168,7 @@ const ChiaKeyLexicon = () => (
               />
               <Heading fontSize="md">{name}</Heading>
               <Text fontSize="10px" opacity={0.5}>
-                你的機器
+                {t('chiakeyPage.lexicon.localMachine')}
               </Text>
             </HStack>
             <Text fontSize="xs" opacity={0.6} lineHeight="1.9">
@@ -216,14 +188,14 @@ const ChiaKeyLexicon = () => (
         <Grid columns={{ base: 1, md: 2 }} gap={8} alignItems="center">
           <Stack gap={3}>
             <Heading fontSize="xl" letterSpacing="-.01em">
-              詞庫更新，不用重裝輸入法
+              {t('chiakeyPage.lexicon.update.title')}
             </Heading>
             <Text fontSize="sm" lineHeight="2" opacity={0.7}>
-              四個資料層詞庫會在{' '}
+              {t('chiakeyPage.lexicon.update.before')}{' '}
               <Code fontSize=".95em" color="#d49bff">
                 ChiaKey-Lexicon
               </Code>{' '}
-              合成後獨立更新。輸入法會自動檢查最新詞庫並驗證，通過才會啟用。你的自訂詞與選字紀錄則一直留在本機的資料庫。
+              {' '}{t('chiakeyPage.lexicon.update.after')}
             </Text>
           </Stack>
           <HStack
@@ -233,7 +205,7 @@ const ChiaKeyLexicon = () => (
           >
             <ProjectLink
               href="https://github.com/chiakich/ChiaKey-Lexicon"
-              label="參與補詞"
+              label={t('chiakeyPage.lexicon.update.contribute')}
               detail="GitHub"
               accent="#c77dff"
             />
@@ -242,6 +214,7 @@ const ChiaKeyLexicon = () => (
       </Box>
     </MotionSection>
   </Stack>
-)
+  )
+}
 
 export default ChiaKeyLexicon

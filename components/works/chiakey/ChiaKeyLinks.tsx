@@ -2,39 +2,40 @@ import { Box, Grid, HStack, Stack, styled } from 'styled-system/jsx'
 import MotionSection from 'components/portfolio/MotionSection'
 import ProjectLink from 'components/portfolio/ProjectLink'
 import SectionHeading from 'components/portfolio/SectionHeading'
+import { useI18n } from 'i18n'
 
 const Heading = styled.h3
 const Text = styled.p
 const Image = styled.img
 
-const audiences = ['懷念 Yahoo! 奇摩輸入法／KeyKey 的手感', '想保存或研究 KeyKey／OpenVanilla 引擎', '想要一套行為穩定、不常改動的注音輸入法']
+const ChiaKeyLinks = () => {
+  const { t } = useI18n()
+  const audiences = [0, 1, 2].map((index) => t(`chiakeyPage.download.audiences.${index}`))
 
-const ChiaKeyLinks = () => (
+  return (
   <MotionSection>
-    <SectionHeading en="DOWNLOAD" accent="#c77dff">
-      安裝
+    <SectionHeading en={t('chiakeyPage.download.english')} accent="#c77dff">
+      {t('chiakeyPage.download.title')}
     </SectionHeading>
     <Grid columns={{ base: 1, md: 2 }} gap={8}>
       <Stack gap={5}>
         <Text lineHeight="1.9" opacity={0.8}>
-          下載 .pkg 安裝，然後到「系統設定 → 鍵盤 → 輸入方式」加入千秋輸入法。支援
-          Apple Silicon。
+          {t('chiakeyPage.download.description')}
         </Text>
         <HStack gap={3} flexWrap="wrap">
           <ProjectLink
             href="https://github.com/chiakich/ChiaKey/releases/latest"
-            label="最新版本"
+            label={t('chiakeyPage.download.latest')}
             accent="#c77dff"
           />
           <ProjectLink
             href="https://github.com/chiakich/ChiaKey"
-            label="原始碼"
+            label={t('chiakeyPage.download.source')}
             accent="#e3c8f5"
           />
         </HStack>
         <Text fontSize="xs" opacity={0.48} lineHeight="1.7">
-          ChiaKey 不是 Yahoo 官方產品。原始碼依 BSD-style 授權釋出；Yahoo!
-          名稱與貢獻者姓名不得在未取得書面同意時用於背書衍生產品。
+          {t('chiakeyPage.download.disclaimer')}
         </Text>
       </Stack>
       <Box
@@ -45,7 +46,7 @@ const ChiaKeyLinks = () => (
         overflow="hidden"
       >
         <Heading fontSize="lg" mb={5}>
-          適合這樣的你
+          {t('chiakeyPage.download.audienceTitle')}
         </Heading>
         <Stack gap={4}>
           {audiences.map((item, index) => (
@@ -61,7 +62,7 @@ const ChiaKeyLinks = () => (
         </Stack>
         <Image
           src="/assets/works/chiakey/chiaki.gif"
-          alt="千秋角色動畫"
+          alt={t('chiakeyPage.download.imageAlt')}
           position="absolute"
           right="-12px"
           bottom="-36px"
@@ -71,6 +72,7 @@ const ChiaKeyLinks = () => (
       </Box>
     </Grid>
   </MotionSection>
-)
+  )
+}
 
 export default ChiaKeyLinks

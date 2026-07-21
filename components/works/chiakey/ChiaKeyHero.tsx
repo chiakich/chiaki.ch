@@ -182,7 +182,7 @@ const ChiaKeyHero = () => {
           >
             <Image
               src="/assets/works/chiakey/chiakey-icon.webp"
-              alt="ChiaKey 輸入法圖示"
+              alt={t('chiakeyPage.hero.iconAlt')}
               width={{ base: '76px', md: '104px' }}
               height={{ base: '76px', md: '104px' }}
               mx="auto"
@@ -210,12 +210,12 @@ const ChiaKeyHero = () => {
               color="#f4eaff"
               opacity={0.85}
             >
-              熟悉的組字手感與候選窗，現已支援 Apple Silicon
+              {t('chiakeyPage.hero.lead')}
             </Text>
             <HStack mt={8} gap={4} justifyContent="center" flexWrap="wrap">
               <ProjectLink
                 href={pkg?.url ?? releasesFallback}
-                label="下載"
+                label={t('chiakeyPage.hero.download')}
                 detail={pkg ? `${pkg.version} .pkg` : 'macOS .pkg'}
                 accent="#d49bff"
                 solid
@@ -223,7 +223,7 @@ const ChiaKeyHero = () => {
               />
               <ProjectLink
                 href="https://github.com/chiakich/ChiaKey"
-                label="瀏覽原始碼"
+                label={t('chiakeyPage.hero.source')}
                 accent="#ecdcff"
               />
             </HStack>

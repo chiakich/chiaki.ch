@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { SceneBackground } from '../ChiaKeySvgPrimitives'
+import { useI18n } from 'i18n'
 
 // 實際註冊的輸入模組：好打注音（預設）、傳統注音，以及倉頡與簡易（CIN 表格模組）。
 // 右側示範各模組的實際打法。
@@ -12,6 +13,7 @@ const engines: { name: string; keys: string[]; output: string; note: string }[] 
 ]
 
 const EnginesScene = () => {
+  const { t } = useI18n()
   const [active, setActive] = useState(0)
 
   useEffect(() => {
@@ -22,8 +24,8 @@ const EnginesScene = () => {
   const engine = engines[active]
 
   return (
-    <svg viewBox="0 0 640 300" width="100%" role="img" aria-label="好打注音、傳統注音、倉頡與簡易輸入模組的打法示範">
-      <SceneBackground title="輸入模組" />
+    <svg viewBox="0 0 640 300" width="100%" role="img" aria-label={t('chiakeyPage.scenes.engines.ariaLabel')}>
+      <SceneBackground title={t('chiakeyPage.scenes.engines.title')} />
       <rect x="72" y="76" width="216" height="182" rx="12" fill="#fdfdfd" stroke="#a795c0" filter="url(#shadow)" />
       {engines.map(({ name }, index) => {
         const rowY = 90 + index * 42
@@ -47,7 +49,7 @@ const EnginesScene = () => {
             </g>
           )
         })}
-        <text x="330" y="120" fontSize="12" fill="#7c6b90">輸入</text>
+        <text x="330" y="120" fontSize="12" fill="#7c6b90">{t('chiakeyPage.scenes.engines.input')}</text>
         <path d="M330 196 H366" stroke="#8a2b9e" strokeWidth="3" strokeLinecap="round" />
         <path d="M358 188 L370 196 L358 204" fill="none" stroke="#8a2b9e" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
         <text x="384" y="206" fontSize="28" fontWeight="bold" fill="#241533">{engine.output}</text>

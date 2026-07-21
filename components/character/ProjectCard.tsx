@@ -19,9 +19,11 @@ import { Project } from 'components/character/characterAssetsIndex'
 import R18Dialog from './R18Dialog'
 import { useR18Dialog } from './useR18Dialog'
 import NextImage from 'next/image'
+import { useI18n } from 'i18n'
 
 const Text = styled.p
 const Link = styled.a
+const withCount = (template: string, count: number) => template.replace('{count}', String(count))
 
 interface ProjectCardProps {
   project: Project
@@ -49,6 +51,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   showR18 = false,
   ageConfirmed = false,
 }): React.ReactElement => {
+  const { t } = useI18n()
+  const projectTitle = t(`characterPage.projects.${project.id}`)
   const { isOpen, imageIndex, cancelRef, openDialog, closeDialog, confirmDialog } =
     useR18Dialog()
   const {
@@ -76,7 +80,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     .filter((image: ImageType) => !image.r18 || showR18 || isAgeConfirmed)
     .map((image: ImageType) => ({
       src: image.path,
-      alt: `${project.title} - ${image.name}`,
+      alt: `${projectTitle} - ${image.name}`,
       download: image.path,
     }))
 
@@ -110,7 +114,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           .filter((img: ImageType) => !img.r18 || showR18 || true) // Now all R18 images are included
           .map((img: ImageType) => ({
             src: img.path,
-            alt: `${project.title} - ${img.name}`,
+            alt: `${projectTitle} - ${img.name}`,
             download: img.path,
           }))
 
@@ -162,7 +166,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         >
           <NextImage
             src={images[0].path}
-            alt={`${project.title} - ${images[0].name}`}
+            alt={`${projectTitle} - ${images[0].name}`}
             width={images[0].width || 383}
             height={images[0].height || 510}
             style={{
@@ -210,7 +214,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           >
             <NextImage
               src={images[0].path}
-              alt={`${project.title} - ${images[0].name}`}
+              alt={`${projectTitle} - ${images[0].name}`}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 510px"
               style={{
@@ -253,7 +257,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               >
                 <NextImage
                   src={image.path}
-                  alt={`${project.title} - ${image.name}`}
+                  alt={`${projectTitle} - ${image.name}`}
                   width={383}
                   height={510}
                   style={{
@@ -324,7 +328,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             >
               <NextImage
                 src={image.path}
-                alt={`${project.title} - ${image.name}`}
+                alt={`${projectTitle} - ${image.name}`}
                 width={383}
                 height={170}
                 style={{
@@ -371,7 +375,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           >
             <NextImage
               src={images[0].path}
-              alt={`${project.title} - ${images[0].name}`}
+              alt={`${projectTitle} - ${images[0].name}`}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
               style={{
@@ -416,7 +420,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               >
                 <NextImage
                   src={image.path}
-                  alt={`${project.title} - ${image.name}`}
+                  alt={`${projectTitle} - ${image.name}`}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 510px"
                   style={{
@@ -502,7 +506,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       {/* Title */}
       <Box px={4} pb={2}>
         <Text fontSize="xl" fontWeight="bold" color="white">
-          {project.title}
+          {projectTitle}
         </Text>
       </Box>
 
@@ -519,7 +523,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           <Divider borderColor="rgba(255, 255, 255, 0.1)" />
           <Box p={4}>
             <Text fontSize="sm" color="gray.300" marginBottom="8px">
-              下載檔案：
+              {t('characterPage.downloadFiles')}:
             </Text>
             <VStack gap={2} alignItems="stretch">
               {project.downloadFiles.map((file, index) => (
@@ -555,18 +559,18 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       <Divider borderColor="rgba(255, 255, 255, 0.1)" />
       <Flex p={3} justify="space-between" color="gray.400" fontSize="sm">
         <HStack gap={4}>
-          <Tooltip label="圖片數量">
+          <Tooltip label={t('characterPage.imageCount')}>
             <HStack>
-              <Text>{displayImages.length} 張圖片</Text>
+              <Text>{withCount(t('characterPage.images'), displayImages.length)}</Text>
               {displayImages.some((img) => img.r18) && !showR18 && (
                 <Text color="red.400">
-                  ({displayImages.filter((img) => img.r18).length} 張 R18)
+                  ({withCount(t('characterPage.r18Images'), displayImages.filter((img) => img.r18).length)})
                 </Text>
               )}
             </HStack>
           </Tooltip>
-          <Tooltip label="下載檔案">
-            <Text>{project.downloadFiles.length} 個檔案</Text>
+          <Tooltip label={t('characterPage.downloadFiles')}>
+            <Text>{withCount(t('characterPage.files'), project.downloadFiles.length)}</Text>
           </Tooltip>
         </HStack>
       </Flex>

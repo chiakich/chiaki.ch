@@ -174,7 +174,14 @@
     "confirmAge": "I am 18 or older",
     "loading": "Loading…",
     "initializing": "Initializing…",
-    "live2dDescription": "I tried making a Live2D model—move the mouse and its eyes will follow!"
+    "live2dDescription": "I tried making a Live2D model—move the mouse and its eyes will follow!",
+    "minecraftHeading": "Minecraft Skin",
+    "downloadFiles": "Downloads",
+    "imageCount": "Image count",
+    "images": "{count} images",
+    "r18Images": "{count} R18 images",
+    "files": "{count} files",
+    "projects": { "20250505_眼睛條": "Eye stripe", "20250326_廢墟桌布": "Simulated game scene", "20250325_黑白小漫畫": "Outdoor hot spring!", "20250322_油畫桌布": "After the war", "20250127_抱枕": "Body pillow", "20250123_废墟": "Girls' Last Tour", "20250123_テトリス": "Tetris", "20240601_ 瀬世ナギ_泳裝": "Swimsuit", "20240329_SinnraArt_平塗立繪": "Flat-color character art", "20231226_動態貼圖": "Animated stickers", "20231214_亞莓生日賀圖": "Birthday illustration", "20231128_游標像素": "Cursor pixel art", "20230906_迷你像素gif": "Pixel-art idle animation", "20230726_鳳梨_黏土人": "I made a Nendoroid!", "20230614_shONe": "Yay", "20230215_NAiK_NSFW": "O-michi Play", "20221022_庸庸系_卡面圖": "Card illustration", "20220920_Q版": "Chibi", "20220916_BYO": "Car illustration pack", "20220812_shONe": "Character art", "20220810_夏伊": "Shai floral avatar", "20220703_rizu_頭貼": "Avatar", "20200622_咩替_打歌服設計": "Stage outfit design", "20180329_亞莓頭貼": "Amei avatar" }
   },
   "aboutPage": {
     "header": {
@@ -456,5 +463,57 @@
     "currentTime": "Current time",
     "boardDestinations": "For Haneda Airport, Shinagawa, Shimbashi & Asakusa",
     "boardCaption": "A tribute to Keikyu Kawasaki Station’s pata-pata departure board, retired in 2022"
+  },
+  "chiakeyPage": {
+    "hero": { "iconAlt": "ChiaKey input method icon", "lead": "The familiar composing experience and candidate window, now with Apple Silicon support.", "download": "Download", "source": "View source" },
+    "features": {
+      "english": "Features", "title": "The familiar way, made easier", "description": "Careful refinements preserve the familiar feel while improving security and performance.",
+      "items": [
+        { "title": "Adaptive candidates", "description": "Candidate order combines the language model with your selection history. Frequently chosen characters rise to the top." },
+        { "title": "Add phrases", "description": "Hold Shift and press ← to expand the selection one character at a time, then press Enter to add it to your user dictionary. Ctrl+3 adds the three characters before the cursor directly (Ctrl+1–9 sets the length)." },
+        { "title": "Symbol table", "description": "Control+Command+. opens the symbol table. When the composition area is empty, Ctrl+0 also shows punctuation candidates." },
+        { "title": "Traditional-to-Simplified Chinese", "description": "Control+Command+G toggles the output filter: type Bopomofo as usual and commit Simplified Chinese. Command+Shift+Space toggles full-width Latin characters." },
+        { "title": "Tab segmentation", "description": "Move the cursor to where you want a break while composing and press Tab to force segmentation—the sentence is then recomposed around that boundary." },
+        { "title": "The old friends are still here", "description": "The default is smart Bopomofo composition, while the traditional Bopomofo, Cangjie, and Simple modules from the OpenVanilla era remain available." }
+      ]
+    },
+    "history": {
+      "english": "History", "title": "What is ChiaKey?", "description": "ChiaKey is a free, open-source revival of Yahoo! KeyKey, made to repair and improve it while recreating a lexicon with a familiar feel.", "imageAlt": "ChiaKey About screen", "body": "After ending the project, Yahoo! released its code as open source. ChiaKey starts from that codebase: replacing obsolete APIs, repairing missing pieces, and carefully improving functionality and performance so it can once again build, install, and type on modern macOS—and continue to be maintained.",
+      "timeline": [
+        { "title": "Yahoo! KeyKey launches", "description": "A free, cross-platform intelligent input method." },
+        { "title": "Project closes; source code opens", "description": "Released under a BSD-style license on GitHub (YahooArchive/KeyKey). The final installer has been continuously adapted by the community ever since." },
+        { "title": "Apple announces the end of x86 support", "description": "The final-generation installer will no longer install on macOS 26 and later." },
+        { "title": "ChiaKey", "description": "Repairs the app and organizes compatible lexicons for Apple Silicon and modern macOS." }
+      ],
+      "principles": [
+        { "title": "Keep the familiar feel", "description": "The first goal is to retain Yahoo! KeyKey’s composition, candidate window, and language model—the same way of typing." },
+        { "title": "Modernize carefully", "description": "Improve security and algorithms with modern APIs and compile for Apple Silicon." },
+        { "title": "A conservative pace", "description": "ChiaKey is not trying to compete on features with modern input methods. Its focus is stability." }
+      ]
+    },
+    "lexicon": {
+      "english": "Lexicon", "title": "Layered lexicons that understand you", "description": "A lexicon is more than one list. To restore the familiar feel, ChiaKey combines multiple sources and selects vocabulary suited to everyday Taiwanese usage; after installation on your Mac, it adds two layers that are yours.", "iconAlt": "ChiaKey-Lexicon icon", "localMachine": "your machine",
+      "layers": ["Base and external lexicons", "Project lexicon", "Automatic trending words", "Taiwan usage corrections", "User dictionary + learning cache"],
+      "dataLayers": [
+        { "title": "Compatibility base", "description": "Maintains compatibility with the ChiaKey runtime, existing schemas, and module tables." },
+        { "title": "External lexicons", "description": "Mature Traditional Chinese vocabulary and readings from input methods such as Chewing and RIME." },
+        { "title": "Project lexicon", "description": "Our maintained lexicon: fixes known gaps, specifies readings, tunes candidate order, and adds Taiwanese usage, synthetic corpora, and unigram/bigram supplements extracted from trending words." },
+        { "title": "Correction layer", "description": "Small reviewed rules keep default zh-TW output aligned with common Taiwanese usage and cap fragment weights to prevent incorrect segmentation caused by character stealing." }
+      ],
+      "localLayers": [
+        { "title": "User dictionary", "description": "Custom phrases added with Shift selection or Ctrl+[number] stay on your machine and can be imported or exported." },
+        { "title": "Learning cache", "description": "Your candidate selection history and word frequencies." }
+      ],
+      "update": { "title": "Update lexicons without reinstalling", "before": "The four data-layer lexicons are independently updated after", "after": "builds ChiaKey-Lexicon. The input method automatically checks and validates the newest lexicon before enabling it. Your custom phrases and selection history remain in the local database.", "contribute": "Contribute words" }
+    },
+    "scenes": {
+      "addPhrase": { "title": "Add phrases", "ariaLabel": "Hold Shift and press the left arrow three times to select the phrase, then press Enter to add it to the user dictionary" },
+      "conversion": { "title": "Traditional-to-Simplified Chinese", "ariaLabel": "Press Control, Command, and G to enable Traditional-to-Simplified conversion; committed text becomes Simplified Chinese", "composing": "still Traditional while composing", "committed": "converts when committed", "note": "Type and select candidates as usual; only committed output changes (Traditional → Simplified)" },
+      "engines": { "title": "Input modules", "ariaLabel": "Typing demonstrations for smart Bopomofo, traditional Bopomofo, Cangjie, and Simple input modules", "input": "Input" },
+      "learning": { "title": "Adaptive candidates", "ariaLabel": "After selecting a candidate, it moves to the first position next time", "first": "First time: choose the 2nd candidate", "next": "Next time: it is already 1st" },
+      "segmentation": { "title": "Tab segmentation", "ariaLabel": "Move the cursor between words and press Tab to resegment the composition", "note": "Force a boundary at the cursor and recompose the sentence" },
+      "symbols": { "title": "Symbol table", "ariaLabel": "Press Control, Command, and period to open the symbol table" }
+    },
+    "download": { "english": "DOWNLOAD", "title": "Install", "description": "Download and install the .pkg, then add ChiaKey in System Settings → Keyboard → Input Sources. Apple Silicon is supported.", "latest": "Latest release", "source": "Source code", "disclaimer": "ChiaKey is not an official Yahoo product. Its source is released under a BSD-style license; the Yahoo! name and contributor names may not endorse derivative products without written permission.", "audienceTitle": "Is this for you?", "imageAlt": "Animated Chiaki character", "audiences": ["You miss the feel of Yahoo! KeyKey", "You want to preserve or study the KeyKey/OpenVanilla engine", "You want a stable Bopomofo input method that does not change often"] }
   }
 }

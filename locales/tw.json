@@ -435,7 +435,14 @@
     "confirmAge": "確認已滿18歲",
     "loading": "載入中…",
     "initializing": "初始化中…",
-    "live2dDescription": "嘗試自己做了 Live2D 模型，移動滑鼠時眼睛會跟著動喔！"
+    "live2dDescription": "嘗試自己做了 Live2D 模型，移動滑鼠時眼睛會跟著動喔！",
+    "minecraftHeading": "Minecraft Skin",
+    "downloadFiles": "下載檔案",
+    "imageCount": "圖片數量",
+    "images": "{count} 張圖片",
+    "r18Images": "{count} 張 R18",
+    "files": "{count} 個檔案",
+    "projects": { "20250505_眼睛條": "眼睛條", "20250326_廢墟桌布": "模擬遊戲場景", "20250325_黑白小漫畫": "野外溫泉！", "20250322_油畫桌布": "戰後", "20250127_抱枕": "抱枕", "20250123_废墟": "少女終末旅行", "20250123_テトリス": "テトリス", "20240601_ 瀬世ナギ_泳裝": "泳裝", "20240329_SinnraArt_平塗立繪": "平塗立繪", "20231226_動態貼圖": "動態貼圖", "20231214_亞莓生日賀圖": "生日賀圖", "20231128_游標像素": "游標用像素圖", "20230906_迷你像素gif": "像素風待機動作", "20230726_鳳梨_黏土人": "做了黏土人！", "20230614_shONe": "耶", "20230215_NAiK_NSFW": "O道Play", "20221022_庸庸系_卡面圖": "卡面圖", "20220920_Q版": "Q版", "20220916_BYO": "車圖組合包", "20220812_shONe": "立繪", "20220810_夏伊": "夏伊花花頭貼", "20220703_rizu_頭貼": "頭貼", "20200622_咩替_打歌服設計": "打歌服設計", "20180329_亞莓頭貼": "亞莓頭貼" }
   },
   "nixiePage": {
     "story": "關於這套字",
@@ -621,5 +628,57 @@
     "currentTime": "現在時刻",
     "boardDestinations": "羽田空港　品川　新橋　浅草　方面",
     "boardCaption": "致敬 2022 年退役的京急川崎駅「パタパタ」發車標"
+  },
+  "chiakeyPage": {
+    "hero": { "iconAlt": "ChiaKey 輸入法圖示", "lead": "熟悉的組字手感與候選窗，現已支援 Apple Silicon", "download": "下載", "source": "瀏覽原始碼" },
+    "features": {
+      "english": "Features", "title": "熟悉的那套，更易用", "description": "在原本的基礎上稍加改造，保留熟悉的手感，並改善安全性與效能。",
+      "items": [
+        { "title": "選字學習", "description": "候選排序來自語言模型加上你的選字紀錄。常選的字下次會排前面。" },
+        { "title": "加入新詞", "description": "按住 Shift、每按一次 ← 就往前多選一個字，選好按 Enter 加入使用者詞庫；或按 Ctrl+3 直接取游標前三個字（Ctrl+1～9 對應字數）。" },
+        { "title": "符號表", "description": "Control+Command+. 開啟符號表。組字區是空的時候，按 Ctrl+0 也會列出標點符號候選。" },
+        { "title": "繁體中文轉簡體", "description": "Control+Command+G 切換輸出濾鏡，注音照打、送出簡體。另外 Command+Shift+Space 可切換全形英數。" },
+        { "title": "Tab 斷詞", "description": "組字中把游標移到想斷開的位置按 Tab，就在那裡強制斷詞——「查相干純」在相干之間按一下，整句重組成「茶香甘醇」。" },
+        { "title": "老朋友都還在", "description": "預設是好打注音的智慧組字，但傳統注音、倉頡、簡易這些 OpenVanilla 時代的輸入模組也一併保留。" }
+      ]
+    },
+    "history": {
+      "english": "History", "title": "什麼是千秋輸入法？", "description": "千秋輸入法是基於 Yahoo! 奇摩輸入法的免費開源復刻專案，旨在修復並改進其功能，並嘗試重製與其手感相仿的詞庫。", "imageAlt": "ChiaKey About 畫面", "body": "Yahoo 奇摩官方在專案停止後，大方地將程式碼開源。千秋輸入法以這份程式碼為起點，替換過時 API、修復遺漏內容，並有限度地改善功能與效能，讓它重新能在現代 macOS 上建置、安裝、輸入，並持續維護。",
+      "timeline": [
+        { "title": "Yahoo! 奇摩輸入法推出", "description": "跨平台的免費智慧輸入法。" },
+        { "title": "專案關閉、程式碼開源", "description": "採用 BSD-style 開源保存在 GitHub（YahooArchive/KeyKey）。最後一代安裝包經過社群不斷改造，延續至今。" },
+        { "title": "蘋果宣布終止支援 x86 架構", "description": "最後一代安裝包將無法在 macOS 26 之後的版本安裝。" },
+        { "title": "千秋輸入法", "description": "修復本體、整理相容詞庫，支援 Apple Silicon 與現代 macOS。" }
+      ],
+      "principles": [
+        { "title": "維持熟悉的手感", "description": "首要目標為嘗試保留 Yahoo! 奇摩輸入法的組字、候選窗與語言模型，打起來就是原本那一套。" },
+        { "title": "現代化改造", "description": "改進安全性與演算法，以新 API 改寫，並為 Apple Silicon 編譯。" },
+        { "title": "保守步調", "description": "千秋輸入法的目標，並非與現代輸入法比拼功能。本輸入法將專注在穩定性上。" }
+      ]
+    },
+    "lexicon": {
+      "english": "Lexicon", "title": "層層詞庫，更懂你", "description": "詞庫不只是一份單一清單。千秋輸入法的詞庫為了還原手感，融合了多來源詞庫，智慧選擇最適合台灣日常使用的詞彙；裝進你的 Mac 之後，再疊上屬於你的兩層。", "iconAlt": "ChiaKey-Lexicon 圖示", "localMachine": "你的機器",
+      "layers": ["基底詞庫與外部詞庫", "專案大詞庫", "自動熱門詞庫", "台灣用法校正層", "使用者詞庫＋學習快取"],
+      "dataLayers": [
+        { "title": "相容性基底詞庫", "description": "維持 ChiaKey runtime、既有 schema 與模組表的相容性。" },
+        { "title": "外部詞庫", "description": "包含新酷音、RIME 等輸入法提供的成熟繁中詞彙與讀音。" },
+        { "title": "專案詞庫", "description": "由我們維護的自製詞庫：修正已知缺漏、指定讀音、調整候選排序，加上台灣用語、合成語料與自動熱門詞提煉的 unigram／bigram 補充。" },
+        { "title": "校正層", "description": "小型已審查規則，讓預設繁中（zh-TW）輸出符合台灣常用用法；並校正句段碎片權重上限，抑制偷字造成的錯誤斷詞。" }
+      ],
+      "localLayers": [
+        { "title": "使用者詞庫", "description": "Shift 選取或 Ctrl+[數字鍵] 加入的自訂詞，留在你的機器上，可匯入匯出。" },
+        { "title": "學習快取", "description": "選字紀錄與詞頻。" }
+      ],
+      "update": { "title": "詞庫更新，不用重裝輸入法", "before": "四個資料層詞庫會在", "after": "合成後獨立更新。輸入法會自動檢查最新詞庫並驗證，通過才會啟用。你的自訂詞與選字紀錄則一直留在本機的資料庫。", "contribute": "參與補詞" }
+    },
+    "scenes": {
+      "addPhrase": { "title": "加入新詞", "ariaLabel": "按住 Shift 按三次左方向鍵，逐字選取鹽酥雞後按 Enter 加入使用者詞庫" },
+      "conversion": { "title": "繁體中文轉簡體", "ariaLabel": "按 Control、Command 與 G 勾選繁體轉簡體後，打字送出時轉成簡體", "composing": "組字中還是繁體", "committed": "送出時轉成簡體", "note": "注音照打、選字照選，只有送出的結果不一樣（單向繁 → 簡）" },
+      "engines": { "title": "輸入模組", "ariaLabel": "好打注音、傳統注音、倉頡與簡易輸入模組的打法示範", "input": "輸入" },
+      "learning": { "title": "選字學習", "ariaLabel": "選過再之後，下次輸入時再排到候選第一位", "first": "第一次：選第 2 個「再」", "next": "下一次：「再」已在第 1 位" },
+      "segmentation": { "title": "Tab 斷詞", "ariaLabel": "游標移到相干之間按 Tab，重新斷詞成茶香甘醇", "note": "在游標處強制斷詞，整句重新組字" },
+      "symbols": { "title": "符號表", "ariaLabel": "按 Control、Command 與句點開啟符號表" }
+    },
+    "download": { "english": "DOWNLOAD", "title": "安裝", "description": "下載 .pkg 安裝，然後到「系統設定 → 鍵盤 → 輸入方式」加入千秋輸入法。支援 Apple Silicon。", "latest": "最新版本", "source": "原始碼", "disclaimer": "ChiaKey 不是 Yahoo 官方產品。原始碼依 BSD-style 授權釋出；Yahoo! 名稱與貢獻者姓名不得在未取得書面同意時用於背書衍生產品。", "audienceTitle": "適合這樣的你", "imageAlt": "千秋角色動畫", "audiences": ["懷念 Yahoo! 奇摩輸入法／KeyKey 的手感", "想保存或研究 KeyKey／OpenVanilla 引擎", "想要一套行為穩定、不常改動的注音輸入法"] }
   }
 }
