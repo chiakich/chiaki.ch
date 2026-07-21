@@ -57,7 +57,7 @@ const TypingTitle = () => {
         minHeight={{ base: '4.4rem', md: '7rem' }}
       >
         <Span
-          fontWeight="700"
+          fontWeight="bold"
           letterSpacing=".02em"
           lineHeight="1.15"
           color="#ffffff"
@@ -195,7 +195,7 @@ const ChiaKeyHero = () => {
               letterSpacing=".28em"
               color="#dcb8ff"
               fontSize="sm"
-              fontWeight="900"
+              fontWeight="black"
               mb={8}
             >
               {t('meta.chiakey.title')}

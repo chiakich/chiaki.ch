@@ -23,7 +23,7 @@ const HuninnHero = () => {
     <Container maxW="1080px" px={{ base: '24px', md: '40px' }} py={{ base: 16, md: 24 }} position="relative">
       <MotionBox textAlign="center" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}>
         <Text letterSpacing=".35em" fontWeight="bold" mb={5} style={{ color: HUNINN.yellow }}>JF OPEN HUNINN · OPEN SOURCE TYPEFACE</Text>
-        <Heading fontFamily="huninn" fontSize={{ base: '4rem', md: '7rem' }} fontWeight="normal" mb={6} style={{ color: HUNINN.paper }}>粉<Span position="relative" style={{ color: HUNINN.yellow }}>圓</Span>體</Heading>
+        <Heading fontFamily="huninn" fontSize={{ base: '4rem', md: '7rem' }} fontWeight="regular" mb={6} style={{ color: HUNINN.paper }}>粉<Span position="relative" style={{ color: HUNINN.yellow }}>圓</Span>體</Heading>
         <Text fontFamily="huninn" fontSize={{ base: 'lg', md: '2xl' }} style={{ color: HUNINN.paper }}>{t('huninnPage.hero')}</Text>
       </MotionBox>
     </Container>

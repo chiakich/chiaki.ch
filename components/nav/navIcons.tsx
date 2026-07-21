@@ -141,7 +141,7 @@ export const SplitFlapIcon = (props: IconProps) => (
       textAnchor="middle"
       dominantBaseline="central"
       fontSize="13"
-      fontWeight="700"
+      fontWeight="bold"
       fill="currentColor"
       stroke="none"
     >

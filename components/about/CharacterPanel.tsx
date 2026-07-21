@@ -104,7 +104,7 @@ const CharacterPanel = ({
         top="2%"
         right="2%"
         fontSize={{ base: '4rem', lg: '6.5rem' }}
-        fontWeight="900"
+        fontWeight="black"
         letterSpacing="0.02em"
         lineHeight="0.95"
         textTransform="uppercase"
@@ -137,7 +137,7 @@ const CharacterPanel = ({
       >
         <Barcode seed="SECURED-EQUIPMENT" width={52} height={16} />
         <Box>
-          <Text fontWeight="900" fontSize="0.62rem" letterSpacing="0.18em" color="white">
+          <Text fontWeight="black" fontSize="0.62rem" letterSpacing="0.18em" color="white">
             SECURED EQUIPMENT
           </Text>
           <Text fontFamily="mono" fontSize="0.5rem" letterSpacing="0.16em" opacity={0.5}>
@@ -158,7 +158,7 @@ const CharacterPanel = ({
         color="black"
         px={2}
         py="2px"
-        fontWeight="900"
+        fontWeight="black"
         fontSize="0.55rem"
         letterSpacing="0.12em"
         clipPath="polygon(6px 0, 100% 0, 100% 100%, 0 100%, 0 6px)"
@@ -182,7 +182,7 @@ const CharacterPanel = ({
           <Box
             backgroundColor="white"
             color="black"
-            fontWeight="900"
+            fontWeight="black"
             letterSpacing="0.22em"
             fontSize="0.68rem"
             px="3px"
@@ -193,7 +193,7 @@ const CharacterPanel = ({
             {t('aboutPage.characterPanel.name')}
           </Box>
           <Text
-            fontWeight="900"
+            fontWeight="black"
             fontSize={{ base: '1.05rem', lg: '1.25rem' }}
             letterSpacing="0.12em"
             lineHeight="1.1"
@@ -207,7 +207,7 @@ const CharacterPanel = ({
             <Span
               fontFamily="mono"
               fontSize="0.5rem"
-              fontWeight="normal"
+              fontWeight="regular"
               letterSpacing="0.14em"
               opacity={0.6}
               border="1px solid rgba(255,255,255,0.4)"

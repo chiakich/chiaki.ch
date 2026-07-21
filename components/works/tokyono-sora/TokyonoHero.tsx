@@ -17,8 +17,8 @@ const TokyonoHero = () => {
     <Container maxW="1080px" px={{ base: '24px', md: '40px' }} py={{ base: 16, md: 24 }} position="relative">
       <Stack alignItems="center" textAlign="center">
         <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .8 }}>
-          <Text color="#aaf5ff" fontSize="sm" fontWeight="700" letterSpacing=".14em" textTransform="uppercase">{t('tokyonoPage.eyebrow')}</Text>
-          <Heading fontSize={{ base: '3.5rem', md: '6.5rem' }} mt={4} lineHeight="1" fontWeight="700" letterSpacing="-.03em">{t('tokyonoPage.title')}</Heading>
+          <Text color="#aaf5ff" fontSize="sm" fontWeight="bold" letterSpacing=".14em" textTransform="uppercase">{t('tokyonoPage.eyebrow')}</Text>
+          <Heading fontSize={{ base: '3.5rem', md: '6.5rem' }} mt={4} lineHeight="1" fontWeight="bold" letterSpacing="-.03em">{t('tokyonoPage.title')}</Heading>
           <Text fontSize={{ base: 'lg', md: 'xl' }} lineHeight="1.9" maxW="720px" mt={5} opacity={.85}>{t('tokyonoPage.hero')}</Text>
           <HStack justifyContent="center" mt={7}><ProjectLink href="https://github.com/chiakich/Tokyono-Sora" label={t('tokyonoPage.getCss')} accent="#8eeaf4" /></HStack>
         </motion.div>

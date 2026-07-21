@@ -57,7 +57,7 @@ const NavFlyout = ({ section, currentPath, onNavigate }: NavFlyoutProps) => {
               </Flex>
               <Text
                 fontSize={{ base: '11px', md: '12px' }}
-                fontWeight="600"
+                fontWeight="medium"
                 letterSpacing="-.01em"
                 textAlign="center"
                 lineHeight="1.3"

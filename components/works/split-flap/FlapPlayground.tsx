@@ -28,7 +28,7 @@ export const FlapClock = () => {
     <Flex alignItems="center" gap="6px" width="fit-content">
       {[time.slice(0, 2), time.slice(2, 4), time.slice(4, 6)].map((part, i) => (
         <Flex key={i} alignItems="center" gap="6px">
-          {i > 0 && <Span color={ACCENT} fontWeight="700" fontSize="1.6rem">:</Span>}
+          {i > 0 && <Span color={ACCENT} fontWeight="bold" fontSize="1.6rem">:</Span>}
           <SplitFlap value={part} chars={Presets.NUM} length={2} theme="dark" size="large" animateOnMount={false} />
         </Flex>
       ))}

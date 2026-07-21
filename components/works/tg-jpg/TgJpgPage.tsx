@@ -51,7 +51,7 @@ const TgJpgPage = () => {
                   p={7}
                   height="100%"
                 >
-                  <Text color="#57b5ff" fontWeight="700" fontSize="sm">
+                  <Text color="#57b5ff" fontWeight="bold" fontSize="sm">
                     {number}
                   </Text>
                   <Heading fontSize="xl" my={3} letterSpacing="-.01em">

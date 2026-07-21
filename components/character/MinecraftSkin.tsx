@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react'
 import { Box, VStack, Center, styled } from 'styled-system/jsx'
-import { WalkingAnimation } from 'skinview3d'
 
 const Text = styled.p
 
@@ -30,7 +29,7 @@ const MinecraftSkin: React.FC = () => {
           viewer.controls.enablePan = false
 
           // set animation
-          viewer.animation = new WalkingAnimation()
+          viewer.animation = new skinview3d.WalkingAnimation()
 
           // Cleanup function
           return () => {

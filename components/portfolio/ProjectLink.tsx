@@ -48,7 +48,7 @@ const ProjectLink = ({
     }}
   >
     <HStack gap={3}>
-      <Text fontWeight="700" letterSpacing=".02em">
+      <Text fontWeight="bold" letterSpacing=".02em">
         {label}
       </Text>
       {detail && (

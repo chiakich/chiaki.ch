@@ -774,7 +774,7 @@ const StickerFace = ({
     >
       <Box transform={sticker.shape === 'skew' ? 'skewX(8deg)' : undefined}>
         <Text
-          fontWeight="900"
+          fontWeight="black"
           fontSize={{ base: isCircle ? 'sm' : 'md', md: isCircle ? 'md' : 'xl' }}
           lineHeight="1.1"
           whiteSpace="nowrap"

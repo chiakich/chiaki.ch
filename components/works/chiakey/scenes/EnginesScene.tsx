@@ -31,8 +31,8 @@ const EnginesScene = () => {
         return (
           <g key={name}>
             <motion.rect x={80} y={rowY} width="200" height="36" rx="8" animate={{ fill: isActive ? '#8a2b9e' : '#fdfdfd' }} transition={{ duration: .3 }} />
-            <motion.text x={110} y={rowY + 24} fontSize="16" fontWeight="700" animate={{ fill: isActive ? '#ffffff' : '#4a3560' }} transition={{ duration: .3 }}>{name}</motion.text>
-            <motion.text x={90} y={rowY + 24} fontSize="14" fontWeight="800" fill="#ffffff" animate={{ opacity: isActive ? 1 : 0 }} transition={{ duration: .3 }}>✓</motion.text>
+            <motion.text x={110} y={rowY + 24} fontSize="16" fontWeight="bold" animate={{ fill: isActive ? '#ffffff' : '#4a3560' }} transition={{ duration: .3 }}>{name}</motion.text>
+            <motion.text x={90} y={rowY + 24} fontSize="14" fontWeight="bold" fill="#ffffff" animate={{ opacity: isActive ? 1 : 0 }} transition={{ duration: .3 }}>✓</motion.text>
           </g>
         )
       })}
@@ -43,14 +43,14 @@ const EnginesScene = () => {
           return (
             <g key={`${key}-${index}`}>
               <rect x={x} y={128} width={width} height="38" rx="8" fill="#fff" stroke="#a795c0" />
-              <text x={x + width / 2} y={152} textAnchor="middle" fontSize="15" fontWeight="700" fill="#4a3560">{key}</text>
+              <text x={x + width / 2} y={152} textAnchor="middle" fontSize="15" fontWeight="bold" fill="#4a3560">{key}</text>
             </g>
           )
         })}
         <text x="330" y="120" fontSize="12" fill="#7c6b90">輸入</text>
         <path d="M330 196 H366" stroke="#8a2b9e" strokeWidth="3" strokeLinecap="round" />
         <path d="M358 188 L370 196 L358 204" fill="none" stroke="#8a2b9e" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-        <text x="384" y="206" fontSize="28" fontWeight="700" fill="#241533">{engine.output}</text>
+        <text x="384" y="206" fontSize="28" fontWeight="bold" fill="#241533">{engine.output}</text>
         <text x="330" y="242" fontSize="12" fill="#7c6b90">{engine.note}</text>
       </motion.g>
     </svg>

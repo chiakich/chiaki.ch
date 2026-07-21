@@ -27,11 +27,11 @@ const WorkCard = ({ work, index }: { work: WorkCardData; index: number }) => {
       <Flex direction={{ base: 'column', md: index % 2 ? 'row-reverse' : 'row' }} backgroundColor="#131316" borderRadius="28px" overflow="hidden" _hover={{ transform: 'translateY(-4px)', '& .art': { transform: 'scale(1.025)' }, '& .arrow': { transform: 'translateX(6px)' } }} style={{ '--accent': work.accent, transition: 'transform .35s ease' } as React.CSSProperties}>
         <Box className="art" flex={{ base: 'none', md: '0 0 48%' }} height={{ base: '200px', md: '280px' }} style={{ transition: 'transform .45s ease' }}>{work.specimen}</Box>
         <Flex flex="1" direction="column" justifyContent="center" px={{ base: 6, md: 10 }} py={{ base: 7, md: 8 }} gap={3}>
-          <Text fontSize="xs" letterSpacing=".14em" color="var(--accent)" fontWeight="700" textTransform="uppercase">{work.en}</Text>
+          <Text fontSize="xs" letterSpacing=".14em" color="var(--accent)" fontWeight="bold" textTransform="uppercase">{work.en}</Text>
           <Heading fontSize={{ base: '1.5rem', md: '2rem' }} letterSpacing="-.02em">{work.title}</Heading>
           <Text lineHeight="1.85" opacity={.7} fontSize="sm">{work.description}</Text>
           <HStack gap={2} flexWrap="wrap">{work.tags.map((tag) => <Span key={tag} backgroundColor="rgba(255,255,255,.07)" borderRadius="980px" px={3} py={1} fontSize="xs" opacity={.75}>{tag}</Span>)}</HStack>
-          <HStack color="var(--accent)" fontWeight="600"><Span>{t('worksPage.view')}</Span><Span className="arrow" style={{ transition: 'transform .3s ease' }}>→</Span></HStack>
+          <HStack color="var(--accent)" fontWeight="medium"><Span>{t('worksPage.view')}</Span><Span className="arrow" style={{ transition: 'transform .3s ease' }}>→</Span></HStack>
         </Flex>
       </Flex>
     </Link>

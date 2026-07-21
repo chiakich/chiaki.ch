@@ -182,7 +182,7 @@ const About: NextPage = () => {
               >
                 {t('aboutPage.header.eyebrow')}
               </Text>
-              <Span color="aboutAccent" fontWeight="900" letterSpacing="-0.05em" aria-hidden>
+              <Span color="aboutAccent" fontWeight="black" letterSpacing="-0.05em" aria-hidden>
                 ⟩⟩⟩
               </Span>
             </HStack>
@@ -190,7 +190,7 @@ const About: NextPage = () => {
             <Heading
               as="h1"
               fontSize={{ base: '3.5rem', md: '5.5rem' }}
-              fontWeight="900"
+              fontWeight="medium"
               lineHeight="1.05"
               letterSpacing="-0.02em"
               mb={4}
@@ -225,7 +225,7 @@ const About: NextPage = () => {
                   left="0"
                   fontFamily="mono"
                   fontSize="0.6rem"
-                  fontWeight="normal"
+                  fontWeight="regular"
                   letterSpacing="0.18em"
                   lineHeight="1"
                   color="rgba(0,0,0,0.55)"
@@ -257,7 +257,7 @@ const About: NextPage = () => {
             </Flex>
             <Text
               fontSize={{ base: 'lg', md: 'xl' }}
-              fontWeight="medium"
+              fontWeight="regular"
               color="aboutAccentSoft"
               mb={5}
             >

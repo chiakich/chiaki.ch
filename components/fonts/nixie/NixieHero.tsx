@@ -22,7 +22,7 @@ const RetroButton = ({ onClick, label }: { onClick: () => void; label: string })
     minWidth="75px"
     padding="0 12px"
     textShadow="0 0 #222"
-    fontWeight="500"
+    fontWeight="medium"
     fontSize="xs"
     fontFamily="cubic"
     mx={2}

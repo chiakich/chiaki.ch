@@ -16,8 +16,8 @@ const KumikoHero = () => {
     <Container maxW="1180px" px={{ base: '24px', md: '40px' }} py={{ base: 14, md: 20 }} position="relative">
       <Stack alignItems="center" textAlign="center" gap={5}>
         <MotionBox initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7 }}>
-          <Text letterSpacing=".14em" color="#ffea2f" fontSize="sm" fontWeight="700" textTransform="uppercase">Zero-install · CJK · GitHub-native</Text>
-          <Heading fontSize={{ base: '3rem', md: '5.5rem' }} lineHeight="1.05" mt={4} fontWeight="700" letterSpacing="-.03em">Kumiko <Span color="#ffea2f">Font Editor</Span></Heading>
+          <Text letterSpacing=".14em" color="#ffea2f" fontSize="sm" fontWeight="bold" textTransform="uppercase">Zero-install · CJK · GitHub-native</Text>
+          <Heading fontSize={{ base: '3rem', md: '5.5rem' }} lineHeight="1.05" mt={4} fontWeight="bold" letterSpacing="-.03em">Kumiko <Span color="#ffea2f">Font Editor</Span></Heading>
           <Text maxW="760px" mx="auto" mt={5} fontSize={{ base: 'lg', md: 'xl' }} lineHeight="1.85" opacity={.8}>{t('kumikoPage.hero')}</Text>
           <HStack justifyContent="center" gap={3} mt={7} flexWrap="wrap"><ProjectLink href="https://kumiko.chiaki.ch" label={t('kumikoPage.try')} accent="#ffea2f" /><ProjectLink href="https://github.com/chiakich/kumiko-font-editor" label="GitHub" accent="#fafafa" /></HStack>
         </MotionBox>

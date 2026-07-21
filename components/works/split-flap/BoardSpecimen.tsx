@@ -31,7 +31,7 @@ const BoardSpecimen = () => {
     <Flex width="100%" height="100%" backgroundColor="#151013" direction="column" justifyContent="center" alignItems="center" gap={4} overflow="hidden">
       <HStack gap={3}>
         <SplitFlap value={time.slice(0, 2)} chars={Presets.NUM} length={2} theme="dark" size="medium" animateOnMount={false} />
-        <Span color="#ff5d52" fontWeight="700">:</Span>
+        <Span color="#ff5d52" fontWeight="bold">:</Span>
         <SplitFlap value={time.slice(2, 4)} chars={Presets.NUM} length={2} theme="dark" size="medium" animateOnMount={false} />
       </HStack>
       <SplitFlap value={destination} chars={DESTINATIONS} mode="words" theme="dark" size="large" timing={80} digitWidth={300} />

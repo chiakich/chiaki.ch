@@ -39,7 +39,7 @@ const FontCard = ({ font, index }: FontCardProps) => {
       >
         <Box flex={{ base: 'none', md: '0 0 46%' }} height={{ base: '180px', md: '260px' }}>{font.specimen}</Box>
         <Flex flex="1" direction="column" justifyContent="center" px={{ base: 6, md: 10 }} py={{ base: 6, md: 8 }} gap={3}>
-          <Text fontFamily="mono" fontSize="xs" fontWeight="900" letterSpacing=".25em" color="#df8a42">{`FONT-${String(index + 1).padStart(2, '0')} // ${font.en}`}</Text>
+          <Text fontFamily="mono" fontSize="xs" fontWeight="black" letterSpacing=".25em" color="#df8a42">{`FONT-${String(index + 1).padStart(2, '0')} // ${font.en}`}</Text>
           <Heading fontSize={{ base: '1.4rem', md: '1.8rem' }}>{font.title}</Heading>
           <Text opacity={.8} lineHeight="1.8">{font.description}</Text>
           <HStack gap={2} flexWrap="wrap">{font.tags.map((tag) => <Span key={tag} fontSize="xs" border="1px solid #333" px={2} py={.5} opacity={.7}>{tag}</Span>)}</HStack>

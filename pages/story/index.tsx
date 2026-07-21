@@ -1,8 +1,12 @@
 import type { NextPage } from 'next'
 import { useCallback, useState } from 'react'
+import dynamic from 'next/dynamic'
 import { Box } from 'styled-system/jsx'
-import DepthScrollSection from 'components/index/DepthScrollSection'
 import ProjectSection from 'components/index/ProjectSection'
+
+// Keep ssr:true (default) — the section's background/canvas shell renders immediately
+// during the boot sequence; dynamic() here only splits three.js into its own chunk.
+const DepthScrollSection = dynamic(() => import('components/index/DepthScrollSection'))
 import StoryAtmosphere from 'components/story/StoryAtmosphere'
 import StoryProgress from 'components/story/StoryProgress'
 import StoryBootLoader from 'components/story/StoryBootLoader'

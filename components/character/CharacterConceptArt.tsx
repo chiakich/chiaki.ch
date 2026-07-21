@@ -122,7 +122,7 @@ const CharacterConceptArt: React.FC = () => {
                 fontSize="sm"
                 textAlign="center"
                 marginTop="8px"
-                fontWeight={currentConceptIndex === index ? 'bold' : 'medium'}
+                fontWeight={currentConceptIndex === index ? 'bold' : 'regular'}
                 color={currentConceptIndex === index ? '#df8a42' : 'gray.600'}
               >
                 {conceptTitles[index]}

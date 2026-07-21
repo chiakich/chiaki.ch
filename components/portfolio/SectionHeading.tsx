@@ -21,7 +21,7 @@ const SectionHeading = ({ en, children, accent = '#df8a42', center = false, sub 
   >
     <Text
       color="var(--accent)"
-      fontWeight="700"
+      fontWeight="bold"
       fontSize="sm"
       letterSpacing=".14em"
       textTransform="uppercase"
@@ -32,7 +32,7 @@ const SectionHeading = ({ en, children, accent = '#df8a42', center = false, sub 
     <Heading
       as="h2"
       fontSize={{ base: '2rem', md: '3rem' }}
-      fontWeight="700"
+      fontWeight="bold"
       letterSpacing="-.02em"
       lineHeight="1.12"
     >

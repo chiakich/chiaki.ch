@@ -31,7 +31,7 @@ const LanguageSwitcher: React.FC = () => {
         color="white"
         cursor="pointer"
         fontSize="13px"
-        fontWeight="600"
+        fontWeight="medium"
         px={2}
         py={1}
         borderRadius="6px"

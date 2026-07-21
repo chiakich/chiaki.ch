@@ -40,6 +40,15 @@ export default defineConfig({
           },
           nixie: { value: 'nixie, monospace' },
         },
+        // Site-wide 4-step scale; overrides panda's default preset (bold/black keep
+        // their usual 700/900, but medium is 600 here — not the preset's 500 — and
+        // regular replaces "normal" as the naming used across this project.
+        fontWeights: {
+          regular: { value: '400' },
+          medium: { value: '600' },
+          bold: { value: '700' },
+          black: { value: '900' },
+        },
         colors: {
           accent: { value: '#df8a42' },
           accentSoft: { value: '#f5c8a1' },

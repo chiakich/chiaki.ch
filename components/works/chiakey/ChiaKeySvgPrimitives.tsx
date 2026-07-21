@@ -36,7 +36,7 @@ interface KeycapProps {
 export const Keycap = ({ x, y, width = 58, label, active = true, delay = 0 }: KeycapProps) => (
   <motion.g animate={active ? { y: [0, 3, 0] } : undefined} transition={{ duration: .55, repeat: Infinity, repeatDelay: 2.8, delay }}>
     <motion.rect x={x} y={y} width={width} height="38" rx="8" fill="#fff" stroke="#a795c0" animate={active ? { fill: ['#fff', '#ecd8f7', '#fff'], stroke: ['#a795c0', '#8a2b9e', '#a795c0'] } : undefined} transition={{ duration: .55, repeat: Infinity, repeatDelay: 2.8, delay }} />
-    <text x={x + width / 2} y={y + 24} textAnchor="middle" fontSize="13" fontWeight="700" fill="#4a3560">{label}</text>
+    <text x={x + width / 2} y={y + 24} textAnchor="middle" fontSize="13" fontWeight="bold" fill="#4a3560">{label}</text>
   </motion.g>
 )
 
@@ -65,12 +65,12 @@ export const SvgCandidateMenu = ({ items, x = 356, y = 78, page = '1/21', highli
         return <g key={`${item}-${index}`}>
           {index === highlightIndex && <rect x={x + 3} y={rowY} width="190" height={rowHeight} fill="url(#candidateHighlight)" />}
           <circle cx={x + 26} cy={rowY + 15} r="11" fill="#050505" />
-          <text x={x + 26} y={rowY + 20} textAnchor="middle" fontSize="14" fontWeight="800" fill="#f5f5f5">{index + 1}</text>
-          <text x={x + 48} y={rowY + 22} fontSize="19" fontWeight="700" fill="white">{item}</text>
+          <text x={x + 26} y={rowY + 20} textAnchor="middle" fontSize="14" fontWeight="bold" fill="#f5f5f5">{index + 1}</text>
+          <text x={x + 48} y={rowY + 22} fontSize="19" fontWeight="bold" fill="white">{item}</text>
         </g>
       })}
       <text x={x + 22} y={y + height - 10} fontSize="11" fill="white">▼</text>
-      <text x={x + 176} y={y + height - 10} textAnchor="end" fontSize="11" fontWeight="700" fill="white">{page}</text>
+      <text x={x + 176} y={y + height - 10} textAnchor="end" fontSize="11" fontWeight="bold" fill="white">{page}</text>
     </motion.g>
   )
 }

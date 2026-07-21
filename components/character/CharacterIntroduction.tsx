@@ -65,7 +65,7 @@ const CharacterIntroduction: React.FC = () => {
           <Text
             fontSize={{ base: 'lg', md: 'xl' }}
             lineHeight="1.8"
-            fontWeight="medium"
+            fontWeight="regular"
           >
             {t('characterPage.greeting')}
           </Text>

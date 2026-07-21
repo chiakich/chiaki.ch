@@ -22,7 +22,7 @@ const FontsIndexPage = () => {
       <Container maxW="1080px" py={12} px={{ base: '24px', md: '40px' }}>
         <MotionBox initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7 }} mb={14}>
           <Text fontFamily="mono" fontSize="sm" letterSpacing=".35em" color="#df8a42" fontWeight="bold" mb={3}>{t('fontsPage.eyebrow')}</Text>
-          <Heading fontSize={{ base: '3rem', md: '4.5rem' }} lineHeight={1.05} fontWeight="900" mb={5}>{t('fontsPage.title')}</Heading>
+          <Heading fontSize={{ base: '3rem', md: '4.5rem' }} lineHeight={1.05} fontWeight="black" mb={5}>{t('fontsPage.title')}</Heading>
           <Box width="180px" height="8px" mb={5} background="repeating-linear-gradient(-45deg, #df8a42 0 10px, transparent 10px 20px)" />
           <Text maxW="600px" fontSize={{ base: 'md', md: 'lg' }} opacity={.85} lineHeight="1.9">{t('fontsPage.intro')}</Text>
         </MotionBox>

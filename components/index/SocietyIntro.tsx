@@ -70,7 +70,7 @@ const SocietyIntro = () => {
           <Text
             fontSize={{ base: 'xl', md: '2xl' }}
             lineHeight="1.75"
-            fontWeight="medium"
+            fontWeight="regular"
           >
             {t('home.lead')}
           </Text>

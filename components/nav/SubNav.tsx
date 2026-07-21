@@ -39,7 +39,7 @@ const SubNav = ({ section, currentPath }: SubNavProps) => {
       justify="space-between"
       color="white"
     >
-      <Text fontSize="17px" fontWeight="600" letterSpacing="-.01em">
+      <Text fontSize="17px" fontWeight="medium" letterSpacing="-.01em">
         {section.title}
       </Text>
 
@@ -50,7 +50,7 @@ const SubNav = ({ section, currentPath }: SubNavProps) => {
             key={item.id}
             href={localizedPath(item.path, locale)}
             fontSize="14px"
-            fontWeight="600"
+            fontWeight="medium"
             height="100%"
             display="flex"
             alignItems="center"

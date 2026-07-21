@@ -52,7 +52,7 @@ const VerticalCandidateMenu = ({ items = defaultItems, page = '1/21', highlightI
               flexShrink={0}
               backgroundColor="#050505"
               color="#f5f5f5"
-              fontWeight="900"
+              fontWeight="black"
               style={{ width: size.circle, height: size.circle, fontSize: size.number }}
             >{index + 1}</Flex>
             <Span fontWeight="bold" lineHeight="1" letterSpacing=".08em" style={{ fontSize: size.item }}>{item}</Span>

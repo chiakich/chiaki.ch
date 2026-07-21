@@ -47,9 +47,9 @@ const SearchChatDemo = () => {
         {showMessage && (
           <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .3 }}>
             <Flex gap={3} alignItems="flex-start">
-              <Flex width="40px" height="40px" borderRadius="full" flexShrink={0} alignItems="center" justifyContent="center" fontSize="md" fontWeight="700" color="white" background="linear-gradient(135deg, #c77dff, #5f7bd8)">千</Flex>
+              <Flex width="40px" height="40px" borderRadius="full" flexShrink={0} alignItems="center" justifyContent="center" fontSize="md" fontWeight="bold" color="white" background="linear-gradient(135deg, #c77dff, #5f7bd8)">千</Flex>
               <Box>
-                <Text fontSize="sm" fontWeight="700" color="#b18be8" mb={1}>千秋 涼風</Text>
+                <Text fontSize="sm" fontWeight="bold" color="#b18be8" mb={1}>千秋 涼風</Text>
                 <Text color="#f5f5f7">{MESSAGE}</Text>
               </Box>
             </Flex>
@@ -60,7 +60,7 @@ const SearchChatDemo = () => {
             <Flex gap={3} alignItems="flex-start">
               <Image src="/assets/works/tg-jpg/bot-avatar.webp" alt="圖片ㄗ援改二的頭像" width="40px" height="40px" borderRadius="full" flexShrink={0} />
               <Box maxW="82%">
-                <Text fontSize="sm" fontWeight="700" color="#6ab3f3" mb={1}>圖片ㄗ援改二</Text>
+                <Text fontSize="sm" fontWeight="bold" color="#6ab3f3" mb={1}>圖片ㄗ援改二</Text>
                 <Image src="/assets/works/tg-jpg/demo.webp" alt="機器人回覆的「騙人的吧」動畫截圖" width="100%" display="block" borderRadius="12px" />
               </Box>
             </Flex>

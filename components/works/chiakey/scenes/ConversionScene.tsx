@@ -19,7 +19,7 @@ const ConversionScene = () => (
     <motion.g animate={{ opacity: [0, 0, 1, 1] }} transition={{ duration: 8, repeat: Infinity, times: [0, .1, .16, 1] }}>
       <rect x="330" y="92" width="248" height="34" rx="8" fill="#fdfdfd" stroke="#a795c0" />
       <text x="372" y="115" fontSize="13.5" fill="#4a3560">繁體中文轉簡體</text>
-      <motion.text x="352" y="115" fontSize="14" fontWeight="800" fill="#28a04a" animate={{ opacity: [0, 0, 1, 1] }} transition={{ duration: 8, repeat: Infinity, times: [0, .16, .2, 1] }}>✓</motion.text>
+      <motion.text x="352" y="115" fontSize="14" fontWeight="bold" fill="#28a04a" animate={{ opacity: [0, 0, 1, 1] }} transition={{ duration: 8, repeat: Infinity, times: [0, .16, .2, 1] }}>✓</motion.text>
     </motion.g>
 
     {/* 3. 示範打字：組字中還是繁體 */}

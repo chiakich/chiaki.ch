@@ -31,7 +31,7 @@ const SegmentationScene = () => (
     <motion.g animate={{ opacity: [1, 1, 0, 0], y: [0, 0, 0, 0] }} transition={{ duration: 7, repeat: Infinity, times: [0, stepTimes.tab - .06, stepTimes.tab - .02, 1] }}>
       <motion.g animate={{ y: [0, 3, 0, 3, 0, 0] }} transition={{ duration: 7, repeat: Infinity, times: [stepTimes.jump1 - .04, stepTimes.jump1 - .02, stepTimes.jump2 - .06, stepTimes.jump2 - .02, stepTimes.jump2, 1] }}>
         <rect x={104} y={196} width="44" height="38" rx="8" fill="#fff" stroke="#a795c0" />
-        <text x="126" y="220" textAnchor="middle" fontSize="13" fontWeight="700" fill="#4a3560">←</text>
+        <text x="126" y="220" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#4a3560">←</text>
       </motion.g>
       <text x="158" y="220" fontSize="12" fill="#7c6b90">× 2</text>
     </motion.g>

@@ -1,38 +1,26 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import type { ComponentType } from 'react'
 import type { Locale } from 'i18n'
-import Home from 'pages/index'
-import About from 'pages/about'
-import Story from 'pages/story'
-import Character from 'pages/story/character'
-import CharacterArt from 'pages/story/character/art'
-import Works from 'pages/works'
-import ChiaKey from 'pages/works/chiakey'
-import Kumiko from 'pages/works/kumiko'
-import TgJpg from 'pages/works/tg-jpg'
-import SplitFlap from 'pages/works/split-flap'
-import TokyonoSora from 'pages/works/tokyono-sora'
-import Fonts from 'pages/fonts'
-import Akitra from 'pages/fonts/akitra'
-import Huninn from 'pages/fonts/huninn'
-import Nixie from 'pages/fonts/nixie'
+import dynamic from 'next/dynamic'
 
+// Each route stays SSR'd (default ssr:true) for static export output,
+// but split into its own chunk so one locale page doesn't bundle every route's JS.
 const routes: Record<string, ComponentType> = {
-  '': Home,
-  about: About,
-  story: Story,
-  'story/character': Character,
-  'story/character/art': CharacterArt,
-  works: Works,
-  'works/chiakey': ChiaKey,
-  'works/kumiko': Kumiko,
-  'works/tg-jpg': TgJpg,
-  'works/split-flap': SplitFlap,
-  'works/tokyono-sora': TokyonoSora,
-  fonts: Fonts,
-  'fonts/akitra': Akitra,
-  'fonts/huninn': Huninn,
-  'fonts/nixie': Nixie,
+  '': dynamic(() => import('pages/index')),
+  about: dynamic(() => import('pages/about')),
+  story: dynamic(() => import('pages/story')),
+  'story/character': dynamic(() => import('pages/story/character')),
+  'story/character/art': dynamic(() => import('pages/story/character/art')),
+  works: dynamic(() => import('pages/works')),
+  'works/chiakey': dynamic(() => import('pages/works/chiakey')),
+  'works/kumiko': dynamic(() => import('pages/works/kumiko')),
+  'works/tg-jpg': dynamic(() => import('pages/works/tg-jpg')),
+  'works/split-flap': dynamic(() => import('pages/works/split-flap')),
+  'works/tokyono-sora': dynamic(() => import('pages/works/tokyono-sora')),
+  fonts: dynamic(() => import('pages/fonts')),
+  'fonts/akitra': dynamic(() => import('pages/fonts/akitra')),
+  'fonts/huninn': dynamic(() => import('pages/fonts/huninn')),
+  'fonts/nixie': dynamic(() => import('pages/fonts/nixie')),
 }
 
 type LocalePageProps = { locale: Locale; route: string }

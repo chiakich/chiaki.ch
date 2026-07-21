@@ -30,7 +30,7 @@ const TgJpgHero = () => {
             color="#57b5ff"
             letterSpacing=".14em"
             fontSize="sm"
-            fontWeight="700"
+            fontWeight="bold"
             textTransform="uppercase"
           >
             An “I’m feeling lucky” bot for images
@@ -39,7 +39,7 @@ const TgJpgHero = () => {
             fontSize={{ base: '4rem', md: '7rem' }}
             lineHeight="1"
             mt={4}
-            fontWeight="700"
+            fontWeight="bold"
             letterSpacing="-.03em"
           >
             tg<Span color="#57b5ff">.jpg</Span>

@@ -62,14 +62,14 @@ const SplitFlapHero = () => {
     <Container maxW="1080px" px={{ base: '24px', md: '40px' }} py={{ base: 14, md: 20 }}>
       <Stack gap={12}>
         <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75 }}>
-          <Text color={ACCENT} letterSpacing=".14em" fontSize="sm" fontWeight="700" textTransform="uppercase">
+          <Text color={ACCENT} letterSpacing=".14em" fontSize="sm" fontWeight="bold" textTransform="uppercase">
             {t('splitFlapPage.eyebrow')}
           </Text>
           <Heading
             fontSize={{ base: '2.6rem', md: '5rem' }}
             lineHeight="1.05"
             mt={4}
-            fontWeight="700"
+            fontWeight="bold"
             letterSpacing="-.03em"
           >
             react<Span color={ACCENT}>-</Span>split<Span color={ACCENT}>-</Span>flap

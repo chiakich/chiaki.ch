@@ -65,7 +65,7 @@ const SplitFlapPage = () => {
             {engineering.map(([number, title, description], index) => (
               <MotionSection key={number} delay={index * 0.08}>
                 <Box backgroundColor="#161215" borderRadius="24px" p={7} height="100%">
-                  <Text color={ACCENT} fontWeight="700" fontSize="sm">{number}</Text>
+                  <Text color={ACCENT} fontWeight="bold" fontSize="sm">{number}</Text>
                   <Heading fontSize="xl" my={3} letterSpacing="-.01em">{title}</Heading>
                   <Text opacity={0.65} lineHeight="1.8" fontSize="sm">{description}</Text>
                 </Box>

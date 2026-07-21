@@ -11,10 +11,9 @@ export default function cloudflareLoader({
   width: number
   quality?: number
 }) {
-  const params = [`width=${width}`, `onerror=redirect`]
-  if (quality) {
-    params.push(`quality=${quality}`)
-  }
+  // No <Image quality> prop is set anywhere in the codebase, so without a fallback
+  // Cloudflare Image Resizing was applying its own (higher) default quality.
+  const params = [`width=${width}`, `onerror=redirect`, `quality=${quality ?? 75}`]
   const paramsString = params.join(',')
 
   if (process.env.NODE_ENV === 'development') {

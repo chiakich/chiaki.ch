@@ -22,8 +22,8 @@ const WorksIndexPage = () => {
   return <Box backgroundColor="#070708" color="white" minHeight="100vh">
     <Box pt="96px"><Container maxW="1080px" py={12} px={{ base: '24px', md: '40px' }}>
       <MotionBox initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7 }} mb={16} textAlign="center">
-        <Text fontSize="sm" letterSpacing=".14em" color="#7eb6ff" fontWeight="700" textTransform="uppercase" mb={4}>{t('worksPage.eyebrow')}</Text>
-        <Heading fontSize={{ base: '3rem', md: '4.8rem' }} lineHeight={1.05} fontWeight="700" letterSpacing="-.03em" mb={5}>{t('worksPage.title')}</Heading>
+        <Text fontSize="sm" letterSpacing=".14em" color="#7eb6ff" fontWeight="bold" textTransform="uppercase" mb={4}>{t('worksPage.eyebrow')}</Text>
+        <Heading fontSize={{ base: '3rem', md: '4.8rem' }} lineHeight={1.05} fontWeight="bold" letterSpacing="-.03em" mb={5}>{t('worksPage.title')}</Heading>
         <Text maxW="620px" mx="auto" fontSize={{ base: 'md', md: 'lg' }} opacity={.7} lineHeight="1.9">{t('worksPage.intro')}</Text>
       </MotionBox>
       <Stack gap={10}>{works.map((work, index) => <WorkCard key={work.id} work={work} index={index} />)}</Stack>

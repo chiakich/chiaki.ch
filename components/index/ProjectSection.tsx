@@ -61,7 +61,7 @@ const ProjectSection = () => {
         lineHeight={1.2}
         color="rgba(255,255,255,.82)"
         textAlign="center"
-        fontWeight="400"
+        fontWeight="regular"
         letterSpacing=".24em"
         textShadow="0 4px 24px rgba(0,0,0,.55)"
         mb="36px"

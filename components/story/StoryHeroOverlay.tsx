@@ -112,7 +112,7 @@ const StoryHeroOverlay = () => {
               fontSize={{ base: 'clamp(3rem, 14vw, 5.5rem)', md: 'clamp(5rem, 10vw, 9rem)' }}
               lineHeight="0.88"
               letterSpacing="-0.065em"
-              fontWeight="400"
+              fontWeight="regular"
               textShadow="0 8px 50px rgba(0,0,0,.7)"
             >
               諸神離去之後

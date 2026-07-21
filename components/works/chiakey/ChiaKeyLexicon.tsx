@@ -100,7 +100,7 @@ const LexiconLayers = () => (
           <HStack gap={2}>
             <Text
               fontSize="md"
-              fontWeight="700"
+              fontWeight="bold"
               letterSpacing=".08em"
               color="rgba(255,255,255,.92)"
             >

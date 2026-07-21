@@ -1,4 +1,5 @@
 import { Flex, Box, HStack, VStack, styled } from 'styled-system/jsx'
+import { token } from 'styled-system/tokens'
 import {
   Drawer,
   DrawerBody,
@@ -136,7 +137,7 @@ const TopBar: React.FC = () => {
           height="44px"
           alignItems="center"
           justify="space-between"
-          fontWeight="normal"
+          fontWeight="regular"
         >
           {/* Left section */}
           <HStack gap={{ base: 4, md: 8 }}>
@@ -162,7 +163,7 @@ const TopBar: React.FC = () => {
               display={{ base: 'none', xs: 'flex' }}
               color="#F5F5F7"
               fontSize="17px"
-              fontWeight="600"
+              fontWeight="medium"
             >
               {mainLinks.map(([label, path]) => {
                 const section = navSections[label]
@@ -260,7 +261,7 @@ const TopBar: React.FC = () => {
                             color="white"
                             cursor="pointer"
                             fontSize="1.6rem"
-                            fontWeight="600"
+                            fontWeight="medium"
                             letterSpacing="-.02em"
                             textAlign="left"
                             opacity={isActive(path) ? 1 : 0.8}
@@ -293,7 +294,7 @@ const TopBar: React.FC = () => {
                               display: 'block',
                               padding: '.5rem 0',
                               fontSize: '1.6rem',
-                              fontWeight: 600,
+                              fontWeight: token('fontWeights.medium'),
                               letterSpacing: '-.02em',
                               opacity: isActive(path) ? 1 : 0.8,
                             }}

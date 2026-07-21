@@ -16,7 +16,7 @@ const KumikoWorkflow = () => (
       return (
         <motion.g key={number} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * .16 }}>
           <circle cx={x} cy="90" r="28" fill="#24262a" stroke="#ffea2f" strokeWidth="2" />
-          <text x={x} y="96" textAnchor="middle" fontSize="16" fontWeight="800" fill="#ffea2f">{number}</text>
+          <text x={x} y="96" textAnchor="middle" fontSize="16" fontWeight="bold" fill="#ffea2f">{number}</text>
           <text x={x} y="42" textAnchor="middle" fontSize="10" letterSpacing="2" fill="#8e9096">{en}</text>
           <text x={x} y="145" textAnchor="middle" fontSize="14" fill="white">{label}</text>
         </motion.g>

@@ -396,7 +396,7 @@ const DepartureBoard = () => {
                 <Span
                   backgroundColor="#f2f2f2"
                   color="#0d0d0f"
-                  fontWeight="800"
+                  fontWeight="bold"
                   px={2}
                   borderRadius="4px"
                   fontSize="md"
@@ -405,7 +405,7 @@ const DepartureBoard = () => {
                 </Span>
                 <Span
                   fontSize={{ base: 'md', md: 'lg' }}
-                  fontWeight="700"
+                  fontWeight="bold"
                   letterSpacing=".3em"
                   color="#f2f2f2"
                 >

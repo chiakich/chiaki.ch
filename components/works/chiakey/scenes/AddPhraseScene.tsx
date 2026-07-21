@@ -63,7 +63,7 @@ const AddPhraseScene = () => (
         y="220"
         textAnchor="middle"
         fontSize="13"
-        fontWeight="700"
+        fontWeight="bold"
         fill="#4a3560"
       >
         shift
@@ -92,7 +92,7 @@ const AddPhraseScene = () => (
         y="220"
         textAnchor="middle"
         fontSize="13"
-        fontWeight="700"
+        fontWeight="bold"
         fill="#4a3560"
       >
         ←

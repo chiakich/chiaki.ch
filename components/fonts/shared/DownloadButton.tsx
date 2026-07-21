@@ -43,7 +43,7 @@ const DownloadButton = ({
     <HStack gap={2}>
       <Span>{label}</Span>
       {sub && (
-        <Span fontSize="xs" opacity={0.7} fontWeight="normal">
+        <Span fontSize="xs" opacity={0.7} fontWeight="regular">
           {sub}
         </Span>
       )}
