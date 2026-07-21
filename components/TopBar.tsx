@@ -119,6 +119,8 @@ const TopBar: React.FC = () => {
         zIndex="20"
         backgroundColor="rgba(29,29,31,.92)"
         backdropFilter="saturate(180%) blur(20px)"
+        // Safari 換頁時常會把 fixed + backdrop-filter 的合成層丟掉重建，造成閃爍；固定一個獨立合成層避免重建
+        transform="translateZ(0)"
         borderBottom="1px solid"
         borderColor="gray.800"
         fontFamily="body"
