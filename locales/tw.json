@@ -149,9 +149,7 @@
     }
   },
   "blogPage": {
-    "eyebrow": "BLOG",
-    "title": "網誌",
-    "comingSoon": "內容整理中，近期上線。"
+    "eyebrow": "BLOG"
   },
   "profilePage": {
     "header": {

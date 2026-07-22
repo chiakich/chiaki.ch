@@ -206,9 +206,7 @@
     }
   },
   "blogPage": {
-    "eyebrow": "BLOG",
-    "title": "Blog",
-    "comingSoon": "Coming soon."
+    "eyebrow": "BLOG"
   },
   "profilePage": {
     "header": {

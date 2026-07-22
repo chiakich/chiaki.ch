@@ -206,9 +206,7 @@
     }
   },
   "blogPage": {
-    "eyebrow": "BLOG",
-    "title": "ブログ",
-    "comingSoon": "準備中です。近日公開。"
+    "eyebrow": "BLOG"
   },
   "profilePage": {
     "header": {
