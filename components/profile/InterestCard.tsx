@@ -17,8 +17,7 @@ type Frame = { pos: string; scale: number }
 type Move = { from: Frame; to: Frame }
 
 const cameraMoves: Record<string, Move> = {
-  // Landscape — horizontal pan
-  photo: { from: { pos: '0% 50%', scale: 1 }, to: { pos: '100% 50%', scale: 1.2 } },
+  photo: { from: { pos: '50% 35%', scale: 1 }, to: { pos: '50% 65%', scale: 1 } },
   doujin: { from: { pos: '100% 50%', scale: 1 }, to: { pos: '0% 50%', scale: 1.2 } },
   food: { from: { pos: '100% 50%', scale: 1 }, to: { pos: '0% 50%', scale: 1.2 } },
   mini: { from: { pos: '0% 50%', scale: 1.2 }, to: { pos: '100% 50%', scale: 1.3 } },
@@ -30,7 +29,6 @@ const cameraMoves: Record<string, Move> = {
     from: { pos: '100% 40%', scale: 1.04 },
     to: { pos: '10% 60%', scale: 1.12 },
   },
-  // Landscape — push in
   design: {
     from: { pos: '50% 50%', scale: 1.04 },
     to: { pos: '50% 50%', scale: 1.28 },
@@ -39,14 +37,13 @@ const cameraMoves: Record<string, Move> = {
     from: { pos: '50% 50%', scale: 1.04 },
     to: { pos: '50% 50%', scale: 1.3 },
   },
-  // Portrait — top→bottom pan (starts flush with the top edge)
   opensource: {
     from: { pos: '50% 65%', scale: 1 },
     to: { pos: '70% 50%', scale: 1.15 },
   },
   drawing: { from: { pos: '50% 15%', scale: 1 }, to: { pos: '50% 50%', scale: 1 } },
   lolita: { from: { pos: '50% 45%', scale: 1 }, to: { pos: '50% 75%', scale: 1 } },
-  travel: { from: { pos: '50% 90%', scale: 1 }, to: { pos: '50% 60%', scale: 1 } },
+  travel: { from: { pos: '80% 50%', scale: 1 }, to: { pos: '50% 50%', scale: 1 } },
 }
 
 const defaultMove: Move = {
@@ -114,10 +111,10 @@ const InterestCard = ({
           reduceMotion
             ? { opacity: hovered ? 0.4 : 0 }
             : {
-                opacity: hovered ? 1 : 0,
-                scaleY: hovered ? 1 : 0.7,
-                filter: hovered ? 'brightness(1)' : 'brightness(2.6)',
-              }
+              opacity: hovered ? 1 : 0,
+              scaleY: hovered ? 1 : 0.7,
+              filter: hovered ? 'brightness(1)' : 'brightness(2.6)',
+            }
         }
         transition={{ duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
       >
