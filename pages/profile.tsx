@@ -158,7 +158,7 @@ const Profile: NextPage = () => {
       <Grid
         gridTemplateColumns={{
           base: '1fr',
-          lg: 'minmax(0, 1fr) clamp(320px, 34vw, 440px)',
+          lg: 'minmax(0, 1fr) clamp(320px, 30vw, 400px)',
         }}
         gap={0}
         pt="44px"
@@ -175,7 +175,7 @@ const Profile: NextPage = () => {
         {/* Content column */}
         <Box
           order={{ base: 1, lg: 0 }}
-          px={{ base: '24px', md: '48px' }}
+          px={{ base: '24px', md: '40px' }}
           pt={{ base: 0, lg: 20 }}
           pb="80px"
         >

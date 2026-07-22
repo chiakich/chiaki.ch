@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Box, styled } from 'styled-system/jsx'
 import { motion, useReducedMotion } from 'framer-motion'
 
@@ -17,17 +17,17 @@ type Frame = { pos: string; scale: number }
 type Move = { from: Frame; to: Frame }
 
 const cameraMoves: Record<string, Move> = {
-  photo: { from: { pos: '50% 35%', scale: 1 }, to: { pos: '50% 65%', scale: 1 } },
-  doujin: { from: { pos: '100% 50%', scale: 1 }, to: { pos: '0% 50%', scale: 1.2 } },
+  photo: { from: { pos: '50% 35%', scale: 1.2 }, to: { pos: '50% 50%', scale: 1.2 } },
+  doujin: { from: { pos: '100% 50%', scale: 1 }, to: { pos: '0% 50%', scale: 1.3 } },
   food: { from: { pos: '100% 50%', scale: 1 }, to: { pos: '0% 50%', scale: 1.2 } },
-  mini: { from: { pos: '0% 50%', scale: 1.2 }, to: { pos: '100% 50%', scale: 1.3 } },
+  mini: { from: { pos: '0% 50%', scale: 1.2 }, to: { pos: '100% 50%', scale: 1.4 } },
   cosplay: {
-    from: { pos: '55% 50%', scale: 1 },
-    to: { pos: '15% 50%', scale: 1 },
+    from: { pos: '60% 50%', scale: 1.1 },
+    to: { pos: '10% 50%', scale: 1 },
   },
   model: {
-    from: { pos: '100% 40%', scale: 1.04 },
-    to: { pos: '10% 60%', scale: 1.12 },
+    from: { pos: '100% 30%', scale: 1.1 },
+    to: { pos: '10% 70%', scale: 1.2 },
   },
   design: {
     from: { pos: '50% 50%', scale: 1.04 },
@@ -43,7 +43,7 @@ const cameraMoves: Record<string, Move> = {
   },
   drawing: { from: { pos: '50% 15%', scale: 1 }, to: { pos: '50% 50%', scale: 1 } },
   lolita: { from: { pos: '50% 45%', scale: 1 }, to: { pos: '50% 75%', scale: 1 } },
-  travel: { from: { pos: '80% 50%', scale: 1 }, to: { pos: '50% 50%', scale: 1 } },
+  travel: { from: { pos: '70% 50%', scale: 1 }, to: { pos: '100% 0%', scale: 1.3 } },
 }
 
 const defaultMove: Move = {
@@ -66,8 +66,31 @@ const InterestCard = ({
 }) => {
   const reduceMotion = useReducedMotion()
   const [hovered, setHovered] = useState(false)
+  const [stackTitle, setStackTitle] = useState(false)
+  const titleRowRef = useRef<HTMLDivElement>(null)
+  const titleRef = useRef<HTMLParagraphElement>(null)
+  const enRef = useRef<HTMLParagraphElement>(null)
   const move = cameraMoves[id] ?? defaultMove
   const src = `/assets/profile/interests/${id}.webp`
+
+  useEffect(() => {
+    const titleRow = titleRowRef.current
+    const titleElement = titleRef.current
+    const enElement = enRef.current
+
+    if (!titleRow || !titleElement || !enElement) return
+
+    const updateTitleLayout = () => {
+      const gap = 12
+      setStackTitle(titleElement.scrollWidth + enElement.scrollWidth + gap > titleRow.clientWidth)
+    }
+
+    const observer = new ResizeObserver(updateTitleLayout)
+    observer.observe(titleRow)
+    updateTitleLayout()
+
+    return () => observer.disconnect()
+  }, [en, title])
 
   return (
     <MotionBox
@@ -197,33 +220,44 @@ const InterestCard = ({
       </MotionBox>
 
       {/* ── Foreground content ── */}
-      <Text
-        className="interest-en"
+      <Box
+        ref={titleRowRef}
         position="relative"
         zIndex={2}
-        display="block"
-        textAlign="right"
-        fontSize="xs"
-        fontWeight="black"
-        letterSpacing="0.2em"
-        opacity={0.3}
-        style={{ transition: 'color 0.25s ease, opacity 0.25s ease' }}
+        display={stackTitle ? 'block' : 'flex'}
+        alignItems="baseline"
+        justifyContent="space-between"
+        gap={3}
       >
-        {en}
-      </Text>
-      <Text
-        position="relative"
-        zIndex={2}
-        fontWeight="bold"
-        fontSize={{ base: 'md', md: 'lg' }}
-        mb={1}
-        textShadow="0 1px 6px rgba(0,0,0,0.7)"
-      >
-        <Span color="#ff7829" mr={2} fontSize="sm">
-          {String(index + 1).padStart(2, '0')}
-        </Span>
-        {title}
-      </Text>
+        <Text
+          ref={enRef}
+          className="interest-en"
+          order={2}
+          flexShrink={0}
+          textAlign="right"
+          fontSize="xs"
+          fontWeight="black"
+          letterSpacing="0.2em"
+          opacity={0.3}
+          style={{ transition: 'color 0.25s ease, opacity 0.25s ease' }}
+        >
+          {en}
+        </Text>
+        <Text
+          ref={titleRef}
+          order={1}
+          fontWeight="bold"
+          fontSize={{ base: 'md', md: 'lg' }}
+          mb={1}
+          whiteSpace={stackTitle ? 'normal' : 'nowrap'}
+          textShadow="0 1px 6px rgba(0,0,0,0.7)"
+        >
+          <Span color="#ff7829" mr={2} fontSize="sm">
+            {String(index + 1).padStart(2, '0')}
+          </Span>
+          {title}
+        </Text>
+      </Box>
       <Text
         position="relative"
         zIndex={2}

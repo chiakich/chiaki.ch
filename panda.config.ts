@@ -8,8 +8,9 @@ export default defineConfig({
   jsxFramework: 'react',
   conditions: {
     extend: {
-      // xingothic-tc 缺日文字符，非中文頁面要把 Source Han Sans TC 排到它前面
+      // xingothic-tc 缺日文字符；英文改用拉丁系統字型，避免 CJK 標點字形。
       jaEn: 'html:lang(ja) &, html:lang(en) &',
+      en: 'html:lang(en) &',
     },
   },
   theme: {
@@ -62,6 +63,7 @@ export default defineConfig({
             value: {
               base: '"xingothic-tc", "Noto Sans TC", sans-serif',
               _jaEn: '"sourcehansans-tc", "xingothic-tc", "Noto Sans TC", sans-serif',
+              _en: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
             },
           },
           akitra: {
