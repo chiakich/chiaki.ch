@@ -37,6 +37,17 @@ const languageTags: Record<Locale, string> = {
   en: 'en',
 }
 
+// Extra JSON-LD fields merged into the page node (rich-result eligibility)
+const pageSchemaExtras: Record<string, Record<string, unknown>> = {
+  '/works/chiakey': {
+    operatingSystem: 'macOS',
+    applicationCategory: 'UtilitiesApplication',
+    offers: { '@type': 'Offer', price: 0, priceCurrency: 'TWD' },
+    downloadUrl: 'https://cdn.chiaki.ch/chiakey/ChiaKey.pkg',
+    isBasedOn: 'https://github.com/YahooArchive/KeyKey',
+  },
+}
+
 const pageSchemaType: Record<string, string> = {
   '/profile': 'ProfilePage',
   '/blog': 'Blog',
@@ -95,6 +106,7 @@ const PageMeta = () => {
         image: imageUrl,
         inLanguage: languageTags[locale],
         isPartOf: { '@id': `${SITE_URL}/#website` },
+        ...(pageSchemaExtras[pagePath] ?? {}),
       },
     ],
   }

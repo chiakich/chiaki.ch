@@ -52,7 +52,7 @@
       "description": "Software, tools, and interfaces designed and developed by Chiaki, including open-source tools, font editors, and React components."
     },
     "chiakey": {
-      "title": "ChiaKey - Chiaki Inari Shrine",
+      "title": "ChiaKey — A Modern macOS Revival of Yahoo! KeyKey - Chiaki Inari Shrine",
       "description": "A modern Traditional Chinese Zhuyin input method for macOS, based on Yahoo! KeyKey’s open-source code. It supports Apple Silicon and Intel Macs while preserving KeyKey’s familiar feel."
     },
     "kumiko": {
@@ -504,6 +504,8 @@
   "chiakeyPage": {
     "hero": {
       "iconAlt": "ChiaKey input method icon",
+      "title": "ChiaKey",
+      "srSubtitle": "— a modern macOS revival of Yahoo! KeyKey",
       "lead": "The familiar composing experience and candidate window, now with Apple Silicon support.",
       "download": "Download",
       "source": "View source"
@@ -619,6 +621,19 @@
           "description": "Your candidate selection history and word frequencies."
         }
       ],
+      "highlights": {
+        "intro": "The lexicon was the hardest part of this project.",
+        "items": [
+          {
+            "title": "Modern means for an age-old problem",
+            "body": "Accurate character selection comes from statistics on how words connect. Taiwan's input-method ecosystem has long lacked open n-gram data describing word-to-word transitions—the gap this project most wanted to fill. The ChiaKey lexicon distills unigrams and bigrams, bit by bit, from LLM-generated synthetic corpora together with Common Voice sentences."
+          },
+          {
+            "title": "Trending words, freshly stocked",
+            "body": "Feeding the lexicon with trending search keywords was once Yahoo! KeyKey's signature. ChiaKey set out to rebuild that pipeline: trending searches are observed on a schedule, distilled into an auto-hotwords lexicon, and loaded automatically with every lexicon update. What is revived is more than the code."
+          }
+        ]
+      },
       "update": {
         "title": "Update lexicons without reinstalling",
         "before": "The four data-layer lexicons are independently updated after",
@@ -672,6 +687,32 @@
         "You miss the feel of Yahoo! KeyKey",
         "You want to preserve or study the KeyKey/OpenVanilla engine",
         "You want a stable Bopomofo input method that does not change often"
+      ]
+    },
+    "faq": {
+      "english": "FAQ",
+      "title": "Frequently asked questions",
+      "items": [
+        {
+          "q": "How is ChiaKey related to Yahoo! KeyKey?",
+          "a": "ChiaKey is a revival built on the code Yahoo! open-sourced after KeyKey was discontinued, repaired and actively maintained. It is not an official Yahoo product; the source is released under a BSD-style license."
+        },
+        {
+          "q": "Can Yahoo! KeyKey still run on new Macs?",
+          "a": "The last official installer is Intel-only: it needs Rosetta on Apple Silicon and cannot be installed after macOS 26. ChiaKey runs natively on Apple Silicon and modern macOS."
+        },
+        {
+          "q": "Does it run on older Intel Macs?",
+          "a": "In theory, yes. The current deployment target is macOS 10.13 High Sierra at its lowest, which almost every Intel Mac from 2009 onward can upgrade to. It has not been tested on real hardware yet, though."
+        },
+        {
+          "q": "Is ChiaKey free?",
+          "a": "Yes—free and open source. Download the .pkg to install; the source code is on GitHub."
+        },
+        {
+          "q": "Can I import my Yahoo! KeyKey dictionary?",
+          "a": "ChiaKey is fully compatible with Yahoo! KeyKey dictionaries, including data accumulated through smart learning. In KeyKey, go to Preferences → Phrase Management → Export User Phrase Database to export it."
+        }
       ]
     }
   }

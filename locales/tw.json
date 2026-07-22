@@ -52,7 +52,7 @@
       "description": "千秋設計與開發的軟體、工具與介面作品，包括開源工具、字體編輯器與 React 元件。"
     },
     "chiakey": {
-      "title": "千秋輸入法 ChiaKey - 千秋稻荷社",
+      "title": "千秋輸入法 ChiaKey — Yahoo 奇摩輸入法的 macOS 復刻 - 千秋稻荷社",
       "description": "以 Yahoo! 奇摩輸入法開源程式碼為基礎的現代 macOS 繁體中文注音輸入法，支援 Apple Silicon 與 Intel Mac，延續 Yahoo 輸入法的組字手感。"
     },
     "kumiko": {
@@ -657,6 +657,8 @@
   "chiakeyPage": {
     "hero": {
       "iconAlt": "ChiaKey 輸入法圖示",
+      "title": "千秋輸入法 ChiaKey",
+      "srSubtitle": "— Yahoo 奇摩輸入法的 macOS 復刻",
       "lead": "熟悉的組字手感與候選窗，現已支援 Apple Silicon",
       "download": "下載",
       "source": "瀏覽原始碼"
@@ -769,6 +771,19 @@
         },
         { "title": "學習快取", "description": "選字紀錄與詞頻。" }
       ],
+      "highlights": {
+        "intro": "詞庫，是這份專案最難的關卡。",
+        "items": [
+          {
+            "title": "用現代手段，解決古代問題",
+            "body": "選字的準確，來自詞與詞的接續統計。台灣輸入法生態缺少能描述「詞跟詞怎麼接」的開放 n-gram 資料，這是這個專案最想補上的一塊。千秋輸入法綜合詞庫以大型語言模型生成合成語料，搭配 Common Voice 句料，一點一滴提煉出 unigram 與 bigram。"
+          },
+          {
+            "title": "熱門詞，即時入庫",
+            "body": "以搜尋引擎熱門關鍵字餵養詞庫，曾是 Yahoo 奇摩輸入法的招牌。千秋輸入法嘗試重建了這套流程：定時觀測熱門搜尋關鍵字，提煉為自動熱門詞庫，隨每次詞庫更新自動載入。復刻的，不只是程式碼。"
+          }
+        ]
+      },
       "update": {
         "title": "詞庫更新，不用重裝輸入法",
         "before": "四個資料層詞庫會在",
@@ -822,6 +837,32 @@
         "懷念 Yahoo! 奇摩輸入法／KeyKey 的手感",
         "想保存或研究 KeyKey／OpenVanilla 引擎",
         "想要一套行為穩定、不常改動的注音輸入法"
+      ]
+    },
+    "faq": {
+      "english": "FAQ",
+      "title": "常見問題",
+      "items": [
+        {
+          "q": "千秋輸入法和 Yahoo! 奇摩輸入法有什麼關係？",
+          "a": "千秋輸入法（ChiaKey）是以 Yahoo! 奇摩輸入法（KeyKey）停止維護後開源的程式碼為基礎，修復並持續維護的復刻專案。它不是 Yahoo 官方產品；原始碼依 BSD-style 授權釋出。"
+        },
+        {
+          "q": "Yahoo 奇摩輸入法還能在新的 Mac 上用嗎？",
+          "a": "原版最後一代安裝包只有 Intel（x86）版本，在 Apple Silicon 上需透過 Rosetta 執行，且 macOS 26 之後將無法安裝。想在新的 Mac 上繼續這套手感，可以改用千秋輸入法：原生支援 Apple Silicon 與現代 macOS。"
+        },
+        {
+          "q": "舊的 Intel Mac 能用嗎？",
+          "a": "理論上可以。目前編譯目標設定為最低極限 macOS 10.13 High Sierra，2009 年後的 Intel Mac 幾乎都能升到這版。但目前仍未實機測試。"
+        },
+        {
+          "q": "千秋輸入法是免費的嗎？",
+          "a": "是，完全免費且開源。下載 .pkg 安裝即可使用，原始碼公開在 GitHub。"
+        },
+        {
+          "q": "支援 Yahoo 奇摩輸入法的詞庫匯入嗎？",
+          "a": "完全相容 Yahoo 奇摩輸入法的詞庫，包含智慧學習累積下的資料。請到 Yahoo 奇摩輸入法的「偏好設定 → 詞彙管理 → 匯出自訂詞資料庫」匯出。"
+        }
       ]
     }
   }

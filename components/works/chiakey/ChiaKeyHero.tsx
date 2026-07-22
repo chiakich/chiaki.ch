@@ -198,7 +198,20 @@ const ChiaKeyHero = () => {
               fontWeight="black"
               mb={8}
             >
-              {t('meta.chiakey.title')}
+              {t('chiakeyPage.hero.title')}
+              {/* keyword-rich h1 suffix for SEO/a11y; visually the short label is enough */}
+              <Span
+                position="absolute"
+                width="1px"
+                height="1px"
+                margin="-1px"
+                padding="0"
+                overflow="hidden"
+                border="0"
+                style={{ clip: 'rect(0 0 0 0)', whiteSpace: 'nowrap' }}
+              >
+                {t('chiakeyPage.hero.srSubtitle')}
+              </Span>
             </Heading>
             <TypingTitle />
             <Text

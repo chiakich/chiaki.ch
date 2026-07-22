@@ -179,6 +179,31 @@ const ChiaKeyLexicon = () => {
       ))}
     </Grid>
     <MotionSection>
+      <Text
+        textAlign="center"
+        fontSize={{ base: 'lg', md: 'xl' }}
+        fontWeight="bold"
+        letterSpacing="-.01em"
+        mt={{ base: 12, md: 16 }}
+      >
+        {t('chiakeyPage.lexicon.highlights.intro')}
+      </Text>
+    </MotionSection>
+    <Grid columns={{ base: 1, md: 2 }} gap={4} mt={6}>
+      {[0, 1].map((index) => (
+        <MotionSection key={index} delay={index * 0.08}>
+          <Box backgroundColor="#150d20" borderRadius="24px" p={7} height="100%">
+            <Heading mb={3} fontSize="xl" letterSpacing="-.01em">
+              {t(`chiakeyPage.lexicon.highlights.items.${index}.title`)}
+            </Heading>
+            <Text opacity={0.65} lineHeight="1.9" fontSize="sm">
+              {t(`chiakeyPage.lexicon.highlights.items.${index}.body`)}
+            </Text>
+          </Box>
+        </MotionSection>
+      ))}
+    </Grid>
+    <MotionSection>
       <Box
         backgroundColor="#150d20"
         borderRadius="24px"
