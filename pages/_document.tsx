@@ -30,6 +30,7 @@ class MyDocument extends Document {
 
           <link rel="preconnect" href="https://ds.justfont.com" />
           <link rel="preconnect" href="https://cdn-go.justfont.com" crossOrigin="anonymous" />
+          <link rel="preconnect" href="https://go.justfont.com" crossOrigin="anonymous" />
           {/* justfont recommends this fixed snippet over the async loader for production */}
           <Script src="/scripts/justfont-init.js" strategy="beforeInteractive" />
           <link rel="icon" href="/favicon.ico" />
