@@ -134,20 +134,20 @@ const TypingTitle = () => {
   )
 }
 
-// 解析 GitHub latest release 裡的 .pkg 資產，讓下載按鈕可以直接下載。
-const releasesFallback = 'https://github.com/chiakich/ChiaKey/releases/latest'
+// 下載檔固定由 CDN 提供；版本則從 appcast 的 stable release 取得。
+const pkgUrl = 'https://cdn.chiaki.ch/chiakey/ChiaKey.pkg'
+const appcastUrl = 'https://cdn.chiaki.ch/chiakey/appcast.json'
 
 const useLatestPkg = () => {
   const [pkg, setPkg] = useState<{ url: string; version: string } | null>(null)
 
   useEffect(() => {
     let cancelled = false
-    fetch('https://api.github.com/repos/chiakich/ChiaKey/releases/latest')
+    fetch(appcastUrl)
       .then((response) => (response.ok ? response.json() : null))
-      .then((release) => {
-        if (cancelled || !release) return
-        const asset = release.assets?.find((item: { name?: string }) => item.name?.endsWith('.pkg'))
-        if (asset?.browser_download_url) setPkg({ url: asset.browser_download_url, version: release.tag_name })
+      .then((appcast: { stable?: { tag?: string } } | null) => {
+        const version = appcast?.stable?.tag
+        if (!cancelled && version) setPkg({ url: pkgUrl, version })
       })
       .catch(() => {})
     return () => { cancelled = true }
@@ -214,7 +214,7 @@ const ChiaKeyHero = () => {
             </Text>
             <HStack mt={8} gap={4} justifyContent="center" flexWrap="wrap">
               <ProjectLink
-                href={pkg?.url ?? releasesFallback}
+                href={pkg?.url ?? pkgUrl}
                 label={t('chiakeyPage.hero.download')}
                 detail={pkg ? `${pkg.version} .pkg` : 'macOS .pkg'}
                 accent="#d49bff"

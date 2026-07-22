@@ -24,7 +24,7 @@ const ChiaKeyLinks = () => {
         </Text>
         <HStack gap={3} flexWrap="wrap">
           <ProjectLink
-            href="https://github.com/chiakich/ChiaKey/releases/latest"
+            href="https://cdn.chiaki.ch/chiakey/ChiaKey.pkg"
             label={t('chiakeyPage.download.latest')}
             accent="#c77dff"
           />
