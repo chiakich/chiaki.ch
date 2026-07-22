@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import { Box, Flex, HStack, styled } from 'styled-system/jsx'
 import { css } from 'styled-system/css'
 import { getPost, getPostSlugs, type Post } from 'lib/blog'
+import type { PageMetaOverride } from 'components/PageMeta'
 
 const Heading = styled.h1
 const Span = styled.span
@@ -294,7 +295,19 @@ export const getStaticPaths: GetStaticPaths = async () => ({
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const post = await getPost(params?.slug as string)
-  return { props: { post } }
+  const pageMeta: PageMetaOverride = {
+    title: `${post.title} - 千秋稻荷社`,
+    description: post.excerpt || post.title,
+    image: post.cover ?? `/og/blog-${post.slug}.jpeg`,
+    inLanguage: post.lang === 'en' ? 'en' : 'zh-TW',
+    breadcrumbName: post.title,
+    article: {
+      publishedTime: post.date,
+      ...(post.tags.length ? { tags: post.tags } : {}),
+    },
+  }
+  if (post.canonical) pageMeta.canonical = post.canonical
+  return { props: { post, pageMeta } }
 }
 
 export default BlogPost

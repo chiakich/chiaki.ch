@@ -3,8 +3,11 @@ const {
   existsSync,
   mkdirSync,
   mkdtempSync,
+  readdirSync,
+  readFileSync,
   writeFileSync,
 } = require('node:fs')
+const matter = require('gray-matter')
 const { stat } = require('node:fs/promises')
 const { createServer } = require('node:http')
 const { join, normalize, resolve } = require('node:path')
@@ -24,7 +27,6 @@ const captureDelay = Number(process.env.OG_CAPTURE_DELAY || 6000)
 const pages = [
   ['/', 'home'],
   ['/profile', 'profile'],
-  ['/links', 'links'],
   ['/story', 'story'],
   ['/story/character', 'story-character'],
   ['/story/character/art', 'story-character-art'],
@@ -40,6 +42,19 @@ const pages = [
   ['/fonts/huninn', 'fonts-huninn'],
   ['/blog', 'blog'],
 ]
+
+// Individual blog posts: capture the article header as the OG image, but only
+// for posts without their own `cover` (those already have a share image).
+const blogDir = resolve(process.cwd(), 'content', 'blog')
+if (existsSync(blogDir)) {
+  for (const file of readdirSync(blogDir)) {
+    if (!file.endsWith('.md')) continue
+    const slug = file.replace(/\.md$/, '')
+    const { data } = matter(readFileSync(join(blogDir, file), 'utf-8'))
+    if (data.cover) continue
+    pages.push([`/blog/${slug}`, `blog-${slug}`])
+  }
+}
 
 if (!existsSync(outputDir)) throw new Error('找不到 out 目錄。請先執行 next build。')
 if (!existsSync(chromePath)) throw new Error(`找不到 Chrome：${chromePath}`)
