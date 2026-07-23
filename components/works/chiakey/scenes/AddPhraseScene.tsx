@@ -126,7 +126,7 @@ const AddPhraseScene = () => {
     >
       <rect x="286" y="180" width="292" height="34" rx="8" fill="#4a3560" />
       <text x="432" y="202" textAnchor="middle" fontSize="12.5" fill="#fff">
-        正在選取字詞組…請按 ENTER 鍵加入資料庫
+        {t('chiakeyPage.scenes.addPhrase.selecting')}
       </text>
     </motion.g>
     <motion.g
@@ -147,11 +147,11 @@ const AddPhraseScene = () => {
         strokeLinejoin="round"
       />
       <text x="352" y="87" fontSize="14" fill="#4a3560">
-        「鹽酥雞」已加入使用者詞庫
+        {t('chiakeyPage.scenes.addPhrase.added')}
       </text>
     </motion.g>
     <text x="104" y="256" fontSize="12" fill="#7c6b90">
-      趕時間的話：control + 3 直接把游標前三個字加入
+      {t('chiakeyPage.scenes.addPhrase.shortcut')}
     </text>
   </svg>
   )

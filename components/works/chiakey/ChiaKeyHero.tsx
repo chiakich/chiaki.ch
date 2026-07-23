@@ -14,29 +14,31 @@ const Image = styled.img
 // 大標題本身就是輸入過程：逐鍵打注音，
 // 打到 ㄕㄨ 時 unigram 先猜「書」（顯示「千秋書」），
 // ㄖㄨˋ 進來之後被「輸入」校正，最後停在「千秋輸入法」並開出候選窗。
+// note 是 chiakeyPage.hero.notes 底下的 key，渲染時再翻譯。
 const frames: { pressed: string; buffer: string; note?: string; menu?: boolean; hold: number }[] = [
   { pressed: 'ㄑ', buffer: 'ㄑ', hold: 130 },
   { pressed: 'ㄧ', buffer: 'ㄑㄧ', hold: 130 },
   { pressed: 'ㄢ', buffer: 'ㄑㄧㄢ', hold: 130 },
-  { pressed: '␣', buffer: '千', note: '一聲是空白鍵', hold: 340 },
+  { pressed: '␣', buffer: '千', note: 'toneSpace', hold: 340 },
   { pressed: 'ㄑ', buffer: '千ㄑ', hold: 130 },
   { pressed: 'ㄧ', buffer: '千ㄑㄧ', hold: 130 },
   { pressed: 'ㄡ', buffer: '千ㄑㄧㄡ', hold: 130 },
   { pressed: '␣', buffer: '千秋', hold: 340 },
   { pressed: 'ㄕ', buffer: '千秋ㄕ', hold: 130 },
   { pressed: 'ㄨ', buffer: '千秋ㄕㄨ', hold: 130 },
-  { pressed: '␣', buffer: '千秋書', note: '還沒有下文，先猜「書」', hold: 620 },
+  { pressed: '␣', buffer: '千秋書', note: 'guess', hold: 620 },
   { pressed: 'ㄖ', buffer: '千秋書ㄖ', hold: 130 },
   { pressed: 'ㄨ', buffer: '千秋書ㄖㄨ', hold: 130 },
-  { pressed: 'ˋ', buffer: '千秋輸入', note: '「入」出現，書 → 輸', hold: 620 },
+  { pressed: 'ˋ', buffer: '千秋輸入', note: 'correction', hold: 620 },
   { pressed: 'ㄈ', buffer: '千秋輸入ㄈ', hold: 130 },
   { pressed: 'ㄚ', buffer: '千秋輸入ㄈㄚ', hold: 130 },
-  { pressed: 'ˇ', buffer: '千秋輸入法', note: '整句組好', menu: true, hold: 10000 },
+  { pressed: 'ˇ', buffer: '千秋輸入法', note: 'done', menu: true, hold: 10000 },
 ]
 
 const menuItems = ['輸入法', '法', '髮', '琺', '砝', '鍅', '灋', '珐']
 
 const TypingTitle = () => {
+  const { t } = useI18n()
   const [frame, setFrame] = useState(0)
 
   // 逐格 setTimeout 鏈：每一格照自己的停留時間排下一格。
@@ -125,7 +127,7 @@ const TypingTitle = () => {
           </motion.div>
         </AnimatePresence>
         <Text fontSize="sm" color="#b7aec3" ml={1} minWidth="180px" textAlign="left">
-          {note ?? ''}
+          {note ? t(`chiakeyPage.hero.notes.${note}`) : ''}
         </Text>
       </HStack>
       {/* 候選窗的保留區：選字框（下緣漸層淡出）浮在這塊空間裡，不會蓋到副標與按鈕 */}

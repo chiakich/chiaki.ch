@@ -71,7 +71,7 @@ export const getNavSections = (t: Translate): Record<string, NavSection> => ({
       { id: 'kumiko', title: 'Kumiko', path: '/works/kumiko', icon: <KumikoIcon /> },
       {
         id: 'tokyono-sora',
-        title: '東京乃空',
+        title: t('tokyonoPage.title'),
         path: '/works/tokyono-sora',
         icon: <TokyonoIcon />,
       },

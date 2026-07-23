@@ -123,6 +123,12 @@
       "splitFlap": {
         "description": "A React component that recreates station split-flap displays. A shared animation clock and the Web Animations API keep hundreds of flaps moving smoothly together, including airport- and station-style boards."
       }
+    },
+    "specimens": {
+      "chiakeyHint": "Press ↓ to open the candidate window",
+      "kumikoAlt": "Kumiko font editor screen",
+      "tokyonoAlt": "Tokyono Sora Plurk theme",
+      "tgJpgReply": "Found the first sendable GIF"
     }
   },
   "fontsPage": {
@@ -534,7 +540,21 @@
     "placeholder": "Type something to try…",
     "loading": "Loading the complete font…",
     "loadError": "The complete font could not be loaded; only available glyphs are shown.",
-    "defaultText": "Like a pearl—round, soft, and springy."
+    "defaultText": "Like a pearl—round, soft, and springy.",
+    "featureCards": [
+      {
+        "title": "Adjusted for Taiwan",
+        "description": "Based on Kosugi Maru and Varela Round, with glyphs adjusted one by one to match Taiwanese educational and everyday conventions."
+      },
+      {
+        "title": "Fully open source",
+        "description": "Licensed under the SIL Open Font License 1.1 — free for both personal and commercial use."
+      },
+      {
+        "title": "A Japanese glyph flavor",
+        "description": "Blends the stroke and radical styles of modern Chinese and Japanese kanji into a distinctive character."
+      }
+    ]
   },
   "tgJpgPage": {
     "hero": "Type .jpg in a chat and let the bot reply with a meme. Supports .jpg, .png, and .gif.",
@@ -630,7 +650,20 @@
     ],
     "open": "Open a glyph now",
     "tryKumiko": "Try Kumiko online",
-    "source": "View source"
+    "source": "View source",
+    "workflowAria": "Load a font from GitHub, edit, commit, and open a pull request",
+    "workflowSteps": [
+      "Load the UFO",
+      "Edit glyphs",
+      "Push changes",
+      "Submit new glyphs"
+    ],
+    "idsDemo": {
+      "ariaLabel": "Composing the glyph 編 from components with the IDS sequence ⿰糹扁",
+      "missing": "Missing glyph",
+      "decomposition": "IDS decomposition",
+      "caption": "Components are aligned, then fine-tuned by hand"
+    }
   },
   "splitFlapPage": {
     "eyebrow": "Split-flap display for React",
@@ -673,7 +706,13 @@
       "srSubtitle": "— a modern macOS revival of Yahoo! KeyKey",
       "lead": "The familiar composing experience and candidate window, now with Apple Silicon support.",
       "download": "Download",
-      "source": "View source"
+      "source": "View source",
+      "notes": {
+        "toneSpace": "First tone is the space bar",
+        "guess": "No context yet, so it guesses 書",
+        "correction": "Once 入 appears, 書 becomes 輸",
+        "done": "The whole sentence comes together"
+      }
     },
     "features": {
       "english": "Features",
@@ -809,7 +848,10 @@
     "scenes": {
       "addPhrase": {
         "title": "Add phrases",
-        "ariaLabel": "Hold Shift and press the left arrow three times to select the phrase, then press Enter to add it to the user dictionary"
+        "ariaLabel": "Hold Shift and press the left arrow three times to select the phrase, then press Enter to add it to the user dictionary",
+        "selecting": "Selecting a phrase… press ENTER to add it to the dictionary",
+        "added": "「鹽酥雞」 has been added to the user dictionary",
+        "shortcut": "In a hurry? control + 3 adds the three characters before the cursor"
       },
       "conversion": {
         "title": "Traditional-to-Simplified Chinese",
@@ -821,7 +863,25 @@
       "engines": {
         "title": "Input modules",
         "ariaLabel": "Typing demonstrations for smart Bopomofo, traditional Bopomofo, Cangjie, and Simple input modules",
-        "input": "Input"
+        "input": "Input",
+        "modules": {
+          "smart": {
+            "name": "Smart Bopomofo",
+            "note": "Reads the whole sentence — almost no manual picking"
+          },
+          "traditional": {
+            "name": "Traditional Bopomofo",
+            "note": "One character per syllable, picked as you go"
+          },
+          "cangjie": {
+            "name": "Cangjie",
+            "note": "Type by decomposing radicals"
+          },
+          "simple": {
+            "name": "Simple",
+            "note": "Only the first and last codes, then pick from candidates"
+          }
+        }
       },
       "learning": {
         "title": "Adaptive candidates",

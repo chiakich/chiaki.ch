@@ -123,6 +123,12 @@
       "splitFlap": {
         "description": "駅のパタパタ表示器を再現する React コンポーネント。共有アニメーション時計と Web Animations API により、数百の文字盤を同時に滑らかに動かします。空港や駅風の動的な案内板にも使えます。"
       }
+    },
+    "specimens": {
+      "chiakeyHint": "↓ キーで候補ウィンドウを開く",
+      "kumikoAlt": "Kumiko フォント編集画面",
+      "tokyonoAlt": "東京乃空 Plurk テーマ",
+      "tgJpgReply": "送信できる最初の GIF を見つけました"
     }
   },
   "fontsPage": {
@@ -534,7 +540,21 @@
     "placeholder": "試したい文字を入力……",
     "loading": "完全版フォントを読み込み中……",
     "loadError": "完全版フォントの読み込みに失敗しました。利用可能な文字のみ表示します。",
-    "defaultText": "真珠のように、まるくて少しもちもち。"
+    "defaultText": "真珠のように、まるくて少しもちもち。",
+    "featureCards": [
+      {
+        "title": "台湾向けの調整",
+        "description": "Kosugi Maru と Varela Round をベースに、台湾の教育と日常の習慣に合わせて一字ずつ字形を調整しています。"
+      },
+      {
+        "title": "完全オープンソース",
+        "description": "SIL Open Font License 1.1 で提供され、個人でも商用でも自由に使えます。"
+      },
+      {
+        "title": "日本語の字形スタイル",
+        "description": "現代中国語と日本語漢字の筆画や偏旁のスタイルを融合し、独特の雰囲気を生み出しています。"
+      }
+    ]
   },
   "tgJpgPage": {
     "hero": "チャットで .jpg と入力するだけ。ボットがミーム画像を返します。.jpg、.png、.gif に対応。",
@@ -630,7 +650,20 @@
     ],
     "open": "今すぐ一文字を開く",
     "tryKumiko": "Kumiko を試す",
-    "source": "ソースを見る"
+    "source": "ソースを見る",
+    "workflowAria": "GitHub からフォントを読み込み、編集・コミットして Pull Request を作成",
+    "workflowSteps": [
+      "UFO を読み込む",
+      "グリフを編集",
+      "変更をプッシュ",
+      "補字を提出"
+    ],
+    "idsDemo": {
+      "ariaLabel": "IDS 分解式 ⿰糹扁 の部品から「編」を組み立てる",
+      "missing": "欠字",
+      "decomposition": "IDS 分解",
+      "caption": "部品を配置してから手動で微調整"
+    }
   },
   "splitFlapPage": {
     "eyebrow": "React 用パタパタ表示器",
@@ -673,7 +706,13 @@
       "srSubtitle": "— Yahoo! 奇摩入力法（KeyKey）の macOS 復刻",
       "lead": "慣れ親しんだ変換感と候補ウィンドウを、Apple Silicon でも。",
       "download": "ダウンロード",
-      "source": "ソースコードを見る"
+      "source": "ソースコードを見る",
+      "notes": {
+        "toneSpace": "一声はスペースキー",
+        "guess": "続きが無いのでまず「書」と推測",
+        "correction": "「入」が来ると 書 → 輸 に修正",
+        "done": "文全体が確定"
+      }
     },
     "features": {
       "english": "Features",
@@ -806,7 +845,10 @@
     "scenes": {
       "addPhrase": {
         "title": "新しい語句を追加",
-        "ariaLabel": "Shift を押しながら左矢印を三回押して語句を選択し、Enter でユーザー辞書に追加"
+        "ariaLabel": "Shift を押しながら左矢印を三回押して語句を選択し、Enter でユーザー辞書に追加",
+        "selecting": "語句を選択中…ENTER キーで辞書に追加",
+        "added": "「鹽酥雞」をユーザー辞書に追加しました",
+        "shortcut": "急ぎなら control + 3 でカーソル前の三文字をそのまま追加"
       },
       "conversion": {
         "title": "繁体字から簡体字へ",
@@ -818,7 +860,25 @@
       "engines": {
         "title": "入力モジュール",
         "ariaLabel": "スマート注音、伝統注音、倉頡、簡易の入力例",
-        "input": "入力"
+        "input": "入力",
+        "modules": {
+          "smart": {
+            "name": "スマート注音",
+            "note": "文全体で判断し、ほぼ選字不要"
+          },
+          "traditional": {
+            "name": "伝統注音",
+            "note": "一字一音、逐字で選択（ㄅ半）"
+          },
+          "cangjie": {
+            "name": "倉頡",
+            "note": "字根に分解して入力"
+          },
+          "simple": {
+            "name": "簡易",
+            "note": "先頭と末尾のコードだけ入力し、候補から選ぶ"
+          }
+        }
       },
       "learning": {
         "title": "候補学習",

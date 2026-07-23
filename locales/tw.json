@@ -123,6 +123,12 @@
       "splitFlap": {
         "description": "重現車站翻頁顯示器的 React 元件。共用動畫時鐘與 Web Animations API，讓幾百格字盤同時翻動也保持流暢；適合製作機場與車站風格的動態看板。"
       }
+    },
+    "specimens": {
+      "chiakeyHint": "按 ↓ 開啟候選窗",
+      "kumikoAlt": "Kumiko 字體編輯畫面",
+      "tokyonoAlt": "東京乃空噗浪佈景",
+      "tgJpgReply": "找到第一張可以傳送的 GIF"
     }
   },
   "fontsPage": {
@@ -534,7 +540,21 @@
     "placeholder": "輸入想試的字……",
     "loading": "完整字型載入中……",
     "loadError": "完整字型載入失敗，僅顯示部分字符",
-    "defaultText": "像珍珠一樣，圓圓的、有點 Q。"
+    "defaultText": "像珍珠一樣，圓圓的、有點 Q。",
+    "featureCards": [
+      {
+        "title": "為台灣而調整",
+        "description": "以 Kosugi Maru 與 Varela Round 為基礎，逐字調整為符合台灣教育與日常習慣的字形。"
+      },
+      {
+        "title": "完全開源",
+        "description": "SIL Open Font License 1.1 授權，個人與商用都能自由使用。"
+      },
+      {
+        "title": "帶有日文字形風格",
+        "description": "融合現代中文與日文漢字的筆畫與偏旁風格，形成獨特氣質。"
+      }
+    ]
   },
   "tgJpgPage": {
     "hero": "在聊天裡打出 .jpg，機器人幫你回覆哏圖。支援 .jpg、.png、.gif。",
@@ -576,7 +596,20 @@
     ],
     "open": "現在就打開一個字",
     "tryKumiko": "線上試用 Kumiko",
-    "source": "查看原始碼"
+    "source": "查看原始碼",
+    "workflowAria": "從 GitHub 載入字體、編輯、提交並建立 Pull Request",
+    "workflowSteps": [
+      "載入 UFO",
+      "編輯字形",
+      "推送變更",
+      "送出補字"
+    ],
+    "idsDemo": {
+      "ariaLabel": "以 IDS 拆解式 ⿰糹扁 由部件組出「編」字",
+      "missing": "缺字",
+      "decomposition": "IDS 拆解",
+      "caption": "部件對位後再手動微調"
+    }
   },
   "tokyonoPage": {
     "eyebrow": "Plurk 介面重新設計",
@@ -661,7 +694,13 @@
       "srSubtitle": "— Yahoo 奇摩輸入法的 macOS 復刻",
       "lead": "熟悉的組字手感與候選窗，現已支援 Apple Silicon",
       "download": "下載",
-      "source": "瀏覽原始碼"
+      "source": "瀏覽原始碼",
+      "notes": {
+        "toneSpace": "一聲是空白鍵",
+        "guess": "還沒有下文，先猜「書」",
+        "correction": "「入」出現，書 → 輸",
+        "done": "整句組好"
+      }
     },
     "features": {
       "english": "Features",
@@ -794,7 +833,10 @@
     "scenes": {
       "addPhrase": {
         "title": "加入新詞",
-        "ariaLabel": "按住 Shift 按三次左方向鍵，逐字選取鹽酥雞後按 Enter 加入使用者詞庫"
+        "ariaLabel": "按住 Shift 按三次左方向鍵，逐字選取鹽酥雞後按 Enter 加入使用者詞庫",
+        "selecting": "正在選取字詞組…請按 ENTER 鍵加入資料庫",
+        "added": "「鹽酥雞」已加入使用者詞庫",
+        "shortcut": "趕時間的話：control + 3 直接把游標前三個字加入"
       },
       "conversion": {
         "title": "繁體中文轉簡體",
@@ -806,7 +848,25 @@
       "engines": {
         "title": "輸入模組",
         "ariaLabel": "好打注音、傳統注音、倉頡與簡易輸入模組的打法示範",
-        "input": "輸入"
+        "input": "輸入",
+        "modules": {
+          "smart": {
+            "name": "好打注音",
+            "note": "整句一起判斷，幾乎不用選字"
+          },
+          "traditional": {
+            "name": "傳統注音",
+            "note": "一字一音，逐字選字（ㄅ半）"
+          },
+          "cangjie": {
+            "name": "倉頡",
+            "note": "拆字根輸入"
+          },
+          "simple": {
+            "name": "簡易",
+            "note": "只取頭尾碼，再從候選挑字"
+          }
+        }
       },
       "learning": {
         "title": "選字學習",
