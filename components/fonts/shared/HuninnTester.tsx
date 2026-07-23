@@ -66,8 +66,9 @@ const HuninnTester = () => {
           onChange={(e) => setText(e.target.value)}
           rows={1}
           flex="1"
-          backgroundColor="#111"
-          border="1px solid #333"
+          backgroundColor="#211c16"
+          border="1px solid #3a322a"
+          borderRadius="14px"
           px={4}
           py={3}
           fontSize="md"
@@ -94,7 +95,7 @@ const HuninnTester = () => {
 
       <Box
         style={{ backgroundColor: PAPER }}
-        clipPath="polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)"
+        borderRadius="20px"
         px={{ base: 5, md: 8 }}
         py={{ base: 6, md: 10 }}
         minHeight="180px"
