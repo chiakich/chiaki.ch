@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { Box, Flex, styled } from 'styled-system/jsx'
+import { useI18n } from 'i18n'
 
 const Text = styled.p
 
@@ -30,9 +31,9 @@ const SHRINK_STEP = 0.93
 const MAX_ATTEMPTS = 8
 
 type StickerBase = {
+  // Doubles as the i18n key: title/description live under
+  // profilePage.stickerSheet.items.<id> in the locale files.
   id: string
-  title: string
-  description: string
   // Relative size weight (unitless). Bigger = larger on screen. The actual
   // pixel size is derived from the container size at layout time.
   size: number
@@ -58,336 +59,88 @@ type ImageSticker = StickerBase & {
 type Sticker = TextSticker | ImageSticker
 
 const stickers: Sticker[] = [
+  { id: 'oorai', kind: 'image', src: '/assets/profile/stickers/oorai.webp', size: 150 },
+  { id: 'react', kind: 'image', src: '/assets/profile/stickers/react-logo.webp', size: 100 },
+  { id: 'clip', kind: 'image', src: '/assets/profile/stickers/clip.webp', size: 150 },
+  { id: 'wtm', kind: 'image', src: '/assets/profile/stickers/wtm.webp', size: 100 },
+  { id: 'coscup', kind: 'image', src: '/assets/profile/stickers/coscup.webp', size: 200 },
+  { id: 'sitcon', kind: 'image', src: '/assets/profile/stickers/sitcon.webp', size: 200 },
+  { id: 'justfont', kind: 'image', src: '/assets/profile/stickers/jf.webp', size: 200 },
+  { id: 'glyphs4', kind: 'image', src: '/assets/profile/stickers/glyphs4.webp', size: 70 },
   {
-    id: 'oorai',
-    kind: 'image',
-    src: '/assets/profile/stickers/oorai.webp',
-    size: 150,
-    title: 'Proud supporter of 大洗女子学園',
-    description:
-      '超級喜歡少女與戰車，大洗已經變成比老家還熟悉的小鎮了。海樂祭、八朔祭，冬天跟夏天都去過了！',
-  },
-  {
-    id: 'React',
-    kind: 'image',
-    src: '/assets/profile/stickers/react-logo.webp',
-    size: 100,
-    title: 'React',
-    description:
-      'React 是我最常用的前端框架，從 2015 年開始就一直在使用。而且他餵飽了我。我愛 React。',
-  },
-  {
-    id: 'clip',
-    kind: 'image',
-    src: '/assets/profile/stickers/clip.webp',
-    size: 150,
-    title: 'Clip Studio Paint',
-    description: 'Clip Studio Paint 是我最常用的繪圖軟體！',
-  },
-  {
-    id: 'WTM',
-    kind: 'image',
-    src: '/assets/profile/stickers/wtm.webp',
-    size: 100,
-    title: 'Google Women Techmakers',
-    description: 'WTM 2023 講者',
-  },
-  {
-    id: 'coscup',
-    kind: 'image',
-    src: '/assets/profile/stickers/coscup.webp',
-    size: 200,
-    title: 'COSCUP 台灣開源人年會',
-    description: 'COSCUP 資深會眾/審稿委員',
-  },
-  {
-    id: 'sitcon',
-    kind: 'image',
-    src: '/assets/profile/stickers/sitcon.webp',
-    size: 200,
-    title: 'SITCON 學生計算機年會',
-    description: 'SITCON 講者',
-  },
-  {
-    id: 'justfont',
-    kind: 'image',
-    src: '/assets/profile/stickers/jf.webp',
-    size: 200,
-    title: 'justfont',
-    description: 'justfont ex-member',
-  },
-  {
-    id: 'glyphs4',
-    kind: 'image',
-    src: '/assets/profile/stickers/glyphs4.webp',
-    size: 70,
-    title: 'Glyphs 4',
-    description: 'Glyphs 4 zh-Hant Localization Translator',
-  },
-  {
-    id: 'arctic-code-vault-contributor',
+    id: 'arcticVault',
     kind: 'image',
     src: '/assets/profile/stickers/arctic-code-vault-contributor.webp',
     size: 50,
-    title: 'GitHub Arctic Code Vault Contributor',
-    description:
-      '我的爛code被2020 GitHub Archive Program永遠保存在北極凍土之下的「末日保險櫃」了。將來人類重建文明就靠他們了！',
   },
-  {
-    id: 'isekai',
-    kind: 'image',
-    src: '/assets/profile/stickers/isekai.webp',
-    size: 100,
-    title: '観測者ヰ組',
-    description: '意大利麵組',
-  },
-  {
-    id: 'isekai_art',
-    kind: 'image',
-    src: '/assets/profile/stickers/isekai_art.webp',
-    size: 150,
-    title: 'ヰ世界情緒美術部',
-    description: '我會繪製お情的圖',
-  },
-  {
-    id: 'sukonbu',
-    kind: 'image',
-    src: '/assets/profile/stickers/sukonbu.webp',
-    size: 100,
-    title: '司空部',
-    description: 'Hi friends',
-  },
-  {
-    id: 'hinako',
-    kind: 'image',
-    src: '/assets/profile/stickers/hinako.webp',
-    size: 80,
-    title: '妃那子',
-    description: '妃那子 Official Fanclub',
-  },
-  {
-    id: 'himehina',
-    kind: 'image',
-    src: '/assets/profile/stickers/himehina.webp',
-    size: 220,
-    title: 'HIMEHINA JOJIGOD',
-    description: '強力支持HIMEHINA活動的神級會員',
-  },
-  {
-    id: 'wwdc26',
-    kind: 'image',
-    src: '/assets/profile/stickers/wwdc26.webp',
-    size: 120,
-    title: 'WWDC 2026',
-    description: 'I joined WWDC 2026 online',
-  },
+  { id: 'isekai', kind: 'image', src: '/assets/profile/stickers/isekai.webp', size: 100 },
+  { id: 'isekaiArt', kind: 'image', src: '/assets/profile/stickers/isekai_art.webp', size: 150 },
+  { id: 'sukonbu', kind: 'image', src: '/assets/profile/stickers/sukonbu.webp', size: 100 },
+  { id: 'hinako', kind: 'image', src: '/assets/profile/stickers/hinako.webp', size: 80 },
+  { id: 'himehina', kind: 'image', src: '/assets/profile/stickers/himehina.webp', size: 220 },
+  { id: 'wwdc26', kind: 'image', src: '/assets/profile/stickers/wwdc26.webp', size: 120 },
   {
     id: 'endfield',
     kind: 'image',
     src: '/assets/profile/stickers/endfield.webp',
     size: 100,
-    title: '明日方舟：終末地',
-    description: '我是終末地工業的「管理員」',
     noRadius: true,
   },
   {
-    id: 'evil-twin-brewing-nyc',
+    id: 'evilTwinBrewing',
     kind: 'image',
     src: '/assets/profile/stickers/eviltwin.webp',
     size: 100,
-    title: 'Evil Twin Brewing NYC',
-    description: '我愛這家超神精釀啤酒',
     noRadius: true,
   },
-  {
-    id: 'flighty',
-    kind: 'image',
-    src: '/assets/profile/stickers/flighty.webp',
-    size: 500,
-    title: 'Flighty Passport',
-    description: '我飛過的機場',
-  },
+  { id: 'flighty', kind: 'image', src: '/assets/profile/stickers/flighty.webp', size: 500 },
   {
     id: 'toge',
     kind: 'image',
     src: '/assets/profile/stickers/toge.svg',
     size: 200,
-    title: 'TOGENASHI TOGEARI',
-    description: '我喜歡刺刺團',
     noRadius: true,
   },
-  {
-    id: 'ui_5th',
-    kind: 'image',
-    src: '/assets/profile/stickers/ui_5th.webp',
-    size: 200,
-    title: 'しぐれうい 5th Anniversary',
-    description: '我參加了しぐれうい5周年紀念展',
-  },
-  {
-    id: 'ui_member',
-    kind: 'image',
-    src: '/assets/profile/stickers/ui_member.webp',
-    size: 50,
-    title: 'しぐれうい メンバーシップ',
-    description: '羽衣媽媽原稿部屋會員',
-  },
-  {
-    id: 'aogiri',
-    kind: 'image',
-    src: '/assets/profile/stickers/aogiri.webp',
-    size: 100,
-    title: 'あおぎり高校',
-    description: '我箱推青桐高校',
-  },
-  {
-    id: 'rick-and-morty',
-    kind: 'image',
-    src: '/assets/profile/stickers/rm.webp',
-    size: 150,
-    title: 'Rick and Morty',
-    description: '我喜歡《瑞克和莫蒂》這部動畫',
-  },
+  { id: 'uiFifthAnniversary', kind: 'image', src: '/assets/profile/stickers/ui_5th.webp', size: 200 },
+  { id: 'uiMembership', kind: 'image', src: '/assets/profile/stickers/ui_member.webp', size: 50 },
+  { id: 'aogiri', kind: 'image', src: '/assets/profile/stickers/aogiri.webp', size: 100 },
+  { id: 'rickAndMorty', kind: 'image', src: '/assets/profile/stickers/rm.webp', size: 150 },
   {
     id: 'nico25',
     kind: 'image',
     src: '/assets/profile/stickers/nico25.webp',
     size: 100,
-    title: 'ニコニコ超会議2025',
-    description: '我參加了Nico Nico超會議2025！超近距離的小林幸子本人！',
     noRadius: true,
   },
-  {
-    id: 'teto',
-    kind: 'image',
-    src: '/assets/profile/stickers/teto.webp',
-    size: 100,
-    title: '重音テト 17th',
-    description: 'Our beloved Teto',
-  },
-  {
-    id: 'kasane',
-    kind: 'image',
-    src: '/assets/profile/stickers/kasane.webp',
-    size: 250,
-    title: '居酒屋かさね',
-    description: '參加了居酒屋かさね鑽頭酒杯紀念活動',
-  },
-  {
-    id: 'comiket50',
-    kind: 'image',
-    src: '/assets/profile/stickers/comiket50.webp',
-    size: 150,
-    title: 'コミックマーケット50周年',
-    description: '我參加了C107的Comiket 50周年紀念',
-  },
-  {
-    id: 'moztw',
-    kind: 'image',
-    src: '/assets/profile/stickers/moztw.webp',
-    size: 150,
-    title: 'MozTW',
-    description: '已經參與 Mozilla 台灣社群 13+ 年了！',
-  },
-  {
-    id: 'fbosc',
-    kind: 'image',
-    src: '/assets/profile/stickers/fbosc.webp',
-    size: 150,
-    title: 'Facebook Open Source',
-    description: '我曾是Facebook Open Source的開發者',
-  },
-  {
-    id: 'ponfes25',
-    kind: 'image',
-    src: '/assets/profile/stickers/ponfes25.webp',
-    size: 200,
-    title: 'PONFES!2025',
-    description: '我參加了あやぽんず＊ワンマンライブ PONFES!2025',
-  },
-  {
-    id: 'kancolle',
-    kind: 'image',
-    src: '/assets/profile/stickers/kancolle.webp',
-    size: 350,
-    title: '艦隊これくしょん',
-    description: '我是提督',
-  },
-  {
-    id: 'echoesbaa',
-    kind: 'image',
-    src: '/assets/profile/stickers/echoesbaa.webp',
-    size: 200,
-    title: '音楽フェス『CENTRAL 2025』',
-    description: '我參加了Echoes Baa舞台',
-  },
+  { id: 'teto', kind: 'image', src: '/assets/profile/stickers/teto.webp', size: 100 },
+  { id: 'kasane', kind: 'image', src: '/assets/profile/stickers/kasane.webp', size: 250 },
+  { id: 'comiket50', kind: 'image', src: '/assets/profile/stickers/comiket50.webp', size: 150 },
+  { id: 'moztw', kind: 'image', src: '/assets/profile/stickers/moztw.webp', size: 150 },
+  { id: 'fbosc', kind: 'image', src: '/assets/profile/stickers/fbosc.webp', size: 150 },
+  { id: 'ponfes25', kind: 'image', src: '/assets/profile/stickers/ponfes25.webp', size: 200 },
+  { id: 'kancolle', kind: 'image', src: '/assets/profile/stickers/kancolle.webp', size: 350 },
+  { id: 'echoesbaa', kind: 'image', src: '/assets/profile/stickers/echoesbaa.webp', size: 200 },
   {
     id: 'amavel',
     kind: 'image',
     src: '/assets/profile/stickers/amavel.webp',
     size: 200,
-    title: 'Amavel',
-    description: '我整個衣櫃都是Amavel的衣服',
     whiteOutline: true,
   },
-  {
-    id: 'expo2025',
-    kind: 'image',
-    src: '/assets/profile/stickers/expo2025.webp',
-    size: 200,
-    title: '大阪・関西万博',
-    description: '我參加了2025大阪萬博',
-  },
-  {
-    id: 'darjeeling',
-    kind: 'image',
-    src: '/assets/profile/stickers/darjeeling.webp',
-    size: 200,
-    title: 'いかなる時も、優雅',
-    description: '我喜歡動畫《少女與戰車》大吉嶺的名言，無時無刻都要保持優雅！',
-  },
-  {
-    id: 'mono',
-    kind: 'image',
-    src: '/assets/profile/stickers/mono.svg',
-    size: 100,
-    title: 'mono',
-    description: '我喜歡mono女孩！我也想要360度相機！',
-  },
-  {
-    id: 'yorimo',
-    kind: 'image',
-    src: '/assets/profile/stickers/yorimo.webp',
-    size: 200,
-    title: '宇宙よりも遠い場所',
-    description: '我很喜歡《比宇宙更遠的地方》，希望有一天也能踏上南極',
-  },
-  {
-    id: 'suzumiya',
-    kind: 'image',
-    src: '/assets/profile/stickers/suzumiya.webp',
-    size: 200,
-    title: '涼宮ハルヒの憂鬱',
-    description: '我喜歡《涼宮春日的憂鬱》，希望能成為其他人的涼宮春日',
-  },
-  {
-    id: 'back2future',
-    kind: 'image',
-    src: '/assets/profile/stickers/back2future.webp',
-    size: 200,
-    title: 'Back to the Future',
-    description: '我喜歡《回到未來》這部電影，好想要時光機',
-  },
-  {
-    id: 'yeastken',
-    kind: 'image',
-    src: '/assets/profile/stickers/yeastken.webp',
-    size: 150,
-    title: 'いーすとけん。',
-    description:
-      'Yeastken麵包狗是一種長得像麵包和狗的神秘生物，聞起來像剛出爐的麵包，摸起來蓬蓬軟軟，平時假扮成麵包的模樣偷偷躲在麵包屋裡，是一種不可思議的存在。',
-  },
+  { id: 'expo2025', kind: 'image', src: '/assets/profile/stickers/expo2025.webp', size: 200 },
+  { id: 'darjeeling', kind: 'image', src: '/assets/profile/stickers/darjeeling.webp', size: 200 },
+  { id: 'mono', kind: 'image', src: '/assets/profile/stickers/mono.svg', size: 100 },
+  { id: 'yorimo', kind: 'image', src: '/assets/profile/stickers/yorimo.webp', size: 200 },
+  { id: 'suzumiya', kind: 'image', src: '/assets/profile/stickers/suzumiya.webp', size: 200 },
+  { id: 'back2future', kind: 'image', src: '/assets/profile/stickers/back2future.webp', size: 200 },
+  { id: 'yeastken', kind: 'image', src: '/assets/profile/stickers/yeastken.webp', size: 150 },
 ]
+
+// Localised title/description for a sticker, resolved from its id.
+const stickerText = (t: (key: string) => string, id: string) => ({
+  title: t(`profilePage.stickerSheet.items.${id}.title`),
+  description: t(`profilePage.stickerSheet.items.${id}.description`),
+})
 
 // Small, fast, deterministic PRNG so the layout is identical every render.
 const mulberry32 = (seed: number) => {
@@ -703,6 +456,7 @@ const StickerFace = ({
   sticker: Sticker
   renderSize: number
 }) => {
+  const { t } = useI18n()
   if (sticker.kind === 'image') {
     // SVGs without intrinsic width/height (only a viewBox) collapse to 0x0
     // when constrained by max-width/max-height alone, so give them an explicit
@@ -736,7 +490,7 @@ const StickerFace = ({
       >
         <styled.img
           src={sticker.src}
-          alt={sticker.title}
+          alt={stickerText(t, sticker.id).title}
           style={{
             width: isSvg ? renderSize : undefined,
             height: isSvg ? 'auto' : undefined,
@@ -811,6 +565,7 @@ const StickerTooltip = ({
   container: { width: number; height: number }
   visible: boolean
 }) => {
+  const { t } = useI18n()
   const ref = useRef<HTMLDivElement>(null)
   // Horizontal shift that keeps the tooltip inside the container, so edge
   // stickers' descriptions aren't clipped by the sheet's overflow: hidden.
@@ -860,14 +615,15 @@ const StickerTooltip = ({
       transition={{ duration: 0.12, ease: 'easeOut' }}
     >
       <Text fontWeight="bold" mb={1}>
-        {sticker.title}
+        {stickerText(t, sticker.id).title}
       </Text>
-      <Text opacity={0.78}>{sticker.description}</Text>
+      <Text opacity={0.78}>{stickerText(t, sticker.id).description}</Text>
     </MotionBox>
   )
 }
 
 const StickerSheet = () => {
+  const { t } = useI18n()
   const containerRef = useRef<HTMLDivElement>(null)
   const [size, setSize] = useState<{ width: number; height: number } | null>(null)
   const [activeSticker, setActiveSticker] = useState<string | null>(null)
@@ -926,7 +682,7 @@ const StickerSheet = () => {
           pointerEvents="none"
           zIndex={30}
         >
-          STICKER WALL
+          {t('profilePage.stickerSheet.wallLabel')}
         </Text>
 
         {layout &&
@@ -949,7 +705,7 @@ const StickerSheet = () => {
                 <MotionBox
                   as="button"
                   aria-describedby={tooltipId}
-                  aria-label={sticker.title}
+                  aria-label={stickerText(t, sticker.id).title}
                   position="absolute"
                   initial={{
                     opacity: 0,

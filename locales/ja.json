@@ -317,7 +317,172 @@
         "textAfter": "にまとめています。"
       }
     },
-    "footer": "SUZUKAZE CHIAKI // 涼風千秋"
+    "footer": "SUZUKAZE CHIAKI // 涼風千秋",
+    "stickerSheet": {
+      "wallLabel": "STICKER WALL",
+      "items": {
+        "oorai": {
+          "title": "大洗女子学園を応援中",
+          "description": "ガールズ&パンツァーが大好きで、大洗は地元よりも詳しい町になりました。海楽フェスタも八朔祭も、冬も夏も行きました！"
+        },
+        "react": {
+          "title": "React",
+          "description": "Reactは一番よく使うフロントエンドフレームワークで、2015年からずっと使っています。しかも私を食べさせてくれています。Reactが大好きです。"
+        },
+        "clip": {
+          "title": "Clip Studio Paint",
+          "description": "Clip Studio Paintは私の一番よく使うお絵描きソフトです！"
+        },
+        "wtm": {
+          "title": "Google Women Techmakers",
+          "description": "WTM 2023 登壇者"
+        },
+        "coscup": {
+          "title": "COSCUP 台湾オープンソース年次大会",
+          "description": "COSCUP ベテラン参加者／査読委員"
+        },
+        "sitcon": {
+          "title": "SITCON 学生コンピュータ年次大会",
+          "description": "SITCON 登壇者"
+        },
+        "justfont": {
+          "title": "justfont",
+          "description": "justfont 元メンバー"
+        },
+        "glyphs4": {
+          "title": "Glyphs 4",
+          "description": "Glyphs 4 zh-Hant ローカライズ翻訳者"
+        },
+        "arcticVault": {
+          "title": "GitHub Arctic Code Vault Contributor",
+          "description": "私のひどいコードが2020 GitHub Archive Programによって北極の永久凍土の下の「終末の保管庫」に永遠に保存されました。いつか人類が文明を再建するときは彼らに任せた！"
+        },
+        "isekai": {
+          "title": "観測者ヰ組",
+          "description": "スパゲッティ組"
+        },
+        "isekaiArt": {
+          "title": "ヰ世界情緒美術部",
+          "description": "お情の絵を描いています"
+        },
+        "sukonbu": {
+          "title": "司空部",
+          "description": "Hi friends"
+        },
+        "hinako": {
+          "title": "妃那子",
+          "description": "妃那子 公式ファンクラブ"
+        },
+        "himehina": {
+          "title": "HIMEHINA JOJIGOD",
+          "description": "HIMEHINAの活動を全力で応援する神級メンバー"
+        },
+        "wwdc26": {
+          "title": "WWDC 2026",
+          "description": "WWDC 2026にオンラインで参加しました"
+        },
+        "endfield": {
+          "title": "アークナイツ：エンドフィールド",
+          "description": "私はエンドフィールド工業の「管理者」です"
+        },
+        "evilTwinBrewing": {
+          "title": "Evil Twin Brewing NYC",
+          "description": "この最高のクラフトビール醸造所が大好きです"
+        },
+        "flighty": {
+          "title": "Flighty Passport",
+          "description": "私が飛んだ空港"
+        },
+        "toge": {
+          "title": "TOGENASHI TOGEARI",
+          "description": "トゲナシトゲアリが好きです"
+        },
+        "uiFifthAnniversary": {
+          "title": "しぐれうい 5th Anniversary",
+          "description": "しぐれうい5周年記念展に行きました"
+        },
+        "uiMembership": {
+          "title": "しぐれうい メンバーシップ",
+          "description": "ういママの原稿部屋の会員です"
+        },
+        "aogiri": {
+          "title": "あおぎり高校",
+          "description": "あおぎり高校を箱推ししています"
+        },
+        "rickAndMorty": {
+          "title": "Rick and Morty",
+          "description": "アニメ『リック・アンド・モーティ』が好きです"
+        },
+        "nico25": {
+          "title": "ニコニコ超会議2025",
+          "description": "ニコニコ超会議2025に参加しました！小林幸子ご本人を間近で見ました！"
+        },
+        "teto": {
+          "title": "重音テト 17th",
+          "description": "Our beloved Teto"
+        },
+        "kasane": {
+          "title": "居酒屋かさね",
+          "description": "居酒屋かさねのドリルジョッキ記念イベントに参加しました"
+        },
+        "comiket50": {
+          "title": "コミックマーケット50周年",
+          "description": "C107でコミケ50周年記念に参加しました"
+        },
+        "moztw": {
+          "title": "MozTW",
+          "description": "Mozilla台湾コミュニティに13年以上参加しています！"
+        },
+        "fbosc": {
+          "title": "Facebook Open Source",
+          "description": "私はかつてFacebook Open Sourceの開発者でした"
+        },
+        "ponfes25": {
+          "title": "PONFES!2025",
+          "description": "あやぽんず＊ワンマンライブ PONFES!2025に参加しました"
+        },
+        "kancolle": {
+          "title": "艦隊これくしょん",
+          "description": "私は提督です"
+        },
+        "echoesbaa": {
+          "title": "音楽フェス『CENTRAL 2025』",
+          "description": "Echoes Baaのステージに参加しました"
+        },
+        "amavel": {
+          "title": "Amavel",
+          "description": "クローゼットは全部Amavelの服です"
+        },
+        "expo2025": {
+          "title": "大阪・関西万博",
+          "description": "2025年大阪万博に行きました"
+        },
+        "darjeeling": {
+          "title": "いかなる時も、優雅",
+          "description": "アニメ『ガールズ&パンツァー』のダージリンの名言が好きで、いつでも優雅でいたいです！"
+        },
+        "mono": {
+          "title": "mono",
+          "description": "mono女の子が好きです！360度カメラも欲しいです！"
+        },
+        "yorimo": {
+          "title": "宇宙よりも遠い場所",
+          "description": "『宇宙よりも遠い場所』が大好きで、いつか南極に行きたいです"
+        },
+        "suzumiya": {
+          "title": "涼宮ハルヒの憂鬱",
+          "description": "『涼宮ハルヒの憂鬱』が好きで、誰かの涼宮ハルヒになりたいです"
+        },
+        "back2future": {
+          "title": "Back to the Future",
+          "description": "映画『バック・トゥ・ザ・フューチャー』が好きで、タイムマシンが欲しいです"
+        },
+        "yeastken": {
+          "title": "いーすとけん。",
+          "description": "イーストけんはパンと犬に似た不思議な生き物で、焼きたてのパンの匂いがして、ふわふわで、普段はパンのふりをしてパン屋にこっそり隠れている、不思議な存在です。"
+        }
+      }
+    }
   },
   "nixiePage": {
     "story": "この書体について",

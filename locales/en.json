@@ -317,7 +317,172 @@
         "textAfter": "."
       }
     },
-    "footer": "SUZUKAZE CHIAKI // Chiaki Suzukaze"
+    "footer": "SUZUKAZE CHIAKI // Chiaki Suzukaze",
+    "stickerSheet": {
+      "wallLabel": "STICKER WALL",
+      "items": {
+        "oorai": {
+          "title": "Proud supporter of Ōarai Girls' High School",
+          "description": "I absolutely love Girls und Panzer — Ōarai has become a town more familiar to me than my own hometown. I've been to the Umiraku Festival and the Hassaku Festival, in both winter and summer!"
+        },
+        "react": {
+          "title": "React",
+          "description": "React is my most-used frontend framework — I've been using it since 2015. It also puts food on my table. I love React."
+        },
+        "clip": {
+          "title": "Clip Studio Paint",
+          "description": "Clip Studio Paint is my go-to drawing software!"
+        },
+        "wtm": {
+          "title": "Google Women Techmakers",
+          "description": "WTM 2023 speaker"
+        },
+        "coscup": {
+          "title": "COSCUP Taiwan Open Source Conference",
+          "description": "COSCUP veteran attendee / review committee member"
+        },
+        "sitcon": {
+          "title": "SITCON Students' Information Technology Conference",
+          "description": "SITCON speaker"
+        },
+        "justfont": {
+          "title": "justfont",
+          "description": "justfont ex-member"
+        },
+        "glyphs4": {
+          "title": "Glyphs 4",
+          "description": "Glyphs 4 zh-Hant Localization Translator"
+        },
+        "arcticVault": {
+          "title": "GitHub Arctic Code Vault Contributor",
+          "description": "My crappy code got preserved forever in the 2020 GitHub Archive Program's 'doomsday vault' beneath the Arctic permafrost. When humanity rebuilds civilization, it'll be up to them!"
+        },
+        "isekai": {
+          "title": "Kansokusha Wi-gumi",
+          "description": "The spaghetti crew"
+        },
+        "isekaiArt": {
+          "title": "Isekaijōcho Art Club",
+          "description": "I draw fan art of Ojō"
+        },
+        "sukonbu": {
+          "title": "Sikongbu",
+          "description": "Hi friends"
+        },
+        "hinako": {
+          "title": "Hinako",
+          "description": "Hinako Official Fanclub"
+        },
+        "himehina": {
+          "title": "HIMEHINA JOJIGOD",
+          "description": "A god-tier member who fiercely supports HIMEHINA's activities"
+        },
+        "wwdc26": {
+          "title": "WWDC 2026",
+          "description": "I joined WWDC 2026 online"
+        },
+        "endfield": {
+          "title": "Arknights: Endfield",
+          "description": "I'm an 'Administrator' at Endfield Industries"
+        },
+        "evilTwinBrewing": {
+          "title": "Evil Twin Brewing NYC",
+          "description": "I love this amazing craft brewery"
+        },
+        "flighty": {
+          "title": "Flighty Passport",
+          "description": "The airports I've flown through"
+        },
+        "toge": {
+          "title": "TOGENASHI TOGEARI",
+          "description": "I love Togenashi Togeari"
+        },
+        "uiFifthAnniversary": {
+          "title": "Shigure Ui 5th Anniversary",
+          "description": "I attended Shigure Ui's 5th anniversary exhibition"
+        },
+        "uiMembership": {
+          "title": "Shigure Ui Membership",
+          "description": "Member of Ui-mama's original-art room"
+        },
+        "aogiri": {
+          "title": "Aogiri High School",
+          "description": "I support the whole Aogiri High School group"
+        },
+        "rickAndMorty": {
+          "title": "Rick and Morty",
+          "description": "I love the animated series Rick and Morty"
+        },
+        "nico25": {
+          "title": "Niconico Chōkaigi 2025",
+          "description": "I went to Niconico Chōkaigi 2025! I saw Sachiko Kobayashi herself up close!"
+        },
+        "teto": {
+          "title": "Kasane Teto 17th",
+          "description": "Our beloved Teto"
+        },
+        "kasane": {
+          "title": "Izakaya Kasane",
+          "description": "I attended the Izakaya Kasane drill-mug commemorative event"
+        },
+        "comiket50": {
+          "title": "Comic Market 50th Anniversary",
+          "description": "I attended the Comiket 50th anniversary at C107"
+        },
+        "moztw": {
+          "title": "MozTW",
+          "description": "I've been part of the Mozilla Taiwan community for 13+ years!"
+        },
+        "fbosc": {
+          "title": "Facebook Open Source",
+          "description": "I was once a Facebook Open Source developer"
+        },
+        "ponfes25": {
+          "title": "PONFES!2025",
+          "description": "I went to the Ayaponzu* solo live PONFES!2025"
+        },
+        "kancolle": {
+          "title": "Kantai Collection",
+          "description": "I'm an Admiral"
+        },
+        "echoesbaa": {
+          "title": "Music Festival 'CENTRAL 2025'",
+          "description": "I attended the Echoes Baa stage"
+        },
+        "amavel": {
+          "title": "Amavel",
+          "description": "My whole wardrobe is Amavel"
+        },
+        "expo2025": {
+          "title": "Osaka-Kansai Expo",
+          "description": "I went to Expo 2025 Osaka"
+        },
+        "darjeeling": {
+          "title": "Elegant at all times",
+          "description": "I love Darjeeling's motto from Girls und Panzer — stay elegant no matter what!"
+        },
+        "mono": {
+          "title": "mono",
+          "description": "I love the mono girls! I want a 360° camera too!"
+        },
+        "yorimo": {
+          "title": "A Place Further than the Universe",
+          "description": "I love 'A Place Further than the Universe' — I hope to set foot in Antarctica one day"
+        },
+        "suzumiya": {
+          "title": "The Melancholy of Haruhi Suzumiya",
+          "description": "I love 'The Melancholy of Haruhi Suzumiya' — I hope to become someone's Haruhi Suzumiya"
+        },
+        "back2future": {
+          "title": "Back to the Future",
+          "description": "I love the movie Back to the Future — I really want a time machine"
+        },
+        "yeastken": {
+          "title": "Yeastken",
+          "description": "Yeastken bread-dogs are mysterious creatures that look like both bread and a dog, smell like freshly baked bread, and feel soft and fluffy. They usually disguise themselves as bread and hide in bakeries — a wondrous existence."
+        }
+      }
+    }
   },
   "nixiePage": {
     "story": "About this typeface",
