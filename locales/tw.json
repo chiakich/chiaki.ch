@@ -52,8 +52,8 @@
       "description": "千秋設計與開發的軟體、工具與介面作品，包括開源工具、字體編輯器與 React 元件。"
     },
     "chiakey": {
-      "title": "千秋輸入法 ChiaKey — Yahoo 奇摩輸入法的 macOS 復刻 - 千秋稻荷社",
-      "description": "以 Yahoo! 奇摩輸入法開源程式碼為基礎的現代 macOS 繁體中文注音輸入法，支援 Apple Silicon 與 Intel Mac，延續 Yahoo 輸入法的組字手感。"
+      "title": "千秋輸入法 ChiaKey — 為現代 macOS 重建的 Yahoo 奇摩輸入法 - 千秋稻荷社",
+      "description": "以 Yahoo! 奇摩輸入法開源程式碼為基礎的現代 macOS 繁體中文注音輸入法。支援 Apple Silicon 與 Intel Mac，延續原本的組字手感，並重建當年未隨程式碼釋出的 bigram 語言模型。"
     },
     "kumiko": {
       "title": "Kumiko Font Editor - 千秋稻荷社",
@@ -691,7 +691,7 @@
     "hero": {
       "iconAlt": "ChiaKey 輸入法圖示",
       "title": "千秋輸入法 ChiaKey",
-      "srSubtitle": "— Yahoo 奇摩輸入法的 macOS 復刻",
+      "srSubtitle": "— 為現代 macOS 重建的 Yahoo 奇摩輸入法",
       "lead": "熟悉的組字手感與候選窗，現已支援 Apple Silicon",
       "download": "下載",
       "source": "瀏覽原始碼",
@@ -729,14 +729,14 @@
         },
         {
           "title": "老朋友都還在",
-          "description": "預設是好打注音的智慧組字，但傳統注音、倉頡、簡易這些輸入模組也一併保留。也可以自己匯入 .cin 表格，加上粵語、客語這類表格輸入法。"
+          "description": "預設是好打注音的智慧組字，但傳統注音、倉頡、簡易這些 OpenVanilla 時代的輸入模組也一併保留。也可以自己匯入 .cin 表格，加上粵語、客語這類表格輸入法。"
         }
       ]
     },
     "history": {
       "english": "History",
       "title": "什麼是千秋輸入法？",
-      "description": "千秋輸入法是基於 Yahoo! 奇摩輸入法的免費開源復刻專案，旨在修復並改進其功能，並嘗試重製與其手感相仿的詞庫。",
+      "description": "千秋輸入法是基於 Yahoo! 奇摩輸入法的免費開源專案，旨在修復並改進其功能，並重建當年未隨程式碼釋出的詞庫與語言模型。",
       "imageAlt": "ChiaKey About 畫面",
       "body": "Yahoo 奇摩官方在專案停止後，大方地將程式碼開源。千秋輸入法以這份程式碼為起點，替換過時 API、修復遺漏內容，並有限度地改善功能與效能，讓它重新能在現代 macOS 上建置、安裝、輸入，並持續維護。",
       "timeline": [
@@ -754,13 +754,13 @@
         },
         {
           "title": "千秋輸入法",
-          "description": "修復本體、整理相容詞庫，支援 Apple Silicon 與現代 macOS。"
+          "description": "修復本體、重建詞庫與 bigram 語言模型，支援 Apple Silicon 與現代 macOS。"
         }
       ],
       "principles": [
         {
           "title": "維持熟悉的手感",
-          "description": "首要目標為嘗試保留 Yahoo! 奇摩輸入法的組字、候選窗與語言模型，打起來就是原本那一套。"
+          "description": "首要目標為嘗試保留 Yahoo! 奇摩輸入法的組字與候選窗體驗，並重建一套足以支撐同樣手感的語言模型，打起來就是原本那一套。"
         },
         {
           "title": "現代化改造",
@@ -815,7 +815,7 @@
         "items": [
           {
             "title": "用現代手段，解決古代問題",
-            "body": "選字的準確，來自詞與詞的接續統計。台灣輸入法生態缺少能描述「詞跟詞怎麼接」的開放 n-gram 資料，這是這個專案最想補上的一塊。千秋輸入法綜合詞庫以大型語言模型生成合成語料，搭配 Common Voice 句料，一點一滴提煉出 unigram 與 bigram。"
+            "body": "Yahoo 奇摩輸入法當年的 bigram 語言模型並未隨程式碼一起開源，無法沿用。而台灣輸入法生態也一直缺少能描述「詞跟詞怎麼接」的開放 n-gram 資料——選字的準確，正是來自詞與詞的接續統計。這是這個專案最想補上的、也是投入最深的一塊。千秋輸入法綜合詞庫以大型語言模型生成合成語料，主題與文類分佈參照中央研究院平衡語料庫的設計，搭配 Common Voice 句料並抽樣檢查生成結果，一點一滴提煉出 unigram 與 bigram。"
           },
           {
             "title": "熱門詞，即時入庫",
@@ -894,9 +894,9 @@
       "audienceTitle": "適合這樣的你",
       "imageAlt": "千秋角色動畫",
       "audiences": [
-        "懷念 Yahoo! 奇摩輸入法／KeyKey 的手感",
-        "想保存或研究 KeyKey／OpenVanilla 引擎",
-        "想要一套行為穩定、不常改動的注音輸入法"
+        "想要一套選字準、貼近台灣用語的注音輸入法",
+        "懷念 Yahoo! 奇摩輸入法／KeyKey 的組字手感與候選窗",
+        "想要本體保守可預期、詞庫卻持續更新的輸入法"
       ]
     },
     "faq": {

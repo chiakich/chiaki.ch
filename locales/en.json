@@ -53,7 +53,7 @@
     },
     "chiakey": {
       "title": "ChiaKey — A Modern macOS Revival of Yahoo! KeyKey - Chiaki Inari Shrine",
-      "description": "A modern Traditional Chinese Zhuyin input method for macOS, based on Yahoo! KeyKey’s open-source code. It supports Apple Silicon and Intel Macs while preserving KeyKey’s familiar feel."
+      "description": "A modern Traditional Chinese Zhuyin input method for macOS, based on Yahoo! KeyKey’s open-source code. It supports Apple Silicon and Intel Macs, preserves the familiar feel, and rebuilds the bigram language model that was never released with the source code."
     },
     "kumiko": {
       "title": "Kumiko Font Editor - Chiaki Inari Shrine",
@@ -748,7 +748,7 @@
     "history": {
       "english": "History",
       "title": "What is ChiaKey?",
-      "description": "ChiaKey is a free, open-source revival of Yahoo! KeyKey, made to repair and improve it while recreating a lexicon with a familiar feel.",
+      "description": "ChiaKey is a free, open-source project built on Yahoo! KeyKey, made to repair and improve it while rebuilding the lexicon and language model that were never released with the original source code.",
       "imageAlt": "ChiaKey About screen",
       "body": "After ending the project, Yahoo! released its code as open source. ChiaKey starts from that codebase: replacing obsolete APIs, repairing missing pieces, and carefully improving functionality and performance so it can once again build, install, and type on modern macOS—and continue to be maintained.",
       "timeline": [
@@ -766,13 +766,13 @@
         },
         {
           "title": "ChiaKey",
-          "description": "Repairs the app and organizes compatible lexicons for Apple Silicon and modern macOS."
+          "description": "Repairs the app and rebuilds the lexicon and bigram language model, for Apple Silicon and modern macOS."
         }
       ],
       "principles": [
         {
           "title": "Keep the familiar feel",
-          "description": "The first goal is to retain Yahoo! KeyKey’s composition, candidate window, and language model—the same way of typing."
+          "description": "The first goal is to retain Yahoo! KeyKey’s composition and candidate window, and to rebuild a language model that supports the same feel—the same way of typing."
         },
         {
           "title": "Modernize carefully",
@@ -830,7 +830,7 @@
         "items": [
           {
             "title": "Modern means for an age-old problem",
-            "body": "Accurate character selection comes from statistics on how words connect. Taiwan's input-method ecosystem has long lacked open n-gram data describing word-to-word transitions—the gap this project most wanted to fill. The ChiaKey lexicon distills unigrams and bigrams, bit by bit, from LLM-generated synthetic corpora together with Common Voice sentences."
+            "body": "Yahoo! KeyKey's original bigram language model was never open-sourced along with the code, so it couldn't be reused. Taiwan's input-method ecosystem has also long lacked open n-gram data describing word-to-word transitions—accurate character selection comes from exactly this kind of statistics. This is the gap this project most wanted to fill, and where it invested the most effort. The ChiaKey lexicon distills unigrams and bigrams from LLM-generated synthetic corpora—modeled on the genre and topic distribution of Academia Sinica's Balanced Corpus and spot-checked by hand—together with Common Voice sentences."
           },
           {
             "title": "Trending words, freshly stocked",
@@ -909,9 +909,9 @@
       "audienceTitle": "Is this for you?",
       "imageAlt": "Animated Chiaki character",
       "audiences": [
-        "You miss the feel of Yahoo! KeyKey",
-        "You want to preserve or study the KeyKey/OpenVanilla engine",
-        "You want a stable Bopomofo input method that does not change often"
+        "You want an accurate Bopomofo input method tuned to everyday Taiwanese usage",
+        "You miss the composing feel and candidate window of Yahoo! KeyKey",
+        "You want an app that stays conservative and stable while the lexicon keeps improving"
       ]
     },
     "faq": {
