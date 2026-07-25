@@ -741,7 +741,7 @@
         },
         {
           "title": "The old friends are still here",
-          "description": "The default is smart Bopomofo composition, while the traditional Bopomofo, Cangjie, and Simple modules from the OpenVanilla era remain available."
+          "description": "The default is smart Bopomofo composition, while the traditional Bopomofo, Cangjie, and Simple modules from the OpenVanilla era remain available.You can also import your own .cin tables to add table-based methods such as Cantonese or Hakka."
         }
       ]
     },
@@ -937,6 +937,10 @@
         {
           "q": "Can I import my Yahoo! KeyKey dictionary?",
           "a": "ChiaKey is fully compatible with Yahoo! KeyKey dictionaries, including data accumulated through smart learning. In KeyKey, go to Preferences → Phrase Management → Export User Phrase Database to export it."
+        },
+        {
+          "q": "Can I add other input methods myself, such as Cantonese or Hakka?",
+          "a": "Yes, and not only Cantonese — any .cin table can be imported yourself. ChiaKey keeps OpenVanilla’s table engine. In Preferences → Custom, click + or drag a .cin table file onto the list to import it, and it then appears in the input menu. Tables for Cantonese, Hakka, Taiwanese, Array, Dayi and more are available from projects such as cin-tables. Note that table-based input methods work code by code with candidate selection; they do not compose a whole sentence at once the way Bopomofo does."
         }
       ]
     }

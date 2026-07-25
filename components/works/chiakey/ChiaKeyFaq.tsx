@@ -69,7 +69,7 @@ const FaqItem = ({ q, a }: { q: string; a: string }) => {
 
 const ChiaKeyFaq = () => {
   const { t } = useI18n()
-  const items = [0, 1, 2, 3, 4].map((index) => ({
+  const items = [0, 1, 2, 3, 4, 5].map((index) => ({
     q: t(`chiakeyPage.faq.items.${index}.q`),
     a: t(`chiakeyPage.faq.items.${index}.a`),
   }))
