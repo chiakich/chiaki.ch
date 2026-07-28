@@ -6,7 +6,6 @@ excerpt: "Last month at Blocto’s SDK development, we underwent a significant a
 tags: ["blockchain", "sdk-development", "front-end-development", "monorepo", "javascript"]
 cover: /assets/blog/blocto-js-sdk-monorepo/01.jpeg
 readingTime: 5
-canonical: https://medium.portto.com/why-bloctos-web-team-switched-our-js-sdk-to-monorepo-435f6fc72722
 ---
 ![](/assets/blog/blocto-js-sdk-monorepo/01.jpeg)
 *Photo by Yancy Min on Unsplash*
