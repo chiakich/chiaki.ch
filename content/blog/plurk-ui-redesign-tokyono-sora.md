@@ -6,7 +6,6 @@ excerpt: "隨著現代螢幕越來越大，像素密度越來越高，舊時代�
 tags: ["website-design", "redesign", "social-media", "design", "plurk"]
 cover: /assets/blog/plurk-ui-redesign-tokyono-sora/01.jpeg
 readingTime: 2
-canonical: https://akiakira02.medium.com/plurk-ui-redesign-tokyono-sora-6938040c7880
 ---
 ## 重新設計橫式捲動社交平台 Plurk UI Redesign — Tokyono Sora
 

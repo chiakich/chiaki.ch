@@ -6,7 +6,6 @@ excerpt: "今年清明連假，台灣 ACG 圈迎來了這場號稱「強強聯�
 tags: []
 cover: /assets/blog/acf-akihabara-fes-2026/01.jpeg
 readingTime: 8
-canonical: https://akiakira02.medium.com/390-%E5%85%83%E7%9A%84%E7%A5%9E%E7%B4%9A%E6%BC%94%E5%87%BA-%E9%99%84%E9%80%81%E4%B8%80%E5%A0%B4%E4%B8%8D%E7%9F%A5%E9%81%93%E6%80%8E%E9%BA%BC%E9%80%9B%E7%9A%84%E5%B1%95-%E6%B7%BA%E8%AB%87-acf-%E7%A7%8B%E8%91%89%E5%8E%9F%E5%8B%95%E6%BC%AB%E7%A5%AD-9b5f8bf523e2
 ---
 今年清明連假，台灣 ACG 圈迎來了這場號稱「強強聯手」的重磅活動，2026 ACF 秋葉原動漫祭。這場活動一開始看起來幾乎完美的華麗陣容，由日本同人巨頭 Melonbooks 主催，主打還原秋葉原街道，還請來了日本頂級 Coser Enako、聲優上坂堇，以及好幾位Hololive「親媽」繪師坐鎮同人區。
 

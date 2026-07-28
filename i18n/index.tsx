@@ -61,3 +61,38 @@ export const pagePathFromLocalePath = (path: string) => {
     ? `/${segments.slice(1).join('/')}` || '/'
     : path
 }
+
+// Must mirror the `routes` keys in pages/[locale]/[[...slug]].tsx —
+// only these paths actually exist under /ja and /en.
+const LOCALIZED_ROUTES = new Set([
+  '',
+  'profile',
+  'story',
+  'story/character',
+  'story/character/art',
+  'works',
+  'works/chiakey',
+  'works/kumiko',
+  'works/tg-jpg',
+  'works/split-flap',
+  'works/tokyono-sora',
+  'fonts',
+  'fonts/akitra',
+  'fonts/huninn',
+  'fonts/nixie',
+  'blog',
+])
+
+export const isLocalizedRoute = (pagePath: string) =>
+  LOCALIZED_ROUTES.has(pagePath.replace(/^\//, ''))
+
+// Pages like individual blog posts (/blog/<slug>) have no /ja or /en variant.
+// Walk up to the nearest ancestor segment that does, e.g. /blog/<slug> -> /blog.
+export const closestLocalizedRoute = (pagePath: string) => {
+  const segments = pagePath.replace(/^\//, '').split('/')
+  while (segments.length > 0) {
+    if (LOCALIZED_ROUTES.has(segments.join('/'))) return `/${segments.join('/')}`
+    segments.pop()
+  }
+  return '/'
+}

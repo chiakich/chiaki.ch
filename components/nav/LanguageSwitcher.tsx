@@ -3,13 +3,24 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { Language, NavArrowDownSolid } from 'iconoir-react'
-import { localizedPath, pagePathFromLocalePath, useI18n } from 'i18n'
+import {
+  closestLocalizedRoute,
+  isLocalizedRoute,
+  localizedPath,
+  pagePathFromLocalePath,
+  useI18n,
+} from 'i18n'
 
 const LanguageSwitcher: React.FC = () => {
   const [isOpen, setOpen] = useState(false)
   const currentPath = usePathname()
   const { locale, t } = useI18n()
   const pagePath = pagePathFromLocalePath(currentPath ?? '/')
+  // Pages without a /ja or /en variant (e.g. individual blog posts) fall back
+  // to the nearest route that has one, instead of linking to a 404.
+  const switchablePagePath = isLocalizedRoute(pagePath)
+    ? pagePath
+    : closestLocalizedRoute(pagePath)
 
   // 換頁時收起選單
   useEffect(() => {
@@ -80,7 +91,10 @@ const LanguageSwitcher: React.FC = () => {
         {(['tw', 'ja', 'en'] as const).map((itemLocale) => (
           <Box as="li" key={itemLocale} role="none">
             <Link
-              href={localizedPath(pagePath, itemLocale)}
+              href={localizedPath(
+                itemLocale === 'tw' ? pagePath : switchablePagePath,
+                itemLocale
+              )}
               role="menuitem"
               onClick={() => setOpen(false)}
               tabIndex={isOpen ? 0 : -1}
