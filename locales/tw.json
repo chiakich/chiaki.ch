@@ -33,7 +33,7 @@
     },
     "profile": {
       "title": "涼風千秋 - 千秋稻荷社",
-      "description": "您好！我是涼風千秋。畫畫、做設計師、寫程式的人，永遠都在挖坑與填坑的路上。參與開源字體與同人文化。"
+      "description": "您好！我是涼風千秋。畫畫、做設計、寫程式的人，永遠都在挖坑與填坑的路上。參與開源字體與同人文化。"
     },
     "story": {
       "title": "故事 - 千秋稻荷社",
@@ -164,7 +164,7 @@
       "namePart2": "千秋",
       "tagline": "藉算機以窮妙理，運寸彩以繪芳華",
       "introLine1": "您好！我是涼風千秋。",
-      "introLine2": "畫畫、做設計師、寫程式的人。永遠都在挖坑與填坑的路上。",
+      "introLine2": "畫畫、做設計、寫程式的人。永遠都在挖坑與填坑的路上。",
       "profileAlt": "涼風千秋"
     },
     "characterPanel": {
@@ -598,12 +598,7 @@
     "tryKumiko": "線上試用 Kumiko",
     "source": "查看原始碼",
     "workflowAria": "從 GitHub 載入字體、編輯、提交並建立 Pull Request",
-    "workflowSteps": [
-      "載入 UFO",
-      "編輯字形",
-      "推送變更",
-      "送出補字"
-    ],
+    "workflowSteps": ["載入 UFO", "編輯字形", "推送變更", "送出補字"],
     "idsDemo": {
       "ariaLabel": "以 IDS 拆解式 ⿰糹扁 由部件組出「編」字",
       "missing": "缺字",
@@ -688,6 +683,7 @@
     "boardCaption": "致敬 2022 年退役的京急川崎駅「パタパタ」發車標"
   },
   "chiakeyPage": {
+    "title": "千秋輸入法",
     "hero": {
       "iconAlt": "ChiaKey 輸入法圖示",
       "title": "千秋輸入法 ChiaKey",
@@ -701,6 +697,17 @@
         "correction": "「入」出現，書 → 輸",
         "done": "整句組好"
       }
+    },
+    "precision": {
+      "english": "Precision",
+      "unitSuffix": "條",
+      "unit": "上下文校正規則",
+      "title": "打完，通常就對了",
+      "lead": "我們從 4.6 億字的台灣文本裡抽出兩千四百萬個相鄰詞對，然後刪掉其中 98.8%。",
+      "body": "留下的每一列都滿足同一個條件：在你真的會打的那個讀音上，正確的詞排在後面。其他的，輸入法本來就會選對——多留一列，只是多一次搶錯的機會。",
+      "stateOff": "詞庫裡「{a}」的權重高於「{b}」",
+      "stateOn": "bigram 校正 · 前文是「{p}」",
+      "replay": "再看一次校正"
     },
     "features": {
       "english": "Features",

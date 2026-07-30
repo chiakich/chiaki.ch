@@ -43,7 +43,12 @@ export const getNavSections = (t: Translate): Record<string, NavSection> => ({
   [t('nav.story')]: {
     title: t('nav.storyTitle'),
     items: [
-      { id: 'story', title: t('nav.storyIndex'), path: '/story', icon: <StoryIcon /> },
+      {
+        id: 'story',
+        title: t('nav.storyIndex'),
+        path: '/story',
+        icon: <StoryIcon />,
+      },
       {
         id: 'character',
         title: t('nav.character'),
@@ -61,10 +66,15 @@ export const getNavSections = (t: Translate): Record<string, NavSection> => ({
   [t('nav.works')]: {
     title: t('nav.works'),
     items: [
-      { id: 'works', title: t('nav.worksIndex'), path: '/works', icon: <CollectionIcon /> },
+      {
+        id: 'works',
+        title: t('nav.worksIndex'),
+        path: '/works',
+        icon: <CollectionIcon />,
+      },
       {
         id: 'chiakey',
-        title: 'ChiaKey',
+        title: t('chiakeyPage.title'),
         path: '/works/chiakey',
         icon: <ChiaKeyIcon />,
       },
@@ -87,7 +97,12 @@ export const getNavSections = (t: Translate): Record<string, NavSection> => ({
   [t('nav.fonts')]: {
     title: t('nav.fonts'),
     items: [
-      { id: 'fonts', title: t('nav.fontsIndex'), path: '/fonts', icon: <CollectionIcon /> },
+      {
+        id: 'fonts',
+        title: t('nav.fontsIndex'),
+        path: '/fonts',
+        icon: <CollectionIcon />,
+      },
       {
         id: 'akitra',
         title: t('nav.akitra'),
@@ -95,7 +110,12 @@ export const getNavSections = (t: Translate): Record<string, NavSection> => ({
         icon: <AkitraIcon />,
       },
       { id: 'nixie', title: 'Nixie', path: '/fonts/nixie', icon: <NixieIcon /> },
-      { id: 'huninn', title: t('nav.huninn'), path: '/fonts/huninn', icon: <HuninnIcon /> },
+      {
+        id: 'huninn',
+        title: t('nav.huninn'),
+        path: '/fonts/huninn',
+        icon: <HuninnIcon />,
+      },
     ],
   },
 })

@@ -714,6 +714,17 @@
         "done": "The whole sentence comes together"
       }
     },
+    "precision": {
+      "english": "Precision",
+      "unitSuffix": "",
+      "unit": "context corrections",
+      "title": "Type it. It's usually already right.",
+      "lead": "We pulled 24 million adjacent word pairs from 460 million characters of real Taiwanese text — then deleted 98.8% of them.",
+      "body": "Every row that survived meets one condition: on the reading you would actually type, the correct word ranks behind a homophone. Everything else the engine already gets right — an extra row would only be one more chance to steal the wrong word.",
+      "stateOff": "The lexicon weighs “{a}” above “{b}”",
+      "stateOn": "Bigram correction · preceded by “{p}”",
+      "replay": "Replay the correction"
+    },
     "features": {
       "english": "Features",
       "title": "The familiar way, made easier",
