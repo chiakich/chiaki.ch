@@ -808,7 +808,7 @@
         },
         {
           "title": "Project lexicon",
-          "description": "Our maintained lexicon: fixes known gaps, specifies readings, tunes candidate order, and adds Taiwanese usage, synthetic corpora, and unigram/bigram supplements extracted from trending words."
+          "description": "Our maintained lexicon: fixes known gaps, specifies readings, tunes candidate order, and adds Taiwanese usage, trending words, and unigram/bigram data extracted from real Taiwanese text."
         },
         {
           "title": "Correction layer",
@@ -829,12 +829,12 @@
         "intro": "The lexicon was the hardest part of this project.",
         "items": [
           {
-            "title": "Modern means for an age-old problem",
-            "body": "Yahoo! KeyKey's original bigram language model was never open-sourced along with the code, so it couldn't be reused. Taiwan's input-method ecosystem has also long lacked open n-gram data describing word-to-word transitions—accurate character selection comes from exactly this kind of statistics. This is the gap this project most wanted to fill, and where it invested the most effort. The ChiaKey lexicon distills unigrams and bigrams from LLM-generated synthetic corpora—modeled on the genre and topic distribution of Academia Sinica's Balanced Corpus and spot-checked by hand—together with Common Voice sentences."
+            "title": "460 million characters for more accurate selection",
+            "body": "Yahoo! KeyKey's original bigram language model was never open-sourced with its code. Taiwan's input-method ecosystem has likewise long lacked open n-gram data that describes how words connect. ChiaKey Lexicon extracts homophone-disambiguation data for Taiwanese contexts directly from about 460 million characters of real text: government news, Legislative Yuan transcripts, PTT, Plurk, and Traditional Chinese Wikipedia."
           },
           {
             "title": "Trending words, freshly stocked",
-            "body": "Feeding the lexicon with trending search keywords was once Yahoo! KeyKey's signature. ChiaKey set out to rebuild that pipeline: trending searches are observed on a schedule, distilled into an auto-hotwords lexicon, and loaded automatically with every lexicon update. What is revived is more than the code."
+            "body": "Language evolves over time. ChiaKey tries to keep up by regularly watching for trending words and loading them automatically with every lexicon update. What is revived is more than the code."
           }
         ]
       },

@@ -84,7 +84,7 @@ const ChiaKeyLexicon = () => {
   const dataLayerItems = [
     ['keykey-boneyard-bootstrap', 'keykey-punctuations-cin', 'keykey-module-cin', 'keykey-prepopulated-service-data', 'bpmf-ext-cin'],
     ['libchewing-data', 'rime-essay', 'mozc-emoticon-data'],
-    ['chiaki-modern-overlay', 'chiaki-auto-hotwords-overlay', 'chiaki-synthetic-overlay', '...'],
+    ['chiaki-tw-homophone-bigram', 'chiaki-modern-overlay', 'chiaki-auto-hotwords-overlay', '...'],
     ['chiaki-rime-conversion-policy', 'chiaki-fragment-denylist'],
   ]
   const dataLayers = dataLayerItems.map((items, index) => ({ name: t(`chiakeyPage.lexicon.dataLayers.${index}.title`), goal: t(`chiakeyPage.lexicon.dataLayers.${index}.description`), items }))
