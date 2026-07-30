@@ -167,7 +167,9 @@ const ChiaKeyHero = () => {
       pt={{ base: '76px', md: '116px' }}
       position="relative"
       overflow="hidden"
-      background="radial-gradient(ellipse at 50% -10%, #b79bd2 0, #3d2159 42%, #1b0e2e 72%, #0e0716 100%)"
+      // Safari can distort an auto-sized ellipse whose focal point sits outside the box.
+      // Give the glow an explicit size and keep its origin inside the hero instead.
+      background="radial-gradient(ellipse 130% 90% at 50% 0%, #b79bd2 0%, #3d2159 42%, #1b0e2e 72%, #0e0716 100%)"
     >
       <Container
         maxW="1120px"
