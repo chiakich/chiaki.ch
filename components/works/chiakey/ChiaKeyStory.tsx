@@ -99,7 +99,7 @@ const ChiaKeyStory = () => {
         {t('chiakeyPage.history.body')}
       </Text>
     </MotionSection>
-    <Grid columns={{ base: 1, md: 3 }} gap={4}>
+    <Grid columns={{ base: 1, md: 3 }} gap={4} mb={20}>
       {principles.map(([title, description], index) => (
         <MotionSection key={title} delay={index * 0.08}>
           <Box backgroundColor="#150d20" borderRadius="24px" p={7} height="100%">

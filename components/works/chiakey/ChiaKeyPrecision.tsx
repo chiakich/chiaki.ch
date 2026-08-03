@@ -4,7 +4,6 @@ import { Box, Container, Flex, HStack, Stack, styled } from 'styled-system/jsx'
 import { useI18n } from 'i18n'
 
 const Text = styled.p
-const Heading = styled.h2
 const Span = styled.span
 const Button = styled.button
 
@@ -29,6 +28,12 @@ const examples = [
     right: '再做',
   },
   {
+    bopomofo: ['ㄅㄨˊ', 'ㄗㄞˋ'],
+    previous: '通常',
+    fallback: '不再',
+    right: '不在',
+  },
+  {
     bopomofo: ['ㄅㄧㄢˋ', 'ㄕˋ'],
     previous: '無法',
     fallback: '便是',
@@ -37,10 +42,10 @@ const examples = [
   { bopomofo: ['ㄒㄧㄣ', 'ㄐㄧ'], previous: '耍', fallback: '心肌', right: '心機' },
 ]
 
-const ROW_COUNT = 292639
+const ROW_COUNT = 394363
 const HIGHLIGHT = 'linear-gradient(180deg, #a12cae 0%, #5f1069 100%)'
 
-// 進場時從 0 數到 292,639。easeOut 讓尾數停得慢一點，數字才讀得到。
+// 進場時從 0 數到 394,363。easeOut 讓尾數停得慢一點，數字才讀得到。
 const RowCounter = ({ suffix }: { suffix: string }) => {
   const ref = useRef<HTMLSpanElement>(null)
   const inView = useInView(ref, { once: true, margin: '-120px' })
@@ -342,14 +347,6 @@ const ChiaKeyPrecision = () => {
             >
               {t('chiakeyPage.precision.unit')}
             </Text>
-            <Heading
-              fontSize={{ base: '1.6rem', md: '2.4rem' }}
-              fontWeight="bold"
-              letterSpacing="-.02em"
-              lineHeight="1.3"
-            >
-              {t('chiakeyPage.precision.title')}
-            </Heading>
             <Text fontSize={{ base: 'md', md: 'lg' }} lineHeight="1.9" opacity={0.6}>
               {t('chiakeyPage.precision.lead')}
             </Text>
@@ -358,12 +355,12 @@ const ChiaKeyPrecision = () => {
           <ContextDemo />
 
           <Text
-            fontSize={{ base: 'md', md: 'lg' }}
-            lineHeight="1.9"
-            opacity={0.6}
+            fontSize={{ base: 'sm', md: 'md' }}
+            lineHeight="1.8"
+            opacity={0.45}
             maxW="700px"
           >
-            {t('chiakeyPage.precision.body')}
+            {t('chiakeyPage.precision.limitation')}
           </Text>
         </Stack>
       </Container>

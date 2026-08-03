@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect } from 'react'
+import { cloneElement, createContext, useCallback, useContext, useEffect } from 'react'
 import tw from 'locales/tw.json'
 import ja from 'locales/ja.json'
 import en from 'locales/en.json'
@@ -50,6 +50,31 @@ export const useI18n = () => {
   )
 
   return { locale, t }
+}
+
+// A small subset of react-i18next's Trans API. Translation strings can wrap
+// link text in named tags, allowing each locale to choose its own word order.
+export const Trans = ({
+  i18nKey,
+  components = {},
+}: {
+  i18nKey: string
+  components?: Record<string, React.ReactElement>
+}) => {
+  const { t } = useI18n()
+  const parts = t(i18nKey).split(/(<[a-zA-Z][\w-]*>[\s\S]*?<\/[a-zA-Z][\w-]*>)/g)
+
+  return (
+    <>
+      {parts.map((part, index) => {
+        const match = part.match(/^<([a-zA-Z][\w-]*)>([\s\S]*)<\/\1>$/)
+        if (!match) return part
+
+        const component = components[match[1]]
+        return component ? cloneElement(component, { key: index }, match[2]) : match[2]
+      })}
+    </>
+  )
 }
 
 export const localizedPath = (path: string, locale: Locale) =>

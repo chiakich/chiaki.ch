@@ -52,8 +52,8 @@
       "description": "Software, tools, and interfaces designed and developed by Chiaki, including open-source tools, font editors, and React components."
     },
     "chiakey": {
-      "title": "ChiaKey — A Modern macOS Revival of Yahoo! KeyKey - Chiaki Inari Shrine",
-      "description": "A modern Traditional Chinese Zhuyin input method for macOS, based on Yahoo! KeyKey’s open-source code. It supports Apple Silicon and Intel Macs, preserves the familiar feel, and rebuilds the bigram language model that was never released with the source code."
+      "title": "ChiaKey — Yahoo! KeyKey, Evolving for Modern macOS - Chiaki Inari Shrine",
+      "description": "A modern Traditional Chinese Zhuyin input method for macOS, starting from Yahoo! KeyKey’s open-source code. It supports Apple Silicon and Intel Macs, preserves the familiar feel, and keeps building a lexicon and bigram language model tuned to Taiwanese usage."
     },
     "kumiko": {
       "title": "Kumiko Font Editor - Chiaki Inari Shrine",
@@ -108,7 +108,7 @@
         "title": "ChiaKey",
         "description": "A macOS Zhuyin input method based on the open-source Yahoo! KeyKey codebase, preserving its familiar composition feel and candidate window while maintaining it for modern systems. Supports Apple Silicon and Intel Macs.",
         "tag": "Input method",
-        "tag2": "Open-source revival"
+        "tag2": "Open-source, evolving"
       },
       "kumiko": {
         "description": "A zero-install web font editor: load a UFO from GitHub, complete glyphs with IDS components in the browser, then submit a pull request—making open-source CJK font work easier to join."
@@ -703,7 +703,7 @@
     "hero": {
       "iconAlt": "ChiaKey input method icon",
       "title": "ChiaKey",
-      "srSubtitle": "— a modern macOS revival of Yahoo! KeyKey",
+      "srSubtitle": "— Yahoo! KeyKey, evolving for modern macOS",
       "lead": "The familiar composing experience and candidate window, now with Apple Silicon support.",
       "download": "Download",
       "source": "View source",
@@ -717,13 +717,12 @@
     "precision": {
       "english": "Precision",
       "unitSuffix": "",
-      "unit": "context corrections",
-      "title": "Type it. It's usually already right.",
-      "lead": "We pulled 24 million adjacent word pairs from 460 million characters of real Taiwanese text — then deleted 98.8% of them.",
-      "body": "Every row that survived meets one condition: on the reading you would actually type, the correct word ranks behind a homophone. Everything else the engine already gets right — an extra row would only be one more chance to steal the wrong word.",
-      "stateOff": "The lexicon weighs “{a}” above “{b}”",
-      "stateOn": "Bigram correction · preceded by “{p}”",
-      "replay": "Replay the correction"
+      "unit": "rules that refer to earlier words",
+      "lead": "From 470 million characters of real Taiwanese text, we found 32 million neighboring word pairs and distilled nearly 400,000 pairings that can help choose the right character.",
+      "stateOff": "On its own, “{a}” occurs more often than “{b}”",
+      "stateOn": "Corrected using surrounding context",
+      "replay": "Replay the correction",
+      "limitation": "Note: many cases still do not reveal intent. For example, 我們在做, 我們再做, and 我們在座 can all be correct, so they cannot be resolved automatically."
     },
     "features": {
       "english": "Features",
@@ -732,7 +731,7 @@
       "items": [
         {
           "title": "Adaptive candidates",
-          "description": "Candidate order combines the language model with your selection history. Frequently chosen characters rise to the top."
+          "description": "The input method looks at the sentence and your selection history when ordering candidates. Characters you choose often rise to the top next time."
         },
         {
           "title": "Add phrases",
@@ -759,9 +758,9 @@
     "history": {
       "english": "History",
       "title": "What is ChiaKey?",
-      "description": "ChiaKey is a free, open-source project built on Yahoo! KeyKey, made to repair and improve it while rebuilding the lexicon and language model that were never released with the original source code.",
+      "description": "ChiaKey starts from Yahoo! KeyKey’s open-source code, carries its familiar experience forward, and keeps repairing, improving, and building a new lexicon and language model.",
       "imageAlt": "ChiaKey About screen",
-      "body": "After ending the project, Yahoo! released its code as open source. ChiaKey starts from that codebase: replacing obsolete APIs, repairing missing pieces, and carefully improving functionality and performance so it can once again build, install, and type on modern macOS—and continue to be maintained.",
+      "body": "After ending the project, Yahoo! released its code as open source. ChiaKey starts from that codebase: replacing obsolete APIs, repairing missing pieces, and continually improving the app, its performance, and its lexicon so the familiar input experience can keep evolving on modern macOS.",
       "timeline": [
         {
           "title": "Yahoo! KeyKey launches",
@@ -777,13 +776,13 @@
         },
         {
           "title": "ChiaKey",
-          "description": "Repairs the app and rebuilds the lexicon and bigram language model, for Apple Silicon and modern macOS."
+          "description": "Repairs the app and keeps building its word-selection lexicon for Apple Silicon and modern macOS."
         }
       ],
       "principles": [
         {
           "title": "Keep the familiar feel",
-          "description": "The first goal is to retain Yahoo! KeyKey’s composition and candidate window, and to rebuild a language model that supports the same feel—the same way of typing."
+          "description": "The first goal is to carry forward Yahoo! KeyKey’s composition and candidate window, while a new lexicon makes that familiar feel better suited to Taiwanese usage today."
         },
         {
           "title": "Modernize carefully",
@@ -798,20 +797,20 @@
     "lexicon": {
       "english": "Lexicon",
       "title": "Layered lexicons that understand you",
-      "description": "A lexicon is more than one list. To restore the familiar feel, ChiaKey combines multiple sources and selects vocabulary suited to everyday Taiwanese usage; after installation on your Mac, it adds two layers that are yours.",
+      "description": "A lexicon is more than one list. ChiaKey combines multiple sources to preserve a familiar feel while continuously choosing vocabulary suited to everyday Taiwanese usage; after installation on your Mac, it adds two layers that are yours.",
       "iconAlt": "ChiaKey-Lexicon icon",
       "localMachine": "your machine",
       "layers": [
-        "Base and external lexicons",
-        "Project lexicon",
-        "Automatic trending words",
-        "Taiwan usage corrections",
+        "Data that keeps the input method working",
+        "Everyday word data",
+        "Recently trending words",
+        "Taiwan usage adjustments",
         "User dictionary + learning cache"
       ],
       "dataLayers": [
         {
-          "title": "Compatibility base",
-          "description": "Maintains compatibility with the ChiaKey runtime, existing schemas, and module tables."
+          "title": "Input-method essentials",
+          "description": "Keeps the existing input features and input methods working as expected."
         },
         {
           "title": "External lexicons",
@@ -819,11 +818,11 @@
         },
         {
           "title": "Project lexicon",
-          "description": "Our maintained lexicon: fixes known gaps, specifies readings, tunes candidate order, and adds Taiwanese usage, trending words, and unigram/bigram data extracted from real Taiwanese text."
+          "description": "Our maintained word data: fills missing words, corrects readings and candidate order, and adds Taiwanese usage, trending words, and common word pairings found in real Taiwanese text."
         },
         {
-          "title": "Correction layer",
-          "description": "Small reviewed rules keep default zh-TW output aligned with common Taiwanese usage and cap fragment weights to prevent incorrect segmentation caused by character stealing."
+          "title": "Taiwan usage adjustments",
+          "description": "A small set of reviewed adjustments keeps the default output aligned with common Taiwanese writing and reduces characters being split or combined incorrectly."
         }
       ],
       "localLayers": [
@@ -840,19 +839,19 @@
         "intro": "The lexicon was the hardest part of this project.",
         "items": [
           {
-            "title": "460 million characters for more accurate selection",
-            "body": "Yahoo! KeyKey's original bigram language model was never open-sourced with its code. Taiwan's input-method ecosystem has likewise long lacked open n-gram data that describes how words connect. ChiaKey Lexicon extracts homophone-disambiguation data for Taiwanese contexts directly from about 460 million characters of real text: government news, Legislative Yuan transcripts, PTT, Plurk, and Traditional Chinese Wikipedia."
+            "title": "470 million characters for more accurate selection",
+            "body": "Yahoo! KeyKey used surrounding words to help choose characters, but that data was never released with its code. ChiaKey draws on about 470 million characters of real Taiwanese text—government news, Legislative Yuan transcripts, PTT, Plurk, and Traditional Chinese Wikipedia—to find word pairings that help distinguish homophones in context."
           },
           {
             "title": "Trending words, freshly stocked",
-            "body": "Language evolves over time. ChiaKey tries to keep up by regularly watching for trending words and loading them automatically with every lexicon update. What is revived is more than the code."
+            "body": "Language evolves over time. ChiaKey tries to keep up by regularly watching for trending words and loading them automatically with every lexicon update. It carries forward more than the code: the lexicon keeps moving forward too."
           }
         ]
       },
       "update": {
         "title": "Update lexicons without reinstalling",
-        "before": "The four data-layer lexicons are independently updated after",
-        "after": "builds ChiaKey-Lexicon. The input method automatically checks and validates the newest lexicon before enabling it. Your custom phrases and selection history remain in the local database.",
+        "before": "The built-in word data is independently updated after",
+        "after": "builds ChiaKey-Lexicon. The input method automatically checks the newest version before enabling it. Your custom phrases and selection history stay on your Mac.",
         "contribute": "Contribute words"
       }
     },
@@ -931,15 +930,15 @@
       "items": [
         {
           "q": "How is ChiaKey related to Yahoo! KeyKey?",
-          "a": "ChiaKey is a revival built on the code Yahoo! open-sourced after KeyKey was discontinued, repaired and actively maintained. It is not an official Yahoo product; the source is released under a BSD-style license."
+          "a": "ChiaKey starts from the code Yahoo! open-sourced after KeyKey was discontinued. It carries the familiar input experience forward while extensively repairing and improving it, building a new lexicon and language model, and maintaining compatibility wherever possible. It is not an official Yahoo product; the source is released under a BSD-style license."
         },
         {
-          "q": "Can Yahoo! KeyKey still run on new Macs?",
-          "a": "The last official installer is Intel-only: it needs Rosetta on Apple Silicon and cannot be installed after macOS 26. ChiaKey runs natively on Apple Silicon and modern macOS."
+          "q": "Why can’t Yahoo! KeyKey continue to run on new Macs?",
+          "a": "The last official installer is Intel-only and needs Rosetta on Apple Silicon. Apple has announced that macOS 26 and later will no longer support Intel architecture. ChiaKey runs natively on Apple Silicon and modern macOS."
         },
         {
-          "q": "Does it run on older Intel Macs?",
-          "a": "In theory, yes. The current deployment target is macOS 10.13 High Sierra at its lowest, which almost every Intel Mac from 2009 onward can upgrade to. It has not been tested on real hardware yet, though."
+          "q": "Can older Intel Macs use ChiaKey?",
+          "a": "Yes. The current minimum deployment target is macOS 10.13 High Sierra, which almost every Intel Mac from 2009 onward can upgrade to."
         },
         {
           "q": "Is ChiaKey free?",
@@ -947,11 +946,19 @@
         },
         {
           "q": "Can I import my Yahoo! KeyKey dictionary?",
-          "a": "ChiaKey is fully compatible with Yahoo! KeyKey dictionaries, including data accumulated through smart learning. In KeyKey, go to Preferences → Phrase Management → Export User Phrase Database to export it."
+          "a": "ChiaKey is fully compatible with Yahoo! KeyKey dictionaries, including data accumulated through smart learning. Go to Preferences → Phrase Management → Import Yahoo Input Method Data. Note: because of KeyKey’s architecture, Yahoo! KeyKey must be running to use this import."
         },
         {
-          "q": "Can I add other input methods myself, such as Cantonese or Hakka?",
-          "a": "Yes, and not only Cantonese — any .cin table can be imported yourself. ChiaKey keeps OpenVanilla’s table engine. In Preferences → Custom, click + or drag a .cin table file onto the list to import it, and it then appears in the input menu. Tables for Cantonese, Hakka, Taiwanese, Array, Dayi and more are available from projects such as cin-tables. Note that table-based input methods work code by code with candidate selection; they do not compose a whole sentence at once the way Bopomofo does."
+          "q": "Can I add plug-in input methods, such as Cantonese or Taiwanese?",
+          "a": "Yes. Older .cin table input methods can be imported. ChiaKey keeps OpenVanilla’s table engine: in Preferences → Custom Input Methods, click + or drag a .cin table file onto the list. It will then appear in the input menu. Tables for Cantonese, Hakka, Taiwanese, Array, Dayi and more are available from projects such as cin-tables."
+        },
+        {
+          "q": "I love this project! How can I support it?",
+          "a": "Thank you! You can support the project through <koFi>Ko-fi.com</koFi> (outside Taiwan) or <ecpay>ECPay sponsorship</ecpay> (Taiwan credit cards, Apple Pay, ATM, or convenience-store payment codes only)."
+        },
+        {
+          "q": "A candidate looks wrong or a word is missing—how can I report it?",
+          "a": "Please use the <report>GitHub report page</report> to report a missing word or candidate issue."
         }
       ]
     }
