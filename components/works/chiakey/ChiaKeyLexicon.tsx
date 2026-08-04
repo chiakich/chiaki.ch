@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Box, Flex, Grid, HStack, Stack, styled } from 'styled-system/jsx'
+import { Box, Grid, HStack, Stack, styled } from 'styled-system/jsx'
 import MotionSection from 'components/portfolio/MotionSection'
 import ProjectLink from 'components/portfolio/ProjectLink'
 import SectionHeading from 'components/portfolio/SectionHeading'
@@ -8,7 +8,6 @@ import { useI18n } from 'i18n'
 const Heading = styled.h3
 const Text = styled.p
 const Code = styled.code
-const Chip = styled.span
 const Image = styled.img
 
 // ChiaKey-Lexicon 的四個資料層（release builder 依固定順序疊加），
@@ -75,20 +74,12 @@ const LexiconLayers = ({ layers, localMachine }: { layers: { name: string; local
 const ChiaKeyLexicon = () => {
   const { t } = useI18n()
   const layers = [
-    { name: t('chiakeyPage.lexicon.layers.0'), fill: 'rgba(46,32,66,.94)', border: 'rgba(199,125,255,.22)' },
-    { name: t('chiakeyPage.lexicon.layers.1'), fill: 'rgba(66,26,84,.86)', border: 'rgba(199,125,255,.32)' },
-    { name: t('chiakeyPage.lexicon.layers.2'), fill: 'rgba(95,16,105,.78)', border: 'rgba(199,125,255,.45)' },
-    { name: t('chiakeyPage.lexicon.layers.3'), fill: 'rgba(135,36,148,.72)', border: 'rgba(199,125,255,.58)' },
-    { name: t('chiakeyPage.lexicon.layers.4'), local: true, fill: 'rgba(178,68,190,.62)', border: 'rgba(236,220,255,.72)' },
+    { name: t('chiakeyPage.lexicon.layers.0.title'), description: t('chiakeyPage.lexicon.layers.0.description'), fill: 'rgba(46,32,66,.94)', border: 'rgba(199,125,255,.22)' },
+    { name: t('chiakeyPage.lexicon.layers.1.title'), description: t('chiakeyPage.lexicon.layers.1.description'), fill: 'rgba(66,26,84,.86)', border: 'rgba(199,125,255,.32)' },
+    { name: t('chiakeyPage.lexicon.layers.2.title'), description: t('chiakeyPage.lexicon.layers.2.description'), fill: 'rgba(95,16,105,.78)', border: 'rgba(199,125,255,.45)' },
+    { name: t('chiakeyPage.lexicon.layers.3.title'), description: t('chiakeyPage.lexicon.layers.3.description'), fill: 'rgba(135,36,148,.72)', border: 'rgba(199,125,255,.58)' },
+    { name: t('chiakeyPage.lexicon.layers.4.title'), description: t('chiakeyPage.lexicon.layers.4.description'), local: true, fill: 'rgba(178,68,190,.62)', border: 'rgba(236,220,255,.72)' },
   ]
-  const dataLayerItems = [
-    ['keykey-boneyard-bootstrap', 'keykey-punctuations-cin', 'keykey-module-cin', 'keykey-prepopulated-service-data', 'bpmf-ext-cin'],
-    ['libchewing-data', 'rime-essay', 'mozc-emoticon-data'],
-    ['chiaki-tw-homophone-bigram', 'chiaki-modern-overlay', 'chiaki-auto-hotwords-overlay', '...'],
-    ['chiaki-rime-conversion-policy', 'chiaki-fragment-denylist'],
-  ]
-  const dataLayers = dataLayerItems.map((items, index) => ({ name: t(`chiakeyPage.lexicon.dataLayers.${index}.title`), goal: t(`chiakeyPage.lexicon.dataLayers.${index}.description`), items }))
-  const localLayers = [0, 1].map((index) => [t(`chiakeyPage.lexicon.localLayers.${index}.title`), t(`chiakeyPage.lexicon.localLayers.${index}.description`)])
 
   return (
   <Stack gap={2}>
@@ -114,64 +105,25 @@ const ChiaKeyLexicon = () => {
       <LexiconLayers layers={layers} localMachine={t('chiakeyPage.lexicon.localMachine')} />
     </MotionSection>
     <Grid columns={{ base: 1, md: 2 }} gap={4} mt={{ base: 8, md: 12 }}>
-      {dataLayers.map(({ name, goal, items }, index) => (
-        <MotionSection key={name} delay={index * 0.06}>
-          <Box backgroundColor="#150d20" borderRadius="20px" p={6} height="100%">
-            <HStack gap={2} mb={2}>
-              <Box
-                width="9px"
-                height="9px"
-                borderRadius="full"
-                style={{ background: layers[index].border }}
-              />
-              <Heading fontSize="md">{name}</Heading>
-            </HStack>
-            <Text fontSize="xs" opacity={0.6} lineHeight="1.9" mb={3}>
-              {goal}
-            </Text>
-            <Flex gap={1.5} flexWrap="wrap">
-              {items.map((item) => (
-                <Chip
-                  key={item}
-                  fontFamily="mono"
-                  fontSize="10px"
-                  backgroundColor="rgba(199,125,255,.08)"
-                  color="#cfa9ee"
-                  borderRadius="6px"
-                  px={2}
-                  py={1}
-                >
-                  {item}
-                </Chip>
-              ))}
-            </Flex>
-          </Box>
-        </MotionSection>
-      ))}
-    </Grid>
-    <Grid columns={{ base: 1, md: 2 }} gap={4} mt={4}>
-      {localLayers.map(([name, description], index) => (
+      {layers.map(({ name, border, local, description }, index) => (
         <MotionSection key={name} delay={index * 0.06}>
           <Box
+            backgroundColor={local ? 'rgba(21,13,32,.6)' : '#150d20'}
             borderRadius="20px"
             p={6}
             height="100%"
-            border="1px dashed rgba(236,220,255,.35)"
-            backgroundColor="rgba(21,13,32,.6)"
+            style={{ border: `1px ${local ? 'dashed' : 'solid'} ${border}` }}
           >
             <HStack gap={2} mb={2}>
               <Box
                 width="9px"
                 height="9px"
                 borderRadius="full"
-                style={{ background: layers[4].border }}
+                style={{ background: border }}
               />
               <Heading fontSize="md">{name}</Heading>
-              <Text fontSize="10px" opacity={0.5}>
-                {t('chiakeyPage.lexicon.localMachine')}
-              </Text>
             </HStack>
-            <Text fontSize="xs" opacity={0.6} lineHeight="1.9">
+            <Text fontSize="sm" opacity={0.6} lineHeight="1.9">
               {description}
             </Text>
           </Box>

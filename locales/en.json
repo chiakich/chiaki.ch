@@ -801,38 +801,25 @@
       "iconAlt": "ChiaKey-Lexicon icon",
       "localMachine": "your machine",
       "layers": [
-        "Data that keeps the input method working",
-        "Everyday word data",
-        "Recently trending words",
-        "Taiwan usage adjustments",
-        "User dictionary + learning cache"
-      ],
-      "dataLayers": [
         {
-          "title": "Input-method essentials",
-          "description": "Keeps the existing input features and input methods working as expected."
+          "title": "Everyday word data",
+          "description": "Combines everyday characters, words, and readings so you can type daily Chinese smoothly."
         },
         {
-          "title": "External lexicons",
-          "description": "Mature Traditional Chinese vocabulary and readings from input methods such as Chewing and RIME."
+          "title": "Context-aware corrections",
+          "description": "When words sound alike, it refers to the surrounding context to help choose the candidate that best fits the sentence."
         },
         {
-          "title": "Project lexicon",
-          "description": "Our maintained word data: fills missing words, corrects readings and candidate order, and adds Taiwanese usage, trending words, and common word pairings found in real Taiwanese text."
+          "title": "Recently trending words",
+          "description": "Automatically collects trending topics and names from the web, then updates the lexicon."
         },
         {
           "title": "Taiwan usage adjustments",
-          "description": "A small set of reviewed adjustments keeps the default output aligned with common Taiwanese writing and reduces characters being split or combined incorrectly."
-        }
-      ],
-      "localLayers": [
-        {
-          "title": "User dictionary",
-          "description": "Custom phrases added with Shift selection or Ctrl+[number] stay on your machine and can be imported or exported."
+          "description": "Adjusts common Taiwanese writing and candidate order, while reducing words being split or combined incorrectly."
         },
         {
-          "title": "Learning cache",
-          "description": "Your candidate selection history and word frequencies."
+          "title": "User dictionary + learning cache",
+          "description": "The words you add and your selection habits stay on this Mac; custom words can be imported or exported."
         }
       ],
       "highlights": {
