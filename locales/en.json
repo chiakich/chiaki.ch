@@ -53,7 +53,7 @@
     },
     "chiakey": {
       "title": "ChiaKey — Yahoo! KeyKey, Evolving for Modern macOS - Chiaki Inari Shrine",
-      "description": "A modern Traditional Chinese Zhuyin input method for macOS, starting from Yahoo! KeyKey’s open-source code. It supports Apple Silicon and Intel Macs, preserves the familiar feel, and keeps building a lexicon and bigram language model tuned to Taiwanese usage."
+      "description": "A macOS input method for typing Traditional Chinese with Bopomofo (also known as Zhuyin), the phonetic script commonly used in Taiwan. Built from Yahoo! KeyKey’s open-source code, it supports Apple Silicon and Intel Macs while its lexicon and language model keep evolving for Taiwanese usage."
     },
     "kumiko": {
       "title": "Kumiko Font Editor - Chiaki Inari Shrine",
@@ -106,7 +106,7 @@
     "items": {
       "chiakey": {
         "title": "ChiaKey",
-        "description": "A macOS Zhuyin input method based on the open-source Yahoo! KeyKey codebase, preserving its familiar composition feel and candidate window while maintaining it for modern systems. Supports Apple Silicon and Intel Macs.",
+        "description": "A macOS input method for Traditional Chinese that uses Bopomofo (Zhuyin), the phonetic script commonly used in Taiwan. Based on the open-source Yahoo! KeyKey codebase, it preserves the familiar composing experience and candidate window on modern systems, including Apple Silicon and Intel Macs.",
         "tag": "Input method",
         "tag2": "Open-source, evolving"
       },
@@ -221,7 +221,7 @@
       "namePart2": "Suzukaze",
       "tagline": "Exploring reason through computation, painting grace one stroke at a time",
       "introLine1": "Hello, I’m Chiaki Suzukaze.",
-      "introLine2": "I draw, design, and write code—always starting new things and gradually bringing them to life.",
+      "introLine2": "I draw, design, and write code—always taking on new projects and slowly working through the backlog. I love near-future and sci-fi works, as well as retro things, especially mechanical calculators and neon signs. I’m a former member of justfont and contributed to the Huninn typeface and open-source font projects. I also enjoy doujin events and cosplay.",
       "profileAlt": "Chiaki Suzukaze"
     },
     "characterPanel": {
@@ -282,20 +282,20 @@
       "food": {
         "title": "Good food",
         "tag": "FOOD",
-        "description": "I love taking Mr. Walrus out to try cuisines from around the world in search of amazing flavors. I also enjoy cooking and mixing cocktails myself."
+        "description": "I love taking Mr. Walrus to explore cuisines from around the world. I also enjoy cooking and mixing cocktails myself."
       },
       "mini": {
         "title": "Austin Mini",
         "tag": "AUSTIN MINI",
-        "description": "I own a 1989 classic Austin Mini and love the raw, mechanical feel of the old Mini. Curious folks are always welcome to chat!"
+        "description": "I own a 1989 classic Austin Mini and love the raw, mechanical feel of the old Mini. Fellow classic-car enthusiasts are always welcome to chat!"
       }
     },
     "sections": {
       "nowPlaying": {
-        "tag": "NOW PLAYING",
-        "title": "What I’m into lately",
-        "item1": "Anime and video games, especially science-fiction works such as cyberpunk and Endfield.",
-        "item2": "Retro things—particularly the design sensibility around the 20th century. I’ve recently started collecting vinyl records."
+        "tag": "NOW RESEARCHING",
+        "title": "What I’m exploring lately",
+        "item1": "I’m researching intelligent Bopomofo (Zhuyin) input methods for macOS and how to extract practical dictionaries from large corpora.",
+        "item2": "I’m also exploring how to build a font editor in the browser, so more people can contribute to open-source typeface development."
       },
       "interests": {
         "tag": "INTERESTS",
@@ -305,15 +305,15 @@
         "tag": "GETTING ALONG",
         "title": "Keeping in touch",
         "line1": "I have a lot on my plate, so I can be slow to reply.",
-        "line2": "But “slow” never means “I don’t want to talk.” You’re always welcome to chat or send a message; I’ll read it and reply as soon as I can.",
-        "line3": "I may not see every post, especially when I’m busy. It’s never intentional, so thank you for understanding."
+        "line2": "You’re always welcome to chat or send me a message!",
+        "line3": "I also don’t check social media very often, so I may miss messages. Thank you for understanding."
       },
       "oneRequest": {
         "tag": "ONE REQUEST",
         "title": "A small request",
-        "line1": "I don’t talk about politics much, and I don’t enjoy harshly criticizing things.",
-        "line2": "I don’t think there are many absolute rights or wrongs; often, things have simply been put in the wrong place.",
-        "line3": "With that kindness and respect, I think we’ll get along well!"
+        "line1": "I don’t talk about politics much, and I’m not fond of preachy exchanges or excessive criticism.",
+        "line2": "I don’t think we need to rush to divide things into absolute right and wrong; often, it’s simply a matter of context.",
+        "line3": "I’d be happy to connect with kindness and respect."
       },
       "contact": {
         "tag": "CONTACT",
@@ -704,7 +704,7 @@
       "iconAlt": "ChiaKey input method icon",
       "title": "ChiaKey",
       "srSubtitle": "— Yahoo! KeyKey, evolving for modern macOS",
-      "lead": "The familiar composing experience and candidate window, now with Apple Silicon support.",
+      "lead": "The familiar Bopomofo (Zhuyin) composing experience and candidate window, now with Apple Silicon support.",
       "download": "Download",
       "source": "View source",
       "notes": {
@@ -751,14 +751,14 @@
         },
         {
           "title": "The old friends are still here",
-          "description": "The default is smart Bopomofo composition, while the traditional Bopomofo, Cangjie, and Simple modules from the OpenVanilla era remain available.You can also import your own .cin tables to add table-based methods such as Cantonese or Hakka."
+          "description": "The default is smart Bopomofo composition, while the traditional Bopomofo, Cangjie, and Simple modules from the OpenVanilla era remain available. You can also import your own .cin tables to add table-based methods such as Cantonese or Hakka."
         }
       ]
     },
     "history": {
       "english": "History",
       "title": "What is ChiaKey?",
-      "description": "ChiaKey starts from Yahoo! KeyKey’s open-source code, carries its familiar experience forward, and keeps repairing, improving, and building a new lexicon and language model.",
+      "description": "ChiaKey is a macOS input method for Traditional Chinese that uses Bopomofo (also known as Zhuyin), the phonetic script commonly used in Taiwan. Built from Yahoo! KeyKey’s open-source code, it carries its familiar experience forward while continually repairing, improving, and building a new lexicon and language model.",
       "imageAlt": "ChiaKey About screen",
       "body": "After ending the project, Yahoo! released its code as open source. ChiaKey starts from that codebase: replacing obsolete APIs, repairing missing pieces, and continually improving the app, its performance, and its lexicon so the familiar input experience can keep evolving on modern macOS.",
       "timeline": [

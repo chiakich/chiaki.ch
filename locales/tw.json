@@ -164,7 +164,7 @@
       "namePart2": "千秋",
       "tagline": "藉算機以窮妙理，運寸彩以繪芳華",
       "introLine1": "您好！我是涼風千秋。",
-      "introLine2": "畫畫、做設計、寫程式的人。永遠都在挖坑與填坑的路上。",
+      "introLine2": "畫畫、做設計、寫程式的人。永遠都在挖坑與填坑的路上。喜歡近未來、科幻題材的作品，也喜歡復古的東西，特別喜歡像是機械計算機、霓虹燈這類的。justfont 的 ex-member，參與過粉圓字型的設計與開源字型專案，也喜歡參加同人活動與Cosplay。",
       "profileAlt": "涼風千秋"
     },
     "characterPanel": {
@@ -175,7 +175,7 @@
       "design": {
         "title": "設計",
         "tag": "DESIGN",
-        "description": "喜歡以人為本、機能與美觀兼顧的設計。曾參與 justfont 粉圓字型，也做過一些平面與網頁設計。"
+        "description": "喜歡以人為本、機能與美觀兼顧的設計。曾參與 justfont 的粉圓字型設計，也做過一些平面與網頁設計。"
       },
       "drawing": {
         "title": "繪畫",
@@ -195,12 +195,12 @@
       "doujin": {
         "title": "同人活動",
         "tag": "DOUJIN",
-        "description": "固定會去 FF、CWT、Comiket 等，有空的話會報攤，喜歡參加活動跟大家交流。"
+        "description": "固定會去 FF、CWT、Comiket 等活動，有空也會報名擺攤，喜歡和大家交流。"
       },
       "cosplay": {
         "title": "Cosplay",
         "tag": "COSPLAY",
-        "description": "好愛攪拌，但怕熱，通常冬天場才會出角。歡迎約搭角！"
+        "description": "好愛攪拌，但怕熱，通常只在冬季場出角。歡迎約搭角！"
       },
       "lolita": {
         "title": "蘿莉塔",
@@ -210,12 +210,12 @@
       "travel": {
         "title": "旅行",
         "tag": "TRAVEL",
-        "description": "研究路線、探索新地區、體驗不同文化。喜歡各地的夜景與在地美食。"
+        "description": "喜歡研究路線、探索新地方、體驗不同文化，尤其喜歡各地夜景與在地美食。"
       },
       "opensource": {
         "title": "開源貢獻",
         "tag": "OPEN SOURCE",
-        "description": "喜歡寫程式，也喜歡分享技術、與大家交流，常常可以在 COSCUP 之類的開源年會上看到我！"
+        "description": "喜歡寫程式、分享技術，也喜歡和社群交流；常在 COSCUP 等開源年會出沒。"
       },
       "electronics": {
         "title": "電子電路",
@@ -225,20 +225,20 @@
       "food": {
         "title": "吃美食",
         "tag": "FOOD",
-        "description": "喜歡帶海象先生品嚐各種異國料理，尋找令人驚豔的美味；自己也喜歡做料理、調酒。"
+        "description": "喜歡帶海象先生探索各式異國料理，自己也喜歡下廚和調酒。"
       },
       "mini": {
         "title": "老咪",
         "tag": "AUSTIN MINI",
-        "description": "擁有一台 1989 年的老 Austin Mini，喜歡老 Mini 原始的機械感，歡迎好奇的人來交流。"
+        "description": "擁有一台 1989 年的老 Austin Mini，喜歡老 Mini 原始的機械感，歡迎老車同好來交流！"
       }
     },
     "sections": {
       "nowPlaying": {
         "tag": "NOW PLAYING",
         "title": "最近在玩的坑",
-        "item1": "看動畫、打電動，特別吃科幻題材（Cyberpunk、終末地這種）",
-        "item2": "喜歡復古的東西，尤其是 20 世紀前後那個年代的設計感，最近開始收黑膠"
+        "item1": "最近在研究 macOS 上的智慧注音輸入法，以及如何從大量語料中提煉好用的詞庫。",
+        "item2": "以及最近在研究如何在瀏覽器裡做字體編輯器，讓更多人能參與開源字型的製作。"
       },
       "interests": {
         "tag": "INTERESTS",
@@ -248,15 +248,15 @@
         "tag": "GETTING ALONG",
         "title": "關於相處",
         "line1": "事情實在太多了，我回訊息會很慢。",
-        "line2": "但「慢」不等於「不想理你」，想找我聊、想傳訊息給我，都非常歡迎，我有空一定會盡量回、盡量看。",
-        "line3": "也先跟大家說聲抱歉，我不一定每則貼文都會看到，不是故意已讀或無視，是忙起來真的會漏，這點請多包涵。"
+        "line2": "想找我聊、想傳訊息給我，都非常歡迎！",
+        "line3": "另外我不太常看社群軟體，也可能會漏掉訊息，還請多包涵。"
       },
       "oneRequest": {
         "tag": "ONE REQUEST",
         "title": "一點小小的請求",
-        "line1": "個人不太聊政治、也不太喜歡別人批評東西QQ",
-        "line2": "我覺得沒有什麼絕對的對錯，很多東西只是被放在錯的地方而已。",
-        "line3": "帶著這樣的善意與尊重，我們會很合得來！"
+        "line1": "個人不太聊政治，也不太喜歡說教式的交流或過度批評。",
+        "line2": "我覺得許多事情不必急著分成絕對的對錯，只是被放在不同的情境裡而已。",
+        "line3": "帶著善意與尊重來交流，我會很開心的。"
       },
       "contact": {
         "tag": "CONTACT",
