@@ -242,12 +242,12 @@
       "photo": {
         "title": "Photography",
         "tag": "PHOTO",
-        "description": "I like using a camera to preserve things that only exist in a particular instant. Lately, I mainly shoot film."
+        "description": "I like using a camera to preserve things that only exist in a particular instant. I shoot Fujifilm, and lately I mainly shoot film."
       },
       "model": {
         "title": "Models",
         "tag": "MODEL",
-        "description": "I’m fascinated by the power and beauty condensed into tiny scales. I even have an airbrush at home for painting!"
+        "description": "I’m fascinated by the power and beauty condensed into tiny scales. I even have an airbrush at home for painting! I love building small things like ship models, planes, and miniature instruments."
       },
       "doujin": {
         "title": "Doujin events",
@@ -257,7 +257,7 @@
       "cosplay": {
         "title": "Cosplay",
         "tag": "COSPLAY",
-        "description": "I love coordinating cosplays, though I don’t handle heat well, so I usually cosplay at winter events. Let’s plan a matching costume!"
+        "description": "I love cosplay and I’m still sharpening my makeup skills. I don’t handle heat well, so I usually cosplay at winter events. Let’s chat!"
       },
       "lolita": {
         "title": "Lolita fashion",
@@ -267,7 +267,7 @@
       "travel": {
         "title": "Travel",
         "tag": "TRAVEL",
-        "description": "I enjoy researching routes, exploring new places, and experiencing different cultures—especially night views and local food."
+        "description": "I enjoy researching routes, exploring new places, and experiencing different cultures—especially night views and local food. I once lived in Tokyo for a while."
       },
       "opensource": {
         "title": "Open source",

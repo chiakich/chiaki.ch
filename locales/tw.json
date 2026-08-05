@@ -185,12 +185,12 @@
       "photo": {
         "title": "攝影",
         "tag": "PHOTO",
-        "description": "喜歡用相機留下只存在於那個瞬間的事物。最近主力是底片相機。"
+        "description": "喜歡用相機留下只存在於那個瞬間的事物。喜歡用 fujifilm，最近都在拍底片相機。"
       },
       "model": {
         "title": "模型",
         "tag": "MODEL",
-        "description": "醉心於極小比例下濃縮的力與美，家裡有空壓機可以噴漆！"
+        "description": "醉心於極小比例下濃縮的力與美，家裡有空壓機可以噴漆！喜歡做船模、飛機跟迷你樂器之類的小東西"
       },
       "doujin": {
         "title": "同人活動",
@@ -200,7 +200,7 @@
       "cosplay": {
         "title": "Cosplay",
         "tag": "COSPLAY",
-        "description": "好愛攪拌，但怕熱，通常只在冬季場出角。歡迎約搭角！"
+        "description": "喜歡攪拌，還在精進化妝技術，怕熱通常只在冬天場出。歡迎來交流與搭角！"
       },
       "lolita": {
         "title": "蘿莉塔",
@@ -210,7 +210,7 @@
       "travel": {
         "title": "旅行",
         "tag": "TRAVEL",
-        "description": "喜歡研究路線、探索新地方、體驗不同文化，尤其喜歡各地夜景與在地美食。"
+        "description": "喜歡研究路線、探索新地方、體驗不同文化，尤其喜歡各地夜景與在地美食。曾經在東京住過一陣子"
       },
       "opensource": {
         "title": "開源貢獻",
