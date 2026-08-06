@@ -1,11 +1,11 @@
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { Box, Flex, styled } from 'styled-system/jsx'
 import { useI18n } from 'i18n'
 
 const Text = styled.p
 
-const MotionBox = motion.create(Box)
+const MotionBox = m.create(Box)
 
 // Fraction of the container area the stickers should collectively cover.
 // Mask-based packing wastes far less space than circle packing, so this can

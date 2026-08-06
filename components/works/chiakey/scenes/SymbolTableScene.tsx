@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { Keycap, SceneBackground } from '../ChiaKeySvgPrimitives'
 import { useI18n } from 'i18n'
 
@@ -15,7 +15,7 @@ const SymbolTableScene = () => {
     <Keycap x={184} y={120} width={54} label="⌘" delay={.12} />
     <text x="252" y="145" fontSize="18" fill="#7c6b90">+</text>
     <Keycap x={270} y={120} width={44} label="." delay={.24} />
-    <motion.g animate={{ opacity: [0, 1, 1, 0], y: [8, 0, 0, 6] }} transition={{ duration: 4.8, repeat: Infinity, times: [0, .22, .86, 1] }}>
+    <m.g animate={{ opacity: [0, 1, 1, 0], y: [8, 0, 0, 6] }} transition={{ duration: 4.8, repeat: Infinity, times: [0, .22, .86, 1] }}>
       <rect x="366" y="68" width="216" height="180" rx="14" fill="#fdfdfd" stroke="#a795c0" filter="url(#shadow)" />
       <text x="474" y="92" textAnchor="middle" fontSize="12" fill="#7c6b90">{t('chiakeyPage.scenes.symbols.title')}</text>
       {symbols.map((symbol, index) => {
@@ -28,7 +28,7 @@ const SymbolTableScene = () => {
           </g>
         )
       })}
-    </motion.g>
+    </m.g>
   </svg>
   )
 }

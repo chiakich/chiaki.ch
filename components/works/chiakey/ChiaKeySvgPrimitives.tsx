@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 
 export const SceneBackground = ({ title }: { title: string }) => (
   <>
@@ -34,17 +34,17 @@ interface KeycapProps {
 }
 
 export const Keycap = ({ x, y, width = 58, label, active = true, delay = 0 }: KeycapProps) => (
-  <motion.g animate={active ? { y: [0, 3, 0] } : undefined} transition={{ duration: .55, repeat: Infinity, repeatDelay: 2.8, delay }}>
-    <motion.rect x={x} y={y} width={width} height="38" rx="8" fill="#fff" stroke="#a795c0" animate={active ? { fill: ['#fff', '#ecd8f7', '#fff'], stroke: ['#a795c0', '#8a2b9e', '#a795c0'] } : undefined} transition={{ duration: .55, repeat: Infinity, repeatDelay: 2.8, delay }} />
+  <m.g animate={active ? { y: [0, 3, 0] } : undefined} transition={{ duration: .55, repeat: Infinity, repeatDelay: 2.8, delay }}>
+    <m.rect x={x} y={y} width={width} height="38" rx="8" fill="#fff" stroke="#a795c0" animate={active ? { fill: ['#fff', '#ecd8f7', '#fff'], stroke: ['#a795c0', '#8a2b9e', '#a795c0'] } : undefined} transition={{ duration: .55, repeat: Infinity, repeatDelay: 2.8, delay }} />
     <text x={x + width / 2} y={y + 24} textAnchor="middle" fontSize="13" fontWeight="bold" fill="#4a3560">{label}</text>
-  </motion.g>
+  </m.g>
 )
 
 export const InputLine = ({ text, x = 104, y = 132, width = 220, animated = true }: { text: string; x?: number; y?: number; width?: number; animated?: boolean }) => (
   <>
     <text x={x} y={y} fontSize="28" fill="#241533">{text}</text>
     {animated
-      ? <motion.line x1={x} y1={y + 8} x2={x + width} y2={y + 8} stroke="#8a2b9e" strokeWidth="3" strokeLinecap="round" initial={{ pathLength: 0 }} animate={{ pathLength: [0, 1, 1, 0] }} transition={{ duration: 4.8, repeat: Infinity, times: [0, .32, .86, 1] }} />
+      ? <m.line x1={x} y1={y + 8} x2={x + width} y2={y + 8} stroke="#8a2b9e" strokeWidth="3" strokeLinecap="round" initial={{ pathLength: 0 }} animate={{ pathLength: [0, 1, 1, 0] }} transition={{ duration: 4.8, repeat: Infinity, times: [0, .32, .86, 1] }} />
       : <line x1={x} y1={y + 8} x2={x + width} y2={y + 8} stroke="#8a2b9e" strokeWidth="3" strokeLinecap="round" />}
   </>
 )
@@ -57,7 +57,7 @@ export const SvgCandidateMenu = ({ items, x = 356, y = 78, page = '1/21', highli
     ? { animate: { opacity: [0, 1, 1, 0], y: [8, 0, 0, 5] }, transition: { duration: 4.8, repeat: Infinity, times: [0, .2, .86, 1] } }
     : {}
   return (
-    <motion.g {...motionProps}>
+    <m.g {...motionProps}>
       <rect x={x} y={y} width="196" height={height} rx="22" fill="#050505" stroke="#f2f2f2" strokeWidth="3" />
       <text x={x + 98} y={y + 18} textAnchor="middle" fontSize="11" fill="white">▲</text>
       {items.map((item, index) => {
@@ -71,6 +71,6 @@ export const SvgCandidateMenu = ({ items, x = 356, y = 78, page = '1/21', highli
       })}
       <text x={x + 22} y={y + height - 10} fontSize="11" fill="white">▼</text>
       <text x={x + 176} y={y + height - 10} textAnchor="end" fontSize="11" fontWeight="bold" fill="white">{page}</text>
-    </motion.g>
+    </m.g>
   )
 }

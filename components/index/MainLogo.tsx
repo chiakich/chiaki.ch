@@ -1,5 +1,5 @@
 import { Box, Center } from 'styled-system/jsx'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { m, useScroll, useTransform } from 'framer-motion'
 import AnimatedLogo from 'components/index/AnimatedLogo'
 import LogoText from '@icon/logo_text_light.svg'
 import { useI18n } from 'i18n'
@@ -34,7 +34,7 @@ const MainLogo = () => {
       >
         {t('meta.home.title')}
       </Box>
-      <motion.div
+      <m.div
         initial={{ x: 70 }}
         animate={{ x: 0 }}
         transition={{ duration: 1, ease: 'easeOut' }}
@@ -47,9 +47,9 @@ const MainLogo = () => {
         >
           <AnimatedLogo />
         </Box>
-      </motion.div>
+      </m.div>
 
-      <motion.div
+      <m.div
         initial={{ scale: 0.8 }}
         animate={{ scale: 1 }}
         transition={{ duration: 1, ease: 'easeOut' }}
@@ -62,9 +62,9 @@ const MainLogo = () => {
         >
           <AnimatedLogo />
         </Box>
-      </motion.div>
+      </m.div>
 
-      <motion.div
+      <m.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{
@@ -81,9 +81,9 @@ const MainLogo = () => {
         >
           <LogoText style={{ width: '100%' }} />
         </Box>
-      </motion.div>
+      </m.div>
 
-      <motion.div
+      <m.div
         initial={{ x: -70 }}
         animate={{ x: 0 }}
         transition={{ duration: 1, ease: 'easeOut' }}
@@ -96,7 +96,7 @@ const MainLogo = () => {
         >
           <AnimatedLogo />
         </Box>
-      </motion.div>
+      </m.div>
     </Center>
   )
 }

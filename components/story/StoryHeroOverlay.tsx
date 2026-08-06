@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { m, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
 import { Box, Flex, styled } from 'styled-system/jsx'
 
@@ -26,7 +26,7 @@ const StoryHeroOverlay = () => {
       pointerEvents="none"
       color="white"
     >
-      <motion.div style={{ opacity, y, scale, height: '100vh' }}>
+      <m.div style={{ opacity, y, scale, height: '100vh' }}>
         <Flex
           position="relative"
           height="100%"
@@ -145,7 +145,7 @@ const StoryHeroOverlay = () => {
             </Flex>
           </Flex>
         </Flex>
-      </motion.div>
+      </m.div>
     </Box>
   )
 }

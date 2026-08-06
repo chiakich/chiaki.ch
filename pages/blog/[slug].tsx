@@ -1,15 +1,16 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { useEffect, useState } from 'react'
 import NextLink from 'next/link'
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { Box, Flex, HStack, styled } from 'styled-system/jsx'
 import { css } from 'styled-system/css'
 import { getPost, getPostSlugs, type Post } from 'lib/blog'
+import { getMessages } from 'i18n/messages'
 import type { PageMetaOverride } from 'components/PageMeta'
 
 const Heading = styled.h1
 const Span = styled.span
-const MotionBox = motion.create(Box)
+const MotionBox = m.create(Box)
 
 type Theme = 'dark' | 'light'
 const STORAGE_KEY = 'blog-reading-theme'
@@ -307,7 +308,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     },
   }
   if (post.canonical) pageMeta.canonical = post.canonical
-  return { props: { post, pageMeta } }
+  return { props: { post, pageMeta, messages: getMessages('tw', 'blog/[slug]') } }
 }
 
 export default BlogPost

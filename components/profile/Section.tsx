@@ -1,10 +1,10 @@
 import { Box, Flex, styled } from 'styled-system/jsx'
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 
 const Heading = styled.h2
 const Span = styled.span
 
-const MotionBox = motion.create(Box)
+const MotionBox = m.create(Box)
 
 // Skewed P5-style tag + heading, with a trailing serial code
 const SectionTitle = ({

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type PointerEvent } from 'react'
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { Box, HStack, styled } from 'styled-system/jsx'
 import { useI18n } from 'i18n'
 
@@ -62,14 +62,14 @@ const ThemeComparison = () => {
       onPointerCancel={handlePointerEnd}
     >
       <Image src="/assets/works/tokyono-sora/light.webp" alt={t('tokyonoPage.lightAlt')} width="100%" display="block" />
-      <motion.div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }} animate={{ clipPath: `inset(0 ${100 - position}% 0 0)` }} transition={{ duration: isDragging ? 0 : .8, ease: [0.22, 1, 0.36, 1] }}>
+      <m.div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }} animate={{ clipPath: `inset(0 ${100 - position}% 0 0)` }} transition={{ duration: isDragging ? 0 : .8, ease: [0.22, 1, 0.36, 1] }}>
         <Image src="/assets/works/tokyono-sora/dark.webp" alt={t('tokyonoPage.darkAlt')} width="100%" height="100%" objectFit="cover" />
-      </motion.div>
+      </m.div>
       <HStack position="absolute" top={4} right={4} zIndex={2} backgroundColor="rgba(10,22,31,.72)" backdropFilter="blur(12px)" borderRadius="full" p={1}>
         <Button type="button" aria-pressed={!dark} onPointerDown={(event) => event.stopPropagation()} onClick={() => setPosition(0)} px={4} py={2} borderRadius="full" border="0" cursor="pointer" backgroundColor={!dark ? '#f2f8fa' : 'transparent'} color={!dark ? '#243947' : 'white'}>{t('tokyonoPage.light')}</Button>
         <Button type="button" aria-pressed={dark} onPointerDown={(event) => event.stopPropagation()} onClick={() => setPosition(100)} px={4} py={2} borderRadius="full" border="0" cursor="pointer" backgroundColor={dark ? '#243947' : 'transparent'} color="white">{t('tokyonoPage.dark')}</Button>
       </HStack>
-      <motion.div aria-hidden="true" style={{ position: 'absolute', zIndex: 1, top: 0, bottom: 0, width: 2, background: '#fff', boxShadow: '0 0 18px #fff', pointerEvents: 'none' }} animate={{ left: `${position}%` }} transition={{ duration: isDragging ? 0 : .8, ease: [0.22, 1, 0.36, 1] }} />
+      <m.div aria-hidden="true" style={{ position: 'absolute', zIndex: 1, top: 0, bottom: 0, width: 2, background: '#fff', boxShadow: '0 0 18px #fff', pointerEvents: 'none' }} animate={{ left: `${position}%` }} transition={{ duration: isDragging ? 0 : .8, ease: [0.22, 1, 0.36, 1] }} />
     </Box>
   )
 }

@@ -3,6 +3,7 @@ import { Box, Flex, styled } from 'styled-system/jsx'
 import { useI18n } from 'i18n'
 import PostCard, { PostCardData } from 'components/blog/PostCard'
 import posts from 'content/blog/index.json'
+import { makeStaticProps } from 'i18n/messages'
 
 const Text = styled.p
 
@@ -80,3 +81,5 @@ const Blog: NextPage = () => {
 }
 
 export default Blog
+
+export const getStaticProps = makeStaticProps('blog')

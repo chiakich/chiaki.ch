@@ -1,12 +1,14 @@
 import type { NextPage } from 'next'
 import { useCallback, useState } from 'react'
-import dynamic from 'next/dynamic'
 import { Box } from 'styled-system/jsx'
 import ProjectSection from 'components/index/ProjectSection'
+import { makeStaticProps } from 'i18n/messages'
 
-// Keep ssr:true (default) — the section's background/canvas shell renders immediately
-// during the boot sequence; dynamic() here only splits three.js into its own chunk.
-const DepthScrollSection = dynamic(() => import('components/index/DepthScrollSection'))
+// Imported directly now: the component itself is just the CSS shell, and it
+// defers its own WebGL layer (see DepthScrollSection). Going through dynamic()
+// here put three.js in this page's preload set, which is what made /story the
+// heaviest route on the site.
+import DepthScrollSection from 'components/index/DepthScrollSection'
 import StoryAtmosphere from 'components/story/StoryAtmosphere'
 import StoryProgress from 'components/story/StoryProgress'
 import StoryBootLoader from 'components/story/StoryBootLoader'
@@ -43,3 +45,5 @@ const Story: NextPage = () => {
 }
 
 export default Story
+
+export const getStaticProps = makeStaticProps('story')

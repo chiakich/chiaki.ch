@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { Box, styled } from 'styled-system/jsx'
 import { Button } from 'components/ui/controls'
 import { NIXIE, NIXIE_BRIGHT, NIXIE_GLOW, WORLDLINES } from './nixieTheme'
@@ -8,7 +8,7 @@ import { useI18n } from 'i18n'
 const Text = styled.p
 const Heading = styled.h1
 const Span = styled.span
-const MotionBox = motion.create(Box)
+const MotionBox = m.create(Box)
 
 const RetroButton = ({ onClick, label }: { onClick: () => void; label: string }) => (
   <Button

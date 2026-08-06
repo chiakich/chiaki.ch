@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { Box, Flex, styled } from 'styled-system/jsx'
 import { AKITRA_COLORS } from './akitraData'
 import { useI18n } from 'i18n'
@@ -6,7 +6,7 @@ import { useI18n } from 'i18n'
 const Text = styled.p
 const Heading = styled.h1
 const Span = styled.span
-const MotionBox = motion.create(Box)
+const MotionBox = m.create(Box)
 
 const samples = ['25BH2004', 'ㄕㄊㄆ 重43 空18', '郵便車', '40C10108', '換算']
 

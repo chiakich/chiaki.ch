@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { Box, Flex, HStack, Stack, styled } from 'styled-system/jsx'
 
 const Text = styled.p
@@ -27,7 +27,7 @@ const nextPhase = (phase: Phase): Phase => {
 }
 
 const Caret = () => (
-  <motion.span animate={{ opacity: [1, 1, 0, 0] }} transition={{ duration: 1, repeat: Infinity, times: [0, .5, .5, 1] }} style={{ display: 'inline-block', width: 2, height: '1.1em', verticalAlign: '-.15em', backgroundColor: '#f5f5f7' }} />
+  <m.span animate={{ opacity: [1, 1, 0, 0] }} transition={{ duration: 1, repeat: Infinity, times: [0, .5, .5, 1] }} style={{ display: 'inline-block', width: 2, height: '1.1em', verticalAlign: '-.15em', backgroundColor: '#f5f5f7' }} />
 )
 
 const SearchChatDemo = () => {
@@ -45,7 +45,7 @@ const SearchChatDemo = () => {
     <Box maxW="640px" width="100%" mx="auto" backgroundColor="#17212b" borderRadius="24px" overflow="hidden" boxShadow="0 32px 90px rgba(0,0,0,.45)">
       <Stack gap={5} px={{ base: 5, md: 7 }} pt={{ base: 6, md: 8 }} pb={4} minHeight="420px" justifyContent="flex-end">
         {showMessage && (
-          <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .3 }}>
+          <m.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .3 }}>
             <Flex gap={3} alignItems="flex-start">
               <Flex width="40px" height="40px" borderRadius="full" flexShrink={0} alignItems="center" justifyContent="center" fontSize="md" fontWeight="bold" color="white" background="linear-gradient(135deg, #c77dff, #5f7bd8)">千</Flex>
               <Box>
@@ -53,10 +53,10 @@ const SearchChatDemo = () => {
                 <Text color="#f5f5f7">{MESSAGE}</Text>
               </Box>
             </Flex>
-          </motion.div>
+          </m.div>
         )}
         {phase === 'replied' && (
-          <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .35 }}>
+          <m.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .35 }}>
             <Flex gap={3} alignItems="flex-start">
               <Image src="/assets/works/tg-jpg/bot-avatar.webp" alt="圖片ㄗ援改二的頭像" width="40px" height="40px" borderRadius="full" flexShrink={0} />
               <Box maxW="82%">
@@ -64,7 +64,7 @@ const SearchChatDemo = () => {
                 <Image src="/assets/works/tg-jpg/demo.webp" alt="機器人回覆的「騙人的吧」動畫截圖" width="100%" display="block" borderRadius="12px" />
               </Box>
             </Flex>
-          </motion.div>
+          </m.div>
         )}
       </Stack>
       <HStack gap={3} px={{ base: 4, md: 5 }} py={3} borderTop="1px solid rgba(255,255,255,.06)">

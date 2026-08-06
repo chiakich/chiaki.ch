@@ -1,12 +1,12 @@
 import Link from 'next/link'
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { Box, Flex, HStack, styled } from 'styled-system/jsx'
 import { localizedPath, useI18n } from 'i18n'
 
 const Heading = styled.h2
 const Text = styled.p
 const Span = styled.span
-const MotionBox = motion.create(Box)
+const MotionBox = m.create(Box)
 
 export interface WorkCardData {
   id: string

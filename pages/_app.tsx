@@ -1,6 +1,7 @@
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { LazyMotion } from 'framer-motion'
 import { useEffect } from 'react'
 import PageMeta from 'components/PageMeta'
 import TopBar from 'components/TopBar'
@@ -14,6 +15,13 @@ declare global {
     }
   }
 }
+
+// Kicked off at module scope rather than when LazyMotion first asks for it, so
+// the chunk downloads alongside hydration instead of adding a round trip after
+// it. That matters because heroes render from `initial={{ opacity: 0 }}`: waiting
+// for features would leave them invisible for an extra RTT.
+const motionFeatures = import('lib/motionFeatures').then((mod) => mod.default)
+const loadMotionFeatures = () => motionFeatures
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter()
@@ -47,12 +55,22 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <LocaleProvider locale={locale}>
-        <TopBar />
-        <main>
-          <Component {...pageProps} />
-        </main>
-        <PageMeta override={pageProps.pageMeta} />
+      <LocaleProvider locale={locale} messages={pageProps.messages}>
+        {/*
+          Components use `m` rather than `motion`, so the feature set is supplied
+          once here instead of every call site dragging in the full motion
+          bundle. `strict` makes a stray `motion.*` throw during prerender
+          rather than silently shipping both. No layout/drag props are in use,
+          so domAnimation (animation + exit + inView + tap/hover/focus) covers
+          everything — reach for domMax if that changes.
+        */}
+        <LazyMotion features={loadMotionFeatures} strict>
+          <TopBar />
+          <main>
+            <Component {...pageProps} />
+          </main>
+          <PageMeta override={pageProps.pageMeta} />
+        </LazyMotion>
       </LocaleProvider>
     </>
   )

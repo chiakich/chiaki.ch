@@ -8,6 +8,7 @@ import Live2DModel from 'components/character/Live2DModel'
 import IntroBackground from 'components/character/IntroBackground'
 import MinecraftSkin from 'components/character/MinecraftSkin'
 import { localizedPath, useI18n } from 'i18n'
+import { makeStaticProps } from 'i18n/messages'
 
 const CharacterOverviewPage: NextPage = () => {
   const { locale, t } = useI18n()
@@ -38,3 +39,5 @@ const CharacterOverviewPage: NextPage = () => {
 }
 
 export default CharacterOverviewPage
+
+export const getStaticProps = makeStaticProps('story/character')

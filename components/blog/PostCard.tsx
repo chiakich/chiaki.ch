@@ -1,12 +1,12 @@
 import NextLink from 'next/link'
 import Image from 'next/image'
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { Box, Flex, HStack, styled } from 'styled-system/jsx'
 
 const Heading = styled.h2
 const Text = styled.p
 const Span = styled.span
-const MotionBox = motion.create(Box)
+const MotionBox = m.create(Box)
 
 export interface PostCardData {
   slug: string

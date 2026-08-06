@@ -1,7 +1,7 @@
 import { Box, Flex, styled } from 'styled-system/jsx'
 import {
   animate,
-  motion,
+  m,
   useMotionValue,
   useTransform,
   type MotionValue,
@@ -15,8 +15,8 @@ const Text = styled.p
 const Span = styled.span
 const Img = styled.img
 
-const MotionBox = motion.create(Box)
-const MotionImg = motion.create(styled.img)
+const MotionBox = m.create(Box)
+const MotionImg = m.create(styled.img)
 
 // Sticky character visual styled as an acrylic authorization pass
 const CharacterPanel = ({

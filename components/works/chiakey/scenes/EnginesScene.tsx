@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { SceneBackground } from '../ChiaKeySvgPrimitives'
 import { useI18n } from 'i18n'
 
@@ -32,13 +32,13 @@ const EnginesScene = () => {
         const isActive = index === active
         return (
           <g key={id}>
-            <motion.rect x={80} y={rowY} width="200" height="36" rx="8" animate={{ fill: isActive ? '#8a2b9e' : '#fdfdfd' }} transition={{ duration: .3 }} />
-            <motion.text x={110} y={rowY + 24} fontSize="16" fontWeight="bold" animate={{ fill: isActive ? '#ffffff' : '#4a3560' }} transition={{ duration: .3 }}>{t(`chiakeyPage.scenes.engines.modules.${id}.name`)}</motion.text>
-            <motion.text x={90} y={rowY + 24} fontSize="14" fontWeight="bold" fill="#ffffff" animate={{ opacity: isActive ? 1 : 0 }} transition={{ duration: .3 }}>✓</motion.text>
+            <m.rect x={80} y={rowY} width="200" height="36" rx="8" animate={{ fill: isActive ? '#8a2b9e' : '#fdfdfd' }} transition={{ duration: .3 }} />
+            <m.text x={110} y={rowY + 24} fontSize="16" fontWeight="bold" animate={{ fill: isActive ? '#ffffff' : '#4a3560' }} transition={{ duration: .3 }}>{t(`chiakeyPage.scenes.engines.modules.${id}.name`)}</m.text>
+            <m.text x={90} y={rowY + 24} fontSize="14" fontWeight="bold" fill="#ffffff" animate={{ opacity: isActive ? 1 : 0 }} transition={{ duration: .3 }}>✓</m.text>
           </g>
         )
       })}
-      <motion.g key={active} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .4 }}>
+      <m.g key={active} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .4 }}>
         {engine.keys.map((key, index) => {
           const width = key.length * 15 + 22
           const x = 330 + engine.keys.slice(0, index).reduce((sum, item) => sum + item.length * 15 + 32, 0)
@@ -54,7 +54,7 @@ const EnginesScene = () => {
         <path d="M358 188 L370 196 L358 204" fill="none" stroke="#8a2b9e" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
         <text x="384" y="206" fontSize="28" fontWeight="bold" fill="#241533">{engine.output}</text>
         <text x="330" y="242" fontSize="12" fill="#7c6b90">{t(`chiakeyPage.scenes.engines.modules.${engine.id}.note`)}</text>
-      </motion.g>
+      </m.g>
     </svg>
   )
 }

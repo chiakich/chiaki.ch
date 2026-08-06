@@ -1,9 +1,9 @@
 import { Box, Flex, styled } from 'styled-system/jsx'
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 
 const Text = styled.p
 const Span = styled.span
-const MotionText = motion.create(Text)
+const MotionText = m.create(Text)
 
 export const AkitraSpecimen = () => (
   <Box width="100%" height="100%" backgroundColor="#20242e" position="relative" overflow="hidden">
@@ -43,7 +43,7 @@ export const HuninnSpecimen = () => (
       ['48px', '24px', '76%', '#ec4618'],
       ['116px', '132px', '78%', '#66ac35'],
     ].map(([size, top, left, color], index) => (
-      <motion.div key={index} style={{ position: 'absolute', width: size, height: size, top, left, borderRadius: '50%', border: `3px solid ${color}`, opacity: .35 }} animate={{ y: [0, -12, 0] }} transition={{ duration: 4 + index, repeat: Infinity }} />
+      <m.div key={index} style={{ position: 'absolute', width: size, height: size, top, left, borderRadius: '50%', border: `3px solid ${color}`, opacity: .35 }} animate={{ y: [0, -12, 0] }} transition={{ duration: 4 + index, repeat: Infinity }} />
     ))}
     <Text className="specimen" fontFamily="huninn" fontSize={{ base: '3.2rem', md: '4.4rem' }} color="#febb27" position="relative" style={{ transition: 'transform .4s ease' }}>粉圓體</Text>
   </Flex>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, m } from 'framer-motion'
 import { Box, Container, HStack, Stack, styled } from 'styled-system/jsx'
 import ProjectLink from 'components/portfolio/ProjectLink'
 import { useI18n } from 'i18n'
@@ -67,7 +67,7 @@ const TypingTitle = () => {
         >
           {buffer}
         </Span>
-        <motion.span
+        <m.span
           animate={{ opacity: [1, 1, 0, 0] }}
           transition={{ duration: 1, repeat: Infinity, times: [0, 0.5, 0.5, 1] }}
           style={{
@@ -82,7 +82,7 @@ const TypingTitle = () => {
         {/* 不用 AnimatePresence 退場：loop 重來時標題寬度瞬間縮短，
             殘留的選字框會跟著錨點往左飛，直接卸載比較乾淨 */}
         {menu && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0, scale: 0.96, y: 6 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.28 }}
@@ -96,12 +96,12 @@ const TypingTitle = () => {
             }}
           >
             <VerticalCandidateMenu items={menuItems} page="1/2" />
-          </motion.div>
+          </m.div>
         )}
       </Box>
       <HStack gap={2} alignItems="center" minHeight="32px">
         <AnimatePresence mode="popLayout">
-          <motion.div
+          <m.div
             key={frame}
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
@@ -124,7 +124,7 @@ const TypingTitle = () => {
             >
               {pressed}
             </Kbd>
-          </motion.div>
+          </m.div>
         </AnimatePresence>
         <Text fontSize="sm" color="#b7aec3" ml={1} minWidth="180px" textAlign="left">
           {note ? t(`chiakeyPage.hero.notes.${note}`) : ''}
@@ -179,7 +179,7 @@ const ChiaKeyHero = () => {
         position="relative"
       >
         <Stack alignItems="center" textAlign="center" gap={0}>
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -244,7 +244,7 @@ const ChiaKeyHero = () => {
                 accent="#ecdcff"
               />
             </HStack>
-          </motion.div>
+          </m.div>
         </Stack>
       </Container>
     </Box>

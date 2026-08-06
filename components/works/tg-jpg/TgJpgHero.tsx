@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { Box, Container, HStack, Stack, styled } from 'styled-system/jsx'
 import ProjectLink from 'components/portfolio/ProjectLink'
 import SearchChatDemo from './SearchChatDemo'
@@ -21,7 +21,7 @@ const TgJpgHero = () => {
       py={{ base: 14, md: 20 }}
     >
       <Stack gap={10}>
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.75 }}
@@ -67,7 +67,7 @@ const TgJpgHero = () => {
               accent="#57b5ff"
             />
           </HStack>
-        </motion.div>
+        </m.div>
         <SearchChatDemo />
       </Stack>
     </Container>

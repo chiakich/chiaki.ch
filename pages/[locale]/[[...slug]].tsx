@@ -1,6 +1,7 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import type { ComponentType } from 'react'
-import type { Locale } from 'i18n'
+import type { Locale, TranslationTree } from 'i18n'
+import { getMessages } from 'i18n/messages'
 import dynamic from 'next/dynamic'
 
 // Each route stays SSR'd (default ssr:true) for static export output,
@@ -24,7 +25,7 @@ const routes: Record<string, ComponentType> = {
   blog: dynamic(() => import('pages/blog')),
 }
 
-type LocalePageProps = { locale: Locale; route: string }
+type LocalePageProps = { locale: Locale; route: string; messages: TranslationTree }
 
 const LocalePage: NextPage<LocalePageProps> = ({ route }) => {
   const Page = routes[route]
@@ -40,11 +41,13 @@ export const getStaticPaths: GetStaticPaths = async () => ({
   fallback: false,
 })
 
-export const getStaticProps: GetStaticProps<LocalePageProps> = async ({ params }) => ({
-  props: {
-    locale: params?.locale as Locale,
-    route: Array.isArray(params?.slug) ? params.slug.join('/') : '',
-  },
-})
+export const getStaticProps: GetStaticProps<LocalePageProps> = async ({ params }) => {
+  const locale = params?.locale as Locale
+  const route = Array.isArray(params?.slug) ? params.slug.join('/') : ''
+
+  // The page components are pulled in via dynamic(), so their own
+  // getStaticProps never runs — this route resolves their messages instead.
+  return { props: { locale, route, messages: getMessages(locale, route) } }
+}
 
 export default LocalePage

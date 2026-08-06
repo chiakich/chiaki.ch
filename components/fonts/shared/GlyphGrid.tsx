@@ -1,8 +1,8 @@
 import { Box, Grid, styled } from 'styled-system/jsx'
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 
 const Text = styled.p
-const MotionBox = motion.create(Box)
+const MotionBox = m.create(Box)
 
 interface GlyphGridProps {
   chars: string

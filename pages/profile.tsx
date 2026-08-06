@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import { Box, Flex, Grid, HStack, VStack, styled } from 'styled-system/jsx'
 import {
-  motion,
+  m,
   useMotionValue,
   useSpring,
   useTransform,
@@ -16,6 +16,7 @@ import CharacterPanel from 'components/profile/CharacterPanel'
 import InterestCard from 'components/profile/InterestCard'
 import Section from 'components/profile/Section'
 import { useI18n } from 'i18n'
+import { makeStaticProps } from 'i18n/messages'
 
 const Heading = styled.h2
 const Text = styled.p
@@ -23,7 +24,7 @@ const List = styled.ul
 const ListItem = styled.li
 const Span = styled.span
 
-const MotionBox = motion.create(Box)
+const MotionBox = m.create(Box)
 const StickerSheet = dynamic(() => import('components/profile/StickerSheet'), {
   ssr: false,
 })
@@ -434,3 +435,5 @@ const Profile: NextPage = () => {
 }
 
 export default Profile
+
+export const getStaticProps = makeStaticProps('profile')

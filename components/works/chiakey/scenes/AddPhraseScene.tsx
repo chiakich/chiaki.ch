@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { SceneBackground } from '../ChiaKeySvgPrimitives'
 import { useI18n } from 'i18n'
 
@@ -18,7 +18,7 @@ const AddPhraseScene = () => {
   >
     <SceneBackground title={t('chiakeyPage.scenes.addPhrase.title')} />
     {/* 選取範圍一格一格由句尾往前長 */}
-    <motion.rect
+    <m.rect
       y="106"
       height="40"
       rx="4"
@@ -44,7 +44,7 @@ const AddPhraseScene = () => {
     <line x1="272" y1="104" x2="272" y2="144" stroke="#241533" strokeWidth="2" />
 
     {/* shift 按住不放 */}
-    <motion.g
+    <m.g
       animate={{ y: [0, 3, 3, 3, 3, 3, 3, 0] }}
       transition={{
         duration: 6.5,
@@ -71,9 +71,9 @@ const AddPhraseScene = () => {
       >
         shift
       </text>
-    </motion.g>
+    </m.g>
     {/* ← 按三下 */}
-    <motion.g
+    <m.g
       animate={{ y: [0, 3, 0, 3, 0, 3, 0, 0] }}
       transition={{
         duration: 6.5,
@@ -100,8 +100,8 @@ const AddPhraseScene = () => {
       >
         ←
       </text>
-    </motion.g>
-    <motion.text
+    </m.g>
+    <m.text
       x="232"
       y="220"
       fontSize="12"
@@ -114,9 +114,9 @@ const AddPhraseScene = () => {
       }}
     >
       × 3
-    </motion.text>
+    </m.text>
 
-    <motion.g
+    <m.g
       animate={{ opacity: [0, 0, 1, 1, 0] }}
       transition={{
         duration: 6.5,
@@ -128,8 +128,8 @@ const AddPhraseScene = () => {
       <text x="432" y="202" textAnchor="middle" fontSize="12.5" fill="#fff">
         {t('chiakeyPage.scenes.addPhrase.selecting')}
       </text>
-    </motion.g>
-    <motion.g
+    </m.g>
+    <m.g
       animate={{ opacity: [0, 0, 0, 1, 1] }}
       transition={{
         duration: 6.5,
@@ -149,7 +149,7 @@ const AddPhraseScene = () => {
       <text x="352" y="87" fontSize="14" fill="#4a3560">
         {t('chiakeyPage.scenes.addPhrase.added')}
       </text>
-    </motion.g>
+    </m.g>
     <text x="104" y="256" fontSize="12" fill="#7c6b90">
       {t('chiakeyPage.scenes.addPhrase.shortcut')}
     </text>

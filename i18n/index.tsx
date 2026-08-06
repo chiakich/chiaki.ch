@@ -1,26 +1,28 @@
-import { cloneElement, createContext, useCallback, useContext, useEffect } from 'react'
-import tw from 'locales/tw.json'
-import ja from 'locales/ja.json'
-import en from 'locales/en.json'
+import { cloneElement, createContext, useCallback, useContext, useEffect, useMemo } from 'react'
 
 export const locales = ['tw', 'ja', 'en'] as const
 export type Locale = (typeof locales)[number]
 
-type TranslationValue = string | TranslationTree | TranslationValue[]
+export type TranslationValue = string | TranslationTree | TranslationValue[]
 
-interface TranslationTree {
+export interface TranslationTree {
   [key: string]: TranslationValue
 }
 
-const resources: Record<Locale, TranslationTree> = { tw, ja, en }
+// Only the namespaces this page needs, in this locale, handed over by
+// getStaticProps — see i18n/messages.ts. Nothing here imports locales/*.json,
+// which is what keeps the catalogs out of the client bundle.
+type LocaleContextValue = { locale: Locale; messages: TranslationTree }
 
-const LocaleContext = createContext<Locale>('tw')
+const LocaleContext = createContext<LocaleContextValue>({ locale: 'tw', messages: {} })
 
 export const LocaleProvider = ({
   locale,
+  messages,
   children,
 }: {
   locale: Locale
+  messages?: TranslationTree
   children: React.ReactNode
 }) => {
   useEffect(() => {
@@ -28,7 +30,9 @@ export const LocaleProvider = ({
       locale === 'tw' ? 'zh-TW' : locale === 'ja' ? 'ja' : 'en'
   }, [locale])
 
-  return <LocaleContext.Provider value={locale}>{children}</LocaleContext.Provider>
+  const value = useMemo(() => ({ locale, messages: messages ?? {} }), [locale, messages])
+
+  return <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>
 }
 
 const getValue = (tree: TranslationTree, key: string): string | undefined => {
@@ -42,12 +46,11 @@ const getValue = (tree: TranslationTree, key: string): string | undefined => {
 }
 
 export const useI18n = () => {
-  const locale = useContext(LocaleContext)
-  const t = useCallback(
-    (key: string) =>
-      getValue(resources[locale], key) ?? getValue(resources.tw, key) ?? key,
-    [locale]
-  )
+  const { locale, messages } = useContext(LocaleContext)
+  // The per-key fallback to the tw catalog now happens at build time in
+  // i18n/messages.ts, so a miss here means the namespace wasn't requested for
+  // this route (see PAGE_NAMESPACES) and the raw key is the useful signal.
+  const t = useCallback((key: string) => getValue(messages, key) ?? key, [messages])
 
   return { locale, t }
 }

@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { Box, Container, Stack, styled } from 'styled-system/jsx'
 import FontCard, { FontCardData } from './FontCard'
 import { AkitraSpecimen, HuninnSpecimen, NixieSpecimen } from './FontSpecimens'
@@ -7,7 +7,7 @@ import { useI18n } from 'i18n'
 const Heading = styled.h1
 const Text = styled.p
 const Span = styled.span
-const MotionBox = motion.create(Box)
+const MotionBox = m.create(Box)
 
 const FontsIndexPage = () => {
   const { t } = useI18n()

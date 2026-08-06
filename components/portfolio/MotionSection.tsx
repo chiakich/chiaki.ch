@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { Box } from 'styled-system/jsx'
 
 interface MotionSectionProps {
@@ -7,7 +7,7 @@ interface MotionSectionProps {
   spanColumns?: boolean
 }
 
-const MotionBox = motion.create(Box)
+const MotionBox = m.create(Box)
 
 const MotionSection = ({ children, delay = 0, spanColumns = false }: MotionSectionProps) => (
   <MotionBox

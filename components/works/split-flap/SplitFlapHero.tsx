@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import dynamic from 'next/dynamic'
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { Box, Container, HStack, Stack, styled } from 'styled-system/jsx'
 import ProjectLink from 'components/portfolio/ProjectLink'
 import { Copy, Check } from 'iconoir-react'
@@ -61,7 +61,7 @@ const SplitFlapHero = () => {
   >
     <Container maxW="1080px" px={{ base: '24px', md: '40px' }} py={{ base: 14, md: 20 }}>
       <Stack gap={12}>
-        <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75 }}>
+        <m.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75 }}>
           <Text color={ACCENT} letterSpacing=".14em" fontSize="sm" fontWeight="bold" textTransform="uppercase">
             {t('splitFlapPage.eyebrow')}
           </Text>
@@ -82,10 +82,10 @@ const SplitFlapHero = () => {
             <ProjectLink href="https://www.npmjs.com/package/react-split-flap" label="npm" detail="react-split-flap" solid accent={ACCENT} />
             <ProjectLink href="https://github.com/chiakich/react-split-flap" label={t('splitFlapPage.source')} detail="TypeScript" accent={ACCENT} />
           </HStack>
-        </motion.div>
-        <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75, delay: 0.2 }}>
+        </m.div>
+        <m.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75, delay: 0.2 }}>
           <DepartureBoard />
-        </motion.div>
+        </m.div>
       </Stack>
     </Container>
   </Box>

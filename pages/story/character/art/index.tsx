@@ -4,6 +4,7 @@ import CharacterIntroduction from 'components/character/CharacterIntroduction'
 import ProjectGallery from 'components/character/ProjectGallery'
 import { useState, useEffect } from 'react'
 import { useI18n } from 'i18n'
+import { makeStaticProps } from 'i18n/messages'
 
 const CharacterArtPage: NextPage = () => {
   const { t } = useI18n()
@@ -62,3 +63,5 @@ const CharacterArtPage: NextPage = () => {
 }
 
 export default CharacterArtPage
+
+export const getStaticProps = makeStaticProps('story/character/art')

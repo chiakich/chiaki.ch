@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { AnimatePresence, animate, motion, useInView } from 'framer-motion'
+import { AnimatePresence, animate, m, useInView } from 'framer-motion'
 import { Box, Container, Flex, HStack, Stack, styled } from 'styled-system/jsx'
 import { useI18n } from 'i18n'
 
@@ -108,7 +108,7 @@ const ResultChar = ({ char, changed }: { char: string; changed: boolean }) => {
       verticalAlign="top"
     >
       <AnimatePresence initial={false}>
-        <motion.span
+        <m.span
           key={char}
           initial={{ opacity: 0, y: '-.42em' }}
           animate={{ opacity: 1, y: 0 }}
@@ -117,7 +117,7 @@ const ResultChar = ({ char, changed }: { char: string; changed: boolean }) => {
           style={{ position: 'absolute', inset: 0 }}
         >
           {char}
-        </motion.span>
+        </m.span>
       </AnimatePresence>
     </Box>
   )
@@ -261,7 +261,7 @@ const ContextDemo = () => {
             <Span color="rgba(255,255,255,.42)" whiteSpace="nowrap">
               {previous}
             </Span>
-            <motion.span
+            <m.span
               animate={{
                 background: corrected ? HIGHLIGHT : 'rgba(255,255,255,.07)',
                 color: corrected ? '#ffffff' : 'rgba(255,255,255,.55)',
@@ -282,13 +282,13 @@ const ContextDemo = () => {
                   changed={fallback[position] !== right[position]}
                 />
               ))}
-            </motion.span>
+            </m.span>
           </Flex>
 
           {/* 狀態說明取代原本的開關：套用前後各自有一句話，位置固定不推版面 */}
           <Box minHeight="22px" position="relative" width="100%">
             <AnimatePresence mode="wait">
-              <motion.div
+              <m.div
                 key={corrected ? 'on' : 'off'}
                 initial={{ opacity: 0, y: 4 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -306,7 +306,7 @@ const ContextDemo = () => {
                     {state}
                   </Text>
                 </Flex>
-              </motion.div>
+              </m.div>
             </AnimatePresence>
           </Box>
         </Button>

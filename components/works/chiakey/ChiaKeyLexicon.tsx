@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { Box, Grid, HStack, Stack, styled } from 'styled-system/jsx'
 import MotionSection from 'components/portfolio/MotionSection'
 import ProjectLink from 'components/portfolio/ProjectLink'
@@ -24,7 +24,7 @@ const LexiconLayers = ({ layers, localMachine }: { layers: { name: string; local
     overflow={{ base: 'hidden', md: 'visible' }}
   >
     {layers.map(({ name, local, fill, border }, index) => (
-      <motion.div
+      <m.div
         key={name}
         initial={{ y: spreadY(index), opacity: 0 }}
         whileInView={{ y: stackedY(index), opacity: 1 }}
@@ -66,7 +66,7 @@ const LexiconLayers = ({ layers, localMachine }: { layers: { name: string; local
             )}
           </HStack>
         </Box>
-      </motion.div>
+      </m.div>
     ))}
   </Box>
 )

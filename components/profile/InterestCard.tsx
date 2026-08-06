@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { Box, styled } from 'styled-system/jsx'
-import { motion, useReducedMotion } from 'framer-motion'
+import { m, useReducedMotion } from 'framer-motion'
 
 const Text = styled.p
 const Span = styled.span
 
-const MotionBox = motion.create(Box)
+const MotionBox = m.create(Box)
 const Img = styled.img
 
 // Per-image "camera move" for the Ken Burns pan/zoom while hovered.

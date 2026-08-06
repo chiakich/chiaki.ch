@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 import { Box } from 'styled-system/jsx'
 import CoverSection from 'components/index/Cover'
 import SocietyIntro from 'components/index/SocietyIntro'
+import { makeStaticProps } from 'i18n/messages'
 
 const Home: NextPage = () => {
   return (
@@ -15,3 +16,5 @@ const Home: NextPage = () => {
 }
 
 export default Home
+
+export const getStaticProps = makeStaticProps('')

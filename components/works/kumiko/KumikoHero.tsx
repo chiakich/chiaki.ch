@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { Box, Container, HStack, Stack, styled } from 'styled-system/jsx'
 import ProjectLink from 'components/portfolio/ProjectLink'
 import { useI18n } from 'i18n'
@@ -7,7 +7,7 @@ const Heading = styled.h1
 const Text = styled.p
 const Span = styled.span
 const Image = styled.img
-const MotionBox = motion.create(Box)
+const MotionBox = m.create(Box)
 
 const KumikoHero = () => {
   const { t } = useI18n()
