@@ -20,6 +20,10 @@ const Cover = () => {
           src="/assets/img/takuzosu-inari-shrine.webp"
           alt="bg"
           fill
+          // Above the fold on the landing page, so this is the LCP candidate:
+          // `priority` preloads it instead of letting it lazy-load after layout.
+          priority
+          sizes="100vw"
           style={{ objectFit: 'cover' }}
           onLoad={() => {
             setBgLoaded(true)

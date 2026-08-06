@@ -1,4 +1,9 @@
 import { Box } from 'styled-system/jsx'
+import { cdnBackground } from 'lib/cdnImage'
+
+// Painted at `backgroundSize: 70vh` behind `opacity: 0.2`, so it never needs
+// anything near the source resolution.
+const PORTRAIT_BG = cdnBackground('/assets/story/character/gallery/portrait-1.png', 1200)
 
 const delicateWirePatternStyles = {
   background: `
@@ -34,7 +39,7 @@ const IntroBackground: React.FC<{ children: React.ReactNode }> = ({ children }) 
         right: 0,
         bottom: 0,
         backgroundAttachment: 'fixed',
-        backgroundImage: 'url(/assets/story/character/gallery/portrait-1.png)',
+        backgroundImage: PORTRAIT_BG,
         backgroundRepeat: 'no-repeat',
         backgroundPosition: {
           base: 'right 10% top 10%',

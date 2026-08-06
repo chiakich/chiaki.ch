@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Box, styled } from 'styled-system/jsx'
+import { cdnBackground } from 'lib/cdnImage'
 
 const Text = styled.p
 
@@ -29,7 +30,8 @@ const prayer = RAW.map(([text, lost], i) => ({
 // (save the reference art to public/assets/story/miko.jpg); scattered norito
 // fragments drift behind while the core prayer fades in, line by line.
 
-const MIKO = '/assets/story/miko.jpg'
+// Rendered under `blur(7px) brightness(.5)`, so a modest width is invisible here.
+const MIKO_BG = cdnBackground('/assets/story/miko.jpg', 1280)
 
 // A few gold motes to sit in the air like drifting foxfire / incense embers.
 const MOTES = [
@@ -83,7 +85,7 @@ const NoritoSection = () => {
         <Box
           position="absolute"
           inset="-5%"
-          backgroundImage={`url('${MIKO}')`}
+          backgroundImage={MIKO_BG}
           backgroundSize="cover"
           backgroundPosition="center 28%"
           animation="kenBurns 34s ease-in-out infinite alternate"

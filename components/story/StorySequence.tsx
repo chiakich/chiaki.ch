@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Box, styled } from 'styled-system/jsx'
+import { cdnBackground } from 'lib/cdnImage'
 
 const Text = styled.p
 
@@ -7,7 +8,7 @@ const Text = styled.p
 // public/assets/story/ruins.jpg) with a per-line dynamic filter — VHS roll,
 // glitch, blur, flash — while the narration types in as film subtitles.
 
-const RUINS = '/assets/story/ruins.jpg'
+const RUINS_BG = cdnBackground('/assets/story/ruins.jpg', 1600)
 
 type Effect = {
   text: string
@@ -131,7 +132,7 @@ const StorySequence = () => {
         <Box
           position="absolute"
           inset="-4%"
-          backgroundImage={`url('${RUINS}')`}
+          backgroundImage={RUINS_BG}
           backgroundSize="cover"
           backgroundPosition="center"
           animation="kenBurns 26s ease-in-out infinite alternate"
@@ -145,7 +146,7 @@ const StorySequence = () => {
               key={`g1-${index}`}
               position="absolute"
               inset="-4%"
-              backgroundImage={`url('${RUINS}')`}
+              backgroundImage={RUINS_BG}
               backgroundSize="cover"
               backgroundPosition="center"
               mixBlendMode="screen"
@@ -157,7 +158,7 @@ const StorySequence = () => {
               key={`g2-${index}`}
               position="absolute"
               inset="-4%"
-              backgroundImage={`url('${RUINS}')`}
+              backgroundImage={RUINS_BG}
               backgroundSize="cover"
               backgroundPosition="center"
               mixBlendMode="screen"

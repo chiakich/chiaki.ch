@@ -1,7 +1,7 @@
-const normalizeSrc = (src: string) => {
-  return src.startsWith('/') ? src.slice(1) : src
-}
+import { cdnImage } from './lib/cdnImage'
 
+// next.config.js points `images.loaderFile` here. The URL building itself lives
+// in lib/cdnImage.ts so CSS background images can reuse it.
 export default function cloudflareLoader({
   src,
   width,
@@ -11,14 +11,7 @@ export default function cloudflareLoader({
   width: number
   quality?: number
 }) {
-  // No <Image quality> prop is set anywhere in the codebase, so without a fallback
-  // Cloudflare Image Resizing was applying its own (higher) default quality.
-  const params = [`width=${width}`, `onerror=redirect`, `quality=${quality ?? 75}`]
-  const paramsString = params.join(',')
-
-  if (process.env.NODE_ENV === 'development') {
-    return `/${normalizeSrc(src)}?${paramsString}`
-  }
-
-  return `/cdn-cgi/image/${paramsString}/${normalizeSrc(src)}`
+  // No <Image quality> prop is set anywhere in the codebase, so without a
+  // fallback Cloudflare was applying its own (higher) default quality.
+  return cdnImage({ src, width, quality: quality ?? 75 })
 }
