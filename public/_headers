@@ -1,0 +1,16 @@
+# Cloudflare Pages serves everything with `max-age=0, must-revalidate` unless
+# this file says otherwise, so every asset was costing a revalidation round trip.
+
+# Filenames here carry a content hash, so a changed file is a changed URL.
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Media paths are not content-hashed, so keep the max-age bounded and let the
+# edge serve stale copies while it refetches. This also un-blocks Image
+# Resizing: with `max-age=0` upstream it refuses to cache derived images and
+# returns `warning: cf-images 299 "cache-control is too restrictive"`.
+/assets/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+
+/scripts/*
+  Cache-Control: public, max-age=86400
