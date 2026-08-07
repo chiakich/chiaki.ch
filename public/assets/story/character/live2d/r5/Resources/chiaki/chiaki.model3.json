@@ -1,0 +1,23 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "chiakiL2Dv2-cubism5-target.moc3",
+		"Textures": [
+			"chiakiL2Dv2-cubism5-target.8192/texture_00.png"
+		],
+		"Physics": "chiakiL2Dv2-cubism5-target.physics3.json",
+		"DisplayInfo": "chiakiL2Dv2-cubism5-target.cdi3.json"
+	},
+	"Groups": [
+		{
+			"Target": "Parameter",
+			"Name": "EyeBlink",
+			"Ids": []
+		},
+		{
+			"Target": "Parameter",
+			"Name": "LipSync",
+			"Ids": []
+		}
+	]
+}
