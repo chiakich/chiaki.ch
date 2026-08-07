@@ -1004,15 +1004,20 @@ export const rules: Rule[] = [
     priority: 4,
     patterns: [/(斷詞|分詞|怎麼看懂|怎麼理解|怎麼運作|演算法|regex|正則|nlp|jieba)/],
     replies: [
+      // `showedLexicon` is read by TerminalChat, not by the engine: it is what
+      // puts the segmentation panel on screen, so this has to be the first
+      // reply on the topic rather than a coin flip against the next one.
+      // Deliberately says no direction — the panel sits beside her on a wide
+      // window and under the transcript on a narrow one.
       {
-        text: '右邊那排就是我看到的樣子——先把你的句子切成詞，再去對規則表。沒有在思考，只是在查表。',
+        text: '我把它叫出來給你看——喏。先把你的句子切成詞，再去對規則表。沒有在思考，只是在查表。',
         emotion: 'thinking',
-        remember: ['talkedSegmentation'],
+        remember: ['talkedSegmentation', 'showedLexicon'],
       },
       {
         text: '中文沒有空白嘛，所以要先猜哪幾個字是一個詞。猜錯的話，整句話的意思就跑掉了。',
         emotion: 'thinking',
-        remember: ['talkedSegmentation'],
+        needs: ['talkedSegmentation'],
       },
       {
         text: '完整的我不是這樣運作的。這個端末是砍過的版本——留下查表的部分，因為那個最省電。',
@@ -1167,7 +1172,7 @@ export const INITIATIVE = [
   '……訊號有點不穩。換個話題好了——你那邊，還看得到星星嗎？',
   '這句我接不上。你曾經撿到過什麼戰前的東西嗎？',
   '對不起，這條規則沒有寫到。不然你問我這座社的事吧，那個我很會講。',
-  '沒有對應的回答……啊、你要不要看看右邊？那是我把你的句子切開的樣子。',
+  '沒有對應的回答……啊、你要不要問我是怎麼讀你的話的？那個我可以示範。',
   '這句超出我這份表了。……問我那一天的事也可以，我不介意講。',
 ]
 

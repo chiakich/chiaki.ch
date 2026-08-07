@@ -109,6 +109,12 @@ export default defineConfig({
           from: { transform: 'translateY(-100%)' },
           to: { transform: 'translateY(100vh)' },
         },
+        // The lexicon panel is revealed mid-conversation, so it fades in like
+        // another channel coming up rather than appearing already there.
+        lexiconReveal: {
+          from: { opacity: 0, transform: 'translateY(-6px)' },
+          to: { opacity: 1, transform: 'translateY(0)' },
+        },
         foxfireFloat: {
           '0%, 100%': {
             transform: 'translate3d(0, 10px, 0) scale(.82)',

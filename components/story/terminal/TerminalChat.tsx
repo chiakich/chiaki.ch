@@ -41,6 +41,9 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
   const [typing, setTyping] = useState<string | null>(null)
   const [signal, setSignal] = useState(sessionRef.current.signal)
   const [tokens, setTokens] = useState<Token[]>([])
+  // The panel is a reveal, not furniture: it only exists once she has offered
+  // to show it. See the segmentation rule in lib/terminal/rules.ts.
+  const [lexiconShown, setLexiconShown] = useState(false)
 
   const push = useCallback((message: Omit<Message, 'id'>) => {
     nextId.current += 1
@@ -140,6 +143,7 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
       const turn = respond(text, sessionRef.current, lexicon)
       setSignal(turn.signal)
       setTokens(turn.tokens)
+      if (sessionRef.current.flags.has('showedLexicon')) setLexiconShown(true)
       avatarRef.current?.setEmotion(turn.emotion)
       window.setTimeout(() => {
         push({
@@ -267,23 +271,24 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
         </Flex>
       </Flex>
 
-      {/* She refers to this panel by position — "右邊那排就是我看到的樣子" — so it
-          has to actually be there. Too narrow to show below lg. */}
-      <Box
-        position="absolute"
-        zIndex={3}
-        display={{ base: 'none', lg: 'block' }}
-        top="88px"
-        right="34px"
-        width="288px"
-        maxHeight="calc(100% - 260px)"
-        overflowY="auto"
-      >
-        <LexiconPanel
-          tokens={tokens}
-          wordCount={lexicon ? lexicon.weights.size : null}
-        />
-      </Box>
+      {lexiconShown && (
+        <Box
+          position="absolute"
+          zIndex={3}
+          display={{ base: 'none', lg: 'block' }}
+          top="88px"
+          right="34px"
+          width="288px"
+          maxHeight="calc(100% - 260px)"
+          overflowY="auto"
+          animation="lexiconReveal .5s ease both"
+        >
+          <LexiconPanel
+            tokens={tokens}
+            wordCount={lexicon ? lexicon.weights.size : null}
+          />
+        </Box>
+      )}
 
       <Flex
         position="absolute"
@@ -357,6 +362,22 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
             ))}
           </Flex>
         </Box>
+
+        {lexiconShown && (
+          <Box
+            display={{ base: 'block', lg: 'none' }}
+            maxHeight="132px"
+            overflowY="auto"
+            px={{ base: '12px', md: '16px' }}
+            background="rgba(8,3,1,.62)"
+            animation="lexiconReveal .5s ease both"
+          >
+            <LexiconPanel
+              tokens={tokens}
+              wordCount={lexicon ? lexicon.weights.size : null}
+            />
+          </Box>
+        )}
 
         <Flex gap="6px" overflowX="auto" py="7px" css={{ scrollbarWidth: 'none' }}>
           {SUGGESTIONS.map((suggestion) => (
