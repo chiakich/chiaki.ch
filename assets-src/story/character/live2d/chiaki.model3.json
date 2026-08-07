@@ -1,0 +1,33 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "chiaki.moc3",
+		"Textures": [
+			"chiaki.8192/texture_00.png"
+		],
+		"Physics": "chiaki.physics3.json",
+		"DisplayInfo": "chiaki.cdi3.json",
+		"Expressions": [
+			{
+				"Name": "wtm.exp3.json",
+				"File": "wtm.exp3.json"
+			},
+			{
+				"Name": "shy.exp3.json",
+				"File": "shy.exp3.json"
+			},
+			{
+				"Name": "scare.exp3.json",
+				"File": "scare.exp3.json"
+			}
+		]
+	},
+	"Groups": [
+		{
+			"Target": "Parameter",
+			"Name": "EyeBlink",
+			"Ids": []
+		}
+	],
+	"HitAreas": []
+}
