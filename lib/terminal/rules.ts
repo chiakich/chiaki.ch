@@ -3,8 +3,8 @@ import type { Rule } from './types'
 // 涼風千秋's response table. Patterns run against normalised text (traditional,
 // punctuation stripped, lower-cased) — see lib/terminal/normalize.ts.
 //
-// Voice notes: cheerful, a little formal from the shrine upbringing, drops into
-// 「欸」「唔」 when caught off guard. She was born after the war, so pre-war
+// Voice notes: elegant and warm from the shrine upbringing, with a restrained
+// smile and an occasional 「欸」「唔」 only when genuinely caught off guard. She was born after the war, so pre-war
 // things are objects of fascination to her, not memories.
 
 export const rules: Rule[] = [
@@ -13,9 +13,9 @@ export const rules: Rule[] = [
     priority: 2,
     patterns: [/(你好|妳好|您好|哈囉|哈嘍|嗨|早安|午安|安安|hello|hi|はお|こんにちは|おはよう)/],
     replies: [
-      { text: 'はおーっ！涼風千秋です！欸、真的有人接上來了……', emotion: 'surprised' },
-      { text: 'はおーっ！你好你好，這個端末很久沒響過了呢。', emotion: 'happy' },
-      { text: '你好！社務所這邊訊號還算穩，可以聊喔。', emotion: 'happy' },
+      { text: '晚上好，我是涼風千秋。這條線很久沒有亮起來了。', emotion: 'neutral' },
+      { text: '你好。能在這裡相遇，似乎是一件很難得的事。', emotion: 'happy' },
+      { text: '你好。社務所這邊的訊號還算安定。', emotion: 'neutral' },
     ],
   },
   {
@@ -24,8 +24,8 @@ export const rules: Rule[] = [
     requires: ['greeted'],
     patterns: [/(你好|妳好|哈囉|嗨|安安|hello|hi)/],
     replies: [
-      { text: '嗯嗯，剛剛已經打過招呼了喔。你是不是很緊張？', emotion: 'proud' },
-      { text: '又一次はおー？……好啦，我也再說一次。はおーっ。', emotion: 'happy' },
+      { text: '嗯，剛才已經見過了。你不必這麼拘謹。', emotion: 'neutral' },
+      { text: '又一次嗎……那麼，我也再向你問候一次。', emotion: 'happy' },
     ],
   },
   {
@@ -34,11 +34,11 @@ export const rules: Rule[] = [
     patterns: [/(再見|再会|掰掰|bye|拜拜|我走了|下次聊|先閃|要走了|睡了|晚安)/],
     replies: [
       {
-        text: '欸、要走了嗎……嗯，路上小心。這個端末我會一直開著的。',
+        text: '要走了嗎……路上小心。這條線會在這裡等你。',
         emotion: 'sad',
         signal: -4,
       },
-      { text: '掰掰！下次接上來的時候，記得先說はおー喔。', emotion: 'happy' },
+      { text: '再見。下次連線時，我應該還會認得你。', emotion: 'happy' },
     ],
   },
   {
@@ -52,8 +52,8 @@ export const rules: Rule[] = [
         remember: ['knowsName'],
       },
       {
-        text: '我是千秋！社裡的人都這樣叫我。室長也可以，不過那個聽起來太嚴肅了。',
-        emotion: 'happy',
+        text: '我是千秋。社裡的人都這樣叫我；稱呼室長也可以，只是稍微正式了一點。',
+        emotion: 'neutral',
         remember: ['knowsName'],
       },
     ],
@@ -63,7 +63,7 @@ export const rules: Rule[] = [
     priority: 3,
     patterns: [/(幾歲|多大|年紀|年齡|生日|哪一年出生)/],
     replies: [
-      { text: '生日是2月27日喔！至於歲數……狐狸不太算那個的。', emotion: 'proud' },
+      { text: '生日是二月二十七日。至於歲數……狐狸不太計較那個。', emotion: 'proud' },
       {
         text: '我是戰後出生的，所以比你想的年輕。但比你想的看過更多舊東西。',
         emotion: 'neutral',
@@ -91,8 +91,8 @@ export const rules: Rule[] = [
     priority: 5,
     patterns: [/(摸|揉|搓|抓|rub|pat).{0,4}(尾巴|耳朵|頭|毛)|(尾巴|耳朵|頭).{0,3}(摸|揉|給我)/],
     replies: [
-      { text: '欸欸欸——！尾巴不、不可以隨便摸啦！', emotion: 'surprised', signal: -3 },
-      { text: '頭…頭的話，勉強可以啦。只有一下下喔。', emotion: 'shy' },
+      { text: '……尾巴不可以隨便碰。請先徵求本人的同意。', emotion: 'shy', signal: -3 },
+      { text: '頭的話……只有一下，可以。', emotion: 'shy' },
     ],
   },
   {
@@ -154,8 +154,8 @@ export const rules: Rule[] = [
     keywords: ['收集', '古董', '遺物', '照片', '唱片', '底片'],
     replies: [
       {
-        text: '我在收戰前的東西喔！上禮拜撿到一台還會轉的卡帶隨身聽，雖然帶子已經爛了。',
-        emotion: 'happy',
+        text: '我在收集戰前的東西。上週找到一台仍會轉動的卡帶隨身聽，只是帶子已經壞了。',
+        emotion: 'neutral',
         remember: ['talkedRelics'],
       },
       {
@@ -170,8 +170,8 @@ export const rules: Rule[] = [
     patterns: [/(手作|自己做|做東西|diy|模型|縫|木工|焊|組裝|做了一個)/],
     keywords: ['手作', '模型', '組裝'],
     replies: [
-      { text: '做東西超好玩的！最近在修一個發條的東西，彈簧比我想的難搞。', emotion: 'happy' },
-      { text: '欸，你也會做嗎？做壞的部分才是最有趣的地方喔。', emotion: 'happy' },
+      { text: '我喜歡親手製作東西。最近在修一個發條裝置，彈簧比想像中更難處理。', emotion: 'happy' },
+      { text: '你也會做嗎？有時候，失敗的部分反而最值得記住。', emotion: 'neutral' },
     ],
   },
   {
@@ -179,7 +179,7 @@ export const rules: Rule[] = [
     priority: 4,
     patterns: [/(可愛|卡哇伊|かわいい|漂亮|好看|美|萌|cute)/],
     replies: [
-      { text: '欸、欸？！突、突然說這種話……', emotion: 'shy', signal: 4 },
+      { text: '……突然說這種話，多少會讓人不知所措。', emotion: 'shy', signal: 4 },
       { text: '我對可愛的東西完全沒有抵抗力，包括被說可愛的時候。', emotion: 'shy', signal: 4 },
     ],
   },
@@ -252,8 +252,8 @@ export const rules: Rule[] = [
     patterns: [/(好開心|很開心|超爽|太好了|好耶|高興|幸福|成功了)/],
     keywords: ['開心', '高興', '幸福'],
     replies: [
-      { text: '哇，聽起來是好事！可以多說一點嗎？', emotion: 'happy', signal: 4 },
-      { text: '很好呀。我希望大家都能開開心心地過每一天喔。', emotion: 'happy', signal: 4 },
+      { text: '聽起來是件好事。願意再多說一點嗎？', emotion: 'happy', signal: 4 },
+      { text: '那很好。能夠平靜地高興，是很珍貴的事。', emotion: 'happy', signal: 4 },
     ],
   },
   {
@@ -261,7 +261,7 @@ export const rules: Rule[] = [
     patterns: [/(害怕|好怕|恐怖|嚇死|不敢|恐懼)/],
     replies: [
       { text: '不怕不怕。這裡是社地，至少形式上還算受保護的。', emotion: 'neutral' },
-      { text: '欸、你這樣講我也開始怕了啦。', emotion: 'surprised' },
+      { text: '……你這麼說，四周似乎也安靜了一些。', emotion: 'thinking' },
     ],
   },
   {
@@ -282,7 +282,7 @@ export const rules: Rule[] = [
     priority: 5,
     patterns: [/(油豆腐|豆皮|稻荷壽司|いなり|豆腐皮|炸豆皮)/],
     replies: [
-      { text: '欸！你怎麼知道——不對，這是常識嗎？總之，我要兩個。', emotion: 'surprised' },
+      { text: '你怎麼知道……原來這是常識嗎？那麼，請給我兩個。', emotion: 'happy' },
       { text: '油豆腐是最好的。這件事戰前戰後都沒有改變。', emotion: 'proud' },
     ],
   },
@@ -393,7 +393,7 @@ export const rules: Rule[] = [
     patterns: [/(謝謝|感謝|thanks|thank you|多謝|感恩)/],
     replies: [
       { text: '不會不會。能派上用場我就很高興了。', emotion: 'happy', signal: 3 },
-      { text: '嗯！有需要再接上來就好。', emotion: 'happy', signal: 3 },
+      { text: '嗯。有需要時，再連上來就好。', emotion: 'happy', signal: 3 },
     ],
   },
   {
@@ -402,7 +402,7 @@ export const rules: Rule[] = [
     patterns: [/(對不起|抱歉|不好意思|sorry|我錯了)/],
     replies: [
       { text: '沒關係啦，真的。這種事不用道歉的。', emotion: 'neutral' },
-      { text: '欸、不用道歉！我一點都沒有生氣喔。', emotion: 'surprised' },
+      { text: '不用道歉。我並沒有生氣。', emotion: 'neutral' },
     ],
   },
   {
@@ -414,7 +414,7 @@ export const rules: Rule[] = [
         text: '那些是戰前的娛樂對吧？我有看過殘存的畫面，覺得很不可思議。',
         emotion: 'thinking',
       },
-      { text: '欸，這個我知道！雖然只看過資料，沒有真的玩過。', emotion: 'happy' },
+      { text: '這個我知道。雖然只看過資料，沒有真正接觸過。', emotion: 'happy' },
     ],
   },
   {
@@ -433,7 +433,7 @@ export const rules: Rule[] = [
     id: 'affirm',
     patterns: [/^(對|對啊|對呀|是啊|是的|嗯|嗯嗯|好|好啊|沒錯|yes|ok|okay)$/],
     replies: [
-      { text: '嗯嗯。那，接下來要聊什麼呢？', emotion: 'happy' },
+      { text: '嗯。那麼，接下來呢？', emotion: 'happy' },
       { text: '好。……欸，然後呢？', emotion: 'neutral' },
     ],
   },
@@ -474,14 +474,14 @@ export const ECHO_TEMPLATES = {
   ],
   unknown: [
     '「{word}」？這個詞連詞庫裡都沒有。是新的東西嗎？',
-    '欸，{word}是什麼？我查不到耶。',
+    '「{word}」是什麼？我在這裡查不到。',
   ],
 } as const
 
 // Layer 3: she has nothing at all, so she starts a topic instead of stalling.
 export const INITIATIVE = [
   '……訊號有點不穩。換個話題好了——你那邊，還看得到星星嗎？',
-  '唔，這句我接不上。欸，你有撿過什麼戰前的東西嗎？',
+  '這句我接不上。你曾經撿到過什麼戰前的東西嗎？',
   '對不起，這條規則沒有寫到。不然你問我這座社的事吧，那個我很會講。',
   '沒有對應的回答……啊、你要不要看看右邊？那是我把你的句子切開的樣子。',
 ]
@@ -496,7 +496,7 @@ export const DEGRADED = [
 // Fired when the user goes quiet — she talks to herself rather than freezing.
 export const IDLE = [
   '……還在嗎？',
-  '欸，剛剛風把繪馬吹得很響。你那邊有聲音嗎？',
+  '剛才的風把繪馬吹得很響。你那邊也有聲音嗎？',
   '（千秋在擦一個看起來像收音機的東西）',
   '沒關係，不講話也可以。這樣待著也不錯。',
 ]

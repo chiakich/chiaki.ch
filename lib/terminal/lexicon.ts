@@ -16,6 +16,8 @@ export type Lexicon = {
   /** word → log10 probability, already divided by the per-million total. */
   weights: Map<string, number>
   modern: Set<string>
+  /** word → one A/I/U/E/O mouth shape per Mandarin syllable. */
+  readings: Map<string, string>
   maxWordLength: number
 }
 
@@ -48,13 +50,25 @@ export const parseLexicon = (source: string): Lexicon => {
     const word = previous.slice(0, shared) + body.slice(1, -1)
     previous = word
 
-    const frequency = 10 ** (MIN_LOG + (bucket / (BUCKETS - 1)) * (MAX_LOG - MIN_LOG))
+    const frequency =
+      10 ** (MIN_LOG + (bucket / (BUCKETS - 1)) * (MAX_LOG - MIN_LOG))
     weights.set(word, Math.log10(frequency) - PER_MILLION)
     if (isModern) modern.add(word)
     if (word.length > maxWordLength) maxWordLength = word.length
   }
 
-  return { weights, modern, maxWordLength }
+  return { weights, modern, readings: new Map(), maxWordLength }
+}
+
+export const parsePronunciations = (source: string) => {
+  const readings = new Map<string, string>()
+  for (const line of source.split('\n')) {
+    if (!line) continue
+    const separator = line.indexOf('\t')
+    if (separator === -1) continue
+    readings.set(line.slice(0, separator), line.slice(separator + 1))
+  }
+  return readings
 }
 
 const CJK = /[㐀-䶿一-鿿豈-﫿]/
@@ -155,12 +169,20 @@ let pending: Promise<Lexicon> | null = null
 
 export const loadLexicon = (): Promise<Lexicon> => {
   if (!pending) {
-    pending = fetch('/assets/story/terminal/lexicon.txt')
-      .then((response) => {
+    pending = Promise.all([
+      fetch('/assets/story/terminal/lexicon.txt').then((response) => {
         if (!response.ok) throw new Error(`lexicon ${response.status}`)
         return response.text()
+      }),
+      fetch('/assets/story/terminal/pronunciation.txt')
+        .then((response) => (response.ok ? response.text() : ''))
+        .catch(() => ''),
+    ])
+      .then(([words, pronunciations]) => {
+        const lexicon = parseLexicon(words)
+        lexicon.readings = parsePronunciations(pronunciations)
+        return lexicon
       })
-      .then(parseLexicon)
       .catch((error) => {
         pending = null
         throw error

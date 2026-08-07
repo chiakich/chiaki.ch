@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef } from 'react'
 import { Box } from 'styled-system/jsx'
+import { loadLive2DRuntime } from 'lib/live2d/runtime'
 
 // Add type definition for window.PIXI
 declare global {
@@ -86,17 +87,6 @@ const Live2DModelClient: React.FC<Live2DModelClientProps> = ({
     }
   }, [getContainerDimensions, updateModelPosition])
 
-  // Load external scripts
-  const loadScript = useCallback((src: string): Promise<void> => {
-    return new Promise((resolve, reject) => {
-      const script = document.createElement('script')
-      script.src = src
-      script.onload = () => resolve()
-      script.onerror = () => reject(new Error(`Failed to load script: ${src}`))
-      document.head.appendChild(script)
-    })
-  }, [])
-
   // Initialize Live2D
   const initializeLive2D = useCallback(async () => {
     if (isInitializingRef.current) return
@@ -123,24 +113,7 @@ const Live2DModelClient: React.FC<Live2DModelClientProps> = ({
     }
 
     try {
-      // Load dependencies
-      if (!window.Live2DCubismCore) {
-        await loadScript(
-          'https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js'
-        )
-      }
-
-      const PIXI = await import('pixi.js')
-      window.PIXI = PIXI
-
-      await loadScript(
-        'https://cdn.jsdelivr.net/npm/pixi-live2d-display/dist/cubism4.min.js'
-      )
-
-      const Live2DModel = (window as any).PIXI.live2d.Live2DModel
-      if (!Live2DModel) {
-        throw new Error('Live2DModel not found')
-      }
+      const { PIXI, Live2DModel } = await loadLive2DRuntime()
 
       if (!containerRef.current) {
         isInitializingRef.current = false
@@ -188,9 +161,10 @@ const Live2DModelClient: React.FC<Live2DModelClientProps> = ({
 
       isInitializingRef.current = false
     } catch (error) {
+      console.error('[character-live2d]', error)
       isInitializingRef.current = false
     }
-  }, [calculateModelPosition, getContainerDimensions, loadScript])
+  }, [calculateModelPosition, getContainerDimensions])
 
   // Setup model animations
   const setupModelAnimations = useCallback((model: any) => {

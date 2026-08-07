@@ -14,7 +14,7 @@
     "fontsIndex": "書体集",
     "akitra": "台鉄書体",
     "huninn": "粉圓",
-    "terminal": "千秋と話す"
+    "terminal": "AMADEUS"
   },
   "language": {
     "label": "言語を切り替える",
@@ -93,8 +93,8 @@
       "description": "justfont による台湾のオープンソース丸ゴシック体。台湾の字形と日常の読みやすさに合わせ、涼風千秋はjustfont在籍時に制作に参加しました。"
     },
     "terminal": {
-      "title": "千秋と話す - 千秋稲荷社",
-      "description": "言語モデルを使わない対話：千秋入力メソッドの辞書で分かち書きし、ルール表で応答する Live2D の涼風千秋。"
+      "title": "AMADEUS - 千秋稲荷社",
+      "description": "涼風千秋の人格アーカイブ端末。千秋入力法の辞書で言葉と発音を解析し、Live2D で接続します。"
     }
   },
   "home": {

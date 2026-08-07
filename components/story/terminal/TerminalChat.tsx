@@ -1,13 +1,12 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
-import { Box, Flex, Grid, styled } from 'styled-system/jsx'
-import { Spinner } from 'components/ui/controls'
+import { Box, Flex, styled } from 'styled-system/jsx'
 import { createSession, respond, type Session } from 'lib/terminal/engine'
-import { loadLexicon, type Lexicon, type Token } from 'lib/terminal/lexicon'
-import { IDLE, OPENING } from 'lib/terminal/rules'
+import { loadLexicon, type Lexicon } from 'lib/terminal/lexicon'
+import { createSpeechBeats } from 'lib/terminal/speech'
+import { IDLE } from 'lib/terminal/rules'
 import type { Message } from 'lib/terminal/types'
 import type { TerminalAvatarHandle } from './TerminalAvatarClient'
-import LexiconPanel from './LexiconPanel'
 import { useI18n } from 'i18n'
 
 const Text = styled.p
@@ -16,19 +15,18 @@ const Input = styled.input
 const Form = styled.form
 const Send = styled.button
 const Chip = styled.button
+const Img = styled.img
 
 const TerminalAvatarClient = dynamic(() => import('./TerminalAvatarClient'), {
   ssr: false,
 })
 
-// Typing speed for her replies. Slow enough to read as speech, fast enough that
-// a long line doesn't outstay its welcome.
-const CHAR_INTERVAL = 42
 const IDLE_DELAY = 45_000
+const SUGGESTIONS = ['你是誰？', '神明去哪裡了？', '你在收集什麼？']
 
-const SUGGESTIONS = ['你是誰？', '神明去哪裡了？', '你在收集什麼？', '你是 AI 嗎？']
+type TerminalChatProps = { started?: boolean }
 
-const TerminalChat = () => {
+const TerminalChat = ({ started = true }: TerminalChatProps) => {
   const { t } = useI18n()
   const avatarRef = useRef<TerminalAvatarHandle | null>(null)
   const sessionRef = useRef<Session>(createSession())
@@ -36,9 +34,7 @@ const TerminalChat = () => {
   const transcriptRef = useRef<HTMLDivElement>(null)
 
   const [lexicon, setLexicon] = useState<Lexicon | null>(null)
-  const [lexiconFailed, setLexiconFailed] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
-  const [tokens, setTokens] = useState<Token[]>([])
   const [draft, setDraft] = useState('')
   const [typing, setTyping] = useState<string | null>(null)
   const [signal, setSignal] = useState(sessionRef.current.signal)
@@ -49,56 +45,76 @@ const TerminalChat = () => {
   }, [])
 
   useEffect(() => {
-    loadLexicon().then(setLexicon).catch(() => setLexiconFailed(true))
+    loadLexicon()
+      .then(setLexicon)
+      .catch(() => undefined)
   }, [])
 
-  // Opening lines, once the boot chrome has had a beat to settle.
   useEffect(() => {
+    if (!started || messages.length > 0) return undefined
     const timer = window.setTimeout(() => {
-      OPENING.forEach((line) => push({ role: 'system', text: line }))
       push({
         role: 'chiaki',
-        text: 'はおーっ！……欸，燈亮了。有人在嗎？',
-        emotion: 'surprised',
+        text: '',
+        emotion: 'neutral',
         ruleId: 'opening',
       })
-      avatarRef.current?.setEmotion('surprised')
-    }, 700)
+      setTyping('……連線建立。晚上好，我是涼風千秋。')
+      avatarRef.current?.setEmotion('neutral')
+    }, 480)
     return () => window.clearTimeout(timer)
-  }, [push])
+  }, [messages.length, push, started])
 
-  // Type her reply out one character at a time, flapping the mouth meanwhile.
+  // The lexicon determines word boundaries; each syllabic character becomes a
+  // mouth beat and punctuation becomes a pause in both text and animation.
   useEffect(() => {
     if (typing === null) return undefined
-    avatarRef.current?.setSpeaking(true)
+    const beats = createSpeechBeats(typing, lexicon)
+    const avatar = avatarRef.current
     let index = 0
-    const id = window.setInterval(() => {
+    let timer = 0
+
+    const advance = () => {
+      const beat = beats[index]
+      if (!beat) {
+        avatar?.stopSpeaking()
+        avatar?.setEmotion('neutral')
+        setTyping(null)
+        return
+      }
       index += 1
       setMessages((current) => {
         const next = [...current]
         const last = next[next.length - 1]
-        if (last?.role === 'chiaki') next[next.length - 1] = { ...last, text: typing.slice(0, index) }
+        if (last?.role === 'chiaki') {
+          next[next.length - 1] = {
+            ...last,
+            text: beats
+              .slice(0, index)
+              .map((item) => item.char)
+              .join(''),
+          }
+        }
         return next
       })
-      if (index >= typing.length) {
-        window.clearInterval(id)
-        avatarRef.current?.setSpeaking(false)
-        setTyping(null)
-      }
-    }, CHAR_INTERVAL)
-    return () => {
-      window.clearInterval(id)
-      avatarRef.current?.setSpeaking(false)
+      avatar?.speakBeat(beat.open, beat.form, beat.delay)
+      timer = window.setTimeout(advance, beat.delay)
     }
-  }, [typing])
+
+    timer = window.setTimeout(advance, 80)
+    return () => {
+      window.clearTimeout(timer)
+      avatar?.stopSpeaking()
+    }
+  }, [lexicon, typing])
 
   useEffect(() => {
     const element = transcriptRef.current
     if (element) element.scrollTop = element.scrollHeight
   }, [messages])
 
-  // She fills the silence herself rather than sitting frozen.
   useEffect(() => {
+    if (!started || messages.length === 0) return undefined
     const timer = window.setTimeout(() => {
       if (typing !== null) return
       const line = IDLE[Math.floor(Math.random() * IDLE.length)]
@@ -107,243 +123,239 @@ const TerminalChat = () => {
       avatarRef.current?.setEmotion('neutral')
     }, IDLE_DELAY)
     return () => window.clearTimeout(timer)
-  }, [messages, push, typing])
+  }, [messages, push, started, typing])
 
   const send = useCallback(
     (raw: string) => {
       const text = raw.trim()
       if (!text || typing !== null) return
-
       push({ role: 'user', text })
       setDraft('')
 
       const turn = respond(text, sessionRef.current, lexicon)
-      setTokens(turn.tokens)
       setSignal(turn.signal)
       avatarRef.current?.setEmotion(turn.emotion)
-
-      // A short beat before she answers — instant replies give away the lookup.
       window.setTimeout(() => {
-        push({ role: 'chiaki', text: '', emotion: turn.emotion, ruleId: turn.ruleId })
+        push({
+          role: 'chiaki',
+          text: '',
+          emotion: turn.emotion,
+          ruleId: turn.ruleId,
+        })
         setTyping(turn.text)
-      }, 260)
+      }, 340)
     },
     [lexicon, push, typing]
   )
 
-  const lastRuleId = useMemo(
-    () => [...messages].reverse().find((message) => message.role === 'chiaki')?.ruleId,
-    [messages]
-  )
+  const visibleMessages = messages
+    .filter((message) => message.role !== 'system')
+    .slice(-3)
 
   return (
-    <Grid
-      gridTemplateColumns={{ base: '1fr', lg: '380px 1fr' }}
-      gap={{ base: '16px', lg: '24px' }}
+    <Box
+      position="relative"
       width="100%"
-      maxWidth="width.section"
-      mx="auto"
-      px={{ base: '16px', md: '40px', lg: '60px' }}
-      alignItems="stretch"
+      height="calc(100svh - 92px)"
+      minHeight={{ base: '680px', md: '600px' }}
+      overflow="hidden"
+      isolation="isolate"
+      background="radial-gradient(ellipse 72% 74% at 56% 35%, #2b1008 0%, #100704 46%, #030201 100%)"
+      opacity={started ? 1 : 0}
+      transition="opacity 1.1s ease"
     >
-      {/* Left: the model, framed as a viewport on the shrine office */}
       <Box
-        position="relative"
-        height={{ base: '260px', lg: 'auto' }}
-        minHeight={{ lg: '540px' }}
-        border="1px solid rgba(120,200,180,.16)"
-        background="radial-gradient(ellipse at 50% 30%, rgba(28,42,46,.85), rgba(4,8,10,.95) 72%)"
-        overflow="hidden"
-      >
-        <Box position="absolute" inset="0">
-          <TerminalAvatarClient controls={avatarRef} />
-        </Box>
+        position="absolute"
+        inset="0"
+        opacity=".18"
+        backgroundImage="linear-gradient(rgba(231,105,45,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(231,105,45,.06) 1px, transparent 1px)"
+        backgroundSize={{ base: '38px 38px', md: '54px 54px' }}
+        maskImage="radial-gradient(ellipse 68% 74% at 56% 40%, black 0%, transparent 76%)"
+        pointerEvents="none"
+      />
 
-        {/* Scanlines over the model, matching the story sections' CRT treatment */}
-        <Box
-          position="absolute"
-          inset="0"
-          pointerEvents="none"
-          opacity=".38"
-          backgroundImage="repeating-linear-gradient(0deg, transparent 0 2px, rgba(0,0,0,.3) 3px)"
-        />
-        <Box
-          position="absolute"
-          inset="0"
-          pointerEvents="none"
-          background="radial-gradient(ellipse 74% 74% at 50% 45%, transparent 46%, rgba(0,0,0,.72) 100%)"
-        />
-
-        <Flex
-          position="absolute"
-          top="12px"
-          left="14px"
-          right="14px"
-          justifyContent="space-between"
-          alignItems="center"
-          pointerEvents="none"
-        >
-          <Label
-            fontFamily="nixie"
-            fontSize="9px"
-            letterSpacing=".22em"
-            color="rgba(190,215,208,.5)"
-          >
-            CH.01 / SHRINE OFFICE
-          </Label>
-          <Label
-            fontFamily="nixie"
-            fontSize="9px"
-            letterSpacing=".16em"
-            color="rgba(190,215,208,.4)"
-            animation="hudPulse 2.4s ease-in-out infinite"
-          >
-            ● LIVE
-          </Label>
-        </Flex>
-
-        {/* Link strength — driven by whether the rule table is keeping up */}
-        <Box position="absolute" bottom="12px" left="14px" right="14px" pointerEvents="none">
-          <Flex justifyContent="space-between" alignItems="baseline" mb="5px">
-            <Label
-              fontFamily="nixie"
-              fontSize="9px"
-              letterSpacing=".2em"
-              color="rgba(190,215,208,.5)"
-            >
-              LINK
-            </Label>
-            <Label
-              fontFamily="nixie"
-              fontSize="9px"
-              letterSpacing=".14em"
-              color={signal < 25 ? 'rgba(255,120,96,.9)' : 'rgba(190,215,208,.55)'}
-            >
-              {String(Math.round(signal)).padStart(2, '0')}%
-            </Label>
-          </Flex>
-          <Box height="2px" background="rgba(255,255,255,.1)">
-            <Box
-              height="100%"
-              width={`${signal}%`}
-              background={
-                signal < 25
-                  ? 'linear-gradient(90deg, rgba(255,120,96,.4), rgba(255,120,96,.95))'
-                  : 'linear-gradient(90deg, rgba(75,224,184,.35), rgba(190,255,233,.85))'
-              }
-              transition="width .5s ease, background .5s ease"
-            />
-          </Box>
-        </Box>
+      <Box position="absolute" inset="0" zIndex={0}>
+        <TerminalAvatarClient controls={avatarRef} />
       </Box>
 
-      {/* Right: transcript, composer, and the segmentation readout */}
-      <Flex direction="column" gap="12px" minWidth="0">
+      <Box
+        position="absolute"
+        inset="0"
+        zIndex={1}
+        pointerEvents="none"
+        backgroundImage="repeating-linear-gradient(transparent 0px, transparent 1px, rgba(0,0,0,.27) 2px, rgba(0,0,0,.27) 3px)"
+        mixBlendMode="multiply"
+        opacity=".78"
+      />
+      <Box
+        position="absolute"
+        inset="0"
+        zIndex={1}
+        pointerEvents="none"
+        background="linear-gradient(90deg, rgba(219,67,20,.045), rgba(255,142,76,.012) 52%, rgba(117,31,9,.05))"
+        mixBlendMode="screen"
+      />
+      <Box
+        position="absolute"
+        left="0"
+        right="0"
+        height="16%"
+        zIndex={1}
+        pointerEvents="none"
+        background="linear-gradient(180deg, transparent, rgba(235,111,53,.055) 50%, transparent)"
+        animation="scanlineDrift 8s linear infinite"
+      />
+      <Box
+        position="absolute"
+        inset="0"
+        zIndex={1}
+        pointerEvents="none"
+        boxShadow="inset 0 0 170px 42px rgba(0,0,0,.88)"
+        animation="crtFlicker 9s linear infinite"
+      />
+
+      <Flex
+        position="absolute"
+        zIndex={3}
+        top={{ base: '18px', md: '28px' }}
+        left={{ base: '16px', md: '34px' }}
+        right={{ base: '16px', md: '34px' }}
+        alignItems="center"
+        justifyContent="space-between"
+      >
+        <Flex alignItems="center" gap="11px">
+          <Img
+            src="/assets/icon/logo_white.svg"
+            alt=""
+            width={{ base: '32px', md: '40px' }}
+            height={{ base: '32px', md: '40px' }}
+            opacity=".78"
+            filter="sepia(1) saturate(4.2) hue-rotate(332deg) brightness(1.12)"
+          />
+          <Label
+            fontFamily="nixie"
+            fontSize={{ base: '9px', md: '10px' }}
+            letterSpacing=".22em"
+            color="rgba(238,150,98,.76)"
+          >
+            PERSONALITY ARCHIVE / 01
+          </Label>
+        </Flex>
+        <Flex alignItems="center" gap="8px">
+          <Box
+            width="5px"
+            height="5px"
+            borderRadius="full"
+            background="#e76c32"
+            boxShadow="0 0 12px #e76c32"
+            animation="hudPulse 2.8s ease-in-out infinite"
+          />
+          <Label
+            fontFamily="nixie"
+            fontSize="9px"
+            letterSpacing=".18em"
+            color="rgba(238,150,98,.55)"
+          >
+            LINK {String(Math.round(signal)).padStart(2, '0')}
+          </Label>
+        </Flex>
+      </Flex>
+
+      <Flex
+        position="absolute"
+        zIndex={4}
+        left={{ base: '0', md: '50%' }}
+        bottom="0"
+        width={{ base: '100%', md: 'min(760px, calc(100% - 64px))' }}
+        transform={{ base: 'none', md: 'translateX(-50%)' }}
+        direction="column"
+        px={{ base: '14px', md: '0' }}
+        pb={{ base: '16px', md: '22px' }}
+      >
         <Box
           ref={transcriptRef}
-          flex="1"
-          minHeight={{ base: '320px', lg: '360px' }}
-          maxHeight={{ base: '52vh', lg: '58vh' }}
+          maxHeight={{ base: '170px', md: '185px' }}
           overflowY="auto"
-          border="1px solid rgba(120,200,180,.16)"
-          background="rgba(4,10,9,.6)"
-          px={{ base: '14px', md: '20px' }}
-          py="16px"
+          px={{ base: '12px', md: '16px' }}
+          py="12px"
+          background="linear-gradient(180deg, rgba(8,3,1,.04), rgba(8,3,1,.8))"
+          backdropFilter="blur(7px)"
+          borderLeft="1px solid rgba(231,105,45,.38)"
         >
-          <Flex direction="column" gap="14px">
-            {messages.map((message) =>
-              message.role === 'system' ? (
-                <Text
-                  key={message.id}
+          <Flex direction="column" gap="9px">
+            {visibleMessages.map((message, index) => (
+              <Box
+                key={`${message.id}-${index}`}
+                alignSelf={message.role === 'user' ? 'flex-end' : 'flex-start'}
+                maxWidth="92%"
+              >
+                <Label
+                  display="block"
                   fontFamily="nixie"
-                  fontSize="10px"
+                  fontSize="8px"
                   letterSpacing=".2em"
-                  color="rgba(229,188,99,.5)"
+                  mb="3px"
+                  textAlign={message.role === 'user' ? 'right' : 'left'}
+                  color={
+                    message.role === 'user'
+                      ? 'rgba(238,150,98,.3)'
+                      : 'rgba(238,150,98,.62)'
+                  }
+                >
+                  {message.role === 'user' ? 'YOU' : 'CHIAKI'}
+                </Label>
+                <Text
+                  px="10px"
+                  py="7px"
+                  color={
+                    message.role === 'user'
+                      ? 'rgba(242,207,184,.72)'
+                      : 'rgba(255,228,207,.94)'
+                  }
+                  fontSize={{ base: '14px', md: '15px' }}
+                  lineHeight="1.75"
+                  textShadow="0 0 12px rgba(229,106,49,.1)"
+                  whiteSpace="pre-wrap"
                 >
                   {message.text}
-                </Text>
-              ) : (
-                <Box
-                  key={message.id}
-                  alignSelf={message.role === 'user' ? 'flex-end' : 'flex-start'}
-                  maxWidth="86%"
-                >
-                  <Label
-                    display="block"
-                    fontFamily="nixie"
-                    fontSize="9px"
-                    letterSpacing=".2em"
-                    mb="4px"
-                    textAlign={message.role === 'user' ? 'right' : 'left'}
-                    color={
-                      message.role === 'user'
-                        ? 'rgba(190,215,208,.35)'
-                        : 'rgba(229,188,99,.55)'
-                    }
-                  >
-                    {message.role === 'user' ? 'YOU' : 'CHIAKI'}
-                    {message.role === 'chiaki' && message.ruleId
-                      ? ` · ${message.ruleId}`
-                      : ''}
-                  </Label>
-                  <Box
-                    px="12px"
-                    py="9px"
-                    border="1px solid"
-                    borderColor={
-                      message.role === 'user'
-                        ? 'rgba(120,200,180,.2)'
-                        : 'rgba(229,188,99,.28)'
-                    }
-                    background={
-                      message.role === 'user'
-                        ? 'rgba(75,224,184,.05)'
-                        : 'rgba(229,188,99,.06)'
-                    }
-                    color={
-                      message.role === 'user'
-                        ? 'rgba(214,247,238,.9)'
-                        : 'rgba(248,238,220,.95)'
-                    }
-                    fontSize={{ base: '14px', md: '15px' }}
-                    lineHeight="1.75"
-                    whiteSpace="pre-wrap"
-                  >
-                    {message.text}
-                    {typing !== null && message.id === messages[messages.length - 1]?.id && (
+                  {typing !== null &&
+                    message.id === messages[messages.length - 1]?.id && (
                       <Box
                         as="span"
                         ml="2px"
-                        color="rgba(245,220,170,.9)"
-                        animation="cursorBlink .7s steps(1) infinite"
+                        color="rgba(238,150,98,.86)"
+                        animation="cursorBlink .75s steps(1) infinite"
                       >
                         ▌
                       </Box>
                     )}
-                  </Box>
-                </Box>
-              )
-            )}
+                </Text>
+              </Box>
+            ))}
           </Flex>
         </Box>
 
-        <Flex gap="6px" flexWrap="wrap">
+        <Flex gap="6px" overflowX="auto" py="7px" css={{ scrollbarWidth: 'none' }}>
           {SUGGESTIONS.map((suggestion) => (
             <Chip
               key={suggestion}
               type="button"
               onClick={() => send(suggestion)}
               disabled={typing !== null}
-              px="10px"
-              py="5px"
-              border="1px solid rgba(120,200,180,.22)"
-              background="transparent"
-              color="rgba(190,215,208,.7)"
-              fontSize="12px"
+              px="9px"
+              py="4px"
+              border="1px solid rgba(231,105,45,.16)"
+              background="rgba(8,3,1,.34)"
+              color="rgba(238,150,98,.56)"
+              fontSize="11px"
               cursor="pointer"
+              whiteSpace="nowrap"
               transition="all .18s"
-              _hover={{ borderColor: 'rgba(229,188,99,.5)', color: 'rgba(245,220,170,.95)' }}
-              _disabled={{ opacity: 0.35, cursor: 'default' }}
+              _hover={{
+                borderColor: 'rgba(238,150,98,.45)',
+                color: 'rgba(255,218,194,.88)',
+              }}
+              _disabled={{ opacity: 0.28, cursor: 'default' }}
             >
               {suggestion}
             </Chip>
@@ -352,7 +364,9 @@ const TerminalChat = () => {
 
         <Form
           display="flex"
-          gap="8px"
+          gap="7px"
+          background="rgba(7,3,1,.7)"
+          backdropFilter="blur(10px)"
           onSubmit={(event: React.FormEvent) => {
             event.preventDefault()
             send(draft)
@@ -369,50 +383,38 @@ const TerminalChat = () => {
             flex="1"
             minWidth="0"
             px="12px"
-            py="11px"
-            border="1px solid rgba(120,200,180,.24)"
-            background="rgba(4,10,9,.7)"
-            color="rgba(224,247,238,.95)"
-            fontSize={{ base: '15px', md: '15px' }}
+            py="10px"
+            border="1px solid rgba(231,105,45,.2)"
+            borderLeft="1px solid rgba(231,105,45,.58)"
+            background="transparent"
+            color="rgba(255,228,207,.92)"
+            fontSize="14px"
             fontFamily="body"
             outline="none"
             transition="border-color .18s"
-            _focus={{ borderColor: 'rgba(229,188,99,.6)' }}
-            _placeholder={{ color: 'rgba(190,215,208,.3)' }}
+            _focus={{ borderColor: 'rgba(238,150,98,.55)' }}
+            _placeholder={{ color: 'rgba(238,150,98,.25)' }}
           />
           <Send
             type="submit"
             disabled={typing !== null || draft.trim().length === 0}
-            px="18px"
-            border="1px solid rgba(229,188,99,.4)"
-            background="rgba(229,188,99,.1)"
-            color="rgba(245,220,170,.95)"
+            px={{ base: '14px', md: '18px' }}
+            border="1px solid rgba(231,105,45,.32)"
+            background="rgba(231,105,45,.08)"
+            color="rgba(246,180,138,.82)"
             fontFamily="nixie"
-            fontSize="11px"
-            letterSpacing=".2em"
+            fontSize="10px"
+            letterSpacing=".18em"
             cursor="pointer"
             transition="all .18s"
-            _hover={{ background: 'rgba(229,188,99,.2)' }}
-            _disabled={{ opacity: 0.3, cursor: 'default' }}
+            _hover={{ background: 'rgba(231,105,45,.15)' }}
+            _disabled={{ opacity: 0.26, cursor: 'default' }}
           >
             SEND
           </Send>
         </Form>
-
-        <LexiconPanel tokens={tokens} wordCount={lexicon?.weights.size ?? null} />
-
-        <Flex alignItems="center" gap="8px" minHeight="16px">
-          {!lexicon && !lexiconFailed && <Spinner color="rgba(190,215,208,.4)" />}
-          <Label fontFamily="nixie" fontSize="9px" letterSpacing=".16em" color="rgba(190,215,208,.35)">
-            {lexiconFailed
-              ? t('terminalPage.lexiconFailed')
-              : lexicon
-                ? `RULE ${lastRuleId ?? '—'}`
-                : t('terminalPage.lexiconLoading')}
-          </Label>
-        </Flex>
       </Flex>
-    </Grid>
+    </Box>
   )
 }
 

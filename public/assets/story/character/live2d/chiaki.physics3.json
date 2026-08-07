@@ -593,7 +593,7 @@
 						"Target": "Parameter",
 						"Id": "PARAM_ANGLE_X"
 					},
-					"Weight": 40,
+					"Weight": 32,
 					"Type": "X",
 					"Reflect": false
 				},
@@ -602,7 +602,7 @@
 						"Target": "Parameter",
 						"Id": "PARAM_ANGLE_Y"
 					},
-					"Weight": 40,
+					"Weight": 32,
 					"Type": "X",
 					"Reflect": false
 				},
@@ -611,7 +611,7 @@
 						"Target": "Parameter",
 						"Id": "PARAM_BREATH"
 					},
-					"Weight": 100,
+					"Weight": 18,
 					"Type": "Angle",
 					"Reflect": false
 				}
@@ -623,7 +623,7 @@
 						"Id": "Param_Angle_Rotation_1_ArtMesh41"
 					},
 					"VertexIndex": 1,
-					"Scale": 48.171,
+					"Scale": 36.128,
 					"Weight": 100,
 					"Type": "Angle",
 					"Reflect": false
@@ -634,7 +634,7 @@
 						"Id": "Param_Angle_Rotation_2_ArtMesh41"
 					},
 					"VertexIndex": 2,
-					"Scale": 49.872,
+					"Scale": 37.404,
 					"Weight": 100,
 					"Type": "Angle",
 					"Reflect": false
@@ -645,7 +645,7 @@
 						"Id": "Param_Angle_Rotation_3_ArtMesh41"
 					},
 					"VertexIndex": 3,
-					"Scale": 49.132,
+					"Scale": 36.849,
 					"Weight": 100,
 					"Type": "Angle",
 					"Reflect": false
@@ -656,7 +656,7 @@
 						"Id": "Param_Angle_Rotation_4_ArtMesh41"
 					},
 					"VertexIndex": 4,
-					"Scale": 47.309,
+					"Scale": 35.482,
 					"Weight": 100,
 					"Type": "Angle",
 					"Reflect": false
@@ -667,7 +667,7 @@
 						"Id": "Param_Angle_Rotation_5_ArtMesh41"
 					},
 					"VertexIndex": 5,
-					"Scale": 43.862,
+					"Scale": 32.897,
 					"Weight": 100,
 					"Type": "Angle",
 					"Reflect": false
@@ -678,7 +678,7 @@
 						"Id": "Param_Angle_Rotation_6_ArtMesh41"
 					},
 					"VertexIndex": 6,
-					"Scale": 42.24,
+					"Scale": 31.68,
 					"Weight": 100,
 					"Type": "Angle",
 					"Reflect": false
@@ -689,7 +689,7 @@
 						"Id": "Param_Angle_Rotation_7_ArtMesh41"
 					},
 					"VertexIndex": 7,
-					"Scale": 38.464,
+					"Scale": 28.848,
 					"Weight": 100,
 					"Type": "Angle",
 					"Reflect": false
@@ -711,100 +711,100 @@
 						"X": 0,
 						"Y": 5
 					},
-					"Mobility": 0.85,
-					"Delay": 0.85,
+					"Mobility": 0.78,
+					"Delay": 0.7,
 					"Acceleration": 1,
-					"Radius": 5
+					"Radius": 6.5
 				},
 				{
 					"Position": {
 						"X": 0,
 						"Y": 10
 					},
-					"Mobility": 0.85,
-					"Delay": 0.85,
-					"Acceleration": 1.2,
-					"Radius": 5
+					"Mobility": 0.78,
+					"Delay": 0.7,
+					"Acceleration": 1.1,
+					"Radius": 6.5
 				},
 				{
 					"Position": {
 						"X": 0,
 						"Y": 15
 					},
-					"Mobility": 0.85,
-					"Delay": 0.85,
-					"Acceleration": 1.2,
-					"Radius": 5
+					"Mobility": 0.77,
+					"Delay": 0.7,
+					"Acceleration": 1.1,
+					"Radius": 6.5
 				},
 				{
 					"Position": {
 						"X": 0,
 						"Y": 20
 					},
-					"Mobility": 0.85,
-					"Delay": 0.85,
-					"Acceleration": 1.2,
-					"Radius": 5
+					"Mobility": 0.76,
+					"Delay": 0.7,
+					"Acceleration": 1,
+					"Radius": 6.5
 				},
 				{
 					"Position": {
 						"X": 0,
 						"Y": 25
 					},
-					"Mobility": 0.85,
-					"Delay": 0.85,
-					"Acceleration": 1,
-					"Radius": 5
+					"Mobility": 0.75,
+					"Delay": 0.7,
+					"Acceleration": 0.9,
+					"Radius": 6.5
 				},
 				{
 					"Position": {
 						"X": 0,
 						"Y": 30
 					},
-					"Mobility": 0.85,
-					"Delay": 0.85,
-					"Acceleration": 0.08,
-					"Radius": 5
+					"Mobility": 0.74,
+					"Delay": 0.7,
+					"Acceleration": 0.8,
+					"Radius": 6.5
 				},
 				{
 					"Position": {
 						"X": 0,
 						"Y": 35
 					},
-					"Mobility": 0.85,
-					"Delay": 0.85,
-					"Acceleration": 0.08,
-					"Radius": 5
+					"Mobility": 0.73,
+					"Delay": 0.7,
+					"Acceleration": 0.72,
+					"Radius": 6.5
 				},
 				{
 					"Position": {
 						"X": 0,
 						"Y": 40
 					},
-					"Mobility": 0.85,
-					"Delay": 0.85,
-					"Acceleration": 0.07,
-					"Radius": 5
+					"Mobility": 0.72,
+					"Delay": 0.7,
+					"Acceleration": 0.66,
+					"Radius": 6.5
 				},
 				{
 					"Position": {
 						"X": 0,
 						"Y": 45
 					},
-					"Mobility": 0.85,
-					"Delay": 0.85,
-					"Acceleration": 0.07,
-					"Radius": 5
+					"Mobility": 0.71,
+					"Delay": 0.7,
+					"Acceleration": 0.6,
+					"Radius": 6.5
 				},
 				{
 					"Position": {
 						"X": 0,
 						"Y": 50
 					},
-					"Mobility": 0.85,
-					"Delay": 0.85,
-					"Acceleration": 0.01,
-					"Radius": 5
+					"Mobility": 0.7,
+					"Delay": 0.7,
+					"Acceleration": 0.55,
+					"Radius": 6.5
 				}
 			],
 			"Normalization": {

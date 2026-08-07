@@ -54,10 +54,9 @@ const LexiconPanel = ({ tokens, wordCount }: LexiconPanelProps) => {
 
   return (
     <Box
-      border="1px solid rgba(120,200,180,.16)"
-      background="rgba(4,10,9,.6)"
-      px={{ base: '14px', md: '18px' }}
-      py="14px"
+      borderTop="1px solid rgba(120,200,180,.14)"
+      background="transparent"
+      pt="14px"
     >
       <Flex justifyContent="space-between" alignItems="baseline" gap="12px" mb="10px">
         <Label
