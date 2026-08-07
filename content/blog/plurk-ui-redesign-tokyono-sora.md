@@ -52,7 +52,7 @@ readingTime: 2
 
 自介與統計資料等，平常自己在滑噗的時候不會常用到的資訊就先暫時隱藏收合起來，只要滑鼠移動上去就會自動展開。載入頁面的時候也會有收合到右邊的動畫，可以引導瀏覽你噗浪頁面的旅人點開查看。
 
-![](/assets/blog/plurk-ui-redesign-tokyono-sora/06.gif)
+![](/assets/blog/plurk-ui-redesign-tokyono-sora/06.mp4)
 
 另外如果覺得官方預設的性別選項太少，在附加自定CSS的檔案裡，也提供修改性別選項文字的語法，當然你也可以在這寫上任何你想寫的文字～
 
@@ -97,6 +97,6 @@ readingTime: 2
 
 重新製作了狐狸版本的svg動畫，CC-BY授權釋出，可自由運用作為loading動畫，如果有用到的話歡迎跟我說，我會很開心的ww。
 
-![](/assets/blog/plurk-ui-redesign-tokyono-sora/11.gif)
+![](/assets/blog/plurk-ui-redesign-tokyono-sora/11.mp4)
 
 可以到專案的github頁面下載或點此[下載](https://raw.githubusercontent.com/akira02/Tokyono-Sora/main/loading.svg)。

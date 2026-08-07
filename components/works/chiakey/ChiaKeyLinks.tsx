@@ -6,7 +6,7 @@ import { useI18n } from 'i18n'
 
 const Heading = styled.h3
 const Text = styled.p
-const Image = styled.img
+const Video = styled.video
 
 const ChiaKeyLinks = () => {
   const { t } = useI18n()
@@ -60,9 +60,15 @@ const ChiaKeyLinks = () => {
             </HStack>
           ))}
         </Stack>
-        <Image
-          src="/assets/works/chiakey/chiaki.gif"
-          alt={t('chiakeyPage.download.imageAlt')}
+        {/* was a 310KB GIF; same loop as h264 is 90KB */}
+        <Video
+          src="/assets/works/chiakey/chiaki.mp4"
+          poster="/assets/works/chiakey/chiaki-poster.webp"
+          aria-label={t('chiakeyPage.download.imageAlt')}
+          autoPlay
+          loop
+          muted
+          playsInline
           position="absolute"
           right="-12px"
           bottom="-36px"

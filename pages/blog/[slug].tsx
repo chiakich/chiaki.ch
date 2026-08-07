@@ -56,7 +56,8 @@ const prose = css({
     height: '1px',
     background: 'var(--prose-border)',
   },
-  '& img': {
+  // video covers the ex-GIF clips rehypeBlogMedia swaps in
+  '& img, & video': {
     display: 'block',
     maxWidth: '100%',
     height: 'auto',
@@ -65,7 +66,7 @@ const prose = css({
     borderRadius: '2px',
   },
   // figure caption emitted as an italic paragraph right after an image
-  '& img + em, & em': { color: 'var(--prose-muted)' },
+  '& img + em, & video + em, & em': { color: 'var(--prose-muted)' },
   '& code': {
     fontFamily: 'var(--fonts-mono, ui-monospace, monospace)',
     fontSize: '0.88em',
