@@ -49,7 +49,6 @@ const EMOTION_PARAMS: Record<Emotion, Record<string, number>> = {
 const TerminalAvatarClient = ({ controls }: TerminalAvatarClientProps) => {
   const frameRef = useRef<HTMLIFrameElement>(null)
   const paramsRef = useRef<Record<string, number>>({ ...BASE_PARAMS })
-  const mouthTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [ready, setReady] = useState(false)
 
   const publish = useCallback(() => {
@@ -73,25 +72,18 @@ const TerminalAvatarClient = ({ controls }: TerminalAvatarClientProps) => {
         paramsRef.current = { ...BASE_PARAMS, ...EMOTION_PARAMS[emotion] }
         publish()
       },
-      speakBeat: (open, form, duration) => {
-        if (mouthTimerRef.current) clearTimeout(mouthTimerRef.current)
+      speakBeat: (open, form, _duration) => {
         setParams({
-          PARAM_MOUTH_OPEN_Y: Math.min(0.62, Math.max(0, open)),
-          PARAM_MOUTH_FORM: Math.min(0.3, Math.max(-0.3, form * 0.44)),
+          PARAM_MOUTH_OPEN_Y: Math.min(0.48, Math.max(0, open)),
+          PARAM_MOUTH_FORM: Math.min(0.2, Math.max(-0.2, form * 0.28)),
         })
-        mouthTimerRef.current = setTimeout(() => {
-          setParams({ PARAM_MOUTH_OPEN_Y: 0, PARAM_MOUTH_FORM: 0 })
-        }, Math.max(28, duration * 0.66))
       },
       stopSpeaking: () => {
-        if (mouthTimerRef.current) clearTimeout(mouthTimerRef.current)
-        mouthTimerRef.current = null
         setParams({ PARAM_MOUTH_OPEN_Y: 0, PARAM_MOUTH_FORM: 0 })
       },
     }
 
     return () => {
-      if (mouthTimerRef.current) clearTimeout(mouthTimerRef.current)
       controls.current = null
     }
   }, [controls, publish, setParams])
@@ -117,7 +109,7 @@ const TerminalAvatarClient = ({ controls }: TerminalAvatarClientProps) => {
         left="0"
         top="0"
         bottom="0"
-        width={{ base: '100%', md: '64%' }}
+        width={{ base: '100%', md: '78%' }}
         opacity={ready ? 1 : 0}
         transition="opacity .45s ease"
       >
