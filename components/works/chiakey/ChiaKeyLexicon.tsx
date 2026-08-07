@@ -4,11 +4,11 @@ import MotionSection from 'components/portfolio/MotionSection'
 import ProjectLink from 'components/portfolio/ProjectLink'
 import SectionHeading from 'components/portfolio/SectionHeading'
 import { useI18n } from 'i18n'
+import { LazyImg as Image } from 'components/ui/LazyImg'
 
 const Heading = styled.h3
 const Text = styled.p
 const Code = styled.code
-const Image = styled.img
 
 // ChiaKey-Lexicon 的四個資料層（release builder 依固定順序疊加），
 // 裝到使用者機器上之後，runtime 再疊上使用者詞庫與學習快取。

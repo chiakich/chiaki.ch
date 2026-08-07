@@ -8,6 +8,7 @@ import remarkRehype from 'remark-rehype'
 import rehypeSlug from 'rehype-slug'
 import rehypeHighlight from 'rehype-highlight'
 import rehypeStringify from 'rehype-stringify'
+import { rehypeBlogMedia } from './rehypeBlogMedia'
 
 export interface PostMeta {
   slug: string
@@ -69,6 +70,7 @@ const renderMarkdown = async (content: string): Promise<string> => {
     .use(remarkRehype)
     .use(rehypeSlug)
     .use(rehypeHighlight, { detect: true })
+    .use(rehypeBlogMedia)
     .use(rehypeStringify)
     .process(content)
   return String(file)

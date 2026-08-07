@@ -491,6 +491,8 @@ const StickerFace = ({
         <styled.img
           src={sticker.src}
           alt={stickerText(t, sticker.id).title}
+          loading="lazy"
+          decoding="async"
           style={{
             width: isSvg ? renderSize : undefined,
             height: isSvg ? 'auto' : undefined,

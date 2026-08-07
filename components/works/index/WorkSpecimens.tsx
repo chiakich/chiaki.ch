@@ -3,13 +3,13 @@ import { m } from 'framer-motion'
 import { Box, Flex, Grid, HStack, styled } from 'styled-system/jsx'
 import VerticalCandidateMenu from 'components/works/chiakey/VerticalCandidateMenu'
 import { useI18n } from 'i18n'
+import { LazyImg as Image } from 'components/ui/LazyImg'
 
 // Flap components are client-only (react-split-flap injects styles at runtime)
 export const SplitFlapSpecimen = dynamic(() => import('components/works/split-flap/BoardSpecimen'), { ssr: false })
 
 const Text = styled.p
 const Span = styled.span
-const Image = styled.img
 
 export const ChiaKeySpecimen = () => {
   const { t } = useI18n()

@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { m } from 'framer-motion'
 import { Box, Flex, HStack, Stack, styled } from 'styled-system/jsx'
+import { LazyImg as Image } from 'components/ui/LazyImg'
 
 const Text = styled.p
 const Span = styled.span
-const Image = styled.img
 
 // 依照實際的 Telegram 對話重現：
 // 在輸入框逐字打出「騙人的吧.jpg」→ 送出 → 圖片ㄗ援改二回覆 demo 圖。

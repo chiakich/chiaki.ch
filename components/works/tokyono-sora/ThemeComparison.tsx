@@ -2,9 +2,9 @@ import { useEffect, useRef, useState, type PointerEvent } from 'react'
 import { m } from 'framer-motion'
 import { Box, HStack, styled } from 'styled-system/jsx'
 import { useI18n } from 'i18n'
+import { LazyImg as Image } from 'components/ui/LazyImg'
 
 const Button = styled.button
-const Image = styled.img
 
 const ThemeComparison = () => {
   const [position, setPosition] = useState(0)

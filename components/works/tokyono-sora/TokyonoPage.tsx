@@ -4,10 +4,10 @@ import ProjectLink from 'components/portfolio/ProjectLink'
 import SectionHeading from 'components/portfolio/SectionHeading'
 import TokyonoHero from './TokyonoHero'
 import { useI18n } from 'i18n'
+import { LazyImg as Image } from 'components/ui/LazyImg'
 
 const Heading = styled.h3
 const Text = styled.p
-const Image = styled.img
 
 const TokyonoPage = () => {
   const { t } = useI18n()

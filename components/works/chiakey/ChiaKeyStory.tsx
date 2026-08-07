@@ -2,10 +2,10 @@ import { Box, Flex, Grid, Stack, styled } from 'styled-system/jsx'
 import MotionSection from 'components/portfolio/MotionSection'
 import SectionHeading from 'components/portfolio/SectionHeading'
 import { useI18n } from 'i18n'
+import { LazyImg as Image } from 'components/ui/LazyImg'
 
 const Heading = styled.h3
 const Text = styled.p
-const Image = styled.img
 const Code = styled.code
 const Link = styled.a
 
