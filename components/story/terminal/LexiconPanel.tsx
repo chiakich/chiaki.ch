@@ -12,10 +12,10 @@ const Label = styled.span
 
 const TokenChip = ({ token }: { token: Token }) => {
   const tone = token.modern
-    ? { border: 'rgba(223,138,66,.7)', color: '#f5c8a1', bg: 'rgba(223,138,66,.12)' }
+    ? { border: 'rgba(247,186,120,.75)', color: '#ffe0c0', bg: 'rgba(247,186,120,.14)' }
     : token.known
-      ? { border: 'rgba(120,200,180,.4)', color: 'rgba(214,247,238,.92)', bg: 'rgba(75,224,184,.07)' }
-      : { border: 'rgba(255,120,96,.4)', color: 'rgba(255,170,155,.9)', bg: 'rgba(255,60,40,.07)' }
+      ? { border: 'rgba(231,105,45,.38)', color: 'rgba(255,228,207,.9)', bg: 'rgba(231,105,45,.07)' }
+      : { border: 'rgba(255,96,72,.45)', color: 'rgba(255,176,158,.92)', bg: 'rgba(255,60,40,.08)' }
 
   return (
     <Box
@@ -37,7 +37,7 @@ const TokenChip = ({ token }: { token: Token }) => {
 const LegendItem = ({ color, label }: { color: string; label: string }) => (
   <Flex alignItems="center" gap="5px">
     <Box width="7px" height="7px" background={color} />
-    <Label fontSize="10px" letterSpacing=".1em" color="rgba(190,215,208,.55)">
+    <Label fontSize="10px" letterSpacing=".1em" color="rgba(238,150,98,.55)">
       {label}
     </Label>
   </Flex>
@@ -54,7 +54,7 @@ const LexiconPanel = ({ tokens, wordCount }: LexiconPanelProps) => {
 
   return (
     <Box
-      borderTop="1px solid rgba(120,200,180,.14)"
+      borderTop="1px solid rgba(231,105,45,.18)"
       background="transparent"
       pt="14px"
     >
@@ -63,7 +63,7 @@ const LexiconPanel = ({ tokens, wordCount }: LexiconPanelProps) => {
           fontFamily="nixie"
           fontSize="9px"
           letterSpacing=".22em"
-          color="rgba(190,215,208,.5)"
+          color="rgba(238,150,98,.5)"
         >
           {t('terminalPage.lexiconTitle')}
         </Label>
@@ -71,7 +71,7 @@ const LexiconPanel = ({ tokens, wordCount }: LexiconPanelProps) => {
           fontFamily="nixie"
           fontSize="9px"
           letterSpacing=".16em"
-          color="rgba(190,215,208,.35)"
+          color="rgba(238,150,98,.35)"
         >
           {wordCount === null
             ? t('terminalPage.lexiconLoading')
@@ -80,7 +80,7 @@ const LexiconPanel = ({ tokens, wordCount }: LexiconPanelProps) => {
       </Flex>
 
       {tokens.length === 0 ? (
-        <Text fontSize="13px" color="rgba(190,215,208,.38)" lineHeight="1.7">
+        <Text fontSize="13px" color="rgba(238,150,98,.38)" lineHeight="1.7">
           {t('terminalPage.lexiconEmpty')}
         </Text>
       ) : (
@@ -92,9 +92,9 @@ const LexiconPanel = ({ tokens, wordCount }: LexiconPanelProps) => {
       )}
 
       <Flex gap="14px" mt="12px" flexWrap="wrap">
-        <LegendItem color="rgba(75,224,184,.5)" label={t('terminalPage.legendKnown')} />
-        <LegendItem color="rgba(223,138,66,.8)" label={t('terminalPage.legendModern')} />
-        <LegendItem color="rgba(255,120,96,.6)" label={t('terminalPage.legendUnknown')} />
+        <LegendItem color="rgba(231,105,45,.55)" label={t('terminalPage.legendKnown')} />
+        <LegendItem color="rgba(247,186,120,.85)" label={t('terminalPage.legendModern')} />
+        <LegendItem color="rgba(255,96,72,.65)" label={t('terminalPage.legendUnknown')} />
       </Flex>
     </Box>
   )
