@@ -9,6 +9,7 @@
     "build:site": "panda codegen && panda cssgen && node scripts/generateBlogIndex.js && node scripts/generateSitemap.js && next build",
     "generate-blog-index": "node scripts/generateBlogIndex.js",
     "generate-sitemap": "node scripts/generateSitemap.js",
+    "generate-chat-lexicon": "node scripts/generateChatLexicon.js",
     "migrate-medium": "node scripts/migrateMedium.js",
     "generate-og-images": "node scripts/generateOgImages.js",
     "start": "next start",
