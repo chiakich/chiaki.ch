@@ -3,7 +3,7 @@
 	"FileReferences": {
 		"Moc": "chiaki.moc3",
 		"Textures": [
-			"chiaki.2048/texture_00.png"
+			"chiaki.2048/texture_00.webp"
 		],
 		"Physics": "chiaki.physics3.json",
 		"DisplayInfo": "chiaki.cdi3.json",
