@@ -23,6 +23,10 @@ export type Session = {
   signal: number
   /** Question she just asked, which the next turn is allowed to answer. */
   pending: string | null
+  /** What the user confirmed they are called. */
+  userName: string | null
+  /** Name she has read off the input but not yet had confirmed. */
+  nameGuess: string | null
 }
 
 export const createSession = (): Session => ({
@@ -31,7 +35,64 @@ export const createSession = (): Session => ({
   history: [],
   signal: 62,
   pending: null,
+  userName: null,
+  nameGuess: null,
 })
+
+// Run against the raw input, not the normalised text, so capitalisation and
+// spacing in a latin name survive.
+const NAME_BODY =
+  /([A-Za-z][A-Za-z.'\- ]{0,15}|[㐀-䶿一-鿿豈-﫿]{1,4}|[ぁ-んァ-ヶー]{1,6})/.source
+const NAME_EXPLICIT = new RegExp(
+  `(?:我(?:的)?名字(?:是|叫做|叫)|我叫做|我叫|(?:可以|你可以|請)?叫我)\\s*${NAME_BODY}`
+)
+// "我是" is also the start of half the sentences in the language, so it only
+// counts as an introduction when the name is the last thing in the input.
+const NAME_COPULA = new RegExp(
+  `我是\\s*${NAME_BODY}(?=[的了啦喔唷囉呀耶嘛哦嗎呢吧啊，。！？!?.\\s]*$)`
+)
+
+// Trailing particles get swept up by the greedy character class above.
+const NAME_TAIL = /[的了啦喔唷囉囍呀耶嘛哦嗎呢吧啊，。！？!?.\s]+$/
+// "我是" also introduces professions, states and species. Confirming would look
+// worse than staying quiet, so the obvious ones never reach the question.
+const NON_NAMES = new Set(
+  ('人類 人 活人 男人 女人 男的 女的 男生 女生 學生 老師 工程師 設計師 醫生 軍人 士兵 ' +
+    '倖存者 幸存者 生存者 難民 旅人 玩家 使用者 使用者本人 你 我 他 她 誰 千秋 涼風千秋 ' +
+    '真的 假的 認真的 開玩笑的 新來的 一個人 沒有人 機器人 ai 人工智慧 神 巫女 狐狸 ' +
+    // Question words, or the sentence was a question about the name, not one.
+    '什麼 甚麼 什麼名字 誰 哪 哪個 名字 這樣 那樣 怎樣 好 不好 對 不對 真 假')
+    .split(' ')
+    .filter(Boolean)
+)
+
+// "我是X" without a naming verb is only an introduction if X could be a name.
+// A possessive 的 rules out "你的粉絲", and a leading function word rules out
+// "不是很吵" and "喜歡雪的" — those are predicates, not people.
+const NOT_NAME_LIKE =
+  /的|^[不沒很好太想要會能在有喜愛覺應可就只才又再從跟和對被把給用來去說看知真假第每那這哪誰什]/
+
+/** The name in the input, or null if nothing plausible is being introduced. */
+const readName = (raw: string): string | null => {
+  let hit = NAME_EXPLICIT.exec(raw)
+  if (!hit) {
+    const copula = NAME_COPULA.exec(raw.trim())
+    if (copula && !NOT_NAME_LIKE.test(copula[1].trim())) hit = copula
+  }
+  if (!hit) return null
+  const raw1 = hit[1].trim()
+  const name = raw1.replace(NAME_TAIL, '').trim()
+  if (name.length === 0) return null
+  // Both forms, because stripping 「的」 off 「真的」 would otherwise smuggle it past.
+  if (NON_NAMES.has(name.toLowerCase()) || NON_NAMES.has(raw1.toLowerCase()))
+    return null
+  return name
+}
+
+const fill = (text: string, session: Session) =>
+  text
+    .replace(/\{guess\}/g, session.nameGuess ?? '你')
+    .replace(/\{you\}/g, session.userName ?? '你')
 
 // Below this the archive starts showing through instead of a normal fallback.
 const DEGRADED_THRESHOLD = 22
@@ -72,7 +133,8 @@ const pickReply = (
   )
 }
 
-const isEligible = (rule: Rule, session: Session) => {
+const isEligible = (rule: Rule, session: Session, nameHit: string | null) => {
+  if (rule.capturesName && nameHit === null) return false
   if (rule.continues !== undefined && rule.continues !== session.pending)
     return false
   if (rule.requires?.some((flag) => !session.flags.has(flag))) return false
@@ -91,12 +153,13 @@ const findRule = (
   clauses: string[],
   whole: string,
   tokens: Token[],
-  session: Session
+  session: Session,
+  nameHit: string | null
 ): Candidate | null => {
   let best: Candidate | null = null
 
   for (const rule of rules) {
-    if (!isEligible(rule, session)) continue
+    if (!isEligible(rule, session, nameHit)) continue
     const priority = rule.priority ?? 0
 
     for (const pattern of rule.patterns) {
@@ -116,7 +179,7 @@ const findRule = (
 
   const words = new Set(tokens.map((token) => token.text))
   for (const rule of rules) {
-    if (!rule.keywords || !isEligible(rule, session)) continue
+    if (!rule.keywords || !isEligible(rule, session, nameHit)) continue
     const hits = rule.keywords.filter((keyword) => words.has(keyword)).length
     if (hits === 0) continue
     const score = hits * 10 + (rule.priority ?? 0)
@@ -169,9 +232,11 @@ export const respond = (
   const tokens = segmentAll(input.text, lexicon)
   const seed = Math.random()
 
-  const match = findRule(input.clauses, input.text, tokens, session)
+  const nameHit = readName(raw)
+  const match = findRule(input.clauses, input.text, tokens, session, nameHit)
   // An unanswered question only stays open for the turn right after it.
   session.pending = null
+  if (match?.rule.capturesName) session.nameGuess = nameHit
 
   let text: string
   let emotion: Emotion = 'neutral'
@@ -191,6 +256,11 @@ export const respond = (
     reply.remember?.forEach((flag) => session.flags.add(flag))
     if (reply.opens) session.pending = reply.opens
     if (match.rule.id.startsWith('greeting')) session.flags.add('greeted')
+    if (reply.naming === 'confirm') {
+      session.userName = session.nameGuess
+      session.flags.add('knowsYou')
+    }
+    if (reply.naming === 'reject') session.nameGuess = null
   } else if (match) {
     // She matched the topic but has already said everything she has on it.
     // Admitting that suits a finite lookup table better than repeating a line.
@@ -245,8 +315,10 @@ export const respond = (
   )
   session.history.push(ruleId)
 
+  // Placeholders expand after `used` has been written, so the dedup key stays
+  // the template rather than one session's name.
   return {
-    text: degrade(text, session.signal, seed * 1000),
+    text: degrade(fill(text, session), session.signal, seed * 1000),
     emotion,
     ruleId,
     tokens,
@@ -270,7 +342,7 @@ export const idle = (session: Session): Turn => {
   session.history.push('idle')
 
   return {
-    text: degrade(line.text, session.signal, seed * 1000),
+    text: degrade(fill(line.text, session), session.signal, seed * 1000),
     emotion: line.emotion ?? 'neutral',
     ruleId: 'idle',
     tokens: [],

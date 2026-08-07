@@ -8,6 +8,11 @@ export type Emotion =
   | 'proud'
 
 export type Reply = {
+  /**
+   * `{guess}` expands to the name she is currently checking, `{you}` to the
+   * confirmed one — both fall back to 「你」, so a line with a placeholder is
+   * still safe to say before she knows who she is talking to.
+   */
   text: string
   emotion?: Emotion
   /** Link-strength delta, in percentage points. Defaults to +2 on a hit. */
@@ -24,6 +29,8 @@ export type Reply = {
   minSignal?: number
   /** Arms a follow-up: the next turn can answer this instead of restarting. */
   opens?: string
+  /** Commits or discards the pending name guess. */
+  naming?: 'confirm' | 'reject'
 }
 
 export type Rule = {
@@ -43,6 +50,13 @@ export type Rule = {
   blockedBy?: string[]
   /** Only fires as the answer to the question `opens` armed last turn. */
   continues?: string
+  /**
+   * Pulls the user's name out of the raw input into `session.nameGuess`. The
+   * rule only becomes a candidate if the extraction survives its plausibility
+   * check, so "我是人類" falls through to the survivor rule instead of being
+   * read as an introduction.
+   */
+  capturesName?: boolean
   /**
    * Conversational glue — greetings, thanks, yes/no. Saying these twice is
    * natural, so they are exempt from the no-verbatim-repeat rule that sends

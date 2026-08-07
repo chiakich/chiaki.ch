@@ -22,6 +22,12 @@ import type { Reply, Rule } from './types'
 // set, so a topic opens up as it is revisited. The engine always serves the
 // deepest tier currently unlocked. See lib/terminal/engine.ts.
 
+// Shared by player.name.recall and player.name.unknown, which differ only in
+// whether she has the name yet.
+const RECALL_PATTERNS = [
+  /(我叫什麼|我的名字是什麼|我的名字呢|你記得我|還記得我|我是誰|知道我是誰)/,
+]
+
 export const rules: Rule[] = [
   {
     id: 'greeting',
@@ -781,6 +787,118 @@ export const rules: Rule[] = [
         needs: ['knowsAlive'],
         minSignal: 55,
         signal: 3,
+      },
+    ],
+  },
+  // Reading a name off the input is a guess, so she reads it back before
+  // storing it. Losing to player.survive on "我是人類" is handled upstream:
+  // the extraction rejects it, which takes this rule out of the running.
+  {
+    id: 'player.name',
+    priority: 6,
+    repeatable: true,
+    capturesName: true,
+    patterns: [/(我叫|我的名字|我名字|叫我|我是)/],
+    replies: [
+      {
+        text: '{guess}……我先確認一次，你叫{guess}，是嗎？我不想把錯的東西寫進去。',
+        emotion: 'thinking',
+        opens: 'name.check',
+      },
+      {
+        text: '等一下。{guess}——這樣寫對嗎？我這邊只有一格，覆蓋過去就找不回來了。',
+        emotion: 'thinking',
+        opens: 'name.check',
+      },
+      {
+        text: '{guess}。……抱歉，我還是問一次：是這樣念嗎？名字念錯是很失禮的事。',
+        emotion: 'shy',
+        opens: 'name.check',
+      },
+    ],
+  },
+  {
+    id: 'name.check.yes',
+    continues: 'name.check',
+    repeatable: true,
+    patterns: [/^(對|是|嗯|恩|沒錯|正確|yes|yeah|ok|okay|y)/],
+    replies: [
+      {
+        text: '{you}。好，我記下來了。……欄位填好了。這格以前是空的。',
+        emotion: 'happy',
+        signal: 6,
+        naming: 'confirm',
+        remember: ['knowsYou'],
+      },
+      {
+        text: '{you}。嗯，我會記住。……這具身體記住的東西，之後會流到別的地方去，所以會有其他的我也知道你。',
+        emotion: 'neutral',
+        signal: 6,
+        naming: 'confirm',
+        remember: ['knowsYou'],
+      },
+    ],
+  },
+  // Above the yes branch on purpose: 「不是」 contains 「是」.
+  {
+    id: 'name.check.no',
+    continues: 'name.check',
+    priority: 2,
+    repeatable: true,
+    // 沒(?!錯) because 「沒錯」 is agreement, not refusal.
+    patterns: [/^(不|錯|no|nope|才不|沒(?!錯))/],
+    replies: [
+      {
+        text: '喔、那我把那一格清掉。……抱歉，我是照字面切的，切錯了。那你叫什麼？',
+        emotion: 'sad',
+        naming: 'reject',
+      },
+      {
+        text: '清掉了。……我沒有猜的功能，只能等你告訴我。',
+        emotion: 'sad',
+        naming: 'reject',
+      },
+    ],
+  },
+  // Split in two rather than gated per reply: whether she has the name is a
+  // fact about the session, so it has to be a rule-level `requires`. As one
+  // rule, running out of fresh lines would have dropped her onto "I don't have
+  // your name" while she plainly did.
+  {
+    id: 'player.name.recall',
+    priority: 7,
+    requires: ['knowsYou'],
+    repeatable: true,
+    patterns: RECALL_PATTERNS,
+    replies: [
+      {
+        text: '{you}。……這一格我存得很好，沒有壞。',
+        emotion: 'proud',
+        signal: 3,
+      },
+      {
+        text: '{you}。你看，我可以叫得出來。……雖然這只證明了儲存正常。',
+        emotion: 'happy',
+      },
+      {
+        text: '{you}。我每次回答這個都要去讀同一格，所以答案不會變。',
+        emotion: 'neutral',
+      },
+    ],
+  },
+  {
+    id: 'player.name.unknown',
+    priority: 7,
+    blockedBy: ['knowsYou'],
+    patterns: RECALL_PATTERNS,
+    replies: [
+      {
+        text: '……我沒有你的名字。那一格是空的——不是壞掉，是你還沒有告訴我。',
+        emotion: 'sad',
+      },
+      {
+        text: '查不到。你要是願意講，我就寫進去；不願意也沒關係，我一樣會記得你來過。',
+        emotion: 'neutral',
       },
     ],
   },
