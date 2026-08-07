@@ -14,6 +14,16 @@ export type Reply = {
   signal?: number
   /** Topic flags written to the session when this reply fires. */
   remember?: string[]
+  /**
+   * Only offered once every one of these flags is set. This is how a topic
+   * gets deeper the second and third time it comes up instead of repeating:
+   * the engine always prefers the deepest reply currently unlocked.
+   */
+  needs?: string[]
+  /** Only offered once the link is at least this strong. */
+  minSignal?: number
+  /** Arms a follow-up: the next turn can answer this instead of restarting. */
+  opens?: string
 }
 
 export type Rule = {
@@ -31,6 +41,8 @@ export type Rule = {
   requires?: string[]
   /** Stops firing once any of these flags are set. */
   blockedBy?: string[]
+  /** Only fires as the answer to the question `opens` armed last turn. */
+  continues?: string
   replies: Reply[]
 }
 

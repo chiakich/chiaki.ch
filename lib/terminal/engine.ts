@@ -21,6 +21,8 @@ export type Session = {
   history: string[]
   /** Link strength shown in the HUD, 0–100. */
   signal: number
+  /** Question she just asked, which the next turn is allowed to answer. */
+  pending: string | null
 }
 
 export const createSession = (): Session => ({
@@ -28,6 +30,7 @@ export const createSession = (): Session => ({
   used: new Set(),
   history: [],
   signal: 62,
+  pending: null,
 })
 
 // Below this the archive starts showing through instead of a normal fallback.
@@ -38,13 +41,31 @@ const SIGNAL_CEILING = 99
 const pick = <T>(options: readonly T[], seed: number) =>
   options[Math.floor(seed * options.length) % options.length]
 
-/** Prefers a reply she hasn't used yet; falls back to any once they run out. */
+const isUnlocked = (reply: Reply, session: Session) =>
+  (reply.minSignal === undefined || session.signal >= reply.minSignal) &&
+  (reply.needs === undefined ||
+    reply.needs.every((flag) => session.flags.has(flag)))
+
+/**
+ * Prefers the deepest reply the session has unlocked, and among those the ones
+ * she hasn't said yet. Topics therefore open up as they are revisited instead
+ * of cycling through the same two lines.
+ */
 const pickReply = (replies: Reply[], session: Session, seed: number): Reply => {
-  const fresh = replies.filter((reply) => !session.used.has(reply.text))
-  return pick(fresh.length > 0 ? fresh : replies, seed)
+  const unlocked = replies.filter((reply) => isUnlocked(reply, session))
+  const pool = unlocked.length > 0 ? unlocked : replies
+  const deepest = Math.max(...pool.map((reply) => reply.needs?.length ?? 0))
+  const tier = pool.filter((reply) => (reply.needs?.length ?? 0) === deepest)
+  const fresh = tier.filter((reply) => !session.used.has(reply.text))
+  if (fresh.length > 0) return pick(fresh, seed)
+  // This tier is exhausted, so fall back to anything unlocked she hasn't used.
+  const spare = pool.filter((reply) => !session.used.has(reply.text))
+  return pick(spare.length > 0 ? spare : pool, seed)
 }
 
 const isEligible = (rule: Rule, session: Session) => {
+  if (rule.continues !== undefined && rule.continues !== session.pending)
+    return false
   if (rule.requires?.some((flag) => !session.flags.has(flag))) return false
   if (rule.blockedBy?.some((flag) => session.flags.has(flag))) return false
   return true
@@ -74,7 +95,10 @@ const findRule = (
       // the rule covers a self-contained thought, not a stray word two commas away.
       const inClause = clauses.some((clause) => pattern.test(clause))
       if (!inClause && !pattern.test(whole)) continue
-      const score = 100 + priority * 10 + (inClause ? 5 : 0)
+      // A rule answering the question she just asked outranks everything, so
+      // "好啊" lands on the offer instead of the generic affirmation.
+      const score =
+        100 + priority * 10 + (inClause ? 5 : 0) + (rule.continues ? 500 : 0)
       if (!best || score > best.score) best = { rule, score }
       break
     }
@@ -137,6 +161,8 @@ export const respond = (
   const seed = Math.random()
 
   const match = findRule(input.clauses, input.text, tokens, session)
+  // An unanswered question only stays open for the turn right after it.
+  session.pending = null
 
   let text: string
   let emotion: Emotion = 'neutral'
@@ -151,6 +177,7 @@ export const respond = (
     delta = reply.signal ?? 2
     session.used.add(reply.text)
     reply.remember?.forEach((flag) => session.flags.add(flag))
+    if (reply.opens) session.pending = reply.opens
     if (match.rule.id.startsWith('greeting')) session.flags.add('greeted')
   } else if (session.signal < DEGRADED_THRESHOLD) {
     text = pick(DEGRADED, seed)
@@ -182,7 +209,16 @@ export const respond = (
     }
   }
 
-  session.signal = clamp(session.signal + delta)
+  // Repeated ！ or ？ is a raised voice, so it lands harder in both directions —
+  // shouted praise counts for more, and so does being shouted at.
+  const weighted = input.emphatic ? delta * 1.5 : delta
+  // Diminishing returns on the way up, full weight on the way down. A flat
+  // gain pinned the link at the ceiling within twenty turns, which made every
+  // minSignal gate open for free and left nothing to lose.
+  const headroom = Math.min(1, Math.max(0, (SIGNAL_CEILING - session.signal) / 40))
+  session.signal = clamp(
+    session.signal + (weighted > 0 ? weighted * headroom : weighted)
+  )
   session.history.push(ruleId)
 
   return {
