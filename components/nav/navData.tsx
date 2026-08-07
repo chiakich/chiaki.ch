@@ -10,6 +10,7 @@ import {
   NixieIcon,
   SplitFlapIcon,
   StoryIcon,
+  TerminalIcon,
   TgJpgIcon,
   TokyonoIcon,
 } from './navIcons'
@@ -60,6 +61,12 @@ export const getNavSections = (t: Translate): Record<string, NavSection> => ({
         title: t('nav.art'),
         path: '/story/character/art',
         icon: <ArtIcon />,
+      },
+      {
+        id: 'terminal',
+        title: t('nav.terminal'),
+        path: '/story/terminal',
+        icon: <TerminalIcon />,
       },
     ],
   },

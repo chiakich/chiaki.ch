@@ -13,7 +13,8 @@
     "worksIndex": "Works",
     "fontsIndex": "Font Collection",
     "akitra": "Taiwan Railways Typeface",
-    "huninn": "Huninn"
+    "huninn": "Huninn",
+    "terminal": "Talk to Chiaki"
   },
   "language": {
     "label": "Change language",
@@ -90,6 +91,10 @@
     "huninn": {
       "title": "jf open Huninn - Chiaki Inari Shrine",
       "description": "A Taiwanese open-source rounded typeface by justfont, refined for Taiwanese forms and everyday reading. Chiaki contributed while at justfont."
+    },
+    "terminal": {
+      "title": "Talk to Chiaki - Chiaki Inari Shrine",
+      "description": "A rule-based chat with no language model: segmentation from the ChiaKey Lexicon, replies from a rule table, and a Live2D Chiaki Suzukaze."
     }
   },
   "home": {
@@ -140,17 +145,25 @@
       "akitra": {
         "title": "Taiwan Railways Typeface",
         "description": "Based on lettering found on Taiwan Railways rolling stock, preserving visual memories of car numbers, weights, and type marks.",
-        "tags": ["Original typeface", "284 glyphs"]
+        "tags": [
+          "Original typeface",
+          "284 glyphs"
+        ]
       },
       "nixie": {
         "title": "Nixie Numeral Typeface",
         "description": "Warm Nixie-display numerals for clocks and retro-futurist interfaces.",
-        "tags": ["Original typeface", "Numerals only"]
+        "tags": [
+          "Original typeface",
+          "Numerals only"
+        ]
       },
       "huninn": {
         "title": "jf open Huninn",
         "description": "A Taiwanese open-source rounded typeface, co-created at justfont and soft and springy like tapioca pearls.",
-        "tags": ["Design contributor"]
+        "tags": [
+          "Design contributor"
+        ]
       }
     }
   },
@@ -634,7 +647,10 @@
     "idsText": "It includes an IDS (Ideographic Description Sequence) decomposition engine. To add 編, look up ⿰糹扁 and combine the existing 糹 and 扁 components. Completing a glyph becomes component adjustment rather than drawing a whole character from scratch.",
     "architecture": "Architecture shaped by the user experience",
     "features": [
-      ["Zero install", "Runs locally on the web. A browser is all you need."],
+      [
+        "Zero install",
+        "Runs locally on the web. A browser is all you need."
+      ],
       [
         "Multiple formats",
         "Supports .ufo, .designspace, .glyphs, .glyphspackage, and binary fonts, or loads UFO directly from GitHub."
@@ -949,5 +965,25 @@
         }
       ]
     }
+  },
+  "terminalPage": {
+    "eyebrow": "CHIAKI INARI SHRINE · RESPONSE TERMINAL",
+    "title": "Talk to Chiaki",
+    "intro": "A response terminal left behind in the shrine office. It is not connected to any language model — just the ChiaKey input method dictionary and a hand-written rule table. It segments what you type into words, then matches the closest rule. Fast to answer, and easy to catch out. Note: she only understands Chinese.",
+    "placeholder": "Say something to the terminal…",
+    "lexiconTitle": "LEXICON / SEGMENTATION",
+    "lexiconEntries": "entries",
+    "lexiconLoading": "Loading dictionary…",
+    "lexiconFailed": "Dictionary failed to load",
+    "lexiconEmpty": "What you type gets cut into words here first, then matched against the rules.",
+    "legendKnown": "in dictionary",
+    "legendModern": "post-war term",
+    "legendUnknown": "unknown",
+    "howTitle": "HOW IT WORKS",
+    "how1": "Segmentation runs on data from the ChiaKey Lexicon: the NAER word frequency table, the libchewing dictionary, and a modern layer drawn from Taiwanese web corpora — about 70,000 entries. The browser solves the maximum-probability path, the same principle the input method uses to pick characters.",
+    "how2": "Replies come from a hand-written rule table. Regex patterns first; if nothing matches, keyword overlap is scored against the segmented tokens. If that also misses, she picks the most meaningful word in your sentence and asks about it — the ELIZA move.",
+    "how3": "LINK in the bottom left tracks whether the conversation is landing. It rises when she has an answer and falls when she does not; at the bottom the line starts breaking up. The whole page is under 300 KB.",
+    "toCharacter": "Character",
+    "toChiaKey": "About ChiaKey"
   }
 }

@@ -13,7 +13,8 @@
     "worksIndex": "作品集",
     "fontsIndex": "字體集",
     "akitra": "台鐵字體",
-    "huninn": "粉圓"
+    "huninn": "粉圓",
+    "terminal": "和千秋說話"
   },
   "language": {
     "label": "切換語言",
@@ -90,6 +91,10 @@
     "huninn": {
       "title": "jf open 粉圓 - 千秋稻荷社",
       "description": "justfont 推出的一款台灣開源圓體，為台灣字形與日常閱讀調整。"
+    },
+    "terminal": {
+      "title": "和千秋說話 - 千秋稻荷社",
+      "description": "不用語言模型的互動對話：以千秋輸入法詞庫斷詞、規則表回應，搭配 Live2D 的涼風千秋。"
     }
   },
   "home": {
@@ -140,17 +145,25 @@
       "akitra": {
         "title": "台鐵客貨車字體",
         "description": "以台鐵客貨車表記文字為藍本，保存鐵道車號、載重與車種記號的視覺記憶。",
-        "tags": ["自製字體", "284 字符"]
+        "tags": [
+          "自製字體",
+          "284 字符"
+        ]
       },
       "nixie": {
         "title": "Nixie 數字字體",
         "description": "重現輝光管顯示器溫暖橙光的數字字體，適合時鐘與復古科技場景。",
-        "tags": ["自製字體", "數字專用"]
+        "tags": [
+          "自製字體",
+          "數字專用"
+        ]
       },
       "huninn": {
         "title": "jf open 粉圓",
         "description": "在 justfont 參與製作的台灣開源圓體，像粉圓一樣圓潤而有彈性。",
-        "tags": ["參與設計"]
+        "tags": [
+          "參與設計"
+        ]
       }
     }
   },
@@ -564,9 +577,18 @@
     "ideaText": "不用離開對話開瀏覽器找圖。tg.jpg 接上 Google、DuckDuckGo、Bing 三個免費來源，以及可選的 Serper 與 SerpAPI；設定了 Serper API key 時，它會排在最高優先。",
     "pipeline": "快速回覆",
     "steps": [
-      ["辨識檔名", "監聽以 .jpg、.png 或 .gif 結尾的訊息。"],
-      ["檢查搜尋來源", "啟動時執行健康檢查，只啟用當下可用的引擎。"],
-      ["搶先回覆", "跨來源搜尋，第一張 Telegram 能傳送的結果立刻勝出。"]
+      [
+        "辨識檔名",
+        "監聽以 .jpg、.png 或 .gif 結尾的訊息。"
+      ],
+      [
+        "檢查搜尋來源",
+        "啟動時執行健康檢查，只啟用當下可用的引擎。"
+      ],
+      [
+        "搶先回覆",
+        "跨來源搜尋，第一張 Telegram 能傳送的結果立刻勝出。"
+      ]
     ],
     "chatAlt": "tg.jpg 在 Telegram 回覆 mic drop GIF",
     "rust": "以 Rust 編寫",
@@ -583,7 +605,10 @@
     "idsText": "內建 IDS（表意文字描述序列）拆解引擎。要補「編」，先查出拆解式 ⿰糹扁，再從字體裡既有的「糹」與「扁」部件對位組合，補字就從畫整個字變成調整部件。",
     "architecture": "從使用者體驗出發的架構",
     "features": [
-      ["零安裝", "純網頁、本地運作。只需要瀏覽器就能開始。"],
+      [
+        "零安裝",
+        "純網頁、本地運作。只需要瀏覽器就能開始。"
+      ],
       [
         "支援各種格式",
         "支援 .ufo、.designspace、.glyphs、.glyphspackage 與二進位字型，或直接從 GitHub 載入 UFO。"
@@ -592,13 +617,21 @@
         "瀏覽器編譯技術",
         "以 Pyodide 執行 fontTools，字體編譯不需要本機 Python 環境。"
       ],
-      ["離線草稿", "編輯進度存在瀏覽器 IndexedDB，斷線或關掉分頁都不會遺失。"]
+      [
+        "離線草稿",
+        "編輯進度存在瀏覽器 IndexedDB，斷線或關掉分頁都不會遺失。"
+      ]
     ],
     "open": "現在就打開一個字",
     "tryKumiko": "線上試用 Kumiko",
     "source": "查看原始碼",
     "workflowAria": "從 GitHub 載入字體、編輯、提交並建立 Pull Request",
-    "workflowSteps": ["載入 UFO", "編輯字形", "推送變更", "送出補字"],
+    "workflowSteps": [
+      "載入 UFO",
+      "編輯字形",
+      "推送變更",
+      "送出補字"
+    ],
     "idsDemo": {
       "ariaLabel": "以 IDS 拆解式 ⿰糹扁 由部件組出「編」字",
       "missing": "缺字",
@@ -933,5 +966,25 @@
         }
       ]
     }
+  },
+  "terminalPage": {
+    "eyebrow": "千秋稻荷社 · 社務所應答端末",
+    "title": "和千秋說說話",
+    "intro": "這是一台留在社務所的應答端末。它沒有連上任何語言模型，只有一份千秋輸入法的詞庫和一張規則表——先把你打的句子切成詞，再去對表裡最接近的那一條。所以她回得很快，也很容易露餡。",
+    "placeholder": "對著端末說點什麼…",
+    "lexiconTitle": "LEXICON / 斷詞結果",
+    "lexiconEntries": "詞",
+    "lexiconLoading": "詞庫載入中…",
+    "lexiconFailed": "詞庫載入失敗，改用逐字比對",
+    "lexiconEmpty": "你說的話會先在這裡被切成一個一個詞，再拿去比對規則。",
+    "legendKnown": "詞庫收錄",
+    "legendModern": "戰後新詞",
+    "legendUnknown": "查無此詞",
+    "howTitle": "HOW IT WORKS",
+    "how1": "斷詞用的是千秋輸入法綜合詞庫的資料：國教院通用詞頻表、libchewing 詞庫，再加上從台灣網路語料整理出的現代詞層，總共七萬多筆。瀏覽器端跑最大機率路徑，和輸入法選字的原理相同。",
+    "how2": "回應是一張手寫的規則表：先用正則比對，比不到才用斷詞結果去算關鍵字重疊。都沒中的話，她會把句子裡最有意義的那個詞挑出來反問你——這就是 ELIZA 那一招。",
+    "how3": "左下角的 LINK 是接得上與否的指標。她答得出來就上升，一直答不出來就會掉，掉到底時這條線會開始出現雜訊。整個頁面加起來不到 300 KB。",
+    "toCharacter": "角色介紹",
+    "toChiaKey": "關於千秋輸入法"
   }
 }

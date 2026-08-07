@@ -12,6 +12,7 @@ const routes: Record<string, ComponentType> = {
   story: dynamic(() => import('pages/story')),
   'story/character': dynamic(() => import('pages/story/character')),
   'story/character/art': dynamic(() => import('pages/story/character/art')),
+  'story/terminal': dynamic(() => import('pages/story/terminal')),
   works: dynamic(() => import('pages/works')),
   'works/chiakey': dynamic(() => import('pages/works/chiakey')),
   'works/kumiko': dynamic(() => import('pages/works/kumiko')),

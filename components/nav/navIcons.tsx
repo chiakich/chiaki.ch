@@ -180,6 +180,15 @@ export const ArtIcon = (props: IconProps) => (
   </svg>
 )
 
+// 應答端末：對話框加上游標，呼應終端機介面
+export const TerminalIcon = (props: IconProps) => (
+  <svg {...svgProps} {...props}>
+    <path d="M8 10a4 4 0 0 1 4-4h24a4 4 0 0 1 4 4v18a4 4 0 0 1-4 4H22l-8 8v-8h-2a4 4 0 0 1-4-4z" />
+    <path d="M17 15l5 4-5 4" />
+    <path d="M26 23h7" opacity=".7" />
+  </svg>
+)
+
 /* ---------- Fonts ---------- */
 
 // 字體項目用烤好的字符外框（見 fontGlyphPaths.ts），不再即時載入字體。

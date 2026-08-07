@@ -37,6 +37,7 @@ export const PAGE_NAMESPACES: Record<string, string[]> = {
   story: [],
   'story/character': ['characterPage'],
   'story/character/art': ['characterPage'],
+  'story/terminal': ['terminalPage'],
   works: ['worksPage'],
   'works/chiakey': [],
   'works/kumiko': ['kumikoPage'],
