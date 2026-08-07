@@ -110,6 +110,7 @@ const TerminalAvatarClient = ({ controls }: TerminalAvatarClientProps) => {
         top="0"
         bottom="0"
         width={{ base: '100%', md: '78%' }}
+        transform={{ base: 'translateY(-3%)', md: 'translateY(-6%)' }}
         opacity={ready ? 1 : 0}
         transition="opacity .45s ease"
       >
