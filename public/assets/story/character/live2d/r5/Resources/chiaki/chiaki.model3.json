@@ -6,7 +6,12 @@
 			"chiakiL2Dv2-cubism5-target.8192/texture_00.png"
 		],
 		"Physics": "chiakiL2Dv2-cubism5-target.physics3.json",
-		"DisplayInfo": "chiakiL2Dv2-cubism5-target.cdi3.json"
+		"DisplayInfo": "chiakiL2Dv2-cubism5-target.cdi3.json",
+		"Expressions": [
+			{ "Name": "shy", "File": "shy.exp3.json" },
+			{ "Name": "scare", "File": "scare.exp3.json" },
+			{ "Name": "wtm", "File": "wtm.exp3.json" }
+		]
 	},
 	"Groups": [
 		{
