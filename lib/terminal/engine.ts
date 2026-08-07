@@ -1,6 +1,23 @@
 import { type Lexicon, segmentAll, type Token } from './lexicon'
 import { normalize, STOP_WORDS } from './normalize'
-import { DEGRADED, ECHO_TEMPLATES, EXHAUSTED, IDLE, INITIATIVE, rules } from './rules'
+import {
+  CURIOSITY,
+  DEGRADED,
+  ECHO_TEMPLATES,
+  ENDING_LEAVE,
+  ENDING_OFFER,
+  ENDING_RETURN,
+  ENDING_TRIGGERS,
+  EXHAUSTED,
+  IDLE,
+  INITIATIVE,
+  NAME_ASK,
+  NO_ANSWER,
+  OPENING_LINES,
+  PEACE_DISCOVERY,
+  rules,
+  SUGGESTIONS,
+} from './rules'
 import type { Emotion, Reply, Rule } from './types'
 
 export type Turn = {
@@ -10,6 +27,11 @@ export type Turn = {
   ruleId: string
   tokens: Token[]
   signal: number
+  /**
+   * `offer` — she has asked to see the thing, and the caller should surface the
+   * button. `leaving` — she has it and has gone up to look.
+   */
+  ending?: 'offer' | 'leaving'
 }
 
 export type Session = {
@@ -27,17 +49,90 @@ export type Session = {
   userName: string | null
   /** Name she has read off the input but not yet had confirmed. */
   nameGuess: string | null
+  /** How much present-day vocabulary she has heard — see `scoreModern`. */
+  modernScore: number
+  /** Last substantive topic, so a bare 「為什麼」 has something to attach to. */
+  lastTopic: string | null
 }
 
-export const createSession = (): Session => ({
-  flags: new Set(),
+/** A link she has held before comes up stronger, but still has to be earned. */
+const RETURNING_SIGNAL = 70
+
+export const createSession = (restored?: {
+  flags: string[]
+  userName: string | null
+} | null): Session => ({
+  flags: new Set(restored?.flags ?? []),
   used: new Set(),
   history: [],
-  signal: 62,
+  signal: restored ? RETURNING_SIGNAL : 62,
   pending: null,
-  userName: null,
+  userName: restored?.userName ?? null,
   nameGuess: null,
+  modernScore: 0,
+  lastTopic: null,
 })
+
+// A turn that is nothing but a prompt to keep going. Anchored at both ends on
+// purpose: 「為什麼」 continues the last topic, but 「為什麼會下雪」 is a question
+// about snow and has to reach the snow rule on its own merits.
+const FOLLOW_UP =
+  /^(為什麼|為何|怎麼會|然後|後來|還有|再說|多說|再多說|說下去|繼續|詳細|舉例|例如|怎麼說|什麼意思|所以|真的|真的假的|是喔|是嗎|那|它|那個|嗯哼)(呢|嗎|啊|喔|吧|咧|了|一點|一些|下去)*$/
+
+const RULES_BY_ID = new Map(rules.map((rule) => [rule.id, rule]))
+
+// Rules that are conversational glue rather than subject matter. Sticking to
+// one of these would let 「為什麼」 re-answer 「你好」, which is worse than falling
+// through — the follow-up would look like she had lost the thread entirely.
+const NON_TOPIC = new Set([
+  'player.name',
+  'player.name.recall',
+  'player.name.unknown',
+  'player.ask',
+])
+
+const isTopical = (rule: Rule) =>
+  !rule.repeatable && rule.continues === undefined && !NON_TOPIC.has(rule.id)
+
+/**
+ * The topic a follow-up branch belongs to: `peace.check.no` continues `peace`,
+ * `relics.offer.yes` continues `relics`. Without this a 「為什麼」 after a yes/no
+ * exchange would reach back past it to whatever was being discussed before.
+ */
+const baseTopic = (id: string): string | null => {
+  const parts = id.split('.')
+  for (let i = parts.length - 1; i > 0; i -= 1) {
+    const candidate = parts.slice(0, i).join('.')
+    const rule = RULES_BY_ID.get(candidate)
+    if (rule && isTopical(rule)) return candidate
+  }
+  return null
+}
+
+// Words that only exist in a world where the bomb never went off. The lexicon's
+// own `modern` flag catches a lot of this, but it also flags post-war coinage
+// she would know perfectly well, so the real giveaways are listed by hand.
+const PRESENT_DAY =
+  /(手機|智慧型|網路|網際|wifi|上網|google|youtube|instagram|facebook|tiktok|臉書|推特|滑手機|app|應用程式|外送|網購|宅配|捷運|高鐵|公車|電梯|冷氣|冰箱|微波|筆電|平板|螢幕|滑鼠|遊戲機|電視|直播|演唱會|電影院|便利商店|超商|超市|咖啡廳|上班|下班|加班|開會|老闆|同事|上課|考試|大學|打工|薪水|房租|信用卡|疫情|口罩|疫苗|西元|世紀|20\d\d)/
+
+/**
+ * How strongly this turn smells of a world that never had the war. Explicit
+ * giveaways count double; anything the modern overlays contributed counts once,
+ * because those are suggestive rather than conclusive on their own.
+ */
+const scoreModern = (text: string, tokens: Token[]) => {
+  let score = PRESENT_DAY.test(text) ? 2 : 0
+  for (const token of tokens)
+    if (token.modern && token.text.length >= 2 && !STOP_WORDS.has(token.text))
+      score += 1
+  return score
+}
+
+/** Enough accumulated giveaways that she stops the conversation and asks. */
+const PEACE_THRESHOLD = 3
+
+/** Link strength at which asking someone's name stops being a form field. */
+const NAME_THRESHOLD = 76
 
 // Run against the raw input, not the normalised text, so capitalisation and
 // spacing in a latin name survive.
@@ -57,8 +152,10 @@ const NAME_TAIL = /[的了啦喔唷囉囍呀耶嘛哦嗎呢吧啊，。！？!?.
 // "我是" also introduces professions, states and species. Confirming would look
 // worse than staying quiet, so the obvious ones never reach the question.
 const NON_NAMES = new Set(
+  // 千秋 is deliberately absent: sharing her name is handled by the name.same
+  // rule, which is a better answer than pretending not to have heard it.
   ('人類 人 活人 男人 女人 男的 女的 男生 女生 學生 老師 工程師 設計師 醫生 軍人 士兵 ' +
-    '倖存者 幸存者 生存者 難民 旅人 玩家 使用者 使用者本人 你 我 他 她 誰 千秋 涼風千秋 ' +
+    '倖存者 幸存者 生存者 難民 旅人 玩家 使用者 使用者本人 你 我 他 她 誰 ' +
     '真的 假的 認真的 開玩笑的 新來的 一個人 沒有人 機器人 ai 人工智慧 神 巫女 狐狸 ' +
     // Question words, or the sentence was a question about the name, not one.
     '什麼 甚麼 什麼名字 誰 哪 哪個 名字 這樣 那樣 怎樣 好 不好 對 不對 真 假')
@@ -71,6 +168,33 @@ const NON_NAMES = new Set(
 // "不是很吵" and "喜歡雪的" — those are predicates, not people.
 const NOT_NAME_LIKE =
   /的|^[不沒很好太想要會能在有喜愛覺應可就只才又再從跟和對被把給用來去說看知真假第每那這哪誰什]/
+
+/**
+ * Extraction for the one turn after she has asked for a name outright. The
+ * turn is known to be the answer, so this only has to strip the lead-in —
+ * unlike `readName`, which has to prove an arbitrary sentence contains an
+ * introduction and therefore refuses anything it cannot vouch for.
+ *
+ * That difference is the whole point: 「小明」 alone is unreadable in general,
+ * and 「我叫千秋」 is rejected out of context because claiming her name is more
+ * likely to be a visitor being funny. As a direct answer both are just answers.
+ */
+const NAME_BARE = new RegExp(`^${NAME_BODY}$`)
+const ANSWER_LEAD =
+  /^(?:那?我(?:的)?名字(?:是|叫做|叫)|我叫做|我叫|我是|(?:你)?可以叫我|請叫我|叫我)/
+// Checked against the whole turn, so a refusal falls through to name.ask.refuse
+// instead of being filed as somebody called 「不想」.
+const ANSWER_REFUSAL = /^(不|沒|秘密|算了|免|別問|no)|不想|不用|不方便|不告訴/
+
+const readAnswerName = (raw: string): string | null => {
+  const trimmed = raw.trim()
+  if (ANSWER_REFUSAL.test(trimmed)) return null
+  const name = trimmed.replace(ANSWER_LEAD, '').replace(NAME_TAIL, '').trim()
+  if (!NAME_BARE.test(name)) return null
+  // Still worth screening: 「我是人類」 is an evasion, not an introduction, and
+  // filing it as a name would be worse than letting it fall through.
+  return NON_NAMES.has(name.toLowerCase()) ? null : name
+}
 
 /** The name in the input, or null if nothing plausible is being introduced. */
 const readName = (raw: string): string | null => {
@@ -145,6 +269,17 @@ const isEligible = (rule: Rule, session: Session, nameHit: string | null) => {
 type Candidate = { rule: Rule; score: number }
 
 /**
+ * A `continues` rule outranks everything else by 500 points, so it must not be
+ * satisfied by a stray 「好」 from the middle of an unrelated sentence — that is
+ * how 「你覺得羽球好玩嗎」 ends up being read as a yes. An answer to a yes/no
+ * question is either short, or it leads with the answer.
+ */
+const answersQuestion = (pattern: RegExp, clauses: string[], whole: string) => {
+  if (whole.length <= 6) return true
+  return clauses.some((clause) => pattern.exec(clause)?.index === 0)
+}
+
+/**
  * Two-pass match: literal patterns first, then a soft pass that scores rule
  * keywords against the segmenter's tokens. The soft pass is what lets
  * "最近都在收集一些老照片" reach the relics rule without a pattern for it.
@@ -167,6 +302,7 @@ const findRule = (
       // the rule covers a self-contained thought, not a stray word two commas away.
       const inClause = clauses.some((clause) => pattern.test(clause))
       if (!inClause && !pattern.test(whole)) continue
+      if (rule.continues && !answersQuestion(pattern, clauses, whole)) continue
       // A rule answering the question she just asked outranks everything, so
       // "好啊" lands on the offer instead of the generic affirmation.
       const score =
@@ -182,7 +318,13 @@ const findRule = (
     if (!rule.keywords || !isEligible(rule, session, nameHit)) continue
     const hits = rule.keywords.filter((keyword) => words.has(keyword)).length
     if (hits === 0) continue
-    const score = hits * 10 + (rule.priority ?? 0)
+    // Only the soft pass gets the stickiness bonus. This is where genuine
+    // ambiguity lives — a literal pattern hit is evidence about *this* turn and
+    // shouldn't be overturned by what was being discussed a moment ago.
+    const score =
+      hits * 10 +
+      (rule.priority ?? 0) +
+      (rule.id === session.lastTopic ? 5 : 0)
     if (!best || score > best.score) best = { rule, score }
   }
   return best
@@ -232,36 +374,80 @@ export const respond = (
   const tokens = segmentAll(input.text, lexicon)
   const seed = Math.random()
 
-  const nameHit = readName(raw)
+  const nameHit =
+    readName(raw) ??
+    (session.pending === 'name.ask' ? readAnswerName(raw) : null)
   const match = findRule(input.clauses, input.text, tokens, session, nameHit)
+
+  // Suspicion accumulates across the whole session rather than firing on one
+  // word: a single "手機" could be her mishearing, four of them could not.
+  // She never interrupts a turn that is answering something she just asked —
+  // cutting off her own question would read as a bug, not as a discovery.
+  session.modernScore += scoreModern(input.text, tokens)
+  const discovering =
+    !session.flags.has('askedPeace') &&
+    !session.flags.has('knowsPeace') &&
+    session.modernScore >= PEACE_THRESHOLD &&
+    match?.rule.continues === undefined
+
   // An unanswered question only stays open for the turn right after it.
   session.pending = null
-  if (match?.rule.capturesName) session.nameGuess = nameHit
+  if (match?.rule.capturesName && !discovering) session.nameGuess = nameHit
+
+  // 「為什麼」「然後呢」 carry no topic of their own, so they inherit the last one.
+  // An answer to a question she just asked always wins: that is a continuation
+  // too, and a more specific one.
+  const sticky =
+    !discovering &&
+    match?.rule.continues === undefined &&
+    session.lastTopic !== null &&
+    FOLLOW_UP.test(input.text)
+      ? (RULES_BY_ID.get(session.lastTopic) ?? null)
+      : null
 
   let text: string
   let emotion: Emotion = 'neutral'
   let ruleId: string
   let delta: number
 
-  const reply = match
-    ? pickReply(match.rule.replies, session, seed, match.rule.repeatable)
-    : null
+  let source: Rule | null = null
+  let reply: Reply | null = null
 
-  if (match && reply) {
+  if (discovering) {
+    reply = pickReply(PEACE_DISCOVERY, session, seed, true)
+  } else {
+    if (sticky) {
+      reply = pickReply(sticky.replies, session, seed, sticky.repeatable)
+      if (reply) source = sticky
+    }
+    if (!reply && match) {
+      reply = pickReply(match.rule.replies, session, seed, match.rule.repeatable)
+      if (reply) source = match.rule
+    }
+  }
+  // Whether she recognised the subject at all, even if she has run dry on it.
+  const topical = sticky ?? match?.rule ?? null
+
+  if (reply) {
     text = reply.text
     emotion = reply.emotion ?? 'neutral'
-    ruleId = match.rule.id
+    ruleId = discovering ? 'discovery.peacetime' : source!.id
     delta = reply.signal ?? 2
     session.used.add(reply.text)
     reply.remember?.forEach((flag) => session.flags.add(flag))
     if (reply.opens) session.pending = reply.opens
-    if (match.rule.id.startsWith('greeting')) session.flags.add('greeted')
+    if (discovering) session.lastTopic = 'peace'
+    if (source) {
+      if (source.id.startsWith('greeting')) session.flags.add('greeted')
+      const topic = isTopical(source) ? source.id : baseTopic(source.id)
+      if (topic) session.lastTopic = topic
+    }
     if (reply.naming === 'confirm') {
       session.userName = session.nameGuess
       session.flags.add('knowsYou')
     }
     if (reply.naming === 'reject') session.nameGuess = null
-  } else if (match) {
+  } else if (topical) {
     // She matched the topic but has already said everything she has on it.
     // Admitting that suits a finite lookup table better than repeating a line.
     // Routed through the picker too, so she works through all of these before
@@ -269,7 +455,7 @@ export const respond = (
     const spent = pickReply(EXHAUSTED, session, seed, true)!
     text = spent.text
     emotion = spent.emotion ?? 'neutral'
-    ruleId = `exhausted.${match.rule.id}`
+    ruleId = `exhausted.${topical.id}`
     delta = spent.signal ?? -1
     session.used.add(spent.text)
     if (spent.opens) session.pending = spent.opens
@@ -281,26 +467,83 @@ export const respond = (
   } else {
     const topic = topicToken(tokens)
     if (topic && topic.text.length >= 2) {
+      // Once she knows where the visitor is from, a word she doesn't have
+      // stops being a defect in her dictionary and becomes something to ask
+      // about — so the same miss reads as curiosity instead of an apology.
       const bucket = topic.modern
-        ? ECHO_TEMPLATES.modern
+        ? session.flags.has('knowsPeace')
+          ? ECHO_TEMPLATES.peace
+          : ECHO_TEMPLATES.modern
         : topic.known
           ? ECHO_TEMPLATES.known
           : ECHO_TEMPLATES.unknown
       text = pick(bucket, seed).replace(/\{word\}/g, topic.text)
       emotion = topic.known ? 'thinking' : 'surprised'
       ruleId = `fallback.echo.${topic.modern ? 'modern' : topic.known ? 'known' : 'unknown'}`
-      delta = -3
-    } else if (input.hasQuestionMark) {
-      text = '唔……問題我聽到了，可是這邊沒有存對應的答案。抱歉。'
-      emotion = 'sad'
-      ruleId = 'fallback.question'
-      delta = -4
+      delta = -2
     } else {
-      text = pick(INITIATIVE, seed)
-      emotion = 'thinking'
-      ruleId = 'fallback.initiative'
-      delta = -4
+      // She keeps a list of things she wants answered, and spends it exactly
+      // when she has nothing to say. A research terminal with an open question
+      // is not failing to reply — it is taking its turn — so this costs her
+      // almost nothing, and an unanswerable question becomes a trade.
+      const question = pickReply(CURIOSITY, session, seed)
+      if (question) {
+        text = input.hasQuestionMark
+          ? pick(NO_ANSWER, seed) + question.text
+          : question.text
+        emotion = question.emotion ?? 'thinking'
+        ruleId = 'fallback.curiosity'
+        delta = input.hasQuestionMark ? -1 : (question.signal ?? 0)
+        session.used.add(question.text)
+        question.remember?.forEach((flag) => session.flags.add(flag))
+        if (question.opens) session.pending = question.opens
+      } else {
+        text = pick(INITIATIVE, seed)
+        emotion = 'thinking'
+        ruleId = 'fallback.initiative'
+        delta = -3
+      }
     }
+  }
+
+  // The ending. Not a rule, because the trigger is a conjunction no single
+  // pattern could express: she has to know the visitor comes from a world the
+  // war never reached, she has to have admitted the hypothesis out loud, and
+  // the visitor has to then describe something they made by hand. That is the
+  // hypothesis confirming itself, from the one source she could never reach.
+  // She asks; what happens next is the visitor's move, not the table's.
+  let ending: Turn['ending']
+  if (
+    source &&
+    ENDING_TRIGGERS.has(source.id) &&
+    session.flags.has('knowsPeace') &&
+    session.flags.has('talkedHypothesis') &&
+    !session.flags.has('endingSeen') &&
+    !session.flags.has('offeredEnding')
+  ) {
+    text += ENDING_OFFER
+    emotion = 'shy'
+    ruleId = 'ending.offer'
+    session.flags.add('offeredEnding')
+    ending = 'offer'
+  }
+
+  // She asks for the visitor's name once the link is strong enough that the
+  // question is not intake. Appended rather than substituted: she answers what
+  // was asked and *then* asks, which is the order a person does it in. Skipped
+  // when she already has a question open, or when she is on her way out.
+  if (
+    reply &&
+    ending === undefined &&
+    session.pending === null &&
+    session.signal >= NAME_THRESHOLD &&
+    !session.flags.has('knowsYou') &&
+    !session.flags.has('askedName') &&
+    !session.flags.has('refusedName')
+  ) {
+    text += NAME_ASK
+    session.flags.add('askedName')
+    session.pending = 'name.ask'
   }
 
   // Repeated ！ or ？ is a raised voice, so it lands harder in both directions —
@@ -323,8 +566,84 @@ export const respond = (
     ruleId,
     tokens,
     signal: session.signal,
+    ending,
   }
 }
+
+/** The visitor hands it over. Fired by the button, not by anything they type. */
+export const endingHandover = (session: Session): Turn => {
+  session.flags.add('endingSeen')
+  session.signal = clamp(session.signal + 6)
+  return {
+    text: fill(ENDING_LEAVE, session),
+    emotion: 'surprised',
+    ruleId: 'ending.leave',
+    tokens: [],
+    signal: session.signal,
+    ending: 'leaving',
+  }
+}
+
+/**
+ * The three shallowest prompts still open. SUGGESTIONS is ordered the way the
+ * story reads, so taking from the front hands a newcomer the openers and lets
+ * the deeper rungs surface as the ones above them retire.
+ *
+ * `asked` counts how often each was taken, and is a backstop rather than the
+ * main mechanism: a prompt normally retires because its `done` flag got set.
+ * Taking one more than twice means it is not advancing anything — either it
+ * stopped reaching its rule, or the flag it waits on is unreachable — so it
+ * steps aside. The allowance is deliberately more than one: several prompts
+ * aim at a rule's second or third tier, and those need asking twice.
+ */
+export const ASK_LIMIT = 3
+
+export const suggestionsFor = (
+  session: Session,
+  asked: ReadonlyMap<string, number> = new Map()
+): string[] =>
+  SUGGESTIONS.filter(
+    (item) =>
+      (asked.get(item.text) ?? 0) < ASK_LIMIT &&
+      !(item.done !== undefined && session.flags.has(item.done)) &&
+      (item.needs === undefined ||
+        item.needs.every((flag) => session.flags.has(flag)))
+  )
+    .slice(0, 3)
+    .map((item) => item.text)
+
+const address = (
+  variants: { named: string; unnamed: string; refused?: string },
+  session: Session
+) =>
+  fill(
+    session.userName
+      ? variants.named
+      : session.flags.has('refusedName')
+        ? (variants.refused ?? variants.unnamed)
+        : variants.unnamed,
+    session
+  )
+
+/** The other half of the ending — she comes back, and does not stay. */
+export const endingReturn = (session: Session): Turn => ({
+  text: address(ENDING_RETURN, session),
+  emotion: 'happy',
+  ruleId: 'ending.return',
+  tokens: [],
+  signal: session.signal,
+})
+
+/** How she opens, which depends entirely on whether this has happened before. */
+export const opening = (session: Session, returning: boolean): string =>
+  address(
+    session.flags.has('endingSeen')
+      ? OPENING_LINES.afterEnding
+      : returning
+        ? OPENING_LINES.returning
+        : OPENING_LINES.fresh,
+    session
+  )
 
 /**
  * What she says into a silence. Runs through the same picker as a reply, so

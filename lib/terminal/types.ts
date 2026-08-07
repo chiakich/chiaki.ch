@@ -66,6 +66,19 @@ export type Rule = {
   replies: Reply[]
 }
 
+/**
+ * A prompt offered as a chip under the transcript. Gated on flags like a reply
+ * is, so clicking through them alone walks a coherent path: each one retires
+ * when its topic has been covered, and the ones it unlocks take its place.
+ */
+export type Suggestion = {
+  text: string
+  /** Only offered once every one of these flags is set. */
+  needs?: string[]
+  /** Retired once this flag is set — she has already covered it. */
+  done?: string
+}
+
 export type Message = {
   id: number
   role: 'user' | 'chiaki' | 'system'

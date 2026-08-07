@@ -1,8 +1,19 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { Box, Flex, styled } from 'styled-system/jsx'
-import { createSession, idle, respond, type Session } from 'lib/terminal/engine'
+import {
+  createSession,
+  endingHandover,
+  endingReturn,
+  idle,
+  opening,
+  respond,
+  type Session,
+  suggestionsFor,
+} from 'lib/terminal/engine'
+import { ENDING_HANDOVER } from 'lib/terminal/rules'
 import { loadLexicon, type Lexicon } from 'lib/terminal/lexicon'
+import { load, save } from 'lib/terminal/persist'
 import { createUtterance } from 'lib/terminal/speech'
 import type { Token } from 'lib/terminal/lexicon'
 import type { Message } from 'lib/terminal/types'
@@ -23,7 +34,14 @@ const TerminalAvatarClient = dynamic(() => import('./TerminalAvatarClient'), {
 })
 
 const IDLE_DELAY = 45_000
-const SUGGESTIONS = ['你是誰？', '神明去哪裡了？', '你在收集什麼？']
+/** How long she is away on the surface. A beat, not an intermission. */
+const SURFACE_DELAY = 5_000
+
+/**
+ * none → she is here · offered → she has asked to see it and the button is up
+ * away → gone up to look · closing → back, but leaving · gone → link down.
+ */
+type EndingPhase = 'none' | 'offered' | 'away' | 'closing' | 'gone'
 
 type TerminalChatProps = { started?: boolean }
 
@@ -34,15 +52,25 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
   const nextId = useRef(0)
   const transcriptRef = useRef<HTMLDivElement>(null)
 
+  const visits = useRef(0)
+  // Prompts the visitor has already taken — see `suggestionsFor`.
+  const asked = useRef<Map<string, number>>(new Map())
+  const [ready, setReady] = useState(false)
+  const [phase, setPhase] = useState<EndingPhase>('none')
   const [lexicon, setLexicon] = useState<Lexicon | null>(null)
   const [messages, setMessages] = useState<Message[]>([])
   const [draft, setDraft] = useState('')
   const [typing, setTyping] = useState<string | null>(null)
   const [signal, setSignal] = useState(sessionRef.current.signal)
   const [tokens, setTokens] = useState<Token[]>([])
+  const [prompts, setPrompts] = useState<string[]>([])
   // The panel is a reveal, not furniture: it only exists once she has offered
   // to show it. See the segmentation rule in lib/terminal/rules.ts.
   const [lexiconShown, setLexiconShown] = useState(false)
+
+  // She is still answering while the offer is up — the button is a way out of
+  // the conversation, not an interruption of it.
+  const locked = phase === 'away' || phase === 'closing' || phase === 'gone'
 
   const push = useCallback((message: Omit<Message, 'id'>) => {
     nextId.current += 1
@@ -55,20 +83,40 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
       .catch(() => undefined)
   }, [])
 
+  // Restoring has to happen on the client, so the session starts empty and is
+  // replaced on mount. `ready` keeps the opening line from being chosen before
+  // she knows whether she has met this visitor before.
   useEffect(() => {
-    if (!started || messages.length > 0) return undefined
+    const saved = load()
+    if (saved) {
+      visits.current = saved.visits
+      sessionRef.current = createSession(saved)
+      setSignal(sessionRef.current.signal)
+    }
+    setPrompts(suggestionsFor(sessionRef.current, asked.current))
+    setReady(true)
+  }, [])
+
+  useEffect(() => {
+    if (!started || !ready || messages.length > 0) return undefined
+    const session = sessionRef.current
+    const returning = visits.current > 0
     const timer = window.setTimeout(() => {
+      // Counted here rather than on mount, so an effect that re-runs before
+      // the line lands doesn't book the same visit twice.
+      visits.current += 1
+      save(session, visits.current)
       push({
         role: 'chiaki',
         text: '',
         emotion: 'neutral',
         ruleId: 'opening',
       })
-      setTyping('……欸，燈亮了。有人在嗎？我是千秋。')
+      setTyping(opening(session, returning))
       avatarRef.current?.setEmotion('neutral')
     }, 480)
     return () => window.clearTimeout(timer)
-  }, [messages.length, push, started])
+  }, [messages.length, push, ready, started])
 
   // The lexicon determines word boundaries and each character's reading; the
   // mouth timeline goes to the avatar in one piece and the transcript follows
@@ -121,7 +169,7 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
   }, [messages])
 
   useEffect(() => {
-    if (!started || messages.length === 0) return undefined
+    if (!started || messages.length === 0 || locked) return undefined
     const timer = window.setTimeout(() => {
       if (typing !== null) return
       const turn = idle(sessionRef.current)
@@ -130,19 +178,35 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
       avatarRef.current?.setEmotion(turn.emotion)
     }, IDLE_DELAY)
     return () => window.clearTimeout(timer)
-  }, [messages, push, started, typing])
+  }, [locked, messages, push, started, typing])
 
-  const send = useCallback(
-    (raw: string) => {
-      const text = raw.trim()
-      if (!text || typing !== null) return
-      push({ role: 'user', text })
-      setDraft('')
+  // She excused herself; the terminal sits with the visitor until she is back.
+  useEffect(() => {
+    if (phase !== 'away' || typing !== null) return undefined
+    const timer = window.setTimeout(() => {
+      const turn = endingReturn(sessionRef.current)
+      push({ role: 'chiaki', text: '', emotion: turn.emotion, ruleId: turn.ruleId })
+      setTyping(turn.text)
+      avatarRef.current?.setEmotion(turn.emotion)
+      setPhase('closing')
+    }, SURFACE_DELAY)
+    return () => window.clearTimeout(timer)
+  }, [phase, push, typing])
 
-      const turn = respond(text, sessionRef.current, lexicon)
+  useEffect(() => {
+    if (phase !== 'closing' || typing !== null) return undefined
+    const timer = window.setTimeout(() => setPhase('gone'), 1400)
+    return () => window.clearTimeout(timer)
+  }, [phase, typing])
+
+  const speak = useCallback(
+    (turn: ReturnType<typeof respond>) => {
       setSignal(turn.signal)
-      setTokens(turn.tokens)
+      save(sessionRef.current, visits.current)
+      setPrompts(suggestionsFor(sessionRef.current, asked.current))
       if (sessionRef.current.flags.has('showedLexicon')) setLexiconShown(true)
+      if (turn.ending === 'offer') setPhase('offered')
+      if (turn.ending === 'leaving') setPhase('away')
       avatarRef.current?.setEmotion(turn.emotion)
       window.setTimeout(() => {
         push({
@@ -154,8 +218,27 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
         setTyping(turn.text)
       }, 340)
     },
-    [lexicon, push, typing]
+    [push]
   )
+
+  const send = useCallback(
+    (raw: string) => {
+      const text = raw.trim()
+      if (!text || typing !== null || locked) return
+      push({ role: 'user', text })
+      setDraft('')
+      const turn = respond(text, sessionRef.current, lexicon)
+      setTokens(turn.tokens)
+      speak(turn)
+    },
+    [lexicon, locked, push, speak, typing]
+  )
+
+  const handOver = useCallback(() => {
+    if (typing !== null || phase !== 'offered') return
+    push({ role: 'user', text: ENDING_HANDOVER.action })
+    speak(endingHandover(sessionRef.current))
+  }, [phase, push, speak, typing])
 
   const visibleMessages = messages
     .filter((message) => message.role !== 'system')
@@ -289,6 +372,37 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
         </Box>
       )}
 
+      {phase === 'gone' && (
+        <Flex
+          position="absolute"
+          inset="0"
+          zIndex={6}
+          direction="column"
+          alignItems="center"
+          justifyContent="center"
+          gap="14px"
+          background="rgba(3,2,1,.9)"
+          animation="lexiconReveal 2.4s ease both"
+        >
+          <Label
+            fontFamily="nixie"
+            fontSize={{ base: '10px', md: '11px' }}
+            letterSpacing=".28em"
+            color="rgba(238,150,98,.5)"
+          >
+            LINK TERMINATED BY REMOTE HOST
+          </Label>
+          <Label
+            fontFamily="nixie"
+            fontSize={{ base: '9px', md: '10px' }}
+            letterSpacing=".2em"
+            color="rgba(238,150,98,.28)"
+          >
+            [社務所應答端末 · 待機]
+          </Label>
+        </Flex>
+      )}
+
       <Flex
         position="absolute"
         zIndex={4}
@@ -379,30 +493,61 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
         )}
 
         <Flex gap="6px" overflowX="auto" py="7px" css={{ scrollbarWidth: 'none' }}>
-          {SUGGESTIONS.map((suggestion) => (
+          {phase === 'offered' ? (
             <Chip
-              key={suggestion}
               type="button"
-              onClick={() => send(suggestion)}
+              onClick={handOver}
               disabled={typing !== null}
-              px="9px"
-              py="4px"
-              border="1px solid rgba(231,105,45,.16)"
-              background="rgba(8,3,1,.34)"
-              color="rgba(238,150,98,.56)"
-              fontSize="11px"
+              px="14px"
+              py="6px"
+              border="1px solid rgba(238,150,98,.62)"
+              background="rgba(231,105,45,.14)"
+              color="rgba(255,224,200,.94)"
+              fontSize="12px"
               cursor="pointer"
               whiteSpace="nowrap"
+              animation="hudPulse 2.4s ease-in-out infinite"
               transition="all .18s"
               _hover={{
-                borderColor: 'rgba(238,150,98,.45)',
-                color: 'rgba(255,218,194,.88)',
+                background: 'rgba(231,105,45,.24)',
+                borderColor: 'rgba(255,204,168,.9)',
               }}
-              _disabled={{ opacity: 0.28, cursor: 'default' }}
+              _disabled={{ opacity: 0.3, cursor: 'default' }}
             >
-              {suggestion}
+              {ENDING_HANDOVER.label}
             </Chip>
-          ))}
+          ) : (
+            prompts.map((suggestion) => (
+              <Chip
+                key={suggestion}
+                type="button"
+                onClick={() => {
+                  asked.current.set(
+                    suggestion,
+                    (asked.current.get(suggestion) ?? 0) + 1
+                  )
+                  send(suggestion)
+                }}
+                disabled={typing !== null || locked}
+                px="9px"
+                py="4px"
+                border="1px solid rgba(231,105,45,.16)"
+                background="rgba(8,3,1,.34)"
+                color="rgba(238,150,98,.56)"
+                fontSize="11px"
+                cursor="pointer"
+                whiteSpace="nowrap"
+                transition="all .18s"
+                _hover={{
+                  borderColor: 'rgba(238,150,98,.45)',
+                  color: 'rgba(255,218,194,.88)',
+                }}
+                _disabled={{ opacity: 0.28, cursor: 'default' }}
+              >
+                {suggestion}
+              </Chip>
+            ))
+          )}
         </Flex>
 
         <Form
@@ -441,7 +586,9 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
           />
           <Send
             type="submit"
-            disabled={typing !== null || draft.trim().length === 0}
+            disabled={
+              typing !== null || locked || draft.trim().length === 0
+            }
             px={{ base: '14px', md: '18px' }}
             border="1px solid rgba(231,105,45,.32)"
             background="rgba(231,105,45,.08)"

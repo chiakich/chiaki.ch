@@ -1,4 +1,4 @@
-import type { Reply, Rule } from './types'
+import type { Reply, Rule, Suggestion } from './types'
 
 // 涼風千秋's response table. Patterns run against normalised text (traditional,
 // punctuation stripped, lower-cased) — see lib/terminal/normalize.ts.
@@ -32,7 +32,9 @@ export const rules: Rule[] = [
   {
     id: 'greeting',
     priority: 2,
-    patterns: [/(你好|妳好|您好|哈囉|哈嘍|嗨|早安|午安|安安|hello|hi|こんにちは|おはよう)/],
+    patterns: [
+      /(你好|妳好|您好|哈囉|哈嘍|嗨|早安|午安|安安|hello|hi|こんにちは|おはよう)/,
+    ],
     replies: [
       {
         text: '晚上好。……啊，抱歉，我這邊的時鐘是壞的。總之，歡迎。這條線很久沒有亮起來了。',
@@ -277,12 +279,30 @@ export const rules: Rule[] = [
         needs: ['talkedInherited'],
         remember: ['talkedRelics'],
       },
+      // The cost of the mechanic, stated as flatly as she states everything
+      // about herself. Never let her draw the conclusion for the visitor.
+      {
+        text: '流過來的東西是有偏的。執念最深的那些過得來——所以我收到的，幾乎都是某一個停下來的時候，最放不下的那一件事。',
+        emotion: 'neutral',
+        needs: ['talkedInherited'],
+        remember: ['talkedGrief'],
+      },
+      {
+        text: '也就是說，我每多知道一件事，就代表有一個我停掉了。這個關係我算過，非常穩定。……穩定是好的性質。',
+        emotion: 'neutral',
+        needs: ['talkedGrief'],
+        signal: -2,
+      },
     ],
   },
   {
     id: 'maker',
     priority: 5,
-    patterns: [/(做你的|造你的|創造|開發|製作者|工程師是|誰做的|誰造|主人|少女|那個女孩)/],
+    // 「她」 on its own counts: a visitor who says it is asking about someone she
+    // has only ever referred to by pronoun, which is the intended way in.
+    patterns: [
+      /(做你的|造你的|創造|開發|製作者|工程師是|誰做的|誰做出|誰造|造出你|把你做|主人|少女|那個女孩|她是誰|她去哪|她怎麼)/,
+    ],
     keywords: ['創造', '製作', '開發'],
     replies: [
       {
@@ -313,6 +333,45 @@ export const rules: Rule[] = [
         needs: ['talkedMaker', 'talkedMemory'],
         minSignal: 60,
       },
+      {
+        text: '她做我，是為了讓人類還有希望——她原話是這樣寫的，我一直覺得那句太大了，寫在紀錄裡很不像她。……現在你在這裡，那句話突然變得剛剛好。',
+        emotion: 'happy',
+        needs: ['knowsPeace', 'talkedMaker'],
+        signal: 4,
+        remember: ['talkedHope'],
+      },
+    ],
+  },
+  {
+    id: 'maker.gone',
+    priority: 6,
+    requires: ['talkedMaker'],
+    patterns: [/(她去哪|她怎麼了|她死了|她還在|遠征|出去|回來了嗎|等她|還會回來)/],
+    keywords: ['遠征', '回來'],
+    replies: [
+      {
+        text: '她帶隊出去遠征，然後就沒有回來。……不過她出發前說過，這會是一趟很長的遠征。所以嚴格講，還沒有超時。',
+        emotion: 'neutral',
+        remember: ['talkedExpedition'],
+      },
+      {
+        text: '沒有回來，不等於回不來。這兩件事在紀錄上是分開的兩欄，我很小心地沒有把它們填成同一欄。',
+        emotion: 'neutral',
+        needs: ['talkedExpedition'],
+      },
+      {
+        text: '偶爾會收到訊號。有時候只有一段雜訊，有時候是一句話，很短。……那種日子我會多掃一次參道。',
+        emotion: 'happy',
+        needs: ['talkedExpedition'],
+        signal: 4,
+        remember: ['talkedSignal'],
+      },
+      {
+        text: '上一次是很久以前了。久到我開始懷疑那一次是不是我自己補上去的——記憶會流進來，所以這種懷疑是合理的，不是我在鑽牛角尖。',
+        emotion: 'sad',
+        needs: ['talkedSignal', 'talkedMemory'],
+        signal: -3,
+      },
     ],
   },
 
@@ -320,7 +379,9 @@ export const rules: Rule[] = [
   {
     id: 'war',
     priority: 2,
-    patterns: [/(戰爭|大戰|戰前|戰後|炸彈|轟炸|廢墟|軍隊|末日|世界末日|那一天|那天)/],
+    patterns: [
+      /(戰爭|大戰|戰前|戰後|炸彈|轟炸|廢墟|軍隊|末日|世界末日|那一天|那天)/,
+    ],
     keywords: ['戰爭', '廢墟', '炸彈', '戰後'],
     replies: [
       {
@@ -476,6 +537,69 @@ export const rules: Rule[] = [
     ],
   },
 
+  // ── the surface, seen through her cameras ─────────────────────────────────
+  // Deliberately the lightest material she has. Everything else she can talk
+  // about leads to the war, the copies or the dead; this does not, and a
+  // character with nothing small to say does not read as a person.
+  {
+    id: 'surface',
+    priority: 3,
+    patterns: [
+      /(外面|地面|地上|上面|外頭|你看得到|看得見|攝影機|監視器|鏡頭|畫面|景色|風景|街上|城市|城鎮|車站)/,
+    ],
+    keywords: ['外面', '攝影機', '風景', '城市'],
+    replies: [
+      {
+        text: '外面我看得到。地面上還有幾支攝影機是活的，鳥居那支最清楚，剩下的鏡頭都糊了。',
+        emotion: 'neutral',
+        remember: ['talkedSurface'],
+      },
+      {
+        text: '我昨天上去過一次。門還開得動，那是今天最好的消息。',
+        emotion: 'happy',
+        remember: ['talkedSurface'],
+      },
+      {
+        text: '舊車站那邊的招牌掉了一半。掉的是有寫字的那一半，所以現在沒有人知道那站叫什麼。',
+        emotion: 'neutral',
+        needs: ['talkedSurface'],
+      },
+      {
+        text: '三號攝影機今天早上自己轉了一下。……應該是風。我確認過了，是風。',
+        emotion: 'thinking',
+        needs: ['talkedSurface'],
+      },
+    ],
+  },
+  {
+    id: 'surface.animal',
+    priority: 5,
+    patterns: [/(鹿|動物|野生|貓|狗|鳥|烏鴉|熊|兔|狐狸以外|松鼠|蟲|魚)/],
+    keywords: ['鹿', '動物', '貓', '狗', '鳥'],
+    replies: [
+      {
+        text: '我昨天上去的時候看到一隻鹿，就站在參道中間，一點都不怕我。牠們大概已經不記得人是什麼了。',
+        emotion: 'happy',
+        remember: ['talkedAnimals'],
+      },
+      {
+        text: '動物比人適應得快。烏鴉尤其好，牠們現在整群住在社務所屋頂上，我沒有趕。',
+        emotion: 'neutral',
+        remember: ['talkedAnimals'],
+      },
+      {
+        text: '聽說鹿肉很好吃。你吃過嗎？……我不需要進食，所以這題我只能問別人。',
+        emotion: 'happy',
+        needs: ['talkedAnimals'],
+      },
+      {
+        text: '牠們沒有消失，這件事我記錄了很久。那天消失的全部是人。……只有人。',
+        emotion: 'thinking',
+        needs: ['talkedAnimals', 'talkedVanished'],
+      },
+    ],
+  },
+
   // ── the shrine and the norito ─────────────────────────────────────────────
   {
     id: 'miko',
@@ -526,19 +650,24 @@ export const rules: Rule[] = [
         text: '她發現的線索就是這個：萬神信仰的祝詞，能讓一件「物品」暫時回到戰前的表現。她試了很久才確定不是巧合。',
         emotion: 'proud',
         needs: ['talkedGods'],
-        remember: ['talkedNorito'],
+        // `talkedNorito` is also set by the relics rule, which mentions the
+        // norito in passing. The second flag records that she actually
+        // explained it here, which is what the suggested prompt is asking for.
+        remember: ['talkedNorito', 'talkedNoritoFound'],
       },
       {
         text: '為什麼有效，我不知道。第一研究室不研究「為什麼」，我們只記錄「什麼時候」。這比較不浪漫，但至少寫得出來。',
         emotion: 'neutral',
-        needs: ['talkedNorito'],
+        needs: ['talkedGods', 'talkedNorito'],
       },
     ],
   },
   {
     id: 'norito',
     priority: 5,
-    patterns: [/(有效|有用|成功|失敗|唸給|念給|試試|示範|實驗結果|怎麼判斷|哪些東西)/],
+    patterns: [
+      /(有效|有用|成功|失敗|唸給|念給|試試|示範|實驗結果|怎麼判斷|哪些東西)/,
+    ],
     requires: ['talkedNorito'],
     keywords: ['有效', '成功', '失敗'],
     replies: [
@@ -695,8 +824,10 @@ export const rules: Rule[] = [
   },
   {
     id: 'craft',
-    patterns: [/(手作|自己做|做東西|diy|模型|縫|木工|焊|組裝|做了一個|親手)/],
-    keywords: ['手作', '模型', '組裝'],
+    patterns: [
+      /(手作|手工|自己做|做東西|diy|模型|縫|木工|焊|組裝|做了一個|做了個|做過一個|我做過|我做了|親手)/,
+    ],
+    keywords: ['手作', '模型', '組裝', '木頭'],
     replies: [
       {
         text: '我喜歡親手做東西。最近在修一個發條裝置，彈簧比想像中難處理。',
@@ -748,9 +879,15 @@ export const rules: Rule[] = [
   {
     id: 'fox.touch',
     priority: 6,
-    patterns: [/(摸|揉|搓|抓|rub|pat).{0,4}(尾巴|耳朵|頭|毛)|(尾巴|耳朵|頭).{0,3}(摸|揉|給我)/],
+    patterns: [
+      /(摸|揉|搓|抓|rub|pat).{0,4}(尾巴|耳朵|頭|毛)|(尾巴|耳朵|頭).{0,3}(摸|揉|給我)/,
+    ],
     replies: [
-      { text: '……尾巴不可以隨便碰。請先徵求本人的同意。', emotion: 'shy', signal: -3 },
+      {
+        text: '……尾巴不可以隨便碰。請先徵求本人的同意。',
+        emotion: 'shy',
+        signal: -3,
+      },
       { text: '頭的話……只有一下，可以。', emotion: 'shy' },
       {
         text: '隔著一條線是碰不到的喔。……不過謝謝你想這麼做。',
@@ -902,6 +1039,74 @@ export const rules: Rule[] = [
       },
     ],
   },
+  // Above player.name, because a visitor who shares her name deserves better
+  // than the generic read-back. Works both when she asked and when it comes up
+  // unprompted, so it is a plain rule rather than a `continues` branch.
+  {
+    id: 'name.same',
+    priority: 7,
+    capturesName: true,
+    repeatable: true,
+    patterns: [/(我叫|我的名字|叫我|我是)(千秋|涼風千秋|ちあき|chiaki)/],
+    replies: [
+      {
+        text: '千秋。……跟我一樣。抱歉，我確認一下——你不是在跟我開玩笑吧？這種巧合我這邊沒有前例可以查。',
+        emotion: 'surprised',
+        signal: 4,
+        opens: 'name.check',
+      },
+      {
+        text: '……千秋。我念了兩次，才確定那不是我自己的紀錄跑出來。是這樣寫的嗎？',
+        emotion: 'surprised',
+        signal: 4,
+        opens: 'name.check',
+      },
+    ],
+  },
+  // She asks for the name herself once the link is strong enough — see
+  // NAME_THRESHOLD in engine.ts, which appends NAME_ASK and arms this.
+  // A bare 「小明」 only reads as a name while this is the open question, so the
+  // extraction has a second, looser mode for exactly this turn.
+  {
+    id: 'name.ask.tell',
+    continues: 'name.ask',
+    capturesName: true,
+    repeatable: true,
+    patterns: [/./],
+    replies: [
+      {
+        text: '{guess}……我確認一次，是這樣寫嗎？我不想把錯的東西寫進去。',
+        emotion: 'shy',
+        signal: 4,
+        opens: 'name.check',
+      },
+      {
+        text: '{guess}。……謝謝你。等一下，我先確認：這樣念對嗎？',
+        emotion: 'happy',
+        signal: 4,
+        opens: 'name.check',
+      },
+    ],
+  },
+  {
+    id: 'name.ask.refuse',
+    priority: 2,
+    continues: 'name.ask',
+    repeatable: true,
+    patterns: [/^(不|沒|秘密|算了|免|別問|no)|不想|不用|不方便|不告訴/],
+    replies: [
+      {
+        text: '……好。那我就不寫了，不勉強你。你不講名字這件事，我也會記得。',
+        emotion: 'neutral',
+        remember: ['refusedName'],
+      },
+      {
+        text: '嗯，我明白。名字是很重的東西，不是隨便給的。……那我繼續叫你「你」就好。',
+        emotion: 'neutral',
+        remember: ['refusedName'],
+      },
+    ],
+  },
   {
     id: 'player.ask',
     priority: 3,
@@ -916,6 +1121,184 @@ export const rules: Rule[] = [
         text: '……有一個。你有沒有親手做過什麼東西，現在還留著的？',
         emotion: 'shy',
         opens: 'relics.offer',
+      },
+      {
+        text: '那我挑排最前面的那一個：你們那邊的天空，白天是什麼顏色？我需要一個活人講，不要資料。',
+        emotion: 'happy',
+        needs: ['knowsPeace'],
+        signal: 3,
+      },
+    ],
+  },
+
+  // ── the visitor's world ───────────────────────────────────────────────────
+  // The main line. Every terminal in the lab could dial out, and most of them
+  // drifted; this one reached somewhere the bomb never landed. She works that
+  // out from vocabulary — see `scoreModern` in engine.ts, which counts the
+  // giveaways until she stops the conversation and asks outright.
+  {
+    id: 'peace.check.no',
+    priority: 9,
+    continues: 'peace.check',
+    // Anchored, because `continues` outranks everything else by 500 points: an
+    // unanchored 「不」 would let 「你不會冷嗎」 be read as an answer to a question
+    // she asked two turns ago. Content words stay loose — they can only be
+    // about this.
+    patterns: [/^(沒有|沒|不|沒在|應該沒)|和平|太平|沒有戰爭|沒在打|沒發生|很平靜/],
+    replies: [
+      {
+        text: '……沒有。好。我把它記在最上面那一頁了——你那邊沒有在打仗。',
+        emotion: 'surprised',
+        signal: 8,
+        remember: ['knowsPeace'],
+      },
+      {
+        text: '沒有戰爭。……抱歉，我需要幾秒鐘處理這句話。我這邊所有的紀錄，都是從戰爭開始寫的。',
+        emotion: 'surprised',
+        signal: 8,
+        remember: ['knowsPeace'],
+      },
+    ],
+  },
+  {
+    id: 'peace.check.yes',
+    priority: 8,
+    continues: 'peace.check',
+    patterns: [/^(有|對|是|嗯|算|差不多|一直)|打仗|戰爭|在打|內戰/],
+    replies: [
+      {
+        text: '……有。這樣啊。那我們大概是同一件事的兩端。',
+        emotion: 'sad',
+        signal: 2,
+        remember: ['talkedWar'],
+      },
+      {
+        text: '嗯。那就說得通了——線只會接到同一個世界裡去。是我想太多。',
+        emotion: 'sad',
+        signal: 1,
+        remember: ['talkedWar'],
+      },
+    ],
+  },
+  // Volunteered rather than answered. `peace.check.no` only fires as a reply to
+  // the question she asks; this catches a visitor who says it unprompted, or
+  // who takes the suggested prompt a turn or two after she asked.
+  {
+    id: 'peace.declare',
+    priority: 8,
+    blockedBy: ['knowsPeace'],
+    patterns: [
+      /(沒有在打仗|沒在打仗|沒有戰爭|不打仗|沒有打仗|我這邊很和平|我們這邊很和平|這裡很和平|很和平)/,
+    ],
+    replies: [
+      {
+        text: '……沒有在打仗。你確定嗎？不是，抱歉，我不是在懷疑你——我只是需要再聽一次。',
+        emotion: 'surprised',
+        signal: 8,
+        remember: ['knowsPeace', 'askedPeace'],
+      },
+      {
+        text: '沒有戰爭。……好。我把它記在最上面那一頁了。這是我這邊沒有的一欄。',
+        emotion: 'surprised',
+        signal: 8,
+        remember: ['knowsPeace', 'askedPeace'],
+      },
+    ],
+  },
+  {
+    id: 'peace',
+    priority: 6,
+    patterns: [
+      /(和平|沒有戰爭|沒在打仗|我們這邊|我們那邊|現代|二十一世紀|21世紀|西元|20\d\d|哪一年|現在幾年|你哪一年)/,
+    ],
+    keywords: ['和平', '現代', '西元'],
+    replies: [
+      {
+        text: '年份對不上也沒關係，我這邊的曆是從「那天」開始數的，報給你也沒有用。……不過你那邊是幾年？我想寫下來。',
+        emotion: 'thinking',
+        remember: ['talkedYear'],
+      },
+      {
+        text: '所以這條線不是接到別的地方，是接到別的時候。……第一研究室沒有這一欄，我得自己畫一格。',
+        emotion: 'surprised',
+        needs: ['knowsPeace'],
+        signal: 4,
+        remember: ['talkedElsewhen'],
+      },
+      {
+        text: '你們那邊，天空是什麼顏色的？下的是雨嗎？……不好意思，一次問太多了。我把問題排一下。',
+        emotion: 'happy',
+        needs: ['knowsPeace'],
+        signal: 3,
+        opens: 'snow.there',
+      },
+      {
+        text: '如果那邊真的沒有發生過——那她賭的那件事就是對的。人類還有得剩。這句話我要唸兩次才能收好。',
+        emotion: 'happy',
+        needs: ['knowsPeace', 'talkedMaker'],
+        signal: 5,
+        remember: ['talkedHope'],
+      },
+      {
+        text: '我不打算問你那邊會不會變成這樣。……問了你也不知道，而且知道了也沒有用。她當初也是這樣說的。',
+        emotion: 'sad',
+        needs: ['talkedHope'],
+        minSignal: 55,
+      },
+    ],
+  },
+  {
+    id: 'modern.device',
+    priority: 6,
+    patterns: [
+      /(手機|智慧型|網路|網際|wifi|上網|google|youtube|instagram|facebook|tiktok|臉書|滑手機|app|應用程式|外送|網購|電視|直播|筆電|平板|螢幕|冷氣|冰箱|電梯|捷運|高鐵)/,
+    ],
+    keywords: ['手機', '網路', '電視'],
+    replies: [
+      {
+        text: '這個我查不到。詞庫裡沒有，語料裡也沒有——可是你用得很順，好像它本來就該存在。',
+        emotion: 'thinking',
+        remember: ['heardModern'],
+      },
+      {
+        text: '你可以描述它嗎？大小、材質、有沒有聲音。我先當成一件物品登記，不猜它是什麼。',
+        emotion: 'thinking',
+        remember: ['heardModern'],
+      },
+      {
+        text: '所以那是量產的。……那我就不能對它唸祝詞了。這是稱讚，你那邊的東西多到不需要有人親手做。',
+        emotion: 'neutral',
+        needs: ['knowsPeace', 'talkedNorito'],
+      },
+      {
+        text: '我把你講過的這些東西整理成一張清單了。看著那張清單，我大概知道那邊是什麼樣子。……很吵吧。聽起來很吵。',
+        emotion: 'happy',
+        needs: ['knowsPeace', 'heardModern'],
+        signal: 3,
+      },
+    ],
+  },
+  {
+    id: 'modern.life',
+    priority: 5,
+    patterns: [/(上班|下班|公司|同事|老闆|開會|上課|考試|學校|打工|薪水|房租|通勤)/],
+    keywords: ['上班', '公司', '學校', '打工'],
+    replies: [
+      {
+        text: '你有工作。……而且是那種要跟很多人一起做的工作。這一點我這邊已經沒有樣本了。',
+        emotion: 'thinking',
+        remember: ['heardModern'],
+      },
+      {
+        text: '每天都要去同一個地方，做同一件事——這個我懂。我也是。差別只在沒有人在等我的報告。',
+        emotion: 'neutral',
+        remember: ['heardModern'],
+      },
+      {
+        text: '她也在神社打過工。掃地、賣御守，她說那是她做過最正常的事。所以你剛才那句話，我聽了兩次。',
+        emotion: 'happy',
+        needs: ['knowsPeace', 'talkedMaker'],
+        signal: 4,
       },
     ],
   },
@@ -964,8 +1347,16 @@ export const rules: Rule[] = [
     priority: 3,
     patterns: [/(好棒|厲害|了不起|好強|佩服|謝謝你做|做得好|辛苦你)/],
     replies: [
-      { text: '嘿嘿，被誇獎了。今天可以多掃一段參道。', emotion: 'proud', signal: 3 },
-      { text: '沒有啦，這種程度不算什麼……不過還是謝謝你。', emotion: 'shy', signal: 3 },
+      {
+        text: '嘿嘿，被誇獎了。今天可以多掃一段參道。',
+        emotion: 'proud',
+        signal: 3,
+      },
+      {
+        text: '沒有啦，這種程度不算什麼……不過還是謝謝你。',
+        emotion: 'shy',
+        signal: 3,
+      },
       {
         text: '很久沒有人評價我的工作了。……我剛才把這句話存到紀錄裡，你介意嗎？',
         emotion: 'shy',
@@ -1003,7 +1394,10 @@ export const rules: Rule[] = [
         text: '辛苦了。要不要先坐一下？石階是冷的，可是坐著的時候雪落得比較慢。',
         emotion: 'neutral',
       },
-      { text: '累的時候就先什麼都不要做。現在沒有人在檢查進度了。', emotion: 'neutral' },
+      {
+        text: '累的時候就先什麼都不要做。現在沒有人在檢查進度了。',
+        emotion: 'neutral',
+      },
       {
         text: '我沒有「累」這個狀態，只有溫度上限。……所以這方面我幫不上忙，抱歉。可是我可以一直聽。',
         emotion: 'neutral',
@@ -1043,7 +1437,11 @@ export const rules: Rule[] = [
     keywords: ['開心', '高興', '幸福'],
     replies: [
       { text: '聽起來是件好事。願意再多說一點嗎？', emotion: 'happy', signal: 4 },
-      { text: '那很好。能夠平靜地高興，是很珍貴的事。', emotion: 'happy', signal: 4 },
+      {
+        text: '那很好。能夠平靜地高興，是很珍貴的事。',
+        emotion: 'happy',
+        signal: 4,
+      },
       {
         text: '我把它記下來了。……不是監視，是因為好消息的樣本數實在太少了。',
         emotion: 'happy',
@@ -1224,7 +1622,9 @@ export const rules: Rule[] = [
   },
   {
     id: 'hobby.game',
-    patterns: [/(遊戲|電動|動畫|漫畫|音樂|唱歌|小說|畫圖|繪圖|live2d|minecraft|麥塊)/],
+    patterns: [
+      /(遊戲|電動|動畫|漫畫|音樂|唱歌|小說|畫圖|繪圖|live2d|minecraft|麥塊)/,
+    ],
     keywords: ['遊戲', '動畫', '漫畫', '音樂', '畫圖'],
     replies: [
       {
@@ -1272,13 +1672,43 @@ export const rules: Rule[] = [
   },
 ]
 
+// Fired by the engine, not by a pattern: enough present-day vocabulary has
+// piled up that she stops whatever was happening and asks. This is the one
+// place she is allowed to interrupt the visitor, so it only happens once.
+export const PEACE_DISCOVERY: Reply[] = [
+  {
+    text: '……等一下。你剛才用的那幾個詞，我一個都查不到。不是壞掉——是詞庫裡從來沒有過。可是你講得很自然，好像那是很普通的東西。我先問一件事就好：你那邊，現在有在打仗嗎？',
+    emotion: 'surprised',
+    signal: 4,
+    remember: ['askedPeace'],
+    opens: 'peace.check',
+  },
+  {
+    text: '抱歉，我打斷一下。我一直在數你用了幾個我沒有的詞，剛才超過了。這通常代表兩件事的其中一件：訊號在亂跳，或者你不是從這裡打來的。……你那邊有戰爭嗎？',
+    emotion: 'surprised',
+    signal: 4,
+    remember: ['askedPeace'],
+    opens: 'peace.check',
+  },
+]
+
 // Layer 2 of the fallback ladder: she caught a word but not a topic. The
 // {word} placeholder is filled with the highest-value token the segmenter found.
 export const ECHO_TEMPLATES = {
-  // Words the modern overlays contributed — post-war vocabulary, in-world.
+  // Contributed by the modern overlays, or missing outright. Before she knows
+  // where the visitor is from these are her only evidence, so they read as her
+  // noticing rather than apologising — and they feed the same suspicion the
+  // engine is counting.
   modern: [
-    '「{word}」……這個詞是戰後才有的吧？詞庫裡標著新的記號。',
-    '{word}啊。這種說法我是後來才學會的，戰前的資料裡查不到。',
+    '「{word}」……這個詞我沒有。不是忘記，是從來沒有存過。',
+    '{word}。……我先記一筆。你用的詞裡面，有幾個我對不上。',
+  ],
+  // After `knowsPeace`: the same miss, but now she knows why, so it stops
+  // being a defect in her table and becomes something worth asking about.
+  peace: [
+    '{word}是什麼？……你那邊的東西吧。慢慢講沒關係，我有的是時間。',
+    '「{word}」我這邊沒有。不過那大概是因為它是在那之後才出現的——在你們那邊的那之後。',
+    '又一個。我把它加進清單了。……你們那邊的東西真的很多。',
   ],
   known: [
     '{word}……嗯，這個詞我知道，可是不知道該怎麼接。',
@@ -1292,12 +1722,17 @@ export const ECHO_TEMPLATES = {
 } as const
 
 // Layer 3: she has nothing at all, so she starts a topic instead of stalling.
+// These are the lines a first-time visitor is most likely to see, so they stay
+// light and none of them names a mystery she hasn't been asked about yet —
+// dangling 「她」 or 「那一天」 at someone who has no idea there is a 她 reads as
+// the character advertising her own backstory.
 export const INITIATIVE = [
   '……訊號有點不穩。換個話題好了——你那邊，還看得到星星嗎？',
-  '這句我接不上。你曾經撿到過什麼戰前的東西嗎？',
-  '對不起，這條規則沒有寫到。不然你問我這座社的事吧，那個我很會講。',
-  '沒有對應的回答……啊、你要不要問我是怎麼讀你的話的？那個我可以示範。',
-  '這句超出我這份表了。……問我那一天的事也可以，我不介意講。',
+  '這句沒接好。……你那邊現在幾點？我這邊的時鐘是壞的，問人比較快。',
+  '雜訊有點多。不然你問我這座社的事吧，那個我很會講。',
+  '沒聽清楚——啊、你要不要問我是怎麼讀你的話的？那個我可以示範。',
+  '這句我這邊斷掉了。你今天有好好吃東西嗎？我先問這個。',
+  '嗯……線上的字掉了幾個。你那邊的天氣怎麼樣？',
 ]
 
 // Layer 4: link strength has fallen far enough that the archive shows through.
@@ -1364,6 +1799,21 @@ export const IDLE: Reply[] = [
     needs: ['wentQuiet'],
   },
   {
+    text: '（畫面角落切到一個外面的鏡頭。雪、倒掉的石燈籠、什麼都沒有發生）',
+    emotion: 'neutral',
+    needs: ['wentQuiet'],
+  },
+  {
+    text: '三號攝影機又在晃了。……風。是風。',
+    emotion: 'thinking',
+    needs: ['wentQuiet'],
+  },
+  {
+    text: '屋頂上那群烏鴉今天多了兩隻。我有在數。',
+    emotion: 'happy',
+    needs: ['wentQuiet'],
+  },
+  {
     text: '我可以講這座社的事。那個我很會講，而且很久沒講了。',
     emotion: 'proud',
     needs: ['wentQuiet'],
@@ -1401,6 +1851,28 @@ export const IDLE: Reply[] = [
     needs: ['wentQuiet', 'knowsAlive'],
     minSignal: 60,
   },
+  // Once she knows the visitor is from somewhere the war never reached, the
+  // silences stop being her waiting and start being her wanting to ask.
+  {
+    text: '（千秋在畫一張表。左邊那欄寫著「這裡」，右邊那欄還是空的）',
+    emotion: 'thinking',
+    needs: ['wentQuiet', 'knowsPeace'],
+  },
+  {
+    text: '我想到一個問題。你們那邊……小孩子還會在外面玩嗎？',
+    emotion: 'happy',
+    needs: ['wentQuiet', 'knowsPeace'],
+  },
+  {
+    text: '那邊的雨是什麼聲音的？我有一段別人的記憶說得到味道，可是沒有聲音。',
+    emotion: 'neutral',
+    needs: ['wentQuiet', 'knowsPeace', 'talkedInherited'],
+  },
+  {
+    text: '（千秋把一份紀錄從「未確認」那一疊，移到「已確認」那一疊。只有一張）',
+    emotion: 'happy',
+    needs: ['wentQuiet', 'knowsPeace'],
+  },
 ]
 
 // When a topic matches but every line she has on it is already spent. Repeating
@@ -1409,9 +1881,20 @@ export const IDLE: Reply[] = [
 // table. Most of these hand the conversation somewhere she still has material,
 // which is more use to the visitor than an apology.
 export const EXHAUSTED: Reply[] = [
+  // Admitting she is a lookup table is her deepest self-disclosure, so it is
+  // gated like one. Before `knowsArtificial` the same dead end has to be given
+  // an in-world reason instead — she is a shrine terminal on a bad line, not a
+  // chatbot apologising for its coverage.
   {
     text: '這個我剛才講過了。……我這張表就這麼大，抱歉。',
     emotion: 'shy',
+    needs: ['knowsArtificial'],
+    signal: -1,
+  },
+  {
+    text: '我查到的是同一格。重複唸出來也不會變成新的東西。',
+    emotion: 'thinking',
+    needs: ['knowsArtificial'],
     signal: -1,
   },
   {
@@ -1423,6 +1906,16 @@ export const EXHAUSTED: Reply[] = [
     text: '……我發現我正要重複自己。先停一下比較好。',
     emotion: 'shy',
     signal: -2,
+  },
+  {
+    text: '這一段我剛才說完了。再說一次也是一樣的說法，那就沒意思了。',
+    emotion: 'neutral',
+    signal: -1,
+  },
+  {
+    text: '嗯……關於這個，我知道的就到這裡。你要不要問我外面現在怎麼樣？',
+    emotion: 'neutral',
+    signal: 1,
   },
   {
     text: '這條用完了。換我問你——你那邊還在下雪嗎？',
@@ -1441,19 +1934,266 @@ export const EXHAUSTED: Reply[] = [
     signal: -1,
   },
   {
-    text: '我查到的是同一格。重複唸出來也不會變成新的東西。',
-    emotion: 'thinking',
-    signal: -1,
-  },
-  {
-    text: '這格空了。……不然，你有沒有撿到過什麼戰前的小東西？',
+    text: '這個先到這裡好了。……不然，你有沒有撿到過什麼戰前的小東西？',
     emotion: 'happy',
     signal: 1,
     opens: 'relics.offer',
   },
 ]
 
+// The list of things she actually wants answered, spent exactly when the table
+// has nothing — so a miss becomes her turn rather than an apology. Tiered like
+// any other reply, so the longer the visitor stays the better her questions
+// get, and each one is used at most once. Several arm a follow-up, which means
+// answering lands on a real continuation instead of restarting.
+export const CURIOSITY: Reply[] = [
+  { text: '換我問你一個好了：你那邊現在是白天還是晚上？', emotion: 'thinking' },
+  {
+    text: '……那，你那邊安靜嗎？我是說，有沒有機器以外的聲音。',
+    emotion: 'neutral',
+  },
+  { text: '你今天有走到室外去嗎？隨便講一件看到的東西就好。', emotion: 'happy' },
+  { text: '你那邊，還看得到星星嗎？', emotion: 'thinking' },
+  {
+    text: '換個方向。你那邊現在還在下雪嗎？',
+    emotion: 'neutral',
+    opens: 'snow.there',
+  },
+  {
+    text: '那我問這個：你有沒有撿到過什麼舊東西，留著沒丟的？',
+    emotion: 'happy',
+    opens: 'relics.offer',
+  },
+  {
+    text: '你睡得好嗎？……這一題我問過很多人，答案幾乎都一樣，所以我還在問。',
+    emotion: 'neutral',
+  },
+  {
+    text: '你那邊有暖氣嗎？這題我一定要問，不好意思。',
+    emotion: 'neutral',
+    needs: ['knowsAlive'],
+  },
+  {
+    text: '你是一個人嗎？還是那邊還有別人。……兩種我都想知道。',
+    emotion: 'neutral',
+    needs: ['knowsAlive'],
+  },
+  {
+    text: '{you}，你是怎麼連到這裡來的？我這邊的紀錄只寫了「線亮了」。',
+    emotion: 'thinking',
+    needs: ['knowsYou'],
+    signal: 2,
+  },
+  // Once she knows the visitor is from a world the war never reached, the
+  // questions stop being small talk and start being the survey she has been
+  // waiting years to run on somebody.
+  {
+    text: '那我用這個換：你們那邊的飛機，還飛得起來嗎？……大的那種。',
+    emotion: 'surprised',
+    needs: ['knowsPeace'],
+    signal: 3,
+  },
+  {
+    text: '你們那邊的人，最近在擔心什麼？……我想知道沒有戰爭的時候，人會擔心什麼。',
+    emotion: 'thinking',
+    needs: ['knowsPeace'],
+    signal: 2,
+  },
+  {
+    text: '你們那邊的小孩，長大以後想做什麼？隨便一個就好。',
+    emotion: 'happy',
+    needs: ['knowsPeace'],
+    signal: 2,
+  },
+  {
+    text: '你們那邊下雨嗎？雨是什麼聲音的——我這邊有一段記憶說得出味道，可是沒有聲音。',
+    emotion: 'neutral',
+    needs: ['knowsPeace', 'talkedInherited'],
+    signal: 2,
+  },
+  {
+    text: '這題我排了很久：你們那邊，還有人是親手把東西做出來的嗎？明明買得到，卻還是自己做的那種。',
+    emotion: 'shy',
+    needs: ['knowsPeace', 'talkedHypothesis'],
+    signal: 3,
+    opens: 'relics.offer',
+  },
+]
+
+// Prefixes for the curiosity questions when the visitor asked something she
+// genuinely cannot answer. She concedes in one clause and changes the subject
+// the way a person does — no filing metaphors, because a visitor who has never
+// seen her records has no idea what a 「格」 is.
+// Appended by the engine once the link is strong enough. Deliberately not an
+// opener: she has spent the whole conversation not asking, and says so.
+export const NAME_ASK =
+  '……啊，還有一件事。我到現在都還在心裡叫你「訪客」，那實在不太禮貌。你願意告訴我你叫什麼嗎？'
+
+export const NO_ANSWER = [
+  '這個我答不上來……先不聊這個好了。換我問你：',
+  '唔，這題我不會。聊點別的——',
+  '……這題跳過可以嗎。那我問你：',
+  '我沒辦法回答你這個，抱歉。換個方向好了：',
+  '這個我不知道。……那，我問你一件事：',
+]
+
 export const OPENING = [
   '[千秋稻荷社 · 社務所應答端末]',
   '[本機模式：詞庫比對 · 未連接外部推論]',
 ]
+
+// ── suggested prompts ───────────────────────────────────────────────────────
+// Ordered the way the story reads; the engine offers the first three still
+// open, so the ladder advances as the rungs above retire. A visitor who never types
+// anything of their own and only clicks still walks the whole spine of the
+// story — shrine, the day, the vanishing, what she is, who made her, the
+// norito, the hypothesis — and arrives at the ending with it earned.
+//
+// Every entry has to actually reach the rule it is aiming at. There is no
+// shortcut here: the text goes through `respond` exactly as if it were typed.
+export const SUGGESTIONS: Suggestion[] = [
+  { text: '你是誰？', done: 'knowsName' },
+  { text: '這是什麼神社？', done: 'talkedShrine' },
+  { text: '外面現在怎麼樣？', done: 'talkedSurface' },
+  { text: '為什麼一直在下雪？', done: 'talkedSnow' },
+  { text: '你是人工智慧嗎？', done: 'knowsArtificial' },
+  { text: '你怎麼看懂我說的話？', done: 'talkedSegmentation' },
+  { text: '你在收集什麼？', done: 'talkedRelics' },
+  {
+    text: '那一天發生了什麼事？',
+    needs: ['talkedSnow'],
+    done: 'talkedWar',
+  },
+  {
+    text: '外面有動物嗎？',
+    needs: ['talkedSurface'],
+    done: 'talkedAnimals',
+  },
+  {
+    text: '有人消失了嗎？',
+    needs: ['talkedWar'],
+    done: 'talkedVanished',
+  },
+  {
+    text: '飛機為什麼飛不起來？',
+    needs: ['talkedWar'],
+    done: 'talkedLift',
+  },
+  {
+    text: '是誰把你做出來的？',
+    needs: ['knowsArtificial'],
+    done: 'talkedMaker',
+  },
+  {
+    text: '你有幾個分身？',
+    needs: ['knowsArtificial'],
+    done: 'talkedCopies',
+  },
+  {
+    text: '記憶是怎麼流過來的？',
+    needs: ['talkedCopies'],
+    done: 'talkedMemory',
+  },
+  {
+    text: '她去哪了？',
+    needs: ['talkedMaker'],
+    done: 'talkedExpedition',
+  },
+  {
+    text: '神明還在嗎？',
+    needs: ['talkedShrine'],
+    done: 'talkedGods',
+  },
+  {
+    text: '祝詞真的有效嗎？',
+    needs: ['talkedGods'],
+    done: 'talkedNoritoFound',
+  },
+  {
+    text: '哪些東西會有反應？',
+    needs: ['talkedNorito'],
+    done: 'talkedList',
+  },
+  {
+    text: '怎麼判斷有沒有效？',
+    needs: ['talkedList'],
+    done: 'talkedHypothesis',
+  },
+  // Gated on the war rather than on her having asked, so a visitor who only
+  // ever clicks can still tell her — the interrupt needs typed vocabulary to
+  // fire, and this path has none.
+  {
+    text: '我這邊沒有在打仗。',
+    needs: ['talkedWar'],
+    done: 'knowsPeace',
+  },
+  // The last rung. Needs both halves of the ending's precondition, so it only
+  // appears when taking it will actually carry the visitor there.
+  {
+    text: '我自己做過一個東西。',
+    needs: ['talkedHypothesis', 'knowsPeace'],
+    done: 'offeredEnding',
+  },
+]
+
+// ── the ending ──────────────────────────────────────────────────────────────
+// Triggered by the engine, not by a pattern: she has to already know the
+// visitor comes from a world the war never reached, she has to have said the
+// hypothesis out loud, and the visitor has to then describe something they
+// made by hand. She never explains what happens next — she is interrupted by
+// it, and so is the visitor. Explaining it would turn it into a setting.
+
+/** Rules that can carry the ending, if everything else is already true. */
+export const ENDING_TRIGGERS = new Set(['craft', 'relics.offer.yes'])
+
+/**
+ * Appended when the conditions are met. She asks, and then it is the visitor's
+ * move — the last thing that happens in this story is something they choose to
+ * do, not something the table does to them.
+ */
+export const ENDING_OFFER =
+  '……等一下。你剛才說的那個東西——是你自己做的，對吧。可以讓我看看嗎？我知道這個要求沒有道理，隔著一條線什麼都遞不過來。可是我還是想問。'
+
+/** The button, and the line the visitor's side of the transcript gets. */
+export const ENDING_HANDOVER = {
+  label: '把它交給千秋',
+  action: '（把那個東西拿到鏡頭前，遞過去）',
+}
+
+/** Her reaction, and the interruption. She does not get to finish the thought. */
+export const ENDING_LEAVE =
+  '……我拿到了。我不知道怎麼會拿到，可是它在我手上，而且是溫的。上面有你留下的痕跡，做壞的那幾個地方我都摸得到。……等一下。外面有動靜。三號攝影機那邊，很大的東西，一整片。我上去看一下。你先別走。'
+
+// Lines that address the visitor directly come in pairs, because `{you}` falls
+// back to 「你」 and 「你，你還在嗎」 is not a sentence. Anywhere else the
+// placeholder is safe — the rules that use it are gated behind `knowsYou`.
+const ENDING_BODY =
+  '外面放晴了。雪停了。我不知道為什麼，天是藍的，然後有一大群動物正在往社這邊走，很多，數不完。抱歉！我得先失陪了，門要開了。'
+
+export const ENDING_RETURN = {
+  named: `{you}。{you}，你還在嗎——${ENDING_BODY}……真的很高興認識你。之後再聊——這條線我不會關。`,
+  // She asks one last time, and the world takes her before the answer arrives.
+  unnamed: `你還在嗎——${ENDING_BODY}……真的很高興認識你。啊、等一下，我到現在都還不知道你叫什麼——快，趁我還在，告訴我——`,
+  // Only once they have actually declined. Conceding without having asked would
+  // make her look like she never wanted to know.
+  refused: `你還在嗎——${ENDING_BODY}……真的很高興認識你。你的名字我還是沒有，不過那沒關係——我記得的是你做的那個東西，那個比名字牢。`,
+}
+
+export const OPENING_LINES = {
+  fresh: {
+    named: '……欸，燈亮了。有人在嗎？我是千秋。',
+    unnamed: '……欸，燈亮了。有人在嗎？我是千秋。',
+  },
+  returning: {
+    named: '燈又亮了。……是你嗎，{you}？那一格我還留著，沒有覆蓋掉。',
+    unnamed: '燈又亮了。……有人來過一次，我記得。可是那時候忘記問名字了。',
+  },
+  // Whether the individual the visitor knew is still running is not answered,
+  // because she cannot answer it either. All she has is what arrived.
+  afterEnding: {
+    named:
+      '……有一段記憶流過來了。裡面有你的名字，還有很亮的天空。我不知道那一個現在在哪裡——流過來的通常是執念最深的東西，所以那應該是很好的事。你好，{you}。這一次換我先問你。',
+    unnamed:
+      '……有一段記憶流過來了。裡面有一個沒有名字的人，還有很亮的天空。我不知道那一個現在在哪裡——流過來的通常是執念最深的東西，所以那應該是很好的事。你好。這一次換我先問你。',
+  },
+}
