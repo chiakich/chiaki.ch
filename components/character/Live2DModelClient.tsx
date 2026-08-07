@@ -2,10 +2,8 @@ import React, { useCallback, useEffect, useRef } from 'react'
 import { Box } from 'styled-system/jsx'
 import { loadLive2DRuntime } from 'lib/live2d/runtime'
 
-// Add type definition for window.PIXI
 declare global {
   interface Window {
-    PIXI: typeof import('pixi.js')
     Live2DCubismCore: any
   }
 }

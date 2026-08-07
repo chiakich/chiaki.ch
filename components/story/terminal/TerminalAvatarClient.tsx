@@ -53,17 +53,17 @@ const POSES: Record<Emotion, Pose> = {
   happy: {
     expression: null,
     params: {
-      PARAM_MOUTH_FORM: 0.72,
-      PARAM_EYE_L_SMILE: 0.34,
-      PARAM_EYE_R_SMILE: 0.34,
-      PARAM_BROW_L_Y: 0.08,
-      PARAM_BROW_R_Y: 0.08,
+      PARAM_MOUTH_FORM: 0.32,
+      PARAM_EYE_L_SMILE: 0.12,
+      PARAM_EYE_R_SMILE: 0.12,
+      PARAM_BROW_L_Y: 0.04,
+      PARAM_BROW_R_Y: 0.04,
     },
   },
   shy: {
     expression: null,
     params: {
-      PARAM_MOUTH_FORM: 0.38,
+      PARAM_MOUTH_FORM: 0.18,
       PARAM_EYE_L_OPEN: 0.88,
       PARAM_EYE_R_OPEN: 0.88,
       PARAM_ANGLE_Z: -3,
@@ -73,7 +73,7 @@ const POSES: Record<Emotion, Pose> = {
   surprised: {
     expression: null,
     params: {
-      PARAM_MOUTH_FORM: 0.28,
+      PARAM_MOUTH_FORM: 0.08,
       PARAM_BROW_L_Y: 0.32,
       PARAM_BROW_R_Y: 0.32,
     },
@@ -81,7 +81,7 @@ const POSES: Record<Emotion, Pose> = {
   sad: {
     expression: null,
     params: {
-      PARAM_MOUTH_FORM: 0.12,
+      PARAM_MOUTH_FORM: -0.08,
       PARAM_BROW_L_Y: -0.28,
       PARAM_BROW_R_Y: -0.28,
       PARAM_EYE_L_OPEN: 0.9,
@@ -90,14 +90,14 @@ const POSES: Record<Emotion, Pose> = {
   },
   thinking: {
     expression: null,
-    params: { PARAM_MOUTH_FORM: 0.42, PARAM_ANGLE_Z: 3, PARAM_BODY_ANGLE_Z: 1 },
+    params: { PARAM_MOUTH_FORM: 0.08, PARAM_ANGLE_Z: 3, PARAM_BODY_ANGLE_Z: 1 },
   },
   proud: {
     expression: null,
     params: {
-      PARAM_MOUTH_FORM: 0.66,
-      PARAM_EYE_L_SMILE: 0.24,
-      PARAM_EYE_R_SMILE: 0.24,
+      PARAM_MOUTH_FORM: 0.28,
+      PARAM_EYE_L_SMILE: 0.1,
+      PARAM_EYE_R_SMILE: 0.1,
       PARAM_ANGLE_Z: 2,
     },
   },
@@ -294,7 +294,7 @@ const TerminalAvatarClient = ({ controls }: TerminalAvatarClientProps) => {
             gazeY: -0.06,
           },
           {
-            params: { PARAM_MOUTH_FORM: 0.15, PARAM_EYE_L_SMILE: 0.04, PARAM_EYE_R_SMILE: 0.04 },
+            params: { PARAM_MOUTH_FORM: 0.05, PARAM_EYE_L_SMILE: 0.025, PARAM_EYE_R_SMILE: 0.025 },
             gazeX: 0,
             gazeY: 0,
           },
@@ -329,9 +329,9 @@ const TerminalAvatarClient = ({ controls }: TerminalAvatarClientProps) => {
           reactionRef.current = {
             expression: null,
             params: {
-              PARAM_MOUTH_FORM: 0.42,
-              PARAM_EYE_L_SMILE: 0.18,
-              PARAM_EYE_R_SMILE: 0.18,
+              PARAM_MOUTH_FORM: 0.2,
+              PARAM_EYE_L_SMILE: 0.1,
+              PARAM_EYE_R_SMILE: 0.1,
               PARAM_ANGLE_Z: -1.2,
             },
             endsAt: now + 2400,
@@ -441,11 +441,9 @@ const TerminalAvatarClient = ({ controls }: TerminalAvatarClientProps) => {
         const breathWave = Math.sin(elapsed / 860)
         const breath = clamp(0.5 + breathWave * 0.5 + Math.sin(elapsed / 2550) * 0.08, 0, 1)
         const restSway = Math.sin(elapsed / 4700) * 0.48 + Math.sin(elapsed / 2200) * 0.12
-        // PhysicsSetting5 receives only Angle X/Y and Breath. A separate,
-        // low-frequency carrier gives the tail a continuous weighted sway at
-        // rest, while remaining small enough to read as posture rather than
-        // a deliberate head turn.
-        const tailSway = Math.sin(elapsed / 1450) * 1.65 + Math.sin(elapsed / 3870) * 0.38
+        // The dedicated tail parameter lets her tail sweep behind her from
+        // side to side without borrowing (and visibly moving) the head.
+        const tailSway = Math.sin(elapsed / 1480) * 10.5 + Math.sin(elapsed / 3980) * 2.6
         const speakingNod = speakingRef.current ? Math.sin(elapsed / 170) * mouthCurrentRef.current * 0.48 : 0
 
         core.setParameterValueById('PARAM_MOUTH_OPEN_Y', mouthCurrentRef.current)
@@ -463,8 +461,9 @@ const TerminalAvatarClient = ({ controls }: TerminalAvatarClientProps) => {
         )
         core.setParameterValueById('PARAM_EYE_BALL_X', look.eyeX)
         core.setParameterValueById('PARAM_EYE_BALL_Y', -look.eyeY)
-        core.setParameterValueById('PARAM_ANGLE_X', look.headX * 13 + restSway + tailSway)
-        core.setParameterValueById('PARAM_ANGLE_Y', -look.headY * 12 + breathWave * 1.75 + tailSway * 0.22 + speakingNod)
+        core.setParameterValueById('PARAM_ANGLE_X', look.headX * 13 + restSway)
+        core.setParameterValueById('PARAM_ANGLE_Y', -look.headY * 12 + breathWave * 1.75 + speakingNod)
+        core.setParameterValueById('PARAM_TAIL_SWAY', tailSway)
         core.setParameterValueById('PARAM_BODY_ANGLE_X', look.bodyX * 5 + restSway * 0.24)
         core.setParameterValueById('PARAM_BREATH', breath)
         core.setParameterValueById(
