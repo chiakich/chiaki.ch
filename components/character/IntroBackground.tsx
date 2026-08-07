@@ -1,9 +1,8 @@
 import { Box } from 'styled-system/jsx'
-import { cdnBackground } from 'lib/cdnImage'
 
-// Painted at `backgroundSize: 70vh` behind `opacity: 0.2`, so it never needs
-// anything near the source resolution.
-const PORTRAIT_BG = cdnBackground('/assets/story/character/gallery/portrait-1.png', 1200)
+// Painted at `backgroundSize: 70vh` behind `opacity: 0.2`, so the 400w thumb is
+// plenty — the full-size portrait would be wasted here.
+const PORTRAIT_BG = "url('/assets/story/character/gallery/portrait-1-thumb.webp')"
 
 const delicateWirePatternStyles = {
   background: `

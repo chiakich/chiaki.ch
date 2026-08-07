@@ -4,12 +4,12 @@ date: 2026-04-05
 lang: zh
 excerpt: "今年清明連假，台灣 ACG 圈迎來了這場號稱「強強聯手」的重磅活動，2026 ACF 秋葉原動漫祭。這場活動一開始看起來幾乎完美的華麗陣容，由日本同人巨頭 Melonbooks 主…"
 tags: []
-cover: /assets/blog/acf-akihabara-fes-2026/01.jpeg
+cover: /assets/blog/acf-akihabara-fes-2026/01.webp
 readingTime: 8
 ---
 今年清明連假，台灣 ACG 圈迎來了這場號稱「強強聯手」的重磅活動，2026 ACF 秋葉原動漫祭。這場活動一開始看起來幾乎完美的華麗陣容，由日本同人巨頭 Melonbooks 主催，主打還原秋葉原街道，還請來了日本頂級 Coser Enako、聲優上坂堇，以及好幾位Hololive「親媽」繪師坐鎮同人區。
 
-![](/assets/blog/acf-akihabara-fes-2026/01.jpeg)
+![](/assets/blog/acf-akihabara-fes-2026/01.webp)
 
 實際買票走進松菸展場，你會發現主辦方雖然握有頂級資源，卻在策展的底層邏輯與實體動線設計上全面失守。關於這次的各種失敗與炎上，大家可以參考 [加帕利天藍怪預警中心](https://www.facebook.com/JapariWeatherBureau/posts/pfbid0djEWZZbZNyR5Q3h2uodiQefc1p1JMjqkt4tFoGJYxZukNJM5kTzWNUzfXmtCe4YHl) 的總結與回報，我想在這篇文章中，分享我對這場活動的體驗、看法，以及從策展及設計的視角觀察到的致命傷。
 
@@ -33,7 +33,7 @@ readingTime: 8
 
 松菸的 2、3 倉正中間，有一個受古蹟法規保護、高約 45 公分的水泥凸台。主辦方選擇將「痛車」連續停放在凸台上展示，這在視覺焦點的營造上是聰明的解法，嘗試化解了地形的突兀感。
 
-![](/assets/blog/acf-akihabara-fes-2026/02.jpeg)
+![](/assets/blog/acf-akihabara-fes-2026/02.webp)
 
 但他們卻忽略了策展最核心的「使用者旅程（User Journey）」，也就是觀眾在展場中探索與行走的直覺動線。幾台痛車加上凸台，在展場中間築起了一道長長的實體牆，把左右兩側的攤位切成了無法跨越的平行線。觀眾在左側看到右側有感興趣的攤位，卻找不到順暢的過道切換，只能被迫走到場館盡頭再繞回來。這種物理上的阻斷，不僅讓逛展節奏變得破碎，也讓中後段的攤位因為缺乏過路客隨機探索，直接淪為毫無人流的「冷區」。
 

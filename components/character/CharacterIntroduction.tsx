@@ -6,6 +6,7 @@ import Lightbox from 'yet-another-react-lightbox'
 import Zoom from 'yet-another-react-lightbox/plugins/zoom'
 import 'yet-another-react-lightbox/styles.css'
 import { useI18n } from 'i18n'
+import { thumbSrc } from 'lib/imageThumb'
 
 const Text = styled.p
 const Heading = styled.h1
@@ -18,11 +19,11 @@ const CharacterIntroduction: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const characterArts = [
-    '/assets/story/character/gallery/portrait-1.png',
-    '/assets/story/character/gallery/portrait-2.png',
-    '/assets/story/character/gallery/portrait-3.png',
-    '/assets/story/character/gallery/portrait-4.png',
-    '/assets/story/character/gallery/portrait-5.png',
+    '/assets/story/character/gallery/portrait-1.webp',
+    '/assets/story/character/gallery/portrait-2.webp',
+    '/assets/story/character/gallery/portrait-3.webp',
+    '/assets/story/character/gallery/portrait-4.webp',
+    '/assets/story/character/gallery/portrait-5.webp',
   ]
 
   const slides = characterArts.map((src) => ({
@@ -107,6 +108,7 @@ const CharacterIntroduction: React.FC = () => {
               w="100%"
               h="100%"
               objectFit="contain"
+              decoding="async"
             />
             <IconButton
               aria-label={t('characterPage.viewFullSize')}
@@ -143,12 +145,14 @@ const CharacterIntroduction: React.FC = () => {
                 onClick={() => setCurrentArtIndex(index)}
               >
                 <Image
-                  src={art}
+                  src={thumbSrc(art)}
                   alt={`${t('characterPage.thumbnailAlt')} ${index + 1}`}
                   w="100%"
                   h="100%"
                   objectFit="cover"
                   objectPosition="top"
+                  loading="lazy"
+                  decoding="async"
                 />
               </Box>
             ))}

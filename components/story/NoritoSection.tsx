@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 import { Box, styled } from 'styled-system/jsx'
-import { cdnBackground } from 'lib/cdnImage'
 
 const Text = styled.p
 
@@ -27,11 +26,11 @@ const prayer = RAW.map(([text, lost], i) => ({
 }))
 
 // The prayer scene. The miko stands against a warm, blurred still
-// (save the reference art to public/assets/story/miko.jpg); scattered norito
+// (save the reference art to public/assets/story/miko.webp); scattered norito
 // fragments drift behind while the core prayer fades in, line by line.
 
-// Rendered under `blur(7px) brightness(.5)`, so a modest width is invisible here.
-const MIKO_BG = cdnBackground('/assets/story/miko.jpg', 1280)
+// Rendered under `blur(7px) brightness(.5)`, so the 400w thumb is indistinguishable.
+const MIKO_BG = "url('/assets/story/miko-thumb.webp')"
 
 // A few gold motes to sit in the air like drifting foxfire / incense embers.
 const MOTES = [

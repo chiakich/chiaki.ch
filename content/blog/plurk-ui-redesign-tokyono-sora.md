@@ -4,18 +4,18 @@ date: 2020-11-03
 lang: zh
 excerpt: "隨著現代螢幕越來越大，像素密度越來越高，舊時代的網頁設計方法漸漸開始不符合現代需求，最近一直在嘗試製作更加適合大螢幕使用的噗浪CSS。"
 tags: ["website-design", "redesign", "social-media", "design", "plurk"]
-cover: /assets/blog/plurk-ui-redesign-tokyono-sora/01.jpeg
+cover: /assets/blog/plurk-ui-redesign-tokyono-sora/01.webp
 readingTime: 2
 ---
 ## 重新設計橫式捲動社交平台 Plurk UI Redesign — Tokyono Sora
 
-![](/assets/blog/plurk-ui-redesign-tokyono-sora/01.jpeg)
+![](/assets/blog/plurk-ui-redesign-tokyono-sora/01.webp)
 
 隨著現代螢幕越來越大，像素密度越來越高，舊時代的網頁設計方法漸漸開始不符合現代需求，最近一直在嘗試製作更加適合大螢幕使用的噗浪CSS。
 
 噗浪預設布景在27吋的螢幕呈現起來大概是這樣：
 
-![](/assets/blog/plurk-ui-redesign-tokyono-sora/02.png)
+![](/assets/blog/plurk-ui-redesign-tokyono-sora/02.webp)
 
 主要的問題如下：
 
@@ -33,20 +33,20 @@ readingTime: 2
 
 透過不同色彩跟透明度區分資訊層級，並且統一醒目提示色為噗浪標準色。比起原本的未讀留言通知紅色更為緩和，半透明模糊的背景也讓噗文的背景更有變化與美觀。
 
-![](/assets/blog/plurk-ui-redesign-tokyono-sora/03.png)
+![](/assets/blog/plurk-ui-redesign-tokyono-sora/03.webp)
 
 ## 調整河道高度
 
 拉高和到寬度，放寬噗之間的距離，並讓噗文行高可以調高。  
 另外也調整了發文面板並降低配色層級，讓他的視覺空間不會太過壓迫，並且統一了噗浪的圓角按鈕風格。
 
-![](/assets/blog/plurk-ui-redesign-tokyono-sora/04.jpeg)
+![](/assets/blog/plurk-ui-redesign-tokyono-sora/04.webp)
 
 ## RWD設計
 
 因為噗浪不允許 @ media 語法，無法做到完美的RWD。但盡可能用其他方法做到RWD，可以讓噗浪頁面適用各種不同的螢幕寬高與比例，即使直向螢幕也能看起來很美觀！另外捲軸的部份也重新設計過，降低了干擾程度。
 
-![](/assets/blog/plurk-ui-redesign-tokyono-sora/05.png)
+![](/assets/blog/plurk-ui-redesign-tokyono-sora/05.webp)
 
 ## 隱藏零碎資訊
 
@@ -60,13 +60,13 @@ readingTime: 2
 
 調整了暱稱與大頭貼位置、配色，以及字體、噗浪的寬度，讓噗浪使用起來更簡潔舒適。另外也稍微調整了顯示的上下層級，看噗的時候不會再像左圖噗文被通知器卡到囉。
 
-![](/assets/blog/plurk-ui-redesign-tokyono-sora/07.jpeg)
+![](/assets/blog/plurk-ui-redesign-tokyono-sora/07.webp)
 
 ## One more thing…
 
 原本因為噗浪對自訂CSS有設定可以套用的範圍，感謝[欸個](https://www.plurk.com/egg820)發現神祕的黑魔法，可以有限的調整範圍外的元素，這樣就能實現調整彈出預覽圖的背景與字體等了。
 
-![](/assets/blog/plurk-ui-redesign-tokyono-sora/08.png)
+![](/assets/blog/plurk-ui-redesign-tokyono-sora/08.webp)
 
 ## 使用
 
@@ -85,9 +85,9 @@ readingTime: 2
 
 靈感來自Steins;Gate裡的世界線變動率探測儀。數字管的感覺很適合呈現重要的數字，在這裡順便作為顯示卡馬值的字體做出來了。
 
-![](/assets/blog/plurk-ui-redesign-tokyono-sora/09.jpeg)
+![](/assets/blog/plurk-ui-redesign-tokyono-sora/09.webp)
 
-![](/assets/blog/plurk-ui-redesign-tokyono-sora/10.png)
+![](/assets/blog/plurk-ui-redesign-tokyono-sora/10.webp)
 
 可以到[我的網站下載](https://chiaki.uk/nixie)，目前還只有數字。英文跟中文做到一半還在難產中，有空會繼續製作。如果喜歡的話可以留言鼓勵我QQ
 

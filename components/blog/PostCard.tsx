@@ -2,6 +2,7 @@ import NextLink from 'next/link'
 import Image from 'next/image'
 import { m } from 'framer-motion'
 import { Box, Flex, HStack, styled } from 'styled-system/jsx'
+import { thumbSrc } from 'lib/imageThumb'
 
 const Heading = styled.h2
 const Text = styled.p
@@ -137,7 +138,7 @@ const PostCard = ({ post, index }: { post: PostCardData; index: number }) => {
             >
               <Box data-cover position="absolute" inset="0" transition="transform .4s ease">
                 <Image
-                  src={post.cover}
+                  src={thumbSrc(post.cover)}
                   alt=""
                   fill
                   sizes="190px"

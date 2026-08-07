@@ -1,14 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import { Box, styled } from 'styled-system/jsx'
-import { cdnBackground } from 'lib/cdnImage'
 
 const Text = styled.p
 
 // The re-added origin story. A ruined-city still (save the reference image to
-// public/assets/story/ruins.jpg) with a per-line dynamic filter — VHS roll,
+// public/assets/story/ruins.webp) with a per-line dynamic filter — VHS roll,
 // glitch, blur, flash — while the narration types in as film subtitles.
 
-const RUINS_BG = cdnBackground('/assets/story/ruins.jpg', 1600)
+const RUINS_BG = "url('/assets/story/ruins.webp')"
 
 type Effect = {
   text: string

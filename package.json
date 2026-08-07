@@ -13,9 +13,9 @@
     "generate-og-images": "node scripts/generateOgImages.js",
     "start": "next start",
     "lint": "next lint",
-    "generate-thumbnails": "node scripts/generateThumbnails.js",
+    "optimize-assets": "node scripts/optimizeAssets.js",
     "update-projects": "node scripts/generateProjectIndex.js",
-    "update-character": "npm run generate-thumbnails && npm run update-projects"
+    "update-character": "npm run optimize-assets && npm run update-projects"
   },
   "dependencies": {
     "@react-three/fiber": "^9.2.0",

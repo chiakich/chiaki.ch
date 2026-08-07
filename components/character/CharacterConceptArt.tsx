@@ -6,15 +6,16 @@ import Lightbox from 'yet-another-react-lightbox'
 import Zoom from 'yet-another-react-lightbox/plugins/zoom'
 import 'yet-another-react-lightbox/styles.css'
 import { useI18n } from 'i18n'
+import { thumbSrc } from 'lib/imageThumb'
 
 const Text = styled.p
 const Image = styled.img
 
 // Character concept art images
 const conceptArts = [
-  '/assets/story/character/concept-art/default.jpg',
-  '/assets/story/character/concept-art/new-outfit.jpg',
-  '/assets/story/character/concept-art/birthday-outfit.png',
+  '/assets/story/character/concept-art/default.webp',
+  '/assets/story/character/concept-art/new-outfit.webp',
+  '/assets/story/character/concept-art/birthday-outfit.webp',
 ]
 
 const CharacterConceptArt: React.FC = () => {
@@ -110,12 +111,14 @@ const CharacterConceptArt: React.FC = () => {
                 bg="rgba(255, 255, 255, 0.9)"
               >
                 <Image
-                  src={art}
+                  src={thumbSrc(art)}
                   alt={conceptTitles[index]}
                   w="100%"
                   h="100%"
                   objectFit="cover"
                   objectPosition="center"
+                  loading="lazy"
+                  decoding="async"
                 />
               </Box>
               <Text

@@ -1,6 +1,5 @@
 import dynamic from 'next/dynamic'
 import { Box } from 'styled-system/jsx'
-import { cdnBackground } from 'lib/cdnImage'
 import SnowHudOverlay from 'components/story/SnowHudOverlay'
 
 // The shell below (background still, lens, vignette, HUD) is plain CSS and
@@ -23,7 +22,7 @@ const DepthScrollSection = ({ started = true }: DepthScrollSectionProps) => (
     width="100%"
     overflow="hidden"
     backgroundColor="#0a1114"
-    backgroundImage={cdnBackground('/assets/index/2x-2.webp', 1920)}
+    backgroundImage="url('/assets/index/2x-2.webp')"
     backgroundSize="cover"
     backgroundPosition="center"
   >

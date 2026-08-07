@@ -4,7 +4,7 @@ date: 2020-08-28
 lang: zh
 excerpt: "此次為筆者無數次參加同人展了。起因是看到這篇文《排隊購物的同人展是空虛的 ── 2020年臺北 FF36 開拓動漫祭》，對於同人展似乎有很大的誤會，正好有空寫成文章，來聊聊檳友如果…"
 tags: ["同人誌", "acg", "開拓動漫祭", "同人"]
-cover: /assets/blog/comiket-horizon-doujin/01.jpeg
+cover: /assets/blog/comiket-horizon-doujin/01.webp
 readingTime: 7
 canonical: https://akiakira02.medium.com/%E6%8E%92%E9%9A%8A%E8%B3%BC%E7%89%A9%E7%9A%84%E5%90%8C%E4%BA%BA%E5%B1%95%E6%98%AF%E5%85%85%E5%AF%A6%E7%9A%84-%E4%B8%80%E7%9B%B4%E4%BB%A5%E4%BE%86%E7%9A%84%E9%96%8B%E6%8B%93%E5%8B%95%E6%BC%AB%E7%A5%AD-d3e3c011990b
 ---
@@ -14,7 +14,7 @@ canonical: https://akiakira02.medium.com/%E6%8E%92%E9%9A%8A%E8%B3%BC%E7%89%A9%E7
 
 言歸正傳，本篇也僅是出自於筆者多年來參加同人展的感受。如果有不同想法，歡迎互相寫文指教。
 
-![](/assets/blog/comiket-horizon-doujin/01.jpeg)
+![](/assets/blog/comiket-horizon-doujin/01.webp)
 *筆者本次購買的刊物*
 
 ## 入場前準備：讀做同人，想成朋友
@@ -33,7 +33,7 @@ CWT跟FF，是國內兩大同人場次，亦有其他較小的場次如ICE、PF�
 
 不只整理券，FF亦有推出如電子場刊與原創之星等快速入場方式，就像迪士尼的快速入場券一樣，在沒搞懂規則前就下場玩遊戲，自顧自的抱怨遊戲不公平，恐怕也沒有人能救你了。
 
-![](/assets/blog/comiket-horizon-doujin/02.jpeg)
+![](/assets/blog/comiket-horizon-doujin/02.webp)
 
 ## **若以工業的眼光看作品，容易降低逛展興致**
 
@@ -69,7 +69,7 @@ CWT跟FF，是國內兩大同人場次，亦有其他較小的場次如ICE、PF�
 
 再說許多遊戲角色，呈現夏季氣氛的服裝本來就較為清涼，這些還原角色立繪的服裝，筆者認為還原度是沒話說的，有點不太瞭解原作者追求的是怎麼樣的Cosplay跟美學。而筆者在場內外觀察，亦有許多令筆者懷疑會不會中暑的服裝，當然夏季的場次，包括筆者在內，也是會偏向出一些服裝較為涼爽的角色，但大家都遵守著主辦的規定，說不上有原作者說的暴露浮濫。倘若原作者的宗教傾向不適合本場次，應可自行迴避。
 
-![](/assets/blog/comiket-horizon-doujin/03.jpeg)
+![](/assets/blog/comiket-horizon-doujin/03.webp)
 *筆者的cos照，希望不會太暴露讓原作者興致全失*
 
 ## **動漫展 與 同人展 的差異**

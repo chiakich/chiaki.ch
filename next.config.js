@@ -4,9 +4,10 @@ const nextConfig = {
   output: 'export',
   // react-split-flap ships type:module with a CJS .js main; bundle it instead of requiring it
   transpilePackages: ['react-split-flap'],
+  // Assets are resized and re-encoded ahead of time by scripts/optimizeAssets.js,
+  // so there is nothing left for a loader to do.
   images: {
-    loader: 'custom',
-    loaderFile: './imageLoader.ts',
+    unoptimized: true,
   },
   webpack(config) {
     config.module.rules = [

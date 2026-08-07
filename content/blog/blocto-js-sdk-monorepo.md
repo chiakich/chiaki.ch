@@ -4,10 +4,10 @@ date: 2023-05-22
 lang: en
 excerpt: "Last month at Blocto’s SDK development, we underwent a significant architectural transform…"
 tags: ["blockchain", "sdk-development", "front-end-development", "monorepo", "javascript"]
-cover: /assets/blog/blocto-js-sdk-monorepo/01.jpeg
+cover: /assets/blog/blocto-js-sdk-monorepo/01.webp
 readingTime: 5
 ---
-![](/assets/blog/blocto-js-sdk-monorepo/01.jpeg)
+![](/assets/blog/blocto-js-sdk-monorepo/01.webp)
 *Photo by Yancy Min on Unsplash*
 
 Last month at Blocto’s SDK development, we underwent a significant architectural transformation, migrating our [JavaScript software development kit](https://docs.blocto.app/blocto-sdk/) (SDK) repositories from a multi-repo setup to a Monorepo architecture. This shift allowed us to streamline the management of our JavaScript SDK packages. After encountering several challenges with our multi-repo setup, we concluded that adopting a Monorepo would be the ideal solution. This article delves into the issues we faced with our previous setup, explores the advantages of a Monorepo architecture, and outlines our journey from Multi-Repo to Monorepo.
