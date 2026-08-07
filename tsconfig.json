@@ -27,5 +27,5 @@
     "additional.d.ts",
     "utils/encode.js"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "tools"]
 }
