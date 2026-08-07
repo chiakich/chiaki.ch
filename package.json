@@ -27,6 +27,8 @@
     "gsap": "^3.13.0",
     "iconoir-react": "^7.11.1",
     "next": "^15.3.2",
+    "pixi-live2d-display": "0.4.0",
+    "pixi.js": "6.5.10",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-split-flap": "^0.2.1",

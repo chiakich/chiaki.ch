@@ -443,7 +443,7 @@ const TerminalAvatarClient = ({ controls }: TerminalAvatarClientProps) => {
         const restSway = Math.sin(elapsed / 4700) * 0.48 + Math.sin(elapsed / 2200) * 0.12
         // The dedicated tail parameter lets her tail sweep behind her from
         // side to side without borrowing (and visibly moving) the head.
-        const tailSway = Math.sin(elapsed / 1480) * 10.5 + Math.sin(elapsed / 3980) * 2.6
+        const tailSway = Math.sin(elapsed / 1480) * 14 + Math.sin(elapsed / 3980) * 3.2
         const speakingNod = speakingRef.current ? Math.sin(elapsed / 170) * mouthCurrentRef.current * 0.48 : 0
 
         core.setParameterValueById('PARAM_MOUTH_OPEN_Y', mouthCurrentRef.current)

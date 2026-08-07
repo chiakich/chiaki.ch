@@ -593,7 +593,7 @@
 						"Target": "Parameter",
 						"Id": "PARAM_TAIL_SWAY"
 					},
-					"Weight": 32,
+					"Weight": 100,
 					"Type": "X",
 					"Reflect": false
 				},

@@ -4,6 +4,7 @@ import { loadLive2DRuntime } from 'lib/live2d/runtime'
 
 declare global {
   interface Window {
+    PIXI: typeof import('pixi.js')
     Live2DCubismCore: any
   }
 }
