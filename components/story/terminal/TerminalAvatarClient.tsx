@@ -174,7 +174,9 @@ const TerminalAvatarClient = ({ controls }: TerminalAvatarClientProps) => {
         if (mouthTimerRef.current !== null)
           window.clearTimeout(mouthTimerRef.current)
         mouthTargetRef.current = Math.min(0.62, Math.max(0, open))
-        mouthFormTargetRef.current = Math.min(0.78, Math.max(-0.78, form))
+        // The authored mouth curve is intentionally delicate. Keep phonetic
+        // shaping small so a syllable reads as speech rather than a grin.
+        mouthFormTargetRef.current = Math.min(0.34, Math.max(-0.34, form * 0.48))
         speakingRef.current = true
         mouthTimerRef.current = window.setTimeout(
           () => {
@@ -438,7 +440,12 @@ const TerminalAvatarClient = ({ controls }: TerminalAvatarClientProps) => {
         // it before physics is evaluated, so it continues during speech too.
         const breathWave = Math.sin(elapsed / 860)
         const breath = clamp(0.5 + breathWave * 0.5 + Math.sin(elapsed / 2550) * 0.08, 0, 1)
-        const restSway = Math.sin(elapsed / 4700) * 0.72 + Math.sin(elapsed / 2200) * 0.16
+        const restSway = Math.sin(elapsed / 4700) * 0.48 + Math.sin(elapsed / 2200) * 0.12
+        // PhysicsSetting5 receives only Angle X/Y and Breath. A separate,
+        // low-frequency carrier gives the tail a continuous weighted sway at
+        // rest, while remaining small enough to read as posture rather than
+        // a deliberate head turn.
+        const tailSway = Math.sin(elapsed / 1450) * 1.65 + Math.sin(elapsed / 3870) * 0.38
         const speakingNod = speakingRef.current ? Math.sin(elapsed / 170) * mouthCurrentRef.current * 0.48 : 0
 
         core.setParameterValueById('PARAM_MOUTH_OPEN_Y', mouthCurrentRef.current)
@@ -456,8 +463,8 @@ const TerminalAvatarClient = ({ controls }: TerminalAvatarClientProps) => {
         )
         core.setParameterValueById('PARAM_EYE_BALL_X', look.eyeX)
         core.setParameterValueById('PARAM_EYE_BALL_Y', -look.eyeY)
-        core.setParameterValueById('PARAM_ANGLE_X', look.headX * 13 + restSway)
-        core.setParameterValueById('PARAM_ANGLE_Y', -look.headY * 12 + breathWave * 1.2 + speakingNod)
+        core.setParameterValueById('PARAM_ANGLE_X', look.headX * 13 + restSway + tailSway)
+        core.setParameterValueById('PARAM_ANGLE_Y', -look.headY * 12 + breathWave * 1.75 + tailSway * 0.22 + speakingNod)
         core.setParameterValueById('PARAM_BODY_ANGLE_X', look.bodyX * 5 + restSway * 0.24)
         core.setParameterValueById('PARAM_BREATH', breath)
         core.setParameterValueById(
