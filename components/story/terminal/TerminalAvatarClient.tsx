@@ -49,6 +49,7 @@ const EMOTION_PARAMS: Record<Emotion, Record<string, number>> = {
 const TerminalAvatarClient = ({ controls }: TerminalAvatarClientProps) => {
   const frameRef = useRef<HTMLIFrameElement>(null)
   const paramsRef = useRef<Record<string, number>>({ ...BASE_PARAMS })
+  const pointerRef = useRef({ x: 0, y: 0 })
   const [ready, setReady] = useState(false)
 
   const publish = useCallback(() => {
@@ -88,6 +89,30 @@ const TerminalAvatarClient = ({ controls }: TerminalAvatarClientProps) => {
     }
   }, [controls, publish, setParams])
 
+  useEffect(() => {
+    const onPointerMove = (event: PointerEvent) => {
+      const frame = frameRef.current
+      const rect = frame?.parentElement?.getBoundingClientRect()
+      if (!frame || !rect?.width || !rect.height) return
+
+      const previous = pointerRef.current
+      if (Math.hypot(event.clientX - previous.x, event.clientY - previous.y) < 2) return
+      pointerRef.current = { x: event.clientX, y: event.clientY }
+
+      frame.contentWindow?.postMessage(
+        {
+          type: 'chiaki-terminal-pointer',
+          targetX: Math.min(0.68, Math.max(-0.68, ((event.clientX - rect.left) / rect.width - 0.5) * 1.35)),
+          targetY: Math.min(0.5, Math.max(-0.5, ((event.clientY - rect.top) / rect.height - 0.5) * 1.1)),
+        },
+        window.location.origin
+      )
+    }
+
+    window.addEventListener('pointermove', onPointerMove, { passive: true })
+    return () => window.removeEventListener('pointermove', onPointerMove)
+  }, [])
+
   return (
     <Box position="relative" width="100%" height="100%" overflow="hidden">
       <Img
@@ -109,8 +134,8 @@ const TerminalAvatarClient = ({ controls }: TerminalAvatarClientProps) => {
         left="0"
         top="0"
         bottom="0"
-        width={{ base: '100%', md: '78%' }}
-        transform={{ base: 'translateY(-3%)', md: 'translateY(-6%)' }}
+        width={{ base: '100%', lg: '78%' }}
+        transform={{ base: 'translateY(-3%)', lg: 'translateY(-6%)' }}
         opacity={ready ? 1 : 0}
         transition="opacity .45s ease"
       >
