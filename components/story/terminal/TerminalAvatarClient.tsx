@@ -131,7 +131,7 @@ const TerminalAvatarClient = ({ controls }: TerminalAvatarClientProps) => {
       />
       <Box
         position="absolute"
-        left="0"
+        left={{ base: '0', lg: '11%' }}
         top="0"
         bottom="0"
         width={{ base: '100%', lg: '78%' }}
