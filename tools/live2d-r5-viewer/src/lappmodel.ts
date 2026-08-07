@@ -7,11 +7,8 @@
 
 import { CubismDefaultParameterId } from '@framework/cubismdefaultparameterid';
 import { CubismModelSettingJson } from '@framework/cubismmodelsettingjson';
-import {
-  BreathParameterData,
-  CubismBreath
-} from '@framework/effect/cubismbreath';
-import { LookParameterData, CubismLook } from '@framework/effect/cubismlook';
+import { CubismBreath } from '@framework/effect/cubismbreath';
+import { CubismLook } from '@framework/effect/cubismlook';
 import { CubismEyeBlink } from '@framework/effect/cubismeyeblink';
 import { ICubismModelSetting } from '@framework/icubismmodelsetting';
 import { CubismIdHandle } from '@framework/id/cubismid';
@@ -29,8 +26,6 @@ import {
   InvalidMotionQueueEntryHandleValue
 } from '@framework/motion/cubismmotionqueuemanager';
 import { CubismUpdateScheduler } from '@framework/motion/cubismupdatescheduler';
-import { CubismBreathUpdater } from '@framework/motion/cubismbreathupdater';
-import { CubismLookUpdater } from '@framework/motion/cubismlookupdater';
 import { CubismEyeBlinkUpdater } from '@framework/motion/cubismeyeblinkupdater';
 import { CubismExpressionUpdater } from '@framework/motion/cubismexpressionupdater';
 import { CubismPhysicsUpdater } from '@framework/motion/cubismphysicsupdater';
@@ -77,6 +72,40 @@ enum LoadStep {
   WaitLoadTexture,
   CompleteSetup
 }
+
+/** One mouth pose from the terminal's utterance timeline. */
+type MouthKey = { at: number; open: number; form: number };
+
+/** Brow / head / gaze / breath, driven by the punctuation of the line. */
+type GestureKey = {
+  at: number;
+  brow: number;
+  tilt: number;
+  nod: number;
+  gaze: number;
+  breath: number;
+};
+
+const GESTURE_REST: GestureKey = { at: 0, brow: 0, tilt: 0, nod: 0, gaze: 0, breath: 0 };
+
+/**
+ * Linear sample of a time-ordered keyframe track. `cursor` is carried between
+ * frames so this stays O(1) in the common case and still catches up in one go
+ * after the tab has been throttled.
+ */
+const sampleTrack = <T extends { at: number }>(
+  track: T[],
+  elapsed: number,
+  cursor: number
+): { from: T; to: T; t: number; cursor: number } => {
+  let index = cursor;
+  while (index < track.length - 1 && track[index + 1].at <= elapsed) index += 1;
+  const from = track[index];
+  const to = track[Math.min(index + 1, track.length - 1)];
+  const span = to.at - from.at;
+  const t = span > 0 ? Math.min(1.0, Math.max(0.0, (elapsed - from.at) / span)) : 1.0;
+  return { from, to, t, cursor: index };
+};
 
 /**
  * ユーザーが実際に使用するモデルの実装クラス<br>
@@ -311,34 +340,12 @@ export class LAppModel extends CubismUserModel {
 
     // Breath
     const setupBreath = (): void => {
-      this._breath = CubismBreath.create();
-
-      const breathParameters: Array<BreathParameterData> = [
-        new BreathParameterData(this._idParamAngleX, 0.0, 15.0, 6.5345, 0.5),
-        new BreathParameterData(this._idParamAngleY, 0.0, 8.0, 3.5345, 0.5),
-        new BreathParameterData(this._idParamAngleZ, 0.0, 10.0, 5.5345, 0.5),
-        new BreathParameterData(
-          this._idParamBodyAngleX,
-          0.0,
-          4.0,
-          15.5345,
-          0.5
-        ),
-        new BreathParameterData(
-          CubismFramework.getIdManager().getId(
-            CubismDefaultParameterId.ParamBreath
-          ),
-          0.5,
-          0.5,
-          3.2345,
-          1
-        )
-      ];
-
-      this._breath.setParameters(breathParameters);
-
-      const breathUpdater = new CubismBreathUpdater(this._breath);
-      this._updateScheduler.addUpdatableList(breathUpdater);
+      // The terminal authors its own breathing on these same parameters in
+      // update(). Registering CubismBreath as well would add a second ±15°
+      // ANGLE_X / ±10° ANGLE_Z sway that the authored pose immediately
+      // overwrites — but only after the physics rig has already reacted to it,
+      // so the hair would swing to a head motion the portrait never performs.
+      this._breath = null;
 
       this._state = LoadStep.LoadUserData;
 
@@ -422,35 +429,11 @@ export class LAppModel extends CubismUserModel {
 
     // Look
     const setupLook = (): void => {
-      this._look = CubismLook.create();
-
-      const lookParameters: Array<LookParameterData> = [
-        new LookParameterData(this._idParamAngleX, 30.0, 0.0, 0.0),
-        new LookParameterData(this._idParamAngleY, 0.0, 30.0, 0.0),
-        new LookParameterData(this._idParamAngleZ, 0.0, 0.0, -30.0),
-        new LookParameterData(this._idParamBodyAngleX, 10.0, 0.0, 0.0),
-        new LookParameterData(
-          CubismFramework.getIdManager().getId(
-            CubismDefaultParameterId.ParamEyeBallX
-          ),
-          1.0,
-          0.0,
-          0.0
-        ),
-        new LookParameterData(
-          CubismFramework.getIdManager().getId(
-            CubismDefaultParameterId.ParamEyeBallY
-          ),
-          0.0,
-          1.0,
-          0.0
-        )
-      ];
-
-      this._look.setParameters(lookParameters);
-
-      const lookUpdater = new CubismLookUpdater(this._look, this._dragManager);
-      this._updateScheduler.addUpdatableList(lookUpdater);
+      // Superseded by the terminal's own gaze inertia in update(). The sample
+      // binds pointermove unguarded, so CubismLook would drive ±30° of head
+      // angle from the raw drag vector on every mouse move — again reaching
+      // the physics rig and then being overwritten before it is drawn.
+      this._look = null;
 
       // callback
       finalizeUpdaters();
@@ -604,11 +587,14 @@ export class LAppModel extends CubismUserModel {
     this._motionUpdated = false;
 
     if (this._motionManager.isFinished()) {
-      // モーションの再生がない場合、待機モーションの中からランダムで再生する
-      this.startRandomMotion(
-        LAppDefine.MotionGroupIdle,
-        LAppDefine.PriorityIdle
-      );
+      // This export ships no motion files, so guard it: unguarded, the sample
+      // asks for a random idle every single frame and is refused every time.
+      if (this._modelSetting.getMotionCount(LAppDefine.MotionGroupIdle) > 0) {
+        this.startRandomMotion(
+          LAppDefine.MotionGroupIdle,
+          LAppDefine.PriorityIdle
+        );
+      }
     } else {
       this._motionUpdated = this._motionManager.updateMotion(
         this._model,
@@ -618,38 +604,113 @@ export class LAppModel extends CubismUserModel {
     this._model.saveParameters(); // 状態を保存
     //--------------------------------------------------------------------------
 
-    // The terminal portrait has no idle motion files. Feed the authored tail
-    // controller continuously before the official physics scheduler runs so
-    // its 10-stage pendulum can produce a restrained, living sway.
+    // The terminal portrait has no idle motion files, so everything below is
+    // authored here. It all has to be written *before* the scheduler runs:
+    // the rig's 20 physics settings take PARAM_ANGLE_X/Y/Z, PARAM_BODY_ANGLE_X/Z
+    // and PARAM_EYE_*_OPEN as their inputs, and drive the hair, ears, hands and
+    // ribbon chains from them. Writing the pose afterwards left physics reacting
+    // to whatever the effect updaters happened to leave behind instead.
+    // "尾巴會自己動，所以心情其實藏不住" — so it has to actually follow the mood.
+    const mood = (window as Window & {
+      __chiakiTerminalTail?: { amp: number; rate: number };
+    }).__chiakiTerminalTail;
+    const tail = this._terminalTail;
+    const ease = 1.0 - Math.exp(-2.5 * deltaTimeSeconds);
+    tail.amp += ((mood?.amp ?? 1.0) - tail.amp) * ease;
+    tail.rate += ((mood?.rate ?? 1.0) - tail.rate) * ease;
+    tail.phase += deltaTimeSeconds * tail.rate;
     const tailSway =
-      Math.sin(this._userTimeSeconds / 1.48) * 14.0 +
-      Math.sin(this._userTimeSeconds / 3.98) * 3.2;
+      (Math.sin(tail.phase / 1.48) * 14.0 + Math.sin(tail.phase / 3.98) * 3.2) *
+      tail.amp;
     this._model.setParameterValueById(
       CubismFramework.getIdManager().getId('PARAM_TAIL_SWAY'),
       tailSway
     );
-    // UpdateSchedulerによる一括エフェクト更新
-    this._updateScheduler.onLateUpdate(this._model, deltaTimeSeconds);
 
-    // Apply terminal controls after the SDK's effects, otherwise later
-    // updaters can erase a lip shape before it reaches the renderer.
-    const terminalParams = (window as Window & {
+    const terminalWindow = window as Window & {
       __chiakiTerminalParams?: Record<string, number>;
-    }).__chiakiTerminalParams;
+      __chiakiTerminalEmotionSpeed?: number;
+    };
+    const terminalParams = terminalWindow.__chiakiTerminalParams;
     if (terminalParams) {
+      // Every emotion used to arrive at the same rate. Surprise has to land in
+      // a couple of frames and sadness has to settle, so the page sends the
+      // attack speed with the pose.
+      const speed = terminalWindow.__chiakiTerminalEmotionSpeed ?? 7.0;
+      const blend = 1.0 - Math.exp(-speed * deltaTimeSeconds);
       for (const id in terminalParams) {
         const parameterId = CubismFramework.getIdManager().getId(id);
         const target = terminalParams[id];
         const current =
           this._terminalParamValues.get(id) ??
           this._model.getParameterValueById(parameterId);
-        const speed = id.startsWith('PARAM_MOUTH') ? 15.0 : 7.0;
-        const blend = 1.0 - Math.exp(-speed * deltaTimeSeconds);
         const value = current + (target - current) * blend;
         this._terminalParamValues.set(id, value);
         this._model.setParameterValueById(parameterId, value);
       }
     }
+
+    // Sample the mouth timeline on the render clock rather than taking discrete
+    // targets from the page, so every syllable's closure and peak land where the
+    // utterance says they do regardless of frame rate or timer throttling.
+    const speech = (window as Window & {
+      __chiakiTerminalSpeech?: {
+        keys: MouthKey[];
+        gestures?: GestureKey[];
+        startedAt: number;
+      };
+    }).__chiakiTerminalSpeech;
+    let mouthOpen = 0.0;
+    let mouthForm = 0.0;
+    let speaking = false;
+    let gesture = GESTURE_REST;
+    if (speech && speech.keys.length > 0) {
+      if (speech.startedAt !== this._speechStartedAt) {
+        this._speechStartedAt = speech.startedAt;
+        this._speechCursor = 0;
+        this._gestureCursor = 0;
+      }
+      const elapsed = performance.now() - speech.startedAt;
+      const keys = speech.keys;
+      speaking = elapsed < keys[keys.length - 1].at;
+
+      const mouth = sampleTrack(keys, elapsed, this._speechCursor);
+      this._speechCursor = mouth.cursor;
+      // Opening is a fast release, closing eases — a mouth snaps open off a
+      // consonant and relaxes shut.
+      const eased =
+        mouth.to.open > mouth.from.open
+          ? 1.0 - (1.0 - mouth.t) * (1.0 - mouth.t)
+          : mouth.t * mouth.t * (3.0 - 2.0 * mouth.t);
+      mouthOpen = mouth.from.open + (mouth.to.open - mouth.from.open) * eased;
+      mouthForm = mouth.from.form + (mouth.to.form - mouth.from.form) * eased;
+
+      const track = speech.gestures;
+      if (track && track.length > 0) {
+        const g = sampleTrack(track, elapsed, this._gestureCursor);
+        this._gestureCursor = g.cursor;
+        const s = g.t * g.t * (3.0 - 2.0 * g.t);
+        const mix = (a: number, b: number) => a + (b - a) * s;
+        gesture = {
+          at: 0,
+          brow: mix(g.from.brow, g.to.brow),
+          tilt: mix(g.from.tilt, g.to.tilt),
+          nod: mix(g.from.nod, g.to.nod),
+          gaze: mix(g.from.gaze, g.to.gaze),
+          breath: mix(g.from.breath, g.to.breath),
+        };
+      }
+    }
+    this._model.setParameterValueById(
+      CubismFramework.getIdManager().getId('PARAM_MOUTH_OPEN_Y'),
+      mouthOpen
+    );
+    // Added to the emotion's mouth shape instead of replacing it, so she does
+    // not stop smiling the moment she starts talking.
+    this._model.setParameterValueById(
+      CubismFramework.getIdManager().getId('PARAM_MOUTH_FORM'),
+      (this._terminalParamValues.get('PARAM_MOUTH_FORM') ?? 0.0) + mouthForm
+    );
 
     const terminalTap = (window as Window & {
       __chiakiTerminalTap?: { area: 'head' | 'chest'; at: number };
@@ -666,7 +727,16 @@ export class LAppModel extends CubismUserModel {
     // The exported model has no eye-blink / lip-sync groups. Give its
     // otherwise static portrait restrained, continuous life here instead of
     // relying on motion files that do not exist in this model export.
-    const breath = Math.sin(this._userTimeSeconds * (Math.PI * 2 / 4.8));
+    // Chest, head and torso used to share one sine, which made the whole
+    // portrait rise and fall as a single rigid piece. Mutually prime periods
+    // and separate phases keep them from ever lining up; the torso lag is what
+    // reads as weight.
+    const wave = (period: number, phase: number) =>
+      Math.sin(this._userTimeSeconds * (Math.PI * 2 / period) + phase);
+    const breath = wave(4.8, 0);
+    const chestLag = wave(4.8, -0.35);
+    const headBob = wave(6.7, 0.9);
+    const lean = wave(9.1, 2.1);
     const pointer = (window as Window & {
       __chiakiTerminalPointer?: { targetX: number; targetY: number; movedAt: number };
     }).__chiakiTerminalPointer;
@@ -697,53 +767,110 @@ export class LAppModel extends CubismUserModel {
     look.bodyX = damp(look.bodyX, desiredX, 1.65);
     look.bodyY = damp(look.bodyY, desiredY, 1.8);
     const speakingNod =
-      Math.sin(this._userTimeSeconds * (Math.PI * 2 / 0.72)) *
-      (terminalParams?.PARAM_MOUTH_OPEN_Y ?? 0) *
-      0.55;
+      Math.sin(this._userTimeSeconds * (Math.PI * 2 / 0.72)) * mouthOpen * 0.55;
     this._model.setParameterValueById(
       CubismFramework.getIdManager().getId('PARAM_BREATH'),
-      0.5 + breath * 0.42
+      0.5 + breath * 0.42 + gesture.breath
     );
     this._model.setParameterValueById(
       CubismFramework.getIdManager().getId('PARAM_BODY_ANGLE_X'),
-      breath * 0.55 + look.bodyX * 5.0
+      lean * 0.55 + look.bodyX * 5.0
     );
     this._model.setParameterValueById(
       CubismFramework.getIdManager().getId('PARAM_ANGLE_Y'),
-      breath * 0.85 - look.headY * 12.0 + speakingNod
+      headBob * 0.85 - look.headY * 12.0 + speakingNod + gesture.nod
     );
     const glance = Math.sin(this._userTimeSeconds * (Math.PI * 2 / 9.2));
     this._model.setParameterValueById(
       CubismFramework.getIdManager().getId('PARAM_ANGLE_X'),
       glance * 1.15 + look.headX * 13.0
     );
+    // Eyes jump, they do not glide. The damped look above is smooth pursuit;
+    // this is the micro-saccade on top of it, applied without damping so it
+    // lands in a single frame the way a real fixation shift does.
+    const saccade = this._terminalSaccade;
+    if (this._userTimeSeconds >= saccade.nextAt) {
+      saccade.x = (Math.random() - 0.5) * 0.16;
+      saccade.y = (Math.random() - 0.5) * 0.1;
+      saccade.nextAt = this._userTimeSeconds + 0.5 + Math.random() * 1.7;
+    }
     this._model.setParameterValueById(
       CubismFramework.getIdManager().getId('PARAM_EYE_BALL_X'),
-      glance * 0.24 + look.eyeX
+      glance * 0.24 + look.eyeX + saccade.x + gesture.gaze
     );
     this._model.setParameterValueById(
       CubismFramework.getIdManager().getId('PARAM_EYE_BALL_Y'),
-      -look.eyeY
+      -look.eyeY + saccade.y
     );
     this._model.setParameterValueById(
       CubismFramework.getIdManager().getId('PARAM_BODY_ANGLE_Y'),
-      -look.bodyY * 3.0 + breath * 1.45 + speakingNod * 0.42
+      -look.bodyY * 3.0 + chestLag * 1.45 + speakingNod * 0.42
+    );
+    // Head tilt is what swings the hair: PARAM_ANGLE_Z and PARAM_BODY_ANGLE_Z
+    // are the inputs to the front/back hair and ribbon chains. Leaving them at
+    // rest left two thirds of the physics rig with nothing to react to. People
+    // also tilt slightly into a turn, so couple part of it to the head yaw.
+    // Added on top of the emotion tilt the terminal params already smoothed in.
+    const sway = Math.sin(this._userTimeSeconds * (Math.PI * 2 / 11.3));
+    this._model.setParameterValueById(
+      CubismFramework.getIdManager().getId('PARAM_ANGLE_Z'),
+      (this._terminalParamValues.get('PARAM_ANGLE_Z') ?? 0.0) +
+        sway * 1.6 -
+        look.headX * 4.5 +
+        gesture.tilt
+    );
+    this._model.setParameterValueById(
+      CubismFramework.getIdManager().getId('PARAM_BODY_ANGLE_Z'),
+      (this._terminalParamValues.get('PARAM_BODY_ANGLE_Z') ?? 0.0) +
+        sway * 0.7 -
+        look.bodyX * 1.8
     );
 
-    const blinkCycle = this._userTimeSeconds % 4.6;
-    const blink =
-      blinkCycle < 0.09
-        ? 1.0 - blinkCycle / 0.09
-        : blinkCycle < 0.19
-          ? (blinkCycle - 0.09) / 0.1
-          : 1.0;
+    this._model.setParameterValueById(
+      CubismFramework.getIdManager().getId('PARAM_BROW_L_Y'),
+      (this._terminalParamValues.get('PARAM_BROW_L_Y') ?? 0.0) + gesture.brow
+    );
+    this._model.setParameterValueById(
+      CubismFramework.getIdManager().getId('PARAM_BROW_R_Y'),
+      (this._terminalParamValues.get('PARAM_BROW_R_Y') ?? 0.0) + gesture.brow
+    );
+
+    // A fixed 4.6s cycle reads as a metronome, and the ear and eyelid physics
+    // chains take PARAM_EYE_*_OPEN as input, so it put those on a metronome too.
+    // Randomised intervals, occasional double blinks, and a faster rate while
+    // she is talking.
+    const CLOSING = 0.06;
+    const OPENING = 0.09;
+    const eyes = this._terminalBlink;
+    if (eyes.elapsed < 0 && this._userTimeSeconds >= eyes.nextAt) eyes.elapsed = 0;
+    let blink = 1.0;
+    if (eyes.elapsed >= 0) {
+      eyes.elapsed += deltaTimeSeconds;
+      if (eyes.elapsed < CLOSING) blink = 1.0 - eyes.elapsed / CLOSING;
+      else if (eyes.elapsed < CLOSING + OPENING)
+        blink = (eyes.elapsed - CLOSING) / OPENING;
+      else {
+        eyes.elapsed = -1;
+        if (eyes.pending > 0) {
+          eyes.pending -= 1;
+          eyes.nextAt = this._userTimeSeconds + 0.1;
+        } else {
+          eyes.nextAt =
+            this._userTimeSeconds +
+            (speaking ? 1.6 + Math.random() * 2.4 : 2.6 + Math.random() * 4.4);
+          eyes.pending = Math.random() < 0.18 ? 1 : 0;
+        }
+      }
+    }
+    // Scaled by the emotion's eye aperture rather than replacing it, which is
+    // what made shy's half-lidded look impossible to see.
     this._model.setParameterValueById(
       CubismFramework.getIdManager().getId('PARAM_EYE_L_OPEN'),
-      blink
+      blink * (this._terminalParamValues.get('PARAM_EYE_L_OPEN') ?? 1.0)
     );
     this._model.setParameterValueById(
       CubismFramework.getIdManager().getId('PARAM_EYE_R_OPEN'),
-      blink
+      blink * (this._terminalParamValues.get('PARAM_EYE_R_OPEN') ?? 1.0)
     );
 
     const reaction = this._terminalReaction;
@@ -753,46 +880,51 @@ export class LAppModel extends CubismUserModel {
         (this._userTimeSeconds - reaction.startedAt) / 0.28,
         (reaction.endsAt - this._userTimeSeconds) / 0.48
       );
+      // Layered on top of the pose and the viseme rather than replacing them,
+      // so patting her mid-sentence does not freeze her mouth.
       if (reaction.area === 'head') {
-        this._model.setParameterValueById(
+        this._model.addParameterValueById(
           CubismFramework.getIdManager().getId('PARAM_MOUTH_FORM'),
           0.22 * blend
         );
-        this._model.setParameterValueById(
+        this._model.addParameterValueById(
           CubismFramework.getIdManager().getId('PARAM_EYE_L_SMILE'),
           0.12 * blend
         );
-        this._model.setParameterValueById(
+        this._model.addParameterValueById(
           CubismFramework.getIdManager().getId('PARAM_EYE_R_SMILE'),
           0.12 * blend
         );
-        this._model.setParameterValueById(
+        this._model.addParameterValueById(
           CubismFramework.getIdManager().getId('PARAM_ANGLE_Z'),
           -1.2 * blend
         );
       } else {
-        this._model.setParameterValueById(
+        this._model.addParameterValueById(
           CubismFramework.getIdManager().getId('PARAM_MOUTH_FORM'),
           -0.05 * blend
         );
-        this._model.setParameterValueById(
+        this._model.addParameterValueById(
           CubismFramework.getIdManager().getId('PARAM_BROW_L_Y'),
           -0.13 * blend
         );
-        this._model.setParameterValueById(
+        this._model.addParameterValueById(
           CubismFramework.getIdManager().getId('PARAM_BROW_R_Y'),
           -0.13 * blend
         );
-        this._model.setParameterValueById(
+        this._model.addParameterValueById(
           CubismFramework.getIdManager().getId('PARAM_ANGLE_Z'),
           2.2 * blend
         );
-        this._model.setParameterValueById(
+        this._model.addParameterValueById(
           CubismFramework.getIdManager().getId('PARAM_BODY_ANGLE_Z'),
           1.1 * blend
         );
       }
     }
+
+    // UpdateSchedulerによる一括エフェクト更新
+    this._updateScheduler.onLateUpdate(this._model, deltaTimeSeconds);
 
     this._model.update();
   }
@@ -1225,6 +1357,13 @@ export class LAppModel extends CubismUserModel {
   _eyeBlinkIds: Array<CubismIdHandle>; // モデルに設定された瞬き機能用パラメータID
   _lipSyncIds: Array<CubismIdHandle>; // モデルに設定されたリップシンク機能用パラメータID
   private _terminalParamValues: Map<string, number> = new Map();
+  private _speechStartedAt: number = -Infinity;
+  private _speechCursor: number = 0;
+  private _gestureCursor: number = 0;
+  private _terminalTail = { amp: 1.0, rate: 1.0, phase: 0 };
+  /** elapsed < 0 means the eyes are open and waiting for nextAt. */
+  private _terminalBlink = { elapsed: -1, nextAt: 2.0, pending: 0 };
+  private _terminalSaccade = { x: 0, y: 0, nextAt: 1.0 };
   private _terminalLook = { eyeX: 0, eyeY: 0, headX: 0, headY: 0, bodyX: 0, bodyY: 0 };
   private _terminalIdle = { targetX: 0, targetY: 0, endsAt: 0, nextAt: 5.5 };
   private _terminalLastTapAt: number = -Infinity;

@@ -8,10 +8,23 @@
 import { LAppDelegate } from './lappdelegate';
 import * as LAppDefine from './lappdefine';
 
+type MouthKey = { at: number; open: number; form: number };
+type GestureKey = {
+  at: number;
+  brow: number;
+  tilt: number;
+  nod: number;
+  gaze: number;
+  breath: number;
+};
+
 type TerminalWindow = Window & {
   __chiakiTerminalParams?: Record<string, number>;
   __chiakiTerminalPointer?: { targetX: number; targetY: number; movedAt: number };
   __chiakiTerminalTap?: { area: 'head' | 'chest'; at: number };
+  __chiakiTerminalSpeech?: { keys: MouthKey[]; gestures: GestureKey[]; startedAt: number };
+  __chiakiTerminalEmotionSpeed?: number;
+  __chiakiTerminalTail?: { amp: number; rate: number };
 };
 
 const terminalWindow = window as TerminalWindow;
@@ -21,6 +34,19 @@ window.addEventListener('message', event => {
   const data = event.data;
   if (data?.type === 'chiaki-terminal-params' && typeof data.params === 'object') {
     terminalWindow.__chiakiTerminalParams = data.params;
+    if (Number.isFinite(data.speed)) terminalWindow.__chiakiTerminalEmotionSpeed = data.speed;
+    if (data.tail) terminalWindow.__chiakiTerminalTail = data.tail;
+    return;
+  }
+  // The whole mouth timeline arrives in one message and is then sampled on the
+  // render clock. Driving it a character at a time over postMessage capped the
+  // mouth at the transcript's ~10 Hz and drifted whenever the tab was throttled.
+  if (data?.type === 'chiaki-terminal-speech' && Array.isArray(data.keys)) {
+    terminalWindow.__chiakiTerminalSpeech = {
+      keys: data.keys,
+      gestures: Array.isArray(data.gestures) ? data.gestures : [],
+      startedAt: performance.now(),
+    };
     return;
   }
   if (data?.type === 'chiaki-terminal-pointer') {
