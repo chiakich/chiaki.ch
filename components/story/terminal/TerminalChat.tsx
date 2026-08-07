@@ -3,9 +3,11 @@ import dynamic from 'next/dynamic'
 import { Box, Flex, styled } from 'styled-system/jsx'
 import { createSession, respond, type Session } from 'lib/terminal/engine'
 import { loadLexicon, type Lexicon } from 'lib/terminal/lexicon'
-import { createSpeechBeats } from 'lib/terminal/speech'
+import { createUtterance } from 'lib/terminal/speech'
 import { IDLE } from 'lib/terminal/rules'
+import type { Token } from 'lib/terminal/lexicon'
 import type { Message } from 'lib/terminal/types'
+import LexiconPanel from './LexiconPanel'
 import type { TerminalAvatarHandle } from './TerminalAvatarClient'
 import { useI18n } from 'i18n'
 
@@ -38,6 +40,7 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
   const [draft, setDraft] = useState('')
   const [typing, setTyping] = useState<string | null>(null)
   const [signal, setSignal] = useState(sessionRef.current.signal)
+  const [tokens, setTokens] = useState<Token[]>([])
 
   const push = useCallback((message: Omit<Message, 'id'>) => {
     nextId.current += 1
@@ -65,43 +68,45 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
     return () => window.clearTimeout(timer)
   }, [messages.length, push, started])
 
-  // The lexicon determines word boundaries; each syllabic character becomes a
-  // mouth beat and punctuation becomes a pause in both text and animation.
+  // The lexicon determines word boundaries and each character's reading; the
+  // mouth timeline goes to the avatar in one piece and the transcript follows
+  // the same clock, so the two stay in step without driving each other.
   useEffect(() => {
     if (typing === null) return undefined
-    const beats = createSpeechBeats(typing, lexicon)
+    const { keys, gestures, chars } = createUtterance(typing, lexicon)
     const avatar = avatarRef.current
+    const startedAt = performance.now()
     let index = 0
     let timer = 0
 
-    const advance = () => {
-      const beat = beats[index]
-      if (!beat) {
-        avatar?.stopSpeaking()
-        avatar?.setEmotion('neutral')
+    avatar?.speak(keys, gestures)
+
+    const reveal = () => {
+      const elapsed = performance.now() - startedAt
+      const previous = index
+      while (index < chars.length && chars[index].at <= elapsed) index += 1
+
+      if (index > previous) {
+        const text = chars
+          .slice(0, index)
+          .map((cue) => cue.char)
+          .join('')
+        setMessages((current) => {
+          const next = [...current]
+          const last = next[next.length - 1]
+          if (last?.role === 'chiaki') next[next.length - 1] = { ...last, text }
+          return next
+        })
+      }
+
+      if (index >= chars.length) {
         setTyping(null)
         return
       }
-      index += 1
-      setMessages((current) => {
-        const next = [...current]
-        const last = next[next.length - 1]
-        if (last?.role === 'chiaki') {
-          next[next.length - 1] = {
-            ...last,
-            text: beats
-              .slice(0, index)
-              .map((item) => item.char)
-              .join(''),
-          }
-        }
-        return next
-      })
-      avatar?.speakBeat(beat.open, beat.form, beat.delay)
-      timer = window.setTimeout(advance, beat.delay)
+      timer = window.setTimeout(reveal, Math.max(16, chars[index].at - elapsed))
     }
 
-    timer = window.setTimeout(advance, 80)
+    reveal()
     return () => {
       window.clearTimeout(timer)
       avatar?.stopSpeaking()
@@ -134,6 +139,7 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
 
       const turn = respond(text, sessionRef.current, lexicon)
       setSignal(turn.signal)
+      setTokens(turn.tokens)
       avatarRef.current?.setEmotion(turn.emotion)
       window.setTimeout(() => {
         push({
@@ -261,6 +267,24 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
         </Flex>
       </Flex>
 
+      {/* She refers to this panel by position — "右邊那排就是我看到的樣子" — so it
+          has to actually be there. Too narrow to show below lg. */}
+      <Box
+        position="absolute"
+        zIndex={3}
+        display={{ base: 'none', lg: 'block' }}
+        top="88px"
+        right="34px"
+        width="288px"
+        maxHeight="calc(100% - 260px)"
+        overflowY="auto"
+      >
+        <LexiconPanel
+          tokens={tokens}
+          wordCount={lexicon ? lexicon.weights.size : null}
+        />
+      </Box>
+
       <Flex
         position="absolute"
         zIndex={4}
@@ -372,9 +396,11 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
         >
           <Input
             value={draft}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              if (draft.length === 0 && event.target.value.length > 0)
+                avatarRef.current?.notice()
               setDraft(event.target.value)
-            }
+            }}
             placeholder={t('terminalPage.placeholder')}
             aria-label={t('terminalPage.placeholder')}
             maxLength={120}

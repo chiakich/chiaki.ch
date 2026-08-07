@@ -21,18 +21,15 @@ const OUT = path.join(
   'terminal',
   'lexicon.txt'
 )
-const PRONUNCIATION_OUT = path.join(
-  __dirname,
-  '..',
-  'public',
-  'assets',
-  'story',
-  'terminal',
-  'pronunciation.txt'
-)
+// Readings are only ever used to pronounce Chiaki's own lines, which are a
+// fixed 180-line corpus — so they are compiled into the bundle instead of
+// shipped as a 296 KB dictionary the page has to download before she can speak.
+const READINGS_OUT = path.join(__dirname, '..', 'lib', 'terminal', 'readings.generated.ts')
+const RULES_SOURCE = path.join(__dirname, '..', 'lib', 'terminal', 'rules.ts')
 
 const MAX_WORD_LENGTH = 6 // the segmenter's DAG window never looks further
 const CJK_ONLY = /^[㐀-䶿一-鿿豈-﫿]+$/
+const CJK_ANY = /[㐀-䶿一-鿿豈-﫿]/
 
 const readArg = (flag, fallback) => {
   const index = process.argv.indexOf(flag)
@@ -190,22 +187,53 @@ for (const source of ['chiaki-modern-overlay', 'chiaki-web-overlay']) {
 }
 
 // The normalized ChiaKey language model stores every Mandarin syllable as a
-// two-byte absolute-order qstring. Reduce those readings to the five mouth
-// shapes used by the terminal, keeping the highest-probability reading for
-// polyphonic words. This lets the browser animate pronunciation without
-// shipping the 100+ MB SQLite language model.
-const visemeOfSyllable = (encoded) => {
-  if (encoded.length !== 2) return 'E'
+// two-byte absolute-order qstring, a mixed radix over bopomofo:
+//   order = tone * 1232 + final * 88 + medial * 22 + initial
+// Reduce each syllable to the three things the terminal's mouth needs, keeping
+// the highest-probability reading for polyphonic words. This lets the browser
+// animate pronunciation without shipping the 100+ MB SQLite language model.
+const decodeSyllable = (encoded) => {
   const order = (encoded.charCodeAt(1) - 48) * 79 + (encoded.charCodeAt(0) - 48)
-  const middle = Math.floor(order / 22) % 4 // none, ㄧ, ㄨ, ㄩ
-  const vowel = Math.floor(order / (22 * 4)) % 14
-
-  if ([1, 5, 9, 11].includes(vowel)) return 'A' // ㄚ ㄞ ㄢ ㄤ
-  if ([2, 7, 8].includes(vowel)) return 'O' // ㄛ ㄠ ㄡ
-  if (middle === 2 || middle === 3) return 'U' // ㄨ / ㄩ retain rounding
-  if (middle === 1 && vowel === 0) return 'I'
-  return 'E' // ㄜ ㄝ ㄟ ㄣ ㄥ ㄦ and apical vowels
+  return {
+    initial: order % 22, // none, ㄅ..ㄙ
+    medial: Math.floor(order / 22) % 4, // none, ㄧ, ㄨ, ㄩ
+    final: Math.floor(order / (22 * 4)) % 14, // none, ㄚ..ㄦ
+    tone: Math.floor(order / (22 * 4 * 14)) % 5, // 0..3 = tones 1-4, 4 = neutral
+  }
 }
+
+// Which of the five mouth shapes the vowel settles into.
+const visemeOfSyllable = ({ medial, final }) => {
+  if ([1, 5, 9, 11].includes(final)) return 0 // ㄚ ㄞ ㄢ ㄤ → A
+  if ([2, 7, 8].includes(final)) return 4 // ㄛ ㄠ ㄡ → O
+  if (medial === 2 || medial === 3) return 2 // ㄨ / ㄩ retain rounding → U
+  if (medial === 1 && final === 0) return 1 // I
+  return 3 // ㄜ ㄝ ㄟ ㄣ ㄥ ㄦ and apical vowels → E
+}
+
+// How far the mouth has to close to *start* the syllable. Without this the
+// portrait holds a half-open mouth for the whole line instead of articulating,
+// because vowels alone never bring the lips back together.
+const onsetOfSyllable = ({ initial }) => {
+  if (initial === 0) return 0 // vowel onset, nothing to close
+  if (initial <= 3) return 1 // ㄅ ㄆ ㄇ — lips fully together
+  if (initial === 4) return 2 // ㄈ — lower lip to teeth
+  if (initial <= 10) return 3 // ㄉ ㄊ ㄋ ㄌ ㄍ ㄎ — jaw closes, lips relaxed
+  return 4 // ㄏ ㄐ..ㄙ — narrow slit
+}
+
+// Neutral-tone syllables are audibly clipped and third tone is the longest, so
+// a three-level class is enough to keep the mouth off a metronome.
+const lengthOfSyllable = ({ tone }) => (tone === 4 ? 0 : tone === 2 ? 2 : 1)
+
+// One printable ASCII character per syllable, '0'..'z'. Shipping the three
+// fields as separate columns instead costs ~80 KB more over the wire.
+const packSyllable = (syllable) =>
+  String.fromCharCode(
+    48 +
+      (visemeOfSyllable(syllable) * 5 + onsetOfSyllable(syllable)) * 3 +
+      lengthOfSyllable(syllable)
+  )
 
 const readings = new Map()
 const normalized = path.join(root, 'normalized', 'smart-mandarin.tsv')
@@ -217,11 +245,11 @@ if (fs.existsSync(normalized)) {
     const score = Number(scoreText)
     const existing = readings.get(word)
     if (existing && existing.score >= score) return
-    let visemes = ''
+    let packed = ''
     for (let index = 0; index < qstring.length; index += 2) {
-      visemes += visemeOfSyllable(qstring.slice(index, index + 2))
+      packed += packSyllable(decodeSyllable(qstring.slice(index, index + 2)))
     }
-    readings.set(word, { score, visemes })
+    readings.set(word, { score, packed })
   })
 }
 
@@ -255,11 +283,45 @@ const body = lines.join('\n')
 fs.mkdirSync(path.dirname(OUT), { recursive: true })
 fs.writeFileSync(OUT, `${body}\n`)
 
-const pronunciationBody = [...readings.entries()]
-  .sort(([a], [b]) => a.localeCompare(b, 'zh-Hant'))
-  .map(([word, reading]) => `${word}\t${reading.visemes}`)
-  .join('\n')
-fs.writeFileSync(PRONUNCIATION_OUT, `${pronunciationBody}\n`)
+// Everything Chiaki can say lives in single-quoted literals in rules.ts. Pull
+// them out so the readings table can be narrowed to just her vocabulary.
+const spokenCorpus = (
+  fs.readFileSync(RULES_SOURCE, 'utf8').match(/'[^'\n]*'/g) ?? []
+)
+  .map((literal) => literal.slice(1, -1))
+  .filter((line) => CJK_ANY.test(line))
+if (spokenCorpus.length === 0) {
+  throw new Error(`Extracted no dialogue from ${RULES_SOURCE}; the literal shape must have changed.`)
+}
+const spokenJoined = spokenCorpus.join(' ')
+
+// Single characters cover any word, including the ones echoed back from user
+// input; her own multi-character words are kept as well so polyphones like
+// 還/行/了 get the reading the segmenter actually chose.
+const charTable = []
+const wordTable = []
+for (const [word, reading] of [...readings.entries()].sort(([a], [b]) =>
+  a.localeCompare(b, 'zh-Hant')
+)) {
+  if (word.length === 1) charTable.push(word + reading.packed)
+  else if (spokenJoined.includes(word)) wordTable.push(`${word}\t${reading.packed}`)
+}
+const charBody = charTable.join('')
+const wordBody = wordTable.join('\n')
+
+fs.writeFileSync(
+  READINGS_OUT,
+  `// Generated by scripts/generateChatLexicon.js — do not edit.
+//
+// One packed character per Mandarin syllable, decoded by unpackSyllable in
+// lib/terminal/speech.ts. CHARS alternates character and reading; WORDS is
+// tab-separated, and covers only the vocabulary Chiaki's own lines use.
+
+export const CHAR_READINGS = ${JSON.stringify(charBody)}
+
+export const WORD_READINGS = ${JSON.stringify(wordBody)}
+`
+)
 
 console.log(
   `wrote ${sorted.length} words → ${path.relative(path.join(__dirname, '..'), OUT)} ` +
@@ -269,11 +331,10 @@ console.log(
     )} KB gzipped)`
 )
 console.log(
-  `wrote ${readings.size} pronunciations → ${path.relative(
-    path.join(__dirname, '..'),
-    PRONUNCIATION_OUT
-  )} (${(Buffer.byteLength(pronunciationBody) / 1024).toFixed(0)} KB raw, ` +
+  `wrote readings → ${path.relative(path.join(__dirname, '..'), READINGS_OUT)} ` +
+    `(${charTable.length} chars + ${wordTable.length} words from ${spokenCorpus.length} spoken lines, ` +
+    `${((Buffer.byteLength(charBody) + Buffer.byteLength(wordBody)) / 1024).toFixed(1)} KB raw, ` +
     `~${(
-      zlib.gzipSync(Buffer.from(pronunciationBody), { level: 9 }).length / 1024
-    ).toFixed(0)} KB gzipped)`
+      zlib.gzipSync(Buffer.from(charBody + wordBody), { level: 9 }).length / 1024
+    ).toFixed(1)} KB gzipped)`
 )

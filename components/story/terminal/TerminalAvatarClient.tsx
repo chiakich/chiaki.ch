@@ -1,22 +1,26 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Box, styled } from 'styled-system/jsx'
+import type { GestureKey, MouthKey } from 'lib/terminal/speech'
 import type { Emotion } from 'lib/terminal/types'
 
 const Img = styled.img
 
 export type TerminalAvatarHandle = {
   setEmotion: (emotion: Emotion) => void
-  speakBeat: (open: number, form: number, duration: number) => void
+  /** Hands the whole utterance over; the viewer samples it on its own clock. */
+  speak: (keys: MouthKey[], gestures: GestureKey[]) => void
   stopSpeaking: () => void
+  /** Glance at the input box — called when the visitor starts typing. */
+  notice: () => void
 }
 
 type TerminalAvatarClientProps = {
   controls: React.MutableRefObject<TerminalAvatarHandle | null>
 }
 
+// PARAM_MOUTH_OPEN_Y is deliberately absent: the utterance timeline owns it.
 const BASE_PARAMS: Record<string, number> = {
   PARAM_MOUTH_FORM: 0,
-  PARAM_MOUTH_OPEN_Y: 0,
   PARAM_EYE_L_SMILE: 0,
   PARAM_EYE_R_SMILE: 0,
   PARAM_EYE_L_OPEN: 1,
@@ -61,48 +65,81 @@ const EMOTION_PARAMS: Record<Emotion, Record<string, number>> = {
   },
 }
 
+// Tail amplitude and rate per emotion — tucked when shy or sad, a startled
+// flick on surprise. Her own dialogue claims the tail gives her away.
+const EMOTION_TAIL: Record<Emotion, { amp: number; rate: number }> = {
+  neutral: { amp: 1, rate: 1 },
+  happy: { amp: 1.5, rate: 1.35 },
+  shy: { amp: 0.55, rate: 0.8 },
+  surprised: { amp: 1.7, rate: 1.6 },
+  sad: { amp: 0.45, rate: 0.65 },
+  thinking: { amp: 0.8, rate: 0.85 },
+  proud: { amp: 1.35, rate: 1.2 },
+}
+
+// Exponential attack rate per emotion. A face that arrives at one speed no
+// matter what it is reads as a dial being turned rather than a reaction.
+const EMOTION_SPEED: Record<Emotion, number> = {
+  neutral: 5,
+  happy: 8,
+  shy: 6,
+  surprised: 22,
+  sad: 3.2,
+  thinking: 5,
+  proud: 8,
+}
+
 const TerminalAvatarClient = ({ controls }: TerminalAvatarClientProps) => {
   const frameRef = useRef<HTMLIFrameElement>(null)
   const paramsRef = useRef<Record<string, number>>({ ...BASE_PARAMS })
   const pointerRef = useRef({ x: 0, y: 0 })
   const [ready, setReady] = useState(false)
 
+  const speedRef = useRef(EMOTION_SPEED.neutral)
+  const tailRef = useRef(EMOTION_TAIL.neutral)
+
   const publish = useCallback(() => {
     frameRef.current?.contentWindow?.postMessage(
-      { type: 'chiaki-terminal-params', params: paramsRef.current },
+      {
+        type: 'chiaki-terminal-params',
+        params: paramsRef.current,
+        speed: speedRef.current,
+        tail: tailRef.current,
+      },
       window.location.origin
     )
   }, [])
 
-  const setParams = useCallback(
-    (next: Record<string, number>) => {
-      paramsRef.current = { ...paramsRef.current, ...next }
-      publish()
-    },
-    [publish]
-  )
+  const speak = useCallback((keys: MouthKey[], gestures: GestureKey[]) => {
+    frameRef.current?.contentWindow?.postMessage(
+      { type: 'chiaki-terminal-speech', keys, gestures },
+      window.location.origin
+    )
+  }, [])
 
   useEffect(() => {
     controls.current = {
       setEmotion: (emotion) => {
         paramsRef.current = { ...BASE_PARAMS, ...EMOTION_PARAMS[emotion] }
+        speedRef.current = EMOTION_SPEED[emotion]
+        tailRef.current = EMOTION_TAIL[emotion]
         publish()
       },
-      speakBeat: (open, form, _duration) => {
-        setParams({
-          PARAM_MOUTH_OPEN_Y: Math.min(0.66, Math.max(0, open * 1.38)),
-          PARAM_MOUTH_FORM: Math.min(0.28, Math.max(-0.28, form * 0.38)),
-        })
-      },
-      stopSpeaking: () => {
-        setParams({ PARAM_MOUTH_OPEN_Y: 0, PARAM_MOUTH_FORM: 0 })
-      },
+      speak,
+      stopSpeaking: () => speak([], []),
+      // Reuses the gaze system rather than adding a channel: aiming the pointer
+      // target low and centre makes her look down at the input for its lifetime.
+      notice: () =>
+        frameRef.current?.contentWindow?.postMessage(
+          { type: 'chiaki-terminal-pointer', targetX: 0, targetY: 0.42 },
+          window.location.origin
+        ),
     }
 
     return () => {
       controls.current = null
     }
-  }, [controls, publish, setParams])
+  }, [controls, publish, speak])
 
   useEffect(() => {
     const onPointerMove = (event: PointerEvent) => {
