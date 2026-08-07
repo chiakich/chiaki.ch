@@ -59,7 +59,7 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
         emotion: 'neutral',
         ruleId: 'opening',
       })
-      setTyping('……連線建立。晚上好，我是涼風千秋。')
+      setTyping('……欸，燈亮了。有人在嗎？我是千秋。')
       avatarRef.current?.setEmotion('neutral')
     }, 480)
     return () => window.clearTimeout(timer)
