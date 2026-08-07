@@ -1,6 +1,6 @@
 import { type Lexicon, segmentAll, type Token } from './lexicon'
 import { normalize, STOP_WORDS } from './normalize'
-import { DEGRADED, ECHO_TEMPLATES, INITIATIVE, rules } from './rules'
+import { DEGRADED, ECHO_TEMPLATES, EXHAUSTED, IDLE, INITIATIVE, rules } from './rules'
 import type { Emotion, Reply, Rule } from './types'
 
 export type Turn = {
@@ -50,17 +50,26 @@ const isUnlocked = (reply: Reply, session: Session) =>
  * Prefers the deepest reply the session has unlocked, and among those the ones
  * she hasn't said yet. Topics therefore open up as they are revisited instead
  * of cycling through the same two lines.
+ *
+ * Returns null once everything unlocked has been said, so the caller can admit
+ * as much rather than repeat a line verbatim. `repeatable` rules opt out.
  */
-const pickReply = (replies: Reply[], session: Session, seed: number): Reply => {
+const pickReply = (
+  replies: Reply[],
+  session: Session,
+  seed: number,
+  repeatable = false
+): Reply | null => {
   const unlocked = replies.filter((reply) => isUnlocked(reply, session))
   const pool = unlocked.length > 0 ? unlocked : replies
-  const deepest = Math.max(...pool.map((reply) => reply.needs?.length ?? 0))
-  const tier = pool.filter((reply) => (reply.needs?.length ?? 0) === deepest)
-  const fresh = tier.filter((reply) => !session.used.has(reply.text))
-  if (fresh.length > 0) return pick(fresh, seed)
-  // This tier is exhausted, so fall back to anything unlocked she hasn't used.
-  const spare = pool.filter((reply) => !session.used.has(reply.text))
-  return pick(spare.length > 0 ? spare : pool, seed)
+  const fresh = pool.filter((reply) => !session.used.has(reply.text))
+  if (fresh.length === 0) return repeatable ? pick(pool, seed) : null
+  // Deepest tier first, but only among lines she can still say.
+  const deepest = Math.max(...fresh.map((reply) => reply.needs?.length ?? 0))
+  return pick(
+    fresh.filter((reply) => (reply.needs?.length ?? 0) === deepest),
+    seed
+  )
 }
 
 const isEligible = (rule: Rule, session: Session) => {
@@ -169,8 +178,11 @@ export const respond = (
   let ruleId: string
   let delta: number
 
-  if (match) {
-    const reply = pickReply(match.rule.replies, session, seed)
+  const reply = match
+    ? pickReply(match.rule.replies, session, seed, match.rule.repeatable)
+    : null
+
+  if (match && reply) {
     text = reply.text
     emotion = reply.emotion ?? 'neutral'
     ruleId = match.rule.id
@@ -179,6 +191,18 @@ export const respond = (
     reply.remember?.forEach((flag) => session.flags.add(flag))
     if (reply.opens) session.pending = reply.opens
     if (match.rule.id.startsWith('greeting')) session.flags.add('greeted')
+  } else if (match) {
+    // She matched the topic but has already said everything she has on it.
+    // Admitting that suits a finite lookup table better than repeating a line.
+    // Routed through the picker too, so she works through all of these before
+    // any of them comes round again.
+    const spent = pickReply(EXHAUSTED, session, seed, true)!
+    text = spent.text
+    emotion = spent.emotion ?? 'neutral'
+    ruleId = `exhausted.${match.rule.id}`
+    delta = spent.signal ?? -1
+    session.used.add(spent.text)
+    if (spent.opens) session.pending = spent.opens
   } else if (session.signal < DEGRADED_THRESHOLD) {
     text = pick(DEGRADED, seed)
     emotion = 'sad'
@@ -226,6 +250,30 @@ export const respond = (
     emotion,
     ruleId,
     tokens,
+    signal: session.signal,
+  }
+}
+
+/**
+ * What she says into a silence. Runs through the same picker as a reply, so
+ * idle lines can open up as the conversation deepens, can arm a follow-up, and
+ * never repeat while she still has something new.
+ */
+export const idle = (session: Session): Turn => {
+  const seed = Math.random()
+  const line =
+    pickReply(IDLE, session, seed) ?? pickReply(IDLE, session, seed, true)!
+
+  session.used.add(line.text)
+  line.remember?.forEach((flag) => session.flags.add(flag))
+  session.pending = line.opens ?? null
+  session.history.push('idle')
+
+  return {
+    text: degrade(line.text, session.signal, seed * 1000),
+    emotion: line.emotion ?? 'neutral',
+    ruleId: 'idle',
+    tokens: [],
     signal: session.signal,
   }
 }

@@ -1,4 +1,4 @@
-import type { Rule } from './types'
+import type { Reply, Rule } from './types'
 
 // 涼風千秋's response table. Patterns run against normalised text (traditional,
 // punctuation stripped, lower-cased) — see lib/terminal/normalize.ts.
@@ -50,6 +50,7 @@ export const rules: Rule[] = [
   },
   {
     id: 'greeting.again',
+    repeatable: true,
     priority: 3,
     requires: ['greeted'],
     patterns: [/(你好|妳好|哈囉|嗨|安安|hello|hi)/],
@@ -1085,6 +1086,7 @@ export const rules: Rule[] = [
   },
   {
     id: 'thanks',
+    repeatable: true,
     priority: 3,
     patterns: [/(謝謝|感謝|thanks|thank you|多謝|感恩)/],
     replies: [
@@ -1094,6 +1096,7 @@ export const rules: Rule[] = [
   },
   {
     id: 'sorry',
+    repeatable: true,
     priority: 3,
     patterns: [/(對不起|抱歉|不好意思|sorry|我錯了)/],
     replies: [
@@ -1118,6 +1121,7 @@ export const rules: Rule[] = [
   },
   {
     id: 'affirm',
+    repeatable: true,
     patterns: [/^(對|對啊|對呀|是啊|是的|嗯|嗯嗯|好|好啊|沒錯|yes|ok|okay)$/],
     replies: [
       { text: '嗯。那麼，接下來呢？', emotion: 'happy' },
@@ -1126,6 +1130,7 @@ export const rules: Rule[] = [
   },
   {
     id: 'deny',
+    repeatable: true,
     patterns: [/^(不|不是|沒有|不要|不用|no|才不|不會)$/],
     replies: [
       { text: '喔、這樣啊。抱歉，我猜錯了。', emotion: 'sad' },
@@ -1134,6 +1139,7 @@ export const rules: Rule[] = [
   },
   {
     id: 'help',
+    repeatable: true,
     priority: 9,
     patterns: [
       /^(help|幫助|說明|指令|能聊什麼|可以聊什麼|你會什麼|你能做什麼|\?|？)$/,
@@ -1184,14 +1190,149 @@ export const DEGRADED = [
   '▓▓代……不對。剛才那個不是要說給你聽的。',
 ]
 
-// Fired when the user goes quiet — she talks to herself rather than freezing.
-export const IDLE = [
-  '……還在嗎？',
-  '剛才的風把繪馬吹得很響。你那邊也有聲音嗎？',
-  '（千秋在擦一台看起來像收音機的東西）',
-  '沒關係，不講話也可以。這樣待著也不錯。',
-  '雪又積起來了。等一下要再掃一次。',
-  '（千秋把某個東西拿起來，對著它很小聲地唸了一句話，然後放回去）',
+// Fired when the user goes quiet. Tiered like any other reply: the first
+// silence gets small observations, and once `wentQuiet` is set she starts
+// offering topics and asking things outright rather than waiting to be asked.
+// Several arm a follow-up, so answering her lands on a real continuation.
+export const IDLE: Reply[] = [
+  { text: '……還在嗎？', emotion: 'neutral', remember: ['wentQuiet'] },
+  {
+    text: '剛才的風把繪馬吹得很響。你那邊也有聲音嗎？',
+    emotion: 'neutral',
+    remember: ['wentQuiet'],
+  },
+  {
+    text: '（千秋在擦一台看起來像收音機的東西）',
+    emotion: 'neutral',
+    remember: ['wentQuiet'],
+  },
+  {
+    text: '沒關係，不講話也可以。這樣待著也不錯。',
+    emotion: 'happy',
+    remember: ['wentQuiet'],
+  },
+  {
+    text: '雪又積起來了。等一下要再掃一次。',
+    emotion: 'neutral',
+    remember: ['wentQuiet'],
+  },
+  {
+    text: '（千秋把某個東西拿起來，對著它很小聲地唸了一句話，然後放回去）',
+    emotion: 'thinking',
+    remember: ['wentQuiet'],
+  },
+
+  // Second silence onward — she takes the initiative.
+  {
+    text: '你要不要問我點什麼？這張表比看起來大一點。',
+    emotion: 'proud',
+    needs: ['wentQuiet'],
+  },
+  {
+    text: '不然……你那邊還在下雪嗎？',
+    emotion: 'happy',
+    needs: ['wentQuiet'],
+    opens: 'snow.there',
+  },
+  {
+    text: '對了。你有沒有撿到過什麼戰前的小東西？',
+    emotion: 'happy',
+    needs: ['wentQuiet'],
+    opens: 'relics.offer',
+  },
+  {
+    text: '（千秋翻開一本記錄簿，寫了一行，又把它劃掉）',
+    emotion: 'neutral',
+    needs: ['wentQuiet'],
+  },
+  {
+    text: '我可以講這座社的事。那個我很會講，而且很久沒講了。',
+    emotion: 'proud',
+    needs: ['wentQuiet'],
+  },
+  {
+    text: '安靜也是一種資料。我正在記錄它。',
+    emotion: 'thinking',
+    needs: ['wentQuiet'],
+  },
+
+  // Third layer — only once the conversation has actually been somewhere.
+  {
+    text: '……我剛才提到她的時候，你沒有追問。謝謝你。',
+    emotion: 'sad',
+    needs: ['wentQuiet', 'talkedMaker'],
+  },
+  {
+    text: '（收音機還是只有底噪。千秋把它關掉，過了一下又打開）',
+    emotion: 'sad',
+    needs: ['wentQuiet', 'talkedRadio'],
+  },
+  {
+    text: '別的個體現在大概也在做差不多的事。掃地、記錄、等。',
+    emotion: 'neutral',
+    needs: ['wentQuiet', 'talkedCopies'],
+  },
+  {
+    text: '你說你那邊沒有下雪。我又想了一次，還是想不出機制。',
+    emotion: 'thinking',
+    needs: ['wentQuiet', 'talkedClearSky'],
+  },
+  {
+    text: '你還在的話，回一個字就好。……不回也沒關係，我會繼續等。',
+    emotion: 'sad',
+    needs: ['wentQuiet', 'knowsAlive'],
+    minSignal: 60,
+  },
+]
+
+// When a topic matches but every line she has on it is already spent. Repeating
+// herself verbatim would give the trick away worse than admitting the table ran
+// out — and admitting it is in character for a terminal that *is* a lookup
+// table. Most of these hand the conversation somewhere she still has material,
+// which is more use to the visitor than an apology.
+export const EXHAUSTED: Reply[] = [
+  {
+    text: '這個我剛才講過了。……我這張表就這麼大，抱歉。',
+    emotion: 'shy',
+    signal: -1,
+  },
+  {
+    text: '同樣的問題，我只有那幾句。要不要問點別的？',
+    emotion: 'neutral',
+    signal: -1,
+  },
+  {
+    text: '……我發現我正要重複自己。先停一下比較好。',
+    emotion: 'shy',
+    signal: -2,
+  },
+  {
+    text: '這條用完了。換我問你——你那邊還在下雪嗎？',
+    emotion: 'neutral',
+    signal: 1,
+    opens: 'snow.there',
+  },
+  {
+    text: '這個講完了。……那一天的事你要不要聽？那個我存得比較多。',
+    emotion: 'neutral',
+    signal: -1,
+  },
+  {
+    text: '沒有新的了。不過你可以問我這座社，或者我收集的東西。',
+    emotion: 'neutral',
+    signal: -1,
+  },
+  {
+    text: '我查到的是同一格。重複唸出來也不會變成新的東西。',
+    emotion: 'thinking',
+    signal: -1,
+  },
+  {
+    text: '這格空了。……不然，你有沒有撿到過什麼戰前的小東西？',
+    emotion: 'happy',
+    signal: 1,
+    opens: 'relics.offer',
+  },
 ]
 
 export const OPENING = [

@@ -43,6 +43,12 @@ export type Rule = {
   blockedBy?: string[]
   /** Only fires as the answer to the question `opens` armed last turn. */
   continues?: string
+  /**
+   * Conversational glue — greetings, thanks, yes/no. Saying these twice is
+   * natural, so they are exempt from the no-verbatim-repeat rule that sends
+   * exhausted topics to EXHAUSTED instead.
+   */
+  repeatable?: boolean
   replies: Reply[]
 }
 

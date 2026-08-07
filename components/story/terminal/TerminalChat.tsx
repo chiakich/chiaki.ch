@@ -1,10 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { Box, Flex, styled } from 'styled-system/jsx'
-import { createSession, respond, type Session } from 'lib/terminal/engine'
+import { createSession, idle, respond, type Session } from 'lib/terminal/engine'
 import { loadLexicon, type Lexicon } from 'lib/terminal/lexicon'
 import { createUtterance } from 'lib/terminal/speech'
-import { IDLE } from 'lib/terminal/rules'
 import type { Token } from 'lib/terminal/lexicon'
 import type { Message } from 'lib/terminal/types'
 import LexiconPanel from './LexiconPanel'
@@ -125,10 +124,10 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
     if (!started || messages.length === 0) return undefined
     const timer = window.setTimeout(() => {
       if (typing !== null) return
-      const line = IDLE[Math.floor(Math.random() * IDLE.length)]
-      push({ role: 'chiaki', text: '', emotion: 'neutral', ruleId: 'idle' })
-      setTyping(line)
-      avatarRef.current?.setEmotion('neutral')
+      const turn = idle(sessionRef.current)
+      push({ role: 'chiaki', text: '', emotion: turn.emotion, ruleId: 'idle' })
+      setTyping(turn.text)
+      avatarRef.current?.setEmotion(turn.emotion)
     }, IDLE_DELAY)
     return () => window.clearTimeout(timer)
   }, [messages, push, started, typing])
