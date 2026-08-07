@@ -90,8 +90,8 @@ const TerminalAvatarClient = ({ controls }: TerminalAvatarClientProps) => {
       },
       speakBeat: (open, form, _duration) => {
         setParams({
-          PARAM_MOUTH_OPEN_Y: Math.min(0.48, Math.max(0, open)),
-          PARAM_MOUTH_FORM: Math.min(0.2, Math.max(-0.2, form * 0.28)),
+          PARAM_MOUTH_OPEN_Y: Math.min(0.66, Math.max(0, open * 1.38)),
+          PARAM_MOUTH_FORM: Math.min(0.28, Math.max(-0.28, form * 0.38)),
         })
       },
       stopSpeaking: () => {

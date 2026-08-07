@@ -279,7 +279,6 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
           px={{ base: '12px', md: '16px' }}
           py="12px"
           background="linear-gradient(180deg, rgba(8,3,1,.04), rgba(8,3,1,.8))"
-          backdropFilter="blur(7px)"
           borderLeft="1px solid rgba(231,105,45,.38)"
         >
           <Flex direction="column" gap="9px">
@@ -366,7 +365,6 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
           display="flex"
           gap="7px"
           background="rgba(7,3,1,.7)"
-          backdropFilter="blur(10px)"
           onSubmit={(event: React.FormEvent) => {
             event.preventDefault()
             send(draft)

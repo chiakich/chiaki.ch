@@ -51,14 +51,14 @@ export const createSpeechBeats = (
     const reading = lexicon?.readings.get(token.text)
     Array.from(token.text).forEach((char, charIndex) => {
       const pause = LONG_PAUSE.test(char)
-        ? 300
+        ? 270
         : SHORT_PAUSE.test(char)
-          ? 180
+          ? 150
           : SILENT.test(char)
             ? 72
             : CJK_OR_KANA.test(char)
-              ? 118
-              : 92
+              ? 102
+              : 80
       const viseme = reading
         ? VISEMES[reading[charIndex]]
         : /[aeiou]/i.test(char)
