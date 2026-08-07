@@ -24,7 +24,8 @@ const sizes: Record<string, { width: number; height: number }> = (() => {
   }
 })()
 
-const sizeOf = (src: string) => sizes[src.replace(/^\/assets\//, '')]
+// Cache keys are extensionless: "/assets/blog/foo/01.webp" -> "blog/foo/01".
+const sizeOf = (src: string) => sizes[src.replace(/^\/assets\//, '').replace(/\.[^./]+$/, '')]
 
 const toVideo = (node: Node, src: string) => {
   const poster = src.replace(/\.mp4$/, '-poster.webp')

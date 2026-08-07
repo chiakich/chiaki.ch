@@ -15,6 +15,7 @@
     "lint": "next lint",
     "optimize-assets": "node scripts/optimizeAssets.js",
     "convert-gifs": "node scripts/convertGifs.js",
+    "generate-live2d-texture": "node scripts/generateLive2DTexture.js",
     "update-projects": "node scripts/generateProjectIndex.js",
     "update-character": "npm run optimize-assets && npm run update-projects"
   },

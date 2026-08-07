@@ -3,12 +3,18 @@ const path = require('path')
 const crypto = require('crypto')
 const sharp = require('sharp')
 
-// One-off (re-runnable) asset pass: re-encode everything under public/assets to
-// webp at a sane display size, and emit a 400w `-thumb` next to anything big
-// enough to be shown as a thumbnail. Run it after dropping new art in, then
-// commit the result — the site serves these files as-is, with no CDN transform.
+// Re-encodes art to webp at a sane display size and emits a 400w `-thumb`
+// alongside anything big enough to be shown as one. The site serves the results
+// as-is, with no CDN transform.
+//
+// Sources are read from assets-src/ when a matching file is there, otherwise
+// from public/assets/ itself. Keeping the untouched originals out of public/
+// matters twice over: `output: 'export'` copies public/ into out/ verbatim, so
+// anything left there ships to the CDN; and re-encoding an already-lossy webp
+// at new settings would stack generation loss instead of starting clean.
 
-const ROOT = path.join(__dirname, '..', 'public', 'assets')
+const SRC_ROOT = path.join(__dirname, '..', 'assets-src')
+const OUT_ROOT = path.join(__dirname, '..', 'public', 'assets')
 const CACHE_FILE = path.join(__dirname, 'optimizeAssets.cache.json')
 const REWRITE_DIRS = ['components', 'pages', 'lib', 'content', 'i18n', 'scripts']
 
@@ -18,6 +24,9 @@ const QUALITY = 78
 const THUMB_WIDTH = 400
 const THUMB_QUALITY = 75
 const THUMB_SUFFIX = '-thumb'
+// Files this pipeline produces itself. Feeding them back in would re-encode an
+// already-lossy webp on every run.
+const DERIVED_SUFFIXES = [THUMB_SUFFIX, '-poster']
 
 // Paths whose bytes other code depends on verbatim.
 const SKIP = [
@@ -27,18 +36,47 @@ const SKIP = [
   'story/character/minecraft-skin.png', // skinview3d needs the exact skin bitmap
 ]
 
-const rel = (p) => path.relative(ROOT, p).split(path.sep).join('/')
 const hash = (buf) => crypto.createHash('sha1').update(buf).digest('hex').slice(0, 16)
-const isSkipped = (p) => SKIP.some((s) => rel(p) === s || rel(p).startsWith(`${s}/`))
+const kb = (n) => `${(n / 1024).toFixed(0)}KB`
+const posix = (p) => p.split(path.sep).join('/')
+// Keys carry no extension, so a SKIP entry naming a single file has to lose its
+// own before the two can be compared.
+const dropExt = (s) => (SOURCE_EXTENSIONS.includes(path.extname(s).toLowerCase()) ? s.slice(0, -path.extname(s).length) : s)
+const isSkipped = (key) => SKIP.some((s) => key === dropExt(s) || key.startsWith(`${dropExt(s)}/`))
 
 const walk = (dir, out = []) => {
+  if (!fs.existsSync(dir)) return out
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const full = path.join(dir, entry.name)
-    if (isSkipped(full)) continue
     if (entry.isDirectory()) walk(full, out)
     else if (entry.isFile()) out.push(full)
   }
   return out
+}
+
+// "blog/foo/01.png" under either root collapses to the key "blog/foo/01", which
+// is what pairs a source with the .webp it produces.
+const keyOf = (root, file) => {
+  const r = posix(path.relative(root, file))
+  return r.slice(0, r.length - path.extname(r).length)
+}
+
+const collectWork = () => {
+  const work = new Map()
+  const add = (root, file, isSource) => {
+    const ext = path.extname(file).toLowerCase()
+    if (!SOURCE_EXTENSIONS.includes(ext)) return
+    const key = keyOf(root, file)
+    if (isSkipped(key) || DERIVED_SUFFIXES.some((s) => key.endsWith(s))) return
+    const entry = work.get(key) ?? { key, source: null, existing: null }
+    if (isSource) entry.source = file
+    else entry.existing = file
+    work.set(key, entry)
+  }
+  walk(OUT_ROOT).forEach((f) => add(OUT_ROOT, f, false))
+  // assets-src wins, so it is applied second
+  walk(SRC_ROOT).forEach((f) => add(SRC_ROOT, f, true))
+  return [...work.values()]
 }
 
 const loadCache = () => {
@@ -49,21 +87,19 @@ const loadCache = () => {
   }
 }
 
-async function processFile(filePath, cache) {
-  const ext = path.extname(filePath).toLowerCase()
-  if (!SOURCE_EXTENSIONS.includes(ext)) return null
-  if (path.basename(filePath, ext).endsWith(THUMB_SUFFIX)) return null
+async function process(item, cache) {
+  const sourcePath = item.source ?? item.existing
+  if (!sourcePath) return null
 
-  const source = fs.readFileSync(filePath)
-  const key = rel(filePath)
-  const webpPath = filePath.slice(0, -ext.length) + '.webp'
+  const source = fs.readFileSync(sourcePath)
+  const sourceHash = hash(source)
+  const outPath = path.join(OUT_ROOT, `${item.key}.webp`)
 
-  // Re-encoding an already-optimized webp just loses quality, so skip anything
-  // whose bytes we recognise from a previous run.
-  if (cache[rel(webpPath)] && cache[rel(webpPath)].hash === hash(source)) return null
+  const cached = cache[item.key]
+  if (cached && cached.sourceHash === sourceHash && fs.existsSync(outPath)) return null
 
   const meta = await sharp(source).metadata()
-  const output = await sharp(source)
+  const encoded = await sharp(source)
     .resize({
       width: Math.min(meta.width, MAX_EDGE),
       height: Math.min(meta.height, MAX_EDGE),
@@ -73,98 +109,97 @@ async function processFile(filePath, cache) {
     .webp({ quality: QUALITY })
     .toBuffer()
 
-  // A webp source that is already smaller than what we would produce stays put.
-  const keepOriginal = ext === '.webp' && output.length >= source.length
-  const finalBuffer = keepOriginal ? source : output
-  if (!keepOriginal) fs.writeFileSync(webpPath, output)
-  if (webpPath !== filePath) fs.unlinkSync(filePath)
+  // A webp source already smaller than our output is passed through untouched.
+  const isWebpSource = path.extname(sourcePath).toLowerCase() === '.webp'
+  const output = isWebpSource && encoded.length >= source.length ? source : encoded
 
-  const finalMeta = await sharp(finalBuffer).metadata()
+  fs.mkdirSync(path.dirname(outPath), { recursive: true })
+  fs.writeFileSync(outPath, output)
+
+  // The pre-webp file under public/ is now dead weight, and its path is stale
+  // in every component that referenced it.
+  let renamed = null
+  if (item.existing && path.resolve(item.existing) !== path.resolve(outPath)) {
+    fs.unlinkSync(item.existing)
+    renamed = { from: posix(path.relative(OUT_ROOT, item.existing)), to: `${item.key}.webp` }
+  }
+
+  const outMeta = await sharp(output).metadata()
   let thumb = null
-  if (finalMeta.width > THUMB_WIDTH * 1.2) {
-    const thumbPath = webpPath.slice(0, -'.webp'.length) + THUMB_SUFFIX + '.webp'
+  if (outMeta.width > THUMB_WIDTH * 1.2) {
+    const thumbPath = path.join(OUT_ROOT, `${item.key}${THUMB_SUFFIX}.webp`)
     const thumbBuffer = await sharp(source)
       .resize({ width: THUMB_WIDTH, withoutEnlargement: true })
       .webp({ quality: THUMB_QUALITY })
       .toBuffer()
     fs.writeFileSync(thumbPath, thumbBuffer)
-    thumb = { path: rel(thumbPath), bytes: thumbBuffer.length }
+    thumb = thumbBuffer.length
   }
 
-  cache[rel(webpPath)] = {
-    hash: hash(finalBuffer),
-    width: finalMeta.width,
-    height: finalMeta.height,
-  }
+  cache[item.key] = { sourceHash, width: outMeta.width, height: outMeta.height }
 
-  return {
-    from: key,
-    to: rel(webpPath),
-    before: source.length,
-    after: finalBuffer.length,
-    thumb,
-    renamed: webpPath !== filePath,
-  }
+  return { key: item.key, before: source.length, after: output.length, thumb, renamed }
 }
 
 // Renaming .png/.jpg to .webp breaks every hardcoded path, so fix them in the
 // same pass rather than leaving a trail of 404s to chase.
+const TEXT_EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx', '.json', '.md', '.css']
+
 function rewriteReferences(renames) {
   if (renames.length === 0) return []
   const touched = []
   for (const dir of REWRITE_DIRS) {
     const abs = path.join(__dirname, '..', dir)
     if (!fs.existsSync(abs)) continue
-    for (const file of walk2(abs)) {
-      let text = fs.readFileSync(file, 'utf-8')
-      const original = text
+    for (const file of walk(abs)) {
+      if (!TEXT_EXTENSIONS.includes(path.extname(file))) continue
+      const original = fs.readFileSync(file, 'utf-8')
+      let text = original
       for (const { from, to } of renames) {
         text = text.split(`/assets/${from}`).join(`/assets/${to}`)
       }
       if (text !== original) {
         fs.writeFileSync(file, text)
-        touched.push(path.relative(path.join(__dirname, '..'), file))
+        touched.push(posix(path.relative(path.join(__dirname, '..'), file)))
       }
     }
   }
   return touched
 }
 
-const TEXT_EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx', '.json', '.md', '.css']
-const walk2 = (dir, out = []) => {
-  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    const full = path.join(dir, entry.name)
-    if (entry.isDirectory()) walk2(full, out)
-    else if (TEXT_EXTENSIONS.includes(path.extname(entry.name))) out.push(full)
-  }
-  return out
-}
-
-const kb = (n) => `${(n / 1024).toFixed(0)}KB`
-
 async function main() {
   const cache = loadCache()
-  const files = walk(ROOT)
+  const work = collectWork()
   const results = []
 
-  for (const file of files) {
-    const result = await processFile(file, cache)
+  for (const item of work) {
+    const result = await process(item, cache)
     if (!result) continue
     results.push(result)
-    const thumbNote = result.thumb ? ` +thumb ${kb(result.thumb.bytes)}` : ''
-    console.log(`${result.to}: ${kb(result.before)} -> ${kb(result.after)}${thumbNote}`)
+    console.log(
+      `${result.key}.webp: ${kb(result.before)} -> ${kb(result.after)}` +
+        (result.thumb ? ` +thumb ${kb(result.thumb)}` : '')
+    )
   }
 
-  fs.writeFileSync(CACHE_FILE, `${JSON.stringify(cache, null, 2)}\n`)
-
-  const renames = results.filter((r) => r.renamed).map(({ from, to }) => ({ from, to }))
-  const touched = rewriteReferences(renames)
-
-  const before = results.reduce((sum, r) => sum + r.before, 0)
-  const after = results.reduce(
-    (sum, r) => sum + r.after + (r.thumb ? r.thumb.bytes : 0),
-    0
+  // Drop entries for art that no longer exists, so the cache cannot outlive it.
+  const live = new Set(work.map((item) => item.key))
+  const pruned = Object.fromEntries(
+    Object.keys(cache)
+      .filter((k) => live.has(k))
+      .sort()
+      .map((k) => [k, cache[k]])
   )
+  fs.writeFileSync(CACHE_FILE, `${JSON.stringify(pruned, null, 2)}\n`)
+
+  const touched = rewriteReferences(results.map((r) => r.renamed).filter(Boolean))
+
+  if (results.length === 0) {
+    console.log(`Nothing to do — all ${work.length} images are up to date.`)
+    return
+  }
+  const before = results.reduce((sum, r) => sum + r.before, 0)
+  const after = results.reduce((sum, r) => sum + r.after + (r.thumb ?? 0), 0)
   console.log(`\n${results.length} images: ${kb(before)} -> ${kb(after)}`)
   if (touched.length) console.log(`Rewrote paths in:\n  ${touched.join('\n  ')}`)
 }
