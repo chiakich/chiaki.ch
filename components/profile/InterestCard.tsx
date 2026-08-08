@@ -66,12 +66,15 @@ const InterestCard = ({
 }) => {
   const reduceMotion = useReducedMotion()
   const [hovered, setHovered] = useState(false)
+  const [centered, setCentered] = useState(false)
   const [stackTitle, setStackTitle] = useState(false)
+  const cardRef = useRef<HTMLDivElement>(null)
   const titleRowRef = useRef<HTMLDivElement>(null)
   const titleRef = useRef<HTMLParagraphElement>(null)
   const enRef = useRef<HTMLParagraphElement>(null)
   const move = cameraMoves[id] ?? defaultMove
   const src = `/assets/profile/interests/${id}.webp`
+  const active = hovered || centered
 
   useEffect(() => {
     const titleRow = titleRowRef.current
@@ -92,8 +95,25 @@ const InterestCard = ({
     return () => observer.disconnect()
   }, [en, title])
 
+  // On touch devices there's no hover, so trigger the same effect when the
+  // card crosses the middle band of the viewport while scrolling.
+  useEffect(() => {
+    const card = cardRef.current
+    if (!card || typeof window === 'undefined') return
+    if (!window.matchMedia('(hover: none)').matches) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setCentered(entry.isIntersecting),
+      { rootMargin: '-45% 0px -45% 0px', threshold: 0 },
+    )
+    observer.observe(card)
+
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <MotionBox
+      ref={cardRef}
       position="relative"
       backgroundColor="#111"
       border="1px solid #222"
@@ -119,6 +139,9 @@ const InterestCard = ({
       }}
       style={{
         transition: 'transform 0.25s ease, border-color 0.25s ease',
+        ...(centered
+          ? { borderColor: '#ff782988', transform: 'translateY(-3px)' }
+          : {}),
       }}
     >
       {/* ── CRT background layer ── */}
@@ -132,11 +155,11 @@ const InterestCard = ({
         initial={false}
         animate={
           reduceMotion
-            ? { opacity: hovered ? 0.4 : 0 }
+            ? { opacity: active ? 0.4 : 0 }
             : {
-              opacity: hovered ? 1 : 0,
-              scaleY: hovered ? 1 : 0.7,
-              filter: hovered ? 'brightness(1)' : 'brightness(2.6)',
+              opacity: active ? 1 : 0,
+              scaleY: active ? 1 : 0.7,
+              filter: active ? 'brightness(1)' : 'brightness(2.6)',
             }
         }
         transition={{ duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
@@ -153,8 +176,8 @@ const InterestCard = ({
           display="block"
           style={{
             objectFit: 'cover',
-            objectPosition: (hovered && !reduceMotion ? move.to : move.from).pos,
-            transform: `scale(${(hovered && !reduceMotion ? move.to : move.from).scale})`,
+            objectPosition: (active && !reduceMotion ? move.to : move.from).pos,
+            transform: `scale(${(active && !reduceMotion ? move.to : move.from).scale})`,
             transition: reduceMotion
               ? 'none'
               : 'object-position 7s linear, transform 7s linear',
@@ -187,7 +210,7 @@ const InterestCard = ({
         />
 
         {/* Rolling scanline band */}
-        {hovered && !reduceMotion && (
+        {active && !reduceMotion && (
           <MotionBox
             position="absolute"
             left="0"
@@ -201,7 +224,7 @@ const InterestCard = ({
         )}
 
         {/* Flicker */}
-        {hovered && !reduceMotion && (
+        {active && !reduceMotion && (
           <MotionBox
             position="absolute"
             inset="0"
@@ -239,7 +262,10 @@ const InterestCard = ({
           fontWeight="black"
           letterSpacing="0.2em"
           opacity={0.3}
-          style={{ transition: 'color 0.25s ease, opacity 0.25s ease' }}
+          style={{
+            transition: 'color 0.25s ease, opacity 0.25s ease',
+            ...(centered ? { color: '#ff7829', opacity: 0.9 } : {}),
+          }}
         >
           {en}
         </Text>
