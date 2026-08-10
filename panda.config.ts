@@ -200,6 +200,10 @@ export default defineConfig({
           '94%': { opacity: 1 },
           '97%': { opacity: 0.92 },
         },
+        projectionSweep: {
+          '0%': { transform: 'translateY(-130%)' },
+          '100%': { transform: 'translateY(130%)' },
+        },
         artReveal: {
           '0%': { opacity: 0, filter: 'blur(6px)', transform: 'translateY(6px)' },
           '100%': { opacity: 1, filter: 'blur(0)', transform: 'translateY(0)' },

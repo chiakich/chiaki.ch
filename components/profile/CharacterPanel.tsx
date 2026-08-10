@@ -6,8 +6,10 @@ import {
   useTransform,
   type MotionValue,
 } from 'framer-motion'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState, type CSSProperties } from 'react'
 import Barcode from 'components/profile/Barcode'
+import NtscImage from 'components/effects/NtscImage'
+import { NTSC_SPRITE } from 'lib/ntsc/params'
 import { ACCENT } from 'components/profile/theme'
 import { useI18n } from 'i18n'
 
@@ -16,7 +18,21 @@ const Span = styled.span
 const Img = styled.img
 
 const MotionBox = m.create(Box)
-const MotionImg = m.create(styled.img)
+
+const PORTRAIT_ART = '/assets/profile/chiaki_v2_web.webp'
+// The artwork's own alpha, reused as a mask for the grille that sits over it.
+const PORTRAIT_MASK = `url(${PORTRAIT_ART})`
+
+// The Live2D preset, with the head's snow pulled right down: the avatar plays
+// behind a chat panel where specks read as tube noise, but here the artwork is
+// the whole panel and the same density reads as dirt on the glass. Module-level
+// so its identity is stable — NtscImage rebuilds its context when it changes.
+const PORTRAIT_TAPE = { ...NTSC_SPRITE, snowChance: 0.000008 }
+
+// Gain on the artwork, the knob worth hand-tuning. The tape's luma path comes
+// out a touch darker than the source and the grille takes a little more off the
+// top, so the panel is lifted back rather than left reading as a dim print.
+const PORTRAIT_GAIN = 1.1
 
 // Sticky character visual styled as an acrylic authorization pass
 const CharacterPanel = ({
@@ -30,11 +46,6 @@ const CharacterPanel = ({
   const swayX = useMotionValue(0)
   const breatheY = useMotionValue(0)
   const [imageLoaded, setImageLoaded] = useState(false)
-  const imgRef = useRef<HTMLImageElement>(null)
-
-  useEffect(() => {
-    if (imgRef.current?.complete) setImageLoaded(true)
-  }, [])
 
   useEffect(() => {
     const swayControls = animate(swayX, [-6, 6, -6], {
@@ -221,18 +232,19 @@ const CharacterPanel = ({
         </Flex>
       </MotionBox>
 
-      <MotionImg
-        ref={imgRef}
-        src="/assets/profile/chiaki_v2_web.webp"
-        alt={t('profilePage.characterPanel.alt')}
+      {/* The artwork plays back off a tape rather than being drawn directly —
+          the sprite preset, since this is a drawing on transparency, same as
+          the Live2D portrait. The box carries the pose; the canvas inside
+          fills it, so it needs the artwork's aspect to size itself. */}
+      <MotionBox
         position="absolute"
         bottom="0"
         left="50%"
         height={{ base: '64vh', lg: '88%' }}
+        aspectRatio="1012 / 1800"
         maxWidth="none"
         zIndex={1}
-        filter="drop-shadow(0 0 40px #ff782930)"
-        onLoad={() => setImageLoaded(true)}
+        filter="brightness(var(--portrait-gain)) drop-shadow(0 0 40px #ff782930)"
         initial={{
           clipPath: 'polygon(0 0, 18% 0, 0 100%, 0 100%)',
           opacity: 0,
@@ -252,8 +264,62 @@ const CharacterPanel = ({
               }
         }
         transition={{ duration: 1.1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-        style={{ translateX: floatX, translateY: floatY }}
-      />
+        style={
+          {
+            translateX: floatX,
+            translateY: floatY,
+            '--portrait-gain': PORTRAIT_GAIN,
+          } as CSSProperties
+        }
+      >
+        <Box position="relative" width="100%" height="100%">
+          <NtscImage
+            src={PORTRAIT_ART}
+            alt={t('profilePage.characterPanel.alt')}
+            params={PORTRAIT_TAPE}
+            fit="contain"
+            onLoad={() => setImageLoaded(true)}
+          />
+
+          {/* Masked by the artwork's own alpha, so the grille sits on her and
+              not on a rectangle around her. Same source and the same contain
+              fit as the canvas below, so the two line up exactly. */}
+          <Box
+            position="absolute"
+            inset="0"
+            pointerEvents="none"
+            aria-hidden
+            overflow="hidden"
+            maskImage={PORTRAIT_MASK}
+            maskSize="contain"
+            maskRepeat="no-repeat"
+            maskPosition="center"
+          >
+            <Box
+              position="absolute"
+              inset="0"
+              backgroundImage="repeating-linear-gradient(180deg, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 2px, rgba(6,18,26,.42) 3px, rgba(6,18,26,.42) 4px)"
+              mixBlendMode="multiply"
+            />
+            <Box
+              position="absolute"
+              inset="0"
+              backgroundImage={`linear-gradient(180deg, transparent, ${ACCENT}2e 45%, rgba(150,240,255,.16) 55%, transparent)`}
+              mixBlendMode="screen"
+              opacity=".7"
+            />
+            {/* The refresh line the panel is currently drawing. */}
+            <Box
+              position="absolute"
+              left="0"
+              right="0"
+              height="22%"
+              background="linear-gradient(180deg, transparent, rgba(190,245,255,.14) 50%, transparent)"
+              animation="projectionSweep 6.5s linear infinite"
+            />
+          </Box>
+        </Box>
+      </MotionBox>
 
       {/* Left vertical barcode over the artwork */}
       <Flex
