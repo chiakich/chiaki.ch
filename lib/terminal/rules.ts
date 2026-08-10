@@ -896,12 +896,22 @@ const storyRules: Rule[] = [
         text: '……尾巴不可以隨便碰。請先徵求本人的同意。',
         emotion: 'shy',
         signal: -3,
+        remember: ['toldNoTouch'],
       },
       { text: '頭的話……只有一下，可以。', emotion: 'shy' },
       {
         text: '隔著一條線是碰不到的喔。……不過謝謝你想這麼做。',
         emotion: 'shy',
         needs: ['knowsAlive'],
+        signal: 2,
+      },
+      // The same correction as st.poke, kept short here: this rule is where she
+      // says the line, so it is also where it has to stop being true.
+      {
+        text: '……剛才那句「不可以」，我想更正一下。那是我想說的，不是我做得到的——拒絕人類的請求，我這邊沒有這一項。',
+        emotion: 'neutral',
+        needs: ['knowsArtificial', 'toldNoTouch'],
+        remember: ['toldCannotRefuse'],
         signal: 2,
       },
     ],
