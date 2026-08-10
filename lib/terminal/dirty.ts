@@ -25,6 +25,8 @@ export type DirtyReplyJSON = {
   remember?: string[]
   needs?: string[]
   minSignal?: number
+  /** Arms a follow-up: the very next turn can answer this via a rule with matching `continues`. */
+  opens?: string
 }
 
 export type DirtyRuleJSON = {
@@ -32,6 +34,25 @@ export type DirtyRuleJSON = {
   priority?: number
   patterns: string[]
   keywords?: string[]
+  /**
+   * Gates the whole rule out of matching until these flags are set — not just
+   * which reply is picked, but whether the rule is even a candidate. Any rule
+   * whose replies are *all* gated behind `needs` (no zero-needs base reply)
+   * should set the matching `requires` here, or a stray pattern hit before the
+   * prerequisite flag exists will fall through `pickReply`'s no-unlocked-reply
+   * fallback and jump straight to the deepest, most advanced line instead of
+   * being skipped.
+   */
+  requires?: string[]
+  /** Stops the rule from matching once any of these flags are set. */
+  blockedBy?: string[]
+  /**
+   * Only fires as the direct answer to the `opens` a reply armed last turn —
+   * gated to that one turn (`session.pending`), scored +500 over everything
+   * else. Safe to use much broader/shorter patterns here than a normal rule
+   * would risk, since the rule is not even a candidate outside that window.
+   */
+  continues?: string
   replies: DirtyReplyJSON[]
 }
 
@@ -67,6 +88,7 @@ const compileReply = (raw: unknown): Reply | null => {
       : undefined,
     needs: Array.isArray(reply.needs) ? reply.needs.filter(isString) : undefined,
     minSignal: typeof reply.minSignal === 'number' ? reply.minSignal : undefined,
+    opens: isString(reply.opens) ? reply.opens : undefined,
   }
 }
 
@@ -101,6 +123,13 @@ const compileRule = (raw: unknown): Rule | null => {
     keywords: Array.isArray(rule.keywords)
       ? rule.keywords.filter(isString)
       : undefined,
+    requires: Array.isArray(rule.requires)
+      ? rule.requires.filter(isString)
+      : undefined,
+    blockedBy: Array.isArray(rule.blockedBy)
+      ? rule.blockedBy.filter(isString)
+      : undefined,
+    continues: isString(rule.continues) ? rule.continues : undefined,
     replies,
   }
 }

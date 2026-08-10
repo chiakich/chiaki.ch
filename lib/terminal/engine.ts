@@ -697,10 +697,7 @@ export const endingHandover = (session: Session): Turn => {
 /**
  * The three shallowest prompts still open. SUGGESTIONS is ordered the way the
  * story reads, so taking from the front hands a newcomer the openers and lets
- * the deeper rungs surface as the ones above them retire. CDN-fetched prompts
- * — see lib/terminal/dirty.ts — are appended after, so the main line always
- * fills the three slots first; the explicit branch only surfaces a chip once
- * the story prompts ahead of it have retired.
+ * the deeper rungs surface as the ones above them retire.
  *
  * `asked` counts how often each was taken, and is a backstop rather than the
  * main mechanism: a prompt normally retires because its `done` flag got set.
@@ -711,18 +708,31 @@ export const endingHandover = (session: Session): Turn => {
  */
 export const ASK_LIMIT = 3
 
+const eligible = (
+  items: Suggestion[],
+  session: Session,
+  asked: ReadonlyMap<string, number>
+) =>
+  items.filter(
+    (item) =>
+      (asked.get(item.text) ?? 0) < ASK_LIMIT &&
+      !(item.done !== undefined && session.flags.has(item.done)) &&
+      (item.needs === undefined ||
+        item.needs.every((flag) => session.flags.has(flag)))
+  )
+
 export const suggestionsFor = (
   session: Session,
   asked: ReadonlyMap<string, number> = new Map()
 ): string[] =>
-  [...SUGGESTIONS, ...dirtySuggestions]
-    .filter(
-      (item) =>
-        (asked.get(item.text) ?? 0) < ASK_LIMIT &&
-        !(item.done !== undefined && session.flags.has(item.done)) &&
-        (item.needs === undefined ||
-          item.needs.every((flag) => session.flags.has(flag)))
-    )
+  // CDN-fetched prompts — see lib/terminal/dirty.ts — go first. Their `needs`
+  // already gates them to a specific point in the conversation, so by the
+  // time one clears that bar it is the most relevant thing to offer; the
+  // eligible pool from the main SUGGESTIONS list is large enough (several
+  // ungated openers plus every unlocked-but-unretired rung) that appending
+  // dirty prompts after it, as a first cut did, meant they almost never
+  // reached the visible three.
+  [...eligible(dirtySuggestions, session, asked), ...eligible(SUGGESTIONS, session, asked)]
     .slice(0, 3)
     .map((item) => item.text)
 
