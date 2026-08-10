@@ -27,6 +27,13 @@ export type Reply = {
   needs?: string[]
   /** Only offered once the link is at least this strong. */
   minSignal?: number
+  /**
+   * Only offered once she has heard at least two words she couldn't place, and
+   * expands `{recall}` to one of them. This is how a miss pays off later: the
+   * word the visitor used and she had no answer for comes back in a silence, or
+   * when a topic runs out, as something she is still turning over.
+   */
+  needsWord?: boolean
   /** Arms a follow-up: the next turn can answer this instead of restarting. */
   opens?: string
   /** Commits or discards the pending name guess. */

@@ -30,8 +30,14 @@ const RESUMABLE = new Set([
 export type Saved = {
   flags: string[]
   userName: string | null
+  /** Words she couldn't place. A fact about the visitor, so it survives too. */
+  recalled: string[]
   visits: number
 }
+
+/** Long enough to be a word, short enough that a pasted sentence can't get in. */
+const isWord = (value: unknown): value is string =>
+  typeof value === 'string' && value.length >= 2 && value.length <= 8
 
 export const load = (): Saved | null => {
   if (typeof window === 'undefined') return null
@@ -45,6 +51,9 @@ export const load = (): Saved | null => {
         (flag): flag is string => typeof flag === 'string' && RESUMABLE.has(flag)
       ),
       userName: typeof parsed.userName === 'string' ? parsed.userName : null,
+      recalled: Array.isArray(parsed.recalled)
+        ? parsed.recalled.filter(isWord)
+        : [],
       visits: typeof parsed.visits === 'number' ? parsed.visits : 0,
     }
   } catch {
@@ -58,7 +67,12 @@ export const save = (session: Session, visits: number) => {
   if (typeof window === 'undefined') return
   try {
     const flags = [...session.flags].filter((flag) => RESUMABLE.has(flag))
-    const payload: Saved = { flags, userName: session.userName, visits }
+    const payload: Saved = {
+      flags,
+      userName: session.userName,
+      recalled: session.recalled,
+      visits,
+    }
     window.localStorage.setItem(KEY, JSON.stringify(payload))
   } catch {
     // Quota or a blocked store. Losing continuity is survivable; throwing

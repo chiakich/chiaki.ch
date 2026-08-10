@@ -566,14 +566,14 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
                 py="4px"
                 border="1px solid rgba(231,105,45,.16)"
                 background="rgba(8,3,1,.34)"
-                color="rgba(238,150,98,.56)"
+                color="#fff"
                 fontSize="11px"
                 cursor="pointer"
                 whiteSpace="nowrap"
                 transition="all .18s"
                 _hover={{
                   borderColor: 'rgba(238,150,98,.45)',
-                  color: 'rgba(255,218,194,.88)',
+                  color: '#fff',
                 }}
                 _disabled={{ opacity: 0.28, cursor: 'default' }}
               >
@@ -609,13 +609,13 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
             border="1px solid rgba(231,105,45,.2)"
             borderLeft="1px solid rgba(231,105,45,.58)"
             background="transparent"
-            color="rgba(255,228,207,.92)"
+            color="rgba(255,238,222,.98)"
             fontSize="14px"
             fontFamily="body"
             outline="none"
             transition="border-color .18s"
             _focus={{ borderColor: 'rgba(238,150,98,.55)' }}
-            _placeholder={{ color: 'rgba(238,150,98,.25)' }}
+            _placeholder={{ color: 'rgba(238,150,98,.48)' }}
           />
           <Send
             type="submit"
@@ -623,16 +623,16 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
               typing !== null || locked || draft.trim().length === 0
             }
             px={{ base: '14px', md: '18px' }}
-            border="1px solid rgba(231,105,45,.32)"
-            background="rgba(231,105,45,.08)"
-            color="rgba(246,180,138,.82)"
+            border="1px solid rgba(238,150,98,.55)"
+            background="rgba(231,105,45,.16)"
+            color="#fff"
             fontFamily="nixie"
             fontSize="10px"
             letterSpacing=".18em"
             cursor="pointer"
             transition="all .18s"
-            _hover={{ background: 'rgba(231,105,45,.15)' }}
-            _disabled={{ opacity: 0.26, cursor: 'default' }}
+            _hover={{ background: 'rgba(231,105,45,.26)' }}
+            _disabled={{ opacity: 0.55, cursor: 'default' }}
           >
             SEND
           </Send>

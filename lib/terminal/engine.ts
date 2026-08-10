@@ -18,6 +18,7 @@ import {
   rules,
   SUGGESTIONS,
 } from './rules'
+import { classify, SHAPE_ECHO } from './shapes'
 import type { Emotion, Reply, Rule } from './types'
 
 export type Turn = {
@@ -53,6 +54,11 @@ export type Session = {
   modernScore: number
   /** Last substantive topic, so a bare 「為什麼」 has something to attach to. */
   lastTopic: string | null
+  /**
+   * Words the visitor used that she had no answer for, oldest first. Spent by
+   * `needsWord` replies, which is what turns a miss into a callback later on.
+   */
+  recalled: string[]
 }
 
 /** A link she has held before comes up stronger, but still has to be earned. */
@@ -61,6 +67,7 @@ const RETURNING_SIGNAL = 70
 export const createSession = (restored?: {
   flags: string[]
   userName: string | null
+  recalled?: string[]
 } | null): Session => ({
   flags: new Set(restored?.flags ?? []),
   used: new Set(),
@@ -71,7 +78,27 @@ export const createSession = (restored?: {
   nameGuess: null,
   modernScore: 0,
   lastTopic: null,
+  recalled: restored?.recalled ?? [],
 })
+
+/** How many unplaceable words she carries. Old ones fall off the front. */
+const RECALL_LIMIT = 6
+
+const rememberWord = (session: Session, word: string) => {
+  if (session.recalled.includes(word)) return
+  session.recalled.push(word)
+  if (session.recalled.length > RECALL_LIMIT) session.recalled.shift()
+}
+
+/**
+ * Never the most recent one: quoting back the word from the turn she is
+ * currently answering reads as a parrot, whereas one from earlier reads as her
+ * having carried it around.
+ */
+const recallWord = (session: Session): string | null => {
+  const pool = session.recalled.slice(0, -1)
+  return pool.length === 0 ? null : pick(pool, Math.random())
+}
 
 // A turn that is nothing but a prompt to keep going. Anchored at both ends on
 // purpose: 「為什麼」 continues the last topic, but 「為什麼會下雪」 is a question
@@ -217,6 +244,9 @@ const fill = (text: string, session: Session) =>
   text
     .replace(/\{guess\}/g, session.nameGuess ?? '你')
     .replace(/\{you\}/g, session.userName ?? '你')
+    // Only reachable from a `needsWord` reply, which the picker already gated
+    // on there being one — the fallback is belt and braces.
+    .replace(/\{recall\}/g, () => recallWord(session) ?? '那個東西')
 
 // Below this the archive starts showing through instead of a normal fallback.
 const DEGRADED_THRESHOLD = 22
@@ -228,6 +258,9 @@ const pick = <T>(options: readonly T[], seed: number) =>
 
 const isUnlocked = (reply: Reply, session: Session) =>
   (reply.minSignal === undefined || session.signal >= reply.minSignal) &&
+  // Two, not one: with a single word the only thing she could quote back is
+  // whatever she just heard, which `recallWord` deliberately refuses to use.
+  (!reply.needsWord || session.recalled.length >= 2) &&
   (reply.needs === undefined ||
     reply.needs.every((flag) => session.flags.has(flag)))
 
@@ -245,14 +278,25 @@ const pickReply = (
   seed: number,
   repeatable = false
 ): Reply | null => {
-  const unlocked = replies.filter((reply) => isUnlocked(reply, session))
-  const pool = unlocked.length > 0 ? unlocked : replies
+  // A line that quotes a word she has not heard is broken rather than merely
+  // premature, so it is excluded from the relaxed pool too.
+  const usable = replies.filter(
+    (reply) => !reply.needsWord || session.recalled.length >= 2
+  )
+  const unlocked = usable.filter((reply) => isUnlocked(reply, session))
+  const pool =
+    unlocked.length > 0 ? unlocked : usable.length > 0 ? usable : replies
   const fresh = pool.filter((reply) => !session.used.has(reply.text))
   if (fresh.length === 0) return repeatable ? pick(pool, seed) : null
-  // Deepest tier first, but only among lines she can still say.
-  const deepest = Math.max(...fresh.map((reply) => reply.needs?.length ?? 0))
+  // Deepest tier first, but only among lines she can still say. `needsWord`
+  // counts as a tier of its own: it is unlocked by the conversation having
+  // gone somewhere, exactly like a flag, and at tier zero it would be buried
+  // under every line the flags have already opened up.
+  const depth = (reply: Reply) =>
+    (reply.needs?.length ?? 0) + (reply.needsWord ? 1 : 0)
+  const deepest = Math.max(...fresh.map(depth))
   return pick(
-    fresh.filter((reply) => (reply.needs?.length ?? 0) === deepest),
+    fresh.filter((reply) => depth(reply) === deepest),
     seed
   )
 }
@@ -465,38 +509,84 @@ export const respond = (
     ruleId = 'fallback.degraded'
     delta = 1
   } else {
-    const topic = topicToken(tokens)
-    if (topic && topic.text.length >= 2) {
+    const found = topicToken(tokens)
+    // Bounded at both ends. The upper bound matters because the lexicon is
+    // fetched and can fail to arrive: without it the segmenter hands back whole
+    // sentences, and quoting the visitor's entire sentence back at them is a
+    // much worse failure than not naming the subject at all.
+    const topic =
+      found && found.text.length >= 2 && found.text.length <= 6 ? found : null
+    // A word she had no answer for is worth carrying even when this turn is
+    // about to answer the shape rather than the subject — that is what makes it
+    // come back later as a callback instead of vanishing. Being in the
+    // dictionary is not the test: the dictionary has four hundred million
+    // characters behind it and knows 「腳踏車」 perfectly well. What matters is
+    // that she could not say anything about it. The length floor is there to
+    // keep 「天空」-grade filler out of a line that presents the word as the one
+    // thing she has been turning over since.
+    if (topic && (!topic.known || topic.modern || topic.text.length >= 3))
+      rememberWord(session, topic.text)
+
+    // The story hangs on her noticing present-day vocabulary, so those words
+    // always get the reaction written for them; the shape layer only handles
+    // what would otherwise have been a shrug.
+    const shape = classify(input.text)
+    if (topic && topic.modern) {
       // Once she knows where the visitor is from, a word she doesn't have
-      // stops being a defect in her dictionary and becomes something to ask
+      // stops being something wrong with her and becomes something to ask
       // about — so the same miss reads as curiosity instead of an apology.
-      const bucket = topic.modern
-        ? session.flags.has('knowsPeace')
-          ? ECHO_TEMPLATES.peace
-          : ECHO_TEMPLATES.modern
-        : topic.known
-          ? ECHO_TEMPLATES.known
-          : ECHO_TEMPLATES.unknown
+      const bucket = session.flags.has('knowsPeace')
+        ? ECHO_TEMPLATES.peace
+        : ECHO_TEMPLATES.modern
+      text = pick(bucket, seed).replace(/\{word\}/g, topic.text)
+      emotion = 'surprised'
+      ruleId = 'fallback.echo.modern'
+      delta = -2
+    } else if (topic && shape !== 'plain') {
+      // She could not answer what was asked, but she can answer the kind of
+      // question it was — which is the difference between a reply and a shrug.
+      text = pick(SHAPE_ECHO[shape].withWord, seed).replace(
+        /\{word\}/g,
+        topic.text
+      )
+      emotion = shape === 'request' ? 'sad' : 'thinking'
+      ruleId = `fallback.shape.${shape}`
+      delta = -1
+    } else if (topic) {
+      const bucket = topic.known
+        ? ECHO_TEMPLATES.known
+        : ECHO_TEMPLATES.unknown
       text = pick(bucket, seed).replace(/\{word\}/g, topic.text)
       emotion = topic.known ? 'thinking' : 'surprised'
-      ruleId = `fallback.echo.${topic.modern ? 'modern' : topic.known ? 'known' : 'unknown'}`
+      ruleId = `fallback.echo.${topic.known ? 'known' : 'unknown'}`
       delta = -2
     } else {
-      // She keeps a list of things she wants answered, and spends it exactly
-      // when she has nothing to say. A research terminal with an open question
-      // is not failing to reply — it is taking its turn — so this costs her
-      // almost nothing, and an unanswerable question becomes a trade.
+      // Nothing to name at all. She concedes in one clause — sized to the kind
+      // of question, when there was one — and then takes her turn, because a
+      // research terminal with an open question is not failing to reply. That
+      // is why the concession costs her almost nothing.
+      const lead =
+        shape !== 'plain'
+          ? pick(SHAPE_ECHO[shape].bare, seed)
+          : input.hasQuestionMark
+            ? pick(NO_ANSWER, seed)
+            : ''
       const question = pickReply(CURIOSITY, session, seed)
       if (question) {
-        text = input.hasQuestionMark
-          ? pick(NO_ANSWER, seed) + question.text
-          : question.text
+        text = lead + question.text
         emotion = question.emotion ?? 'thinking'
         ruleId = 'fallback.curiosity'
-        delta = input.hasQuestionMark ? -1 : (question.signal ?? 0)
+        delta = lead ? -1 : (question.signal ?? 0)
         session.used.add(question.text)
         question.remember?.forEach((flag) => session.flags.add(flag))
         if (question.opens) session.pending = question.opens
+      } else if (shape !== 'plain') {
+        // Her questions are spent, but the shape of this one still has an
+        // answer — better than opening a topic she has already opened.
+        text = lead
+        emotion = shape === 'request' ? 'sad' : 'thinking'
+        ruleId = `fallback.shape.${shape}`
+        delta = -1
       } else {
         text = pick(INITIATIVE, seed)
         emotion = 'thinking'
