@@ -228,7 +228,9 @@ export class LAppView {
     lapplive2dmanager.onTap(x, y);
 
     // 歯車にタップしたか
-    if (this._gear.isHit(posX, posY)) {
+    // render() guards both sprites but this path did not, so any tap threw
+    // while the gear texture was absent.
+    if (this._gear && this._gear.isHit(posX, posY)) {
       lapplive2dmanager.nextScene();
     }
   }
