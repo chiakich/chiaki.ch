@@ -11,7 +11,10 @@ const TerminalPage: NextPage = () => {
 
   return (
     <Box bg="black" width="100%" minHeight="100vh" overflow="clip">
-      <Box position="relative" pt="92px">
+      {/* TopBar is 44px and the SubNav below it is another 48px — but the
+          SubNav is desktop-only, so reserving both on a phone left a dead band
+          at the top and pushed the panel past the fold. */}
+      <Box position="relative" pt={{ base: '44px', md: '92px' }}>
         <TerminalChat started={started} />
       </Box>
       <StoryBootLoader variant="terminal" onComplete={onComplete} />

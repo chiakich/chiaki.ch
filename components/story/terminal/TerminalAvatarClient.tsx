@@ -176,7 +176,7 @@ const TerminalAvatarClient = ({ controls }: TerminalAvatarClientProps) => {
         alt=""
         position="absolute"
         left={{ base: '50%', md: '31%' }}
-        bottom={{ base: '-86%', md: '-68%' }}
+        bottom={{ base: '-79%', md: '-68%' }}
         height={{ base: '190%', md: '168%' }}
         maxWidth="none"
         transform="translateX(-50%)"
@@ -191,7 +191,9 @@ const TerminalAvatarClient = ({ controls }: TerminalAvatarClientProps) => {
         top="0"
         bottom="0"
         width="100%"
-        transform={{ base: 'translateY(-3%)', lg: 'translateY(-6%)' }}
+        // Lifted further on a phone: the panel is portrait, so the same offset
+        // that frames her on a desktop leaves her sitting under the transcript.
+        transform={{ base: 'translateY(-10%)', md: 'translateY(-3%)', lg: 'translateY(-6%)' }}
         opacity={ready ? 1 : 0}
         transition="opacity .45s ease"
       >

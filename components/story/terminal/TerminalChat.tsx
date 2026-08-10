@@ -248,8 +248,11 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
     <Box
       position="relative"
       width="100%"
-      height="calc(100svh - 92px)"
-      minHeight={{ base: '680px', md: '600px' }}
+      height={{ base: 'calc(100svh - 44px)', md: 'calc(100svh - 92px)' }}
+      // Deliberately no floor on a phone: a 680px minimum on a 700px screen put
+      // the input below the fold, and the panel is laid out to survive being
+      // short anyway.
+      minHeight={{ md: '600px' }}
       overflow="hidden"
       isolation="isolate"
       background="radial-gradient(ellipse 72% 74% at 56% 35%, #2b1008 0%, #100704 46%, #030201 100%)"
@@ -426,11 +429,18 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
         width={{ base: '100%', md: 'min(760px, calc(100% - 64px))' }}
         transform={{ base: 'none', md: 'translateX(-50%)' }}
         direction="column"
+        justifyContent="flex-end"
+        maxHeight="100%"
         px={{ base: '14px', md: '0' }}
-        pb={{ base: '16px', md: '22px' }}
+        pb={{
+          base: 'calc(16px + env(safe-area-inset-bottom))',
+          md: '22px',
+        }}
       >
         <Box
           ref={transcriptRef}
+          flex="0 1 auto"
+          minHeight="0"
           maxHeight={{ base: '170px', md: '185px' }}
           overflowY="auto"
           px={{ base: '12px', md: '16px' }}
@@ -438,7 +448,9 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
           background="linear-gradient(180deg, rgba(8,3,1,.04), rgba(8,3,1,.8))"
           borderLeft="1px solid rgba(231,105,45,.38)"
         >
-          <Flex direction="column" gap="9px">
+          {/* Bottom-aligned, so the first line of a conversation opens just
+              above the input instead of hanging off the top of the panel. */}
+          <Flex direction="column" justifyContent="flex-end" minHeight="100%" gap="9px">
             {visibleMessages.map((message, index) => (
               <Box
                 key={`${message.id}-${index}`}
