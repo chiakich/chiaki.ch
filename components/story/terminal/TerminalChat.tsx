@@ -273,8 +273,9 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
       <Box
         position="absolute"
         inset="0"
-        zIndex={1}
+        zIndex={5}
         pointerEvents="none"
+        aria-hidden="true"
         backgroundImage="repeating-linear-gradient(transparent 0px, transparent 1px, rgba(0,0,0,.27) 2px, rgba(0,0,0,.27) 3px)"
         mixBlendMode="multiply"
         opacity=".78"
@@ -285,8 +286,9 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
       <Box
         position="absolute"
         inset="0"
-        zIndex={1}
+        zIndex={5}
         pointerEvents="none"
+        aria-hidden="true"
         backgroundImage="repeating-linear-gradient(rgba(255,255,255,.05) 0px, rgba(255,255,255,.05) 1px, transparent 1px, transparent 3px)"
         mixBlendMode="screen"
       />
@@ -298,8 +300,9 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
         left="0"
         right="0"
         height="16%"
-        zIndex={1}
+        zIndex={5}
         pointerEvents="none"
+        aria-hidden="true"
         background="linear-gradient(180deg, transparent, rgba(255,255,255,.035) 50%, transparent)"
         animation="scanlineDrift 8s linear infinite"
       />
@@ -311,8 +314,9 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
       <Box
         position="absolute"
         inset="0"
-        zIndex={1}
+        zIndex={5}
         pointerEvents="none"
+        aria-hidden="true"
         background="radial-gradient(ellipse 78% 82% at 50% 45%, transparent 42%, rgba(0,0,0,.42) 76%, rgba(0,0,0,.9) 100%)"
         animation="crtFlicker 9s linear infinite"
       />

@@ -187,10 +187,10 @@ const TerminalAvatarClient = ({ controls }: TerminalAvatarClientProps) => {
       />
       <Box
         position="absolute"
-        left={{ base: '0', lg: '11%' }}
+        insetX="0"
         top="0"
         bottom="0"
-        width={{ base: '100%', lg: '78%' }}
+        width="100%"
         transform={{ base: 'translateY(-3%)', lg: 'translateY(-6%)' }}
         opacity={ready ? 1 : 0}
         transition="opacity .45s ease"

@@ -80,8 +80,9 @@ precision highp float;
 const float PI = 3.14159265;
 
 // One active scanline is this many samples of a clock running at four times the
-// colour subcarrier. Every cutoff below is in MHz against that clock, so the
-// look no longer depends on how wide the canvas happens to be.
+// colour subcarrier. A wider render target adds samples rather than stretching
+// these across more pixels, so the portrait does not get softer as the panel
+// grows while its on-screen height stays the same.
 const float SIGNAL_WIDTH = ${(
   LAppDefine.NtscSamplesPerLine * LAppDefine.HorizontalScale
 ).toFixed(2)};
@@ -160,8 +161,9 @@ const int DEMOD_TAPS = ${LAppDefine.DemodTaps};
 const int DEMOD_HALF = ${(LAppDefine.DemodTaps - 1) / 2};
 
 void main() {
-  float sampleStep = 1.0 / SIGNAL_WIDTH;
-  float x = v_uv.x * SIGNAL_WIDTH;
+  float signalWidth = max(SIGNAL_WIDTH, float(textureSize(u_scene, 0).x));
+  float sampleStep = 1.0 / signalWidth;
+  float x = v_uv.x * signalWidth;
   float line = floor(gl_FragCoord.y);
   float field = mod(floor(u_time * FIELD_RATE), 2.0);
 
@@ -292,7 +294,8 @@ float smoothNoise(float x, float seed) {
 
 void main() {
   vec2 texel = 1.0 / vec2(textureSize(u_signal, 0));
-  float sampleStep = 1.0 / SIGNAL_WIDTH;
+  float signalWidth = max(SIGNAL_WIDTH, float(textureSize(u_signal, 0).x));
+  float sampleStep = 1.0 / signalWidth;
   float line = floor(gl_FragCoord.y);
 
   // The tape's noise field resamples at roughly field rate, not at whatever the
@@ -412,7 +415,7 @@ void main() {
 
   // Chroma noise survives a filter an order of magnitude narrower than luma's,
   // so it arrives as slow blotches. Two octaves, per line, like ntsc-rs'.
-  float noiseX = v_uv.x * SIGNAL_WIDTH / u_chromaNoiseScale;
+  float noiseX = v_uv.x * signalWidth / u_chromaNoiseScale;
   float noiseSeed = line * 7.0 + tick * 31.0;
   chroma += vec2(
     smoothNoise(noiseX, noiseSeed) + 0.5 * smoothNoise(noiseX * 2.3, noiseSeed + 11.0),
