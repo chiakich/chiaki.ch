@@ -20,9 +20,14 @@ import * as LAppDefine from './lappdefine';
 
 const UNIFORMS = [
   'time',
-  'lumaBandwidth',
+  'lumaCutoff',
+  'subcarrier',
+  'chromaGain',
   'chromaBandwidth',
   'chromaDelay',
+  'colourUnderPhase',
+  'colourUnderGain',
+  'saturation',
   'ring',
   'ringDecay',
   'knee',
@@ -50,9 +55,14 @@ precision highp float;
 
 uniform sampler2D u_scene;
 uniform float u_time;
-uniform float u_lumaBandwidth;
+uniform float u_lumaCutoff;
+uniform float u_subcarrier;
+uniform float u_chromaGain;
 uniform float u_chromaBandwidth;
 uniform float u_chromaDelay;
+uniform float u_colourUnderPhase;
+uniform float u_colourUnderGain;
+uniform float u_saturation;
 uniform float u_ring;
 uniform float u_ringDecay;
 uniform float u_knee;
@@ -71,8 +81,23 @@ const int LUMA_TAPS = ${LAppDefine.LumaTaps};
 const int CHROMA_TAPS = ${LAppDefine.ChromaTaps};
 const int RING_TAPS = ${LAppDefine.RingTaps};
 
+const float PI = 3.14159265;
+
 float hash(vec2 p) {
   return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+}
+
+float sinc(float x) {
+  return abs(x) < 1e-5 ? 1.0 : sin(PI * x) / (PI * x);
+}
+
+// Windowed sinc, so band-limiting behaves like band-limiting: everything under
+// the cutoff stays sharp and the sidelobes ring. A gaussian has no sidelobes —
+// it only smears, which is why the picture went soft without gaining the
+// crispness a real band-limited signal keeps.
+float lumaKernel(float n, float halfWidth) {
+  float hamming = 0.54 + 0.46 * cos(PI * n / halfWidth);
+  return u_lumaCutoff * sinc(u_lumaCutoff * n) * hamming;
 }
 
 // Straight colour from a premultiplied sample — reading the premultiplied
@@ -99,6 +124,25 @@ vec3 yiqToRgb(vec3 c) {
 
 float lumaAt(vec2 uv) {
   return rgbToYiq(unpremultiply(texture(u_scene, uv))).x;
+}
+
+// The subcarrier flips 180 degrees every line and walks through a four-field
+// sequence, which is what turns residual chroma into a crawling dot pattern
+// instead of a stationary texture.
+float subcarrierPhase(float x, float line, float field) {
+  return 2.0 * PI * (x * u_subcarrier + 0.5 * line + 0.25 * field);
+}
+
+// Encode a sample the way a composite signal carries it: one real-valued
+// waveform with chroma riding on the subcarrier. Everything downstream reads
+// this, so luma and chroma are genuinely sharing one channel and have to be
+// separated back out imperfectly — which is the whole point.
+float compositeAt(vec2 uv, float x, float line, float field, out float alpha) {
+  vec4 sampled = texture(u_scene, uv);
+  alpha = sampled.a;
+  vec3 yiq = rgbToYiq(unpremultiply(sampled));
+  float phase = subcarrierPhase(x, line, field);
+  return yiq.x + u_chromaGain * (yiq.y * cos(phase) + yiq.z * sin(phase));
 }
 
 void main() {
@@ -133,30 +177,73 @@ void main() {
 
   // Luma is band-limited too, just far less than chroma. This is the whole
   // reason VHS looks soft sideways while staying crisp line to line.
+  float field = mod(tick, 4.0);
+  float fragX = gl_FragCoord.x;
+
+  // Luma recovery is just a low-pass over the composite. It sits close enough
+  // to the subcarrier to leave some of it behind, and that residue is the
+  // point: it crawls as dots, and on saturated colour — where the subcarrier
+  // swings hardest — it lifts the brightness. That lift is why orange glows.
+  float halfWidth = float((LUMA_TAPS - 1) / 2);
   float luma = 0.0;
   float lumaTotal = 0.0;
   for (int i = 0; i < LUMA_TAPS; i++) {
     float offset = float(i - (LUMA_TAPS - 1) / 2);
-    float weight = exp(-0.5 * offset * offset / (u_lumaBandwidth * u_lumaBandwidth));
-    vec4 tap = texture(u_scene, uv + vec2(offset * texel.x, 0.0));
-    luma += rgbToYiq(unpremultiply(tap)).x * weight * tap.a;
-    lumaTotal += weight * tap.a;
+    float alpha;
+    float composite = compositeAt(
+      uv + vec2(offset * texel.x, 0.0), fragX + offset, line, field, alpha
+    );
+    float weight = lumaKernel(offset, halfWidth);
+    luma += composite * weight * alpha;
+    lumaTotal += weight * alpha;
   }
-  luma = lumaTotal > 0.0 ? luma / lumaTotal : 0.0;
+  // Sidelobes are negative, so the weights can cancel near a silhouette edge
+  // where alpha masks most of the kernel. Fall back rather than divide by ~0.
+  luma = abs(lumaTotal) > 1e-3 ? luma / lumaTotal : rgbToYiq(unpremultiply(centre)).x;
 
-  // Chroma is squeezed much harder and lags behind luma, which is what makes
-  // colour visibly run off the edges it belongs to. Taps are alpha-weighted so
-  // the transparent surround does not drag her outline toward grey.
+  // Chroma comes back by multiplying the composite against the subcarrier and
+  // low-passing hard. The filter is wide because a tape's chroma bandwidth is
+  // tiny, which is what makes colour run off the edges it belongs to.
   vec2 chroma = vec2(0.0);
   float chromaTotal = 0.0;
   for (int i = 0; i < CHROMA_TAPS; i++) {
-    float offset = float(i - (CHROMA_TAPS - 1) / 2);
-    float weight = exp(-0.5 * offset * offset / (u_chromaBandwidth * u_chromaBandwidth));
-    vec4 tap = texture(u_scene, uv + vec2((offset - u_chromaDelay) * texel.x, 0.0));
-    chroma += rgbToYiq(unpremultiply(tap)).yz * weight * tap.a;
-    chromaTotal += weight * tap.a;
+    // The tap index drives the filter shape; the delay only moves where the
+    // filter reads from. Folding the delay into both would centre the kernel
+    // back on this pixel and cancel itself out.
+    float tap = float(i - (CHROMA_TAPS - 1) / 2);
+    float offset = tap - u_chromaDelay;
+    float x = fragX + offset;
+    float alpha;
+    float composite = compositeAt(uv + vec2(offset * texel.x, 0.0), x, line, field, alpha);
+    float phase = subcarrierPhase(x, line, field);
+    float weight = exp(-0.5 * tap * tap / (u_chromaBandwidth * u_chromaBandwidth));
+    chroma += vec2(composite * cos(phase), composite * sin(phase)) * weight * alpha;
+    chromaTotal += weight * alpha;
   }
-  chroma = chromaTotal > 0.0 ? chroma / chromaTotal : vec2(0.0);
+  // Doubled because multiplying two carriers halves the amplitude, and undoing
+  // the gain applied at encode so saturation survives the round trip.
+  chroma = chromaTotal > 0.0 ? chroma * 2.0 / (chromaTotal * u_chromaGain) : vec2(0.0);
+
+  // Colour-under. A tape heterodynes chroma down to a low carrier to record it
+  // and converts it back on playback, and an error in that oscillator's phase
+  // rotates the recovered vector — a rotation in the I/Q plane is a hue shift,
+  // so this is the error itself rather than an impression of it. Each line is
+  // its own pass of the conversion, hence the banding; the sine term is the
+  // slow servo wander that makes the bands drift instead of just fizzing.
+  float hueError = (hash(vec2(line, tick + 53.0)) - 0.5) * u_colourUnderPhase;
+  hueError += sin(line * 0.03 + u_time * 0.7) * u_colourUnderPhase * 0.4;
+  float cs = cos(hueError);
+  float sn = sin(hueError);
+  chroma = vec2(cs * chroma.x - sn * chroma.y, sn * chroma.x + cs * chroma.y);
+
+  // The same conversion is not level-stable either, so saturation breathes.
+  chroma *= 1.0 + (hash(vec2(line, tick + 77.0)) - 0.5) * u_colourUnderGain;
+
+  // Chroma AGC. A player pushes the recovered chroma back up because the tape
+  // gave so much of it away, and it overshoots — which is the point. Saturated
+  // colour ends up outside the gamut and clips on conversion, and that clip is
+  // what reads as a glowing orange rather than a muted one.
+  chroma *= u_saturation;
 
   // Preemphasis ringing: each earlier point on the scanline echoes into this
   // one with alternating sign, leaving a fringe trailing a sharp edge rather
@@ -337,9 +424,14 @@ export class CrtPostProcess {
     gl.bindTexture(gl.TEXTURE_2D, this._texture);
     gl.uniform1i(this._sceneLocation, 0);
     gl.uniform1f(this._uniforms.time, performance.now() / 1000.0);
-    gl.uniform1f(this._uniforms.lumaBandwidth, LAppDefine.LumaBandwidth);
+    gl.uniform1f(this._uniforms.lumaCutoff, LAppDefine.LumaCutoff);
+    gl.uniform1f(this._uniforms.subcarrier, LAppDefine.SubcarrierFreq);
+    gl.uniform1f(this._uniforms.chromaGain, LAppDefine.ChromaGain);
     gl.uniform1f(this._uniforms.chromaBandwidth, LAppDefine.ChromaBandwidth);
     gl.uniform1f(this._uniforms.chromaDelay, LAppDefine.ChromaDelay);
+    gl.uniform1f(this._uniforms.colourUnderPhase, LAppDefine.ColourUnderPhase);
+    gl.uniform1f(this._uniforms.colourUnderGain, LAppDefine.ColourUnderGain);
+    gl.uniform1f(this._uniforms.saturation, LAppDefine.Saturation);
     gl.uniform1f(this._uniforms.ring, LAppDefine.RingStrength);
     gl.uniform1f(this._uniforms.ringDecay, LAppDefine.RingDecay);
     gl.uniform1f(this._uniforms.knee, LAppDefine.HighlightKnee);

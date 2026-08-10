@@ -22,28 +22,55 @@ export const RenderVerticalResolution = 480;
 
 // --- Tape playback. All horizontal, all measured in tube pixels ---
 
-// Gaussian sigma of the luma low-pass. VHS keeps its full line count but has
-// roughly half the horizontal resolution, which is why it smears sideways
-// rather than looking uniformly soft.
-export const LumaBandwidth = 1.8;
-export const LumaTaps = 7;
+// Luma cutoff as a fraction of Nyquist. This is a windowed sinc, not a blur:
+// detail below the cutoff survives intact and the kernel's sidelobes supply
+// the ringing, the way an actual band-limited signal does. Lower = softer.
+export const LumaCutoff = 0.62;
+export const LumaTaps = 9;
+
+// Colour subcarrier, in cycles per tube pixel. Deliberately just above the
+// luma cutoff: close enough that the luma filter cannot fully reject it, so
+// saturated colour leaks brightness — the reason orange reads as glowing —
+// and the leftovers crawl as dots. Move it further out for a cleaner picture.
+export const SubcarrierFreq = 0.33;
+
+// Chroma amplitude on the subcarrier. Raising it saturates the picture and
+// increases the leak into luma at the same time, exactly as it would on a real
+// signal, so this is the main knob for how hot the colours run.
+export const ChromaGain = 1.25;
 
 // Chroma is squeezed far harder than luma — a fraction of its bandwidth — so
 // colour visibly runs off the edges it belongs to.
-export const ChromaBandwidth = 4.4;
-export const ChromaTaps = 15;
+export const ChromaBandwidth = 5.0;
+export const ChromaTaps = 19;
 
 // How far chroma lags luma.
 export const ChromaDelay = 1.9;
 
+// Colour-under phase error, in radians per line. Rotating the recovered I/Q
+// vector is exactly what an error in the heterodyne oscillator does, and a
+// rotation there is a hue shift — this is the source of VHS colour banding.
+export const ColourUnderPhase = 0.22;
+
+// Level instability in the same conversion, as a fraction of saturation.
+export const ColourUnderGain = 0.18;
+
+// Chroma AGC in the player, compensating for what the tape lost. Above 1 on
+// purpose: saturated colour is pushed out of gamut and clips, and that clip is
+// what makes orange read as glowing instead of muddy.
+export const Saturation = 1.8;
+
 // Preemphasis ringing: the fringe trailing a sharp edge. Decay sets how many
 // times the echo bounces before it dies.
-export const RingStrength = 0.22;
+export const RingStrength = 0.1;
 export const RingDecay = 0.6;
 export const RingTaps = 6;
 
-// Luma above this compresses instead of clipping.
-export const HighlightKnee = 0.62;
+// Luma above this compresses instead of clipping. Kept high: it exists to
+// absorb ringing overshoot, not to grade the picture. Pulling it down muted
+// the highlights, and clipped highlights are most of why tape footage reads
+// as bright rather than washed.
+export const HighlightKnee = 0.9;
 
 // How often the noise field resamples, in Hz. Tape noise moves at field rate,
 // not at the monitor's refresh — running it per frame reads as digital sparkle.
