@@ -279,23 +279,20 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
         mixBlendMode="multiply"
         opacity=".78"
       />
-      {/* The gaps above only subtract; a tube's line is emissive, so add one back. */}
+      {/* The gaps above only subtract; a tube's line is emissive, so add one
+          back. Neutral rather than amber — the avatar's colour is decided by
+          the tape model now, and tinting it here would undo that. */}
       <Box
         position="absolute"
         inset="0"
         zIndex={1}
         pointerEvents="none"
-        backgroundImage="repeating-linear-gradient(rgba(255,168,112,.07) 0px, rgba(255,168,112,.07) 1px, transparent 1px, transparent 3px)"
+        backgroundImage="repeating-linear-gradient(rgba(255,255,255,.05) 0px, rgba(255,255,255,.05) 1px, transparent 1px, transparent 3px)"
         mixBlendMode="screen"
       />
-      <Box
-        position="absolute"
-        inset="0"
-        zIndex={1}
-        pointerEvents="none"
-        background="linear-gradient(90deg, rgba(219,67,20,.045), rgba(255,142,76,.012) 52%, rgba(117,31,9,.05))"
-        mixBlendMode="screen"
-      />
+      {/* The amber wash and the drifting amber band that used to sit here are
+          gone: they tinted the avatar after the tape model had already decided
+          its colour, which is the one thing that cannot be corrected for. */}
       <Box
         position="absolute"
         left="0"
@@ -303,15 +300,20 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
         height="16%"
         zIndex={1}
         pointerEvents="none"
-        background="linear-gradient(180deg, transparent, rgba(235,111,53,.055) 50%, transparent)"
+        background="linear-gradient(180deg, transparent, rgba(255,255,255,.035) 50%, transparent)"
         animation="scanlineDrift 8s linear infinite"
       />
+      {/* Elliptical, not the inset box-shadow this used to be. A box-shadow
+          falls off from every edge equally, so it dims the middle of the top
+          and bottom as hard as the corners — and she stands right there. A
+          vignette darkens by distance from centre, which leaves the middle of
+          each edge nearly untouched and only really bites at the corners. */}
       <Box
         position="absolute"
         inset="0"
         zIndex={1}
         pointerEvents="none"
-        boxShadow="inset 0 0 170px 42px rgba(0,0,0,.88)"
+        background="radial-gradient(ellipse 78% 82% at 50% 45%, transparent 42%, rgba(0,0,0,.42) 76%, rgba(0,0,0,.9) 100%)"
         animation="crtFlicker 9s linear infinite"
       />
 
