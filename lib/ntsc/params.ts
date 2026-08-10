@@ -203,14 +203,25 @@ export const NTSC_TIME_WRAP = 600
  */
 export const NTSC_LINES = 600
 
-/** The backing-store size for a surface of this CSS size, capped to the line
- *  count. Never upsamples: a short surface keeps its own resolution. */
+/**
+ * The backing-store size for a surface of this CSS size, capped to the line
+ * count.
+ *
+ * `pixelRatio` is what stops a dense display from being the worst case. The
+ * ceiling used to be one backing pixel per CSS pixel, which on a phone at 3x
+ * meant the device stretched every rendered line across three of its own — the
+ * picture came out soft and every per-line artefact came out three times as
+ * thick as it was designed to be. Bounded at 2: past that the cost, which is
+ * quadratic, buys less than the line cap gives away.
+ */
 export const ntscSurfaceSize = (
   width: number,
   height: number,
+  pixelRatio = 1,
   lines = NTSC_LINES
 ): { width: number; height: number } => {
-  const scale = height > 0 ? Math.min(1, lines / height) : 1
+  const ceiling = Math.min(2, Math.max(1, pixelRatio))
+  const scale = height > 0 ? Math.min(ceiling, lines / height) : 1
   return {
     width: Math.max(1, Math.round(width * scale)),
     height: Math.max(1, Math.round(height * scale)),

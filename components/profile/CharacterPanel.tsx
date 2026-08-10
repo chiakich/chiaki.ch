@@ -34,6 +34,10 @@ const PORTRAIT_TAPE = { ...NTSC_SPRITE, snowChance: 0.000008 }
 // top, so the panel is lifted back rather than left reading as a dim print.
 const PORTRAIT_GAIN = 1.1
 
+// How hard the projection grille reads. Its own gradient is already soft and
+// faint; this is the knob for the whole layer.
+const GRILLE_STRENGTH = 1
+
 // Sticky character visual styled as an acrylic authorization pass
 const CharacterPanel = ({
   x,
@@ -269,6 +273,7 @@ const CharacterPanel = ({
             translateX: floatX,
             translateY: floatY,
             '--portrait-gain': PORTRAIT_GAIN,
+            '--grille-strength': GRILLE_STRENGTH,
           } as CSSProperties
         }
       >
@@ -295,26 +300,33 @@ const CharacterPanel = ({
             maskRepeat="no-repeat"
             maskPosition="center"
           >
+            {/* Soft-edged rather than a 1px band of solid colour. A hard edge
+                here was the most acute thing on screen — sharper than anything
+                the tape itself produces — which is what made a grille this
+                faint still read as stripes laid over her. The period is in CSS
+                pixels either way, so a phone at 3x gets a coarser one against a
+                narrower figure, hence the lighter base. */}
             <Box
               position="absolute"
               inset="0"
-              backgroundImage="repeating-linear-gradient(180deg, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 2px, rgba(6,18,26,.42) 3px, rgba(6,18,26,.42) 4px)"
+              backgroundImage="repeating-linear-gradient(180deg, rgba(6,18,26,.34) 0px, rgba(6,18,26,0) 1.6px, rgba(6,18,26,0) 3px)"
               mixBlendMode="multiply"
+              opacity={{
+                base: 'calc(var(--grille-strength) * .7)',
+                md: 'var(--grille-strength)',
+              }}
             />
-            <Box
-              position="absolute"
-              inset="0"
-              backgroundImage={`linear-gradient(180deg, transparent, ${ACCENT}2e 45%, rgba(150,240,255,.16) 55%, transparent)`}
-              mixBlendMode="screen"
-              opacity=".7"
-            />
-            {/* The refresh line the panel is currently drawing. */}
+            {/* The refresh line the panel is currently drawing, and the only
+                tint left over her. A static orange-to-cyan wash used to sit
+                here for the projection look, but an 18% screen layer across the
+                middle of a figure rewrites the artwork's own colour
+                relationships rather than reading as a display. */}
             <Box
               position="absolute"
               left="0"
               right="0"
               height="22%"
-              background="linear-gradient(180deg, transparent, rgba(190,245,255,.14) 50%, transparent)"
+              background="linear-gradient(180deg, transparent, rgba(236,248,255,.12) 50%, transparent)"
               animation="projectionSweep 6.5s linear infinite"
             />
           </Box>

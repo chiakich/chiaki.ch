@@ -281,7 +281,12 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
         aria-hidden="true"
         backgroundImage="repeating-linear-gradient(transparent 0px, transparent 1px, rgba(0,0,0,.27) 2px, rgba(0,0,0,.27) 3px)"
         mixBlendMode="multiply"
-        opacity=".78"
+        // The period is in CSS pixels, so on a phone at 3x each of these bands
+        // is three device pixels thick where it is one on a desktop panel —
+        // the same gradient reads three times as heavy, hence the split. Both
+        // are below where they started: the tape's own per-line work carries
+        // most of the texture, and this only has to suggest the tube.
+        opacity={{ base: '.4', md: '.56' }}
       />
       {/* The gaps above only subtract; a tube's line is emissive, so add one
           back. Neutral rather than amber — the avatar's colour is decided by
@@ -294,6 +299,7 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
         aria-hidden="true"
         backgroundImage="repeating-linear-gradient(rgba(255,255,255,.05) 0px, rgba(255,255,255,.05) 1px, transparent 1px, transparent 3px)"
         mixBlendMode="screen"
+        opacity={{ base: '.5', md: '.72' }}
       />
       {/* The amber wash and the drifting amber band that used to sit here are
           gone: they tinted the avatar after the tape model had already decided

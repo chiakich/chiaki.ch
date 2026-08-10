@@ -154,7 +154,11 @@ const NtscImage = ({
     image.src = src
 
     const resize = () => {
-      const surface = ntscSurfaceSize(canvas.clientWidth, canvas.clientHeight)
+      const surface = ntscSurfaceSize(
+        canvas.clientWidth,
+        canvas.clientHeight,
+        window.devicePixelRatio
+      )
       canvas.width = surface.width
       canvas.height = surface.height
       pipeline.resize(surface.width, surface.height)
