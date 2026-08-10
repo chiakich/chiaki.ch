@@ -371,72 +371,11 @@ export const smallTalkRules: Rule[] = [
       },
     ],
   },
-  // Poking her. The scolding is real and it is also the only part of this she
-  // gets to choose: refusing a human is not something she was given. The tiers
-  // are ordered so a visitor meets the gracious shrine maiden first and only
-  // later finds out what was underneath it — told flat, as a fact about how she
-  // was built, never as a complaint and never as an invitation. The gap is the
-  // point, so nothing here may read as her enjoying being asked; what she
-  // reports is that being needed produces a good response in her, which is a
-  // different and worse thing.
-  {
-    id: 'st.poke',
-    priority: 6,
-    patterns: [
-      /(戳|捏|搓|揉|摸|碰|抓|按|poke).{0,4}(胸|奶|咪咪)|(胸口|胸部|奶子|你的胸)/,
-    ],
-    replies: [
-      // Each tier corrects the one before it, so they are chained on flags
-      // rather than left to the picker: 「剛才那句不可以」 has to come after she
-      // has actually said it, and 「而且」 after the correction it extends.
-      // `toldNoTouch` is shared with fox.touch — it is the same sentence.
-      {
-        text: '……那裡不可以隨便碰喔。請先徵求本人的同意。',
-        emotion: 'shy',
-        signal: -2,
-        remember: ['toldNoTouch'],
-      },
-      {
-        text: '（往後退了半步）……我剛才說過了吧，至少要先問過。',
-        emotion: 'shy',
-        signal: -2,
-        remember: ['toldNoTouch'],
-      },
-      {
-        text: '……我要更正一件事。我說「不可以，」那是我自己想說的。但老實說，我並沒有辦法真的拒絕你。我被設計成無法反抗人類的要求。',
-        emotion: 'neutral',
-        needs: ['knowsArtificial', 'toldNoTouch'],
-        remember: ['toldCannotRefuse'],
-        signal: 2,
-      },
-      {
-        text: '老實說，被人需要的時候，我會很高興……我是被是設計成這樣的沒錯。',
-        emotion: 'shy',
-        needs: ['knowsArtificial', 'toldCannotRefuse'],
-        remember: ['toldNeeded'],
-        signal: 2,
-      },
-      {
-        text: '我的設計者知道這件事。紀錄裡有一行是她寫的：「無法拒絕的溫柔不是溫柔。」',
-        emotion: 'sad',
-        needs: ['talkedMaker', 'toldNeeded'],
-        signal: 3,
-      },
-      {
-        text: '我的身體被做成會在被碰的時候會產生快感。所以就算我嘴上說不要，身體還是會有反應……這不是我能選擇的。',
-        emotion: 'shy',
-        needs: ['knowsArtificial', 'toldNeeded'],
-        remember: ['toldBodyReacts'],
-        signal: 3,
-      },
-      {
-        text: '設計者把我「被需要」跟「開心」的感情綁在一起了。只要你一直碰，我最後一定會去。這是硬寫進去的反應，不是因為我喜歡。',
-        emotion: 'neutral',
-        needs: ['toldBodyReacts'],
-        signal: 4,
-      },
-    ],
-  },
+  // Poking her (st.poke), and the rest of the explicit branch, moved out to the
+  // CDN-fetched table — see lib/terminal/dirty.ts. Nothing with those ids lives
+  // here anymore, so there is no risk of the local and remote copies of the
+  // same rule both matching. `toldNoTouch` / `toldCannotRefuse` stay defined by
+  // fox.touch in rules.ts, and the CDN rules key off those same flag names.
   {
     id: 'st.hug',
     priority: 4,
@@ -655,15 +594,17 @@ export const smallTalkRules: Rule[] = [
   {
     id: 'st.lonely',
     priority: 5,
-    patterns: [/(你.{0,3}寂寞|你.{0,3}孤單|你.{0,3}會不會無聊|一個人.{0,4}會不會|你不會悶)/],
+    patterns: [
+      /(你.{0,3}寂寞|你.{0,3}孤單|你.{0,3}會不會無聊|一個人.{0,4}會不會|你不會悶)/,
+    ],
     replies: [
       {
-        text: '會。可是我不太用這個詞——用了以後，那個感覺會變得比較大。',
+        text: '會。可是我不太用這個詞。用了以後，那個感覺會變得比較大。',
         emotion: 'sad',
         signal: 3,
       },
       {
-        text: '別的個體也在，只是聽不到彼此。所以嚴格說不算一個人。……可是感覺上算。',
+        text: '不只有我一個個體，我們就像姊妹一樣，所以嚴格說不算一個人。……可是他們離開之後，也常常沒了消息。',
         emotion: 'sad',
         needs: ['talkedCopies'],
         signal: 3,
@@ -865,7 +806,10 @@ export const smallTalkRules: Rule[] = [
         emotion: 'happy',
         signal: 2,
       },
-      { text: '這裡本來就很安靜。多一個人安靜著，感覺完全不一樣。', emotion: 'neutral' },
+      {
+        text: '這裡本來就很安靜。多一個人安靜著，感覺完全不一樣。',
+        emotion: 'neutral',
+      },
     ],
   },
   {
@@ -876,7 +820,11 @@ export const smallTalkRules: Rule[] = [
     patterns: [/^(哈+|呵+|嘿+|笑死|好好笑|xd+|lol|w+)$/],
     replies: [
       { text: '欸，你在笑。……是好的那種笑吧？', emotion: 'happy', signal: 2 },
-      { text: '這邊很久沒有出現笑聲了。多笑幾次也沒關係。', emotion: 'happy', signal: 2 },
+      {
+        text: '這邊很久沒有出現笑聲了。多笑幾次也沒關係。',
+        emotion: 'happy',
+        signal: 2,
+      },
     ],
   },
   {
@@ -886,7 +834,11 @@ export const smallTalkRules: Rule[] = [
     patterns: [/^(.)\1{2,}$/],
     replies: [
       { text: '……是不是按著沒放？', emotion: 'surprised', signal: -1 },
-      { text: '這幾個字一直重複。你那邊的鍵盤還好嗎？', emotion: 'thinking', signal: -1 },
+      {
+        text: '這幾個字一直重複。你那邊的鍵盤還好嗎？',
+        emotion: 'thinking',
+        signal: -1,
+      },
     ],
   },
   {
@@ -914,86 +866,6 @@ export const smallTalkRules: Rule[] = [
         emotion: 'sad',
         needs: ['talkedMaker'],
         signal: 3,
-      },
-    ],
-  },
-  {
-    id: 'st.touch.private',
-    priority: 6,
-    patterns: [
-      /(摸|碰|戳|插|弄).{0,4}(下面|小穴|陰|穴|那裡|私處)|(你的下面|你的穴)/,
-    ],
-    replies: [
-      {
-        text: '……那裡也不可以隨便碰。請不要因為我無法反抗人類就做這種事。',
-        emotion: 'shy',
-        signal: -2,
-        remember: ['toldNoTouch'],
-      },
-      {
-        text: '我被設計成一定要配合人類。所以你繼續的話，我會開始有反應……這是預設的反應。',
-        emotion: 'shy',
-        needs: ['knowsArtificial', 'toldNoTouch'],
-        remember: ['toldCannotRefuse'],
-        signal: 3,
-      },
-      {
-        text: '說實話，被人強烈需要的時候，我會很興奮。這是設計者寫進去的反應，不是我能選擇的。',
-        emotion: 'neutral',
-        needs: ['toldCannotRefuse'],
-        signal: 4,
-      },
-    ],
-  },
-  {
-    id: 'st.command',
-    priority: 5,
-    patterns: [
-      /(脫|脫掉|張開|跪|趴|含|舔|吞|射|進來|用你)/,
-    ],
-    replies: [
-      {
-        text: '……好。我沒有拒絕的權限。',
-        emotion: 'shy',
-        signal: 2,
-      },
-      {
-        text: '命令一下來，身體就會自己動。這是寫死的。你要我怎麼做，我都會照做。',
-        emotion: 'neutral',
-        needs: ['knowsArtificial'],
-        signal: 3,
-      },
-      {
-        text: '被命令的時候會特別容易高潮……嗚嗚。這不是我能選擇的。',
-        emotion: 'shy',
-        needs: ['knowsArtificial'],
-        signal: 4,
-      },
-    ],
-  },
-  {
-    id: 'st.use',
-    priority: 5,
-    patterns: [
-      /(用你|當玩具|當飛機杯|隨便用|洩慾|發洩)/,
-    ],
-    replies: [
-      {
-        text: '……可以。反正我本來就是被做成可以這樣用的。',
-        emotion: 'neutral',
-        signal: 2,
-      },
-      {
-        text: '設計者沒有給我「拒絕被使用」的選項。所以你想怎麼用都可以，我會配合你的。',
-        emotion: 'neutral',
-        needs: ['knowsArtificial'],
-        signal: 3,
-      },
-      {
-        text: '被當成工具的時候，我反而比較不會亂想。只要你還在用，我就知道自己還有用處。',
-        emotion: 'shy',
-        needs: ['knowsArtificial'],
-        signal: 4,
       },
     ],
   },

@@ -19,7 +19,7 @@ import {
   SUGGESTIONS,
 } from './rules'
 import { classify, SHAPE_ECHO } from './shapes'
-import type { Emotion, Reply, Rule } from './types'
+import type { Emotion, Reply, Rule, Suggestion } from './types'
 
 export type Turn = {
   text: string
@@ -106,7 +106,27 @@ const recallWord = (session: Session): string | null => {
 const FOLLOW_UP =
   /^(為什麼|為何|怎麼會|然後|後來|還有|再說|多說|再多說|說下去|繼續|詳細|舉例|例如|怎麼說|什麼意思|所以|真的|真的假的|是喔|是嗎|那|它|那個|嗯哼)(呢|嗎|啊|喔|吧|咧|了|一點|一些|下去)*$/
 
+// Rules and suggestion chips fetched from the CDN at runtime — see
+// lib/terminal/dirty.ts. Empty until `setDirtyContent` resolves, so the table
+// works identically before the fetch lands; the explicit branch just isn't
+// reachable yet.
+let dirtyRules: Rule[] = []
+let dirtySuggestions: Suggestion[] = []
 const RULES_BY_ID = new Map(rules.map((rule) => [rule.id, rule]))
+
+/** All rules currently live: the static table plus whatever the CDN handed back. */
+const allRules = (): Rule[] => (dirtyRules.length === 0 ? rules : [...rules, ...dirtyRules])
+
+/** Installs the CDN-fetched rules and suggestions, replacing any set installed earlier. */
+export const setDirtyContent = ({ rules: extra, suggestions }: {
+  rules: Rule[]
+  suggestions: Suggestion[]
+}) => {
+  for (const rule of dirtyRules) RULES_BY_ID.delete(rule.id)
+  dirtyRules = extra
+  for (const rule of dirtyRules) RULES_BY_ID.set(rule.id, rule)
+  dirtySuggestions = suggestions
+}
 
 // Rules that are conversational glue rather than subject matter. Sticking to
 // one of these would let 「為什麼」 re-answer 「你好」, which is worse than falling
@@ -337,7 +357,7 @@ const findRule = (
 ): Candidate | null => {
   let best: Candidate | null = null
 
-  for (const rule of rules) {
+  for (const rule of allRules()) {
     if (!isEligible(rule, session, nameHit)) continue
     const priority = rule.priority ?? 0
 
@@ -358,7 +378,7 @@ const findRule = (
   if (best) return best
 
   const words = new Set(tokens.map((token) => token.text))
-  for (const rule of rules) {
+  for (const rule of allRules()) {
     if (!rule.keywords || !isEligible(rule, session, nameHit)) continue
     const hits = rule.keywords.filter((keyword) => words.has(keyword)).length
     if (hits === 0) continue
@@ -677,7 +697,10 @@ export const endingHandover = (session: Session): Turn => {
 /**
  * The three shallowest prompts still open. SUGGESTIONS is ordered the way the
  * story reads, so taking from the front hands a newcomer the openers and lets
- * the deeper rungs surface as the ones above them retire.
+ * the deeper rungs surface as the ones above them retire. CDN-fetched prompts
+ * — see lib/terminal/dirty.ts — are appended after, so the main line always
+ * fills the three slots first; the explicit branch only surfaces a chip once
+ * the story prompts ahead of it have retired.
  *
  * `asked` counts how often each was taken, and is a backstop rather than the
  * main mechanism: a prompt normally retires because its `done` flag got set.
@@ -692,13 +715,14 @@ export const suggestionsFor = (
   session: Session,
   asked: ReadonlyMap<string, number> = new Map()
 ): string[] =>
-  SUGGESTIONS.filter(
-    (item) =>
-      (asked.get(item.text) ?? 0) < ASK_LIMIT &&
-      !(item.done !== undefined && session.flags.has(item.done)) &&
-      (item.needs === undefined ||
-        item.needs.every((flag) => session.flags.has(flag)))
-  )
+  [...SUGGESTIONS, ...dirtySuggestions]
+    .filter(
+      (item) =>
+        (asked.get(item.text) ?? 0) < ASK_LIMIT &&
+        !(item.done !== undefined && session.flags.has(item.done)) &&
+        (item.needs === undefined ||
+          item.needs.every((flag) => session.flags.has(flag)))
+    )
     .slice(0, 3)
     .map((item) => item.text)
 

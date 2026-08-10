@@ -8,10 +8,12 @@ import {
   idle,
   opening,
   respond,
+  setDirtyContent,
   type Session,
   suggestionsFor,
 } from 'lib/terminal/engine'
 import { ENDING_HANDOVER } from 'lib/terminal/rules'
+import { loadDirtyContent } from 'lib/terminal/dirty'
 import { loadLexicon, type Lexicon } from 'lib/terminal/lexicon'
 import { load, save } from 'lib/terminal/persist'
 import { createUtterance } from 'lib/terminal/speech'
@@ -80,6 +82,18 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
   useEffect(() => {
     loadLexicon()
       .then(setLexicon)
+      .catch(() => undefined)
+  }, [])
+
+  // Best-effort: if the CDN is unreachable she simply never reaches the
+  // explicit branch, same as before this table existed. Refreshes the chips
+  // too — the fetch can land after the restore effect below has already run.
+  useEffect(() => {
+    loadDirtyContent()
+      .then((content) => {
+        setDirtyContent(content)
+        setPrompts(suggestionsFor(sessionRef.current, asked.current))
+      })
       .catch(() => undefined)
   }, [])
 
