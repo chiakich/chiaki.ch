@@ -279,6 +279,15 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
         mixBlendMode="multiply"
         opacity=".78"
       />
+      {/* The gaps above only subtract; a tube's line is emissive, so add one back. */}
+      <Box
+        position="absolute"
+        inset="0"
+        zIndex={1}
+        pointerEvents="none"
+        backgroundImage="repeating-linear-gradient(rgba(255,168,112,.07) 0px, rgba(255,168,112,.07) 1px, transparent 1px, transparent 3px)"
+        mixBlendMode="screen"
+      />
       <Box
         position="absolute"
         inset="0"

@@ -89,6 +89,10 @@ const EMOTION_SPEED: Record<Emotion, number> = {
   proud: 8,
 }
 
+// Grading, quantising and convergence all live in the viewer's post-process
+// shader now. Anything applied here would run after it and push the palette's
+// hand-picked colours back off the palette.
+
 const TerminalAvatarClient = ({ controls }: TerminalAvatarClientProps) => {
   const frameRef = useRef<HTMLIFrameElement>(null)
   const paramsRef = useRef<Record<string, number>>({ ...BASE_PARAMS })

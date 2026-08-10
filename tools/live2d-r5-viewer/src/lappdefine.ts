@@ -14,6 +14,61 @@ import { LogLevel } from '@framework/live2dcubismframework';
 // Canvas width and height pixel values, or dynamic screen size ('auto').
 export const CanvasSize: { width: number; height: number } | 'auto' = 'auto';
 
+// Scan lines the tape resolves. The canvas renders into this many rows and is
+// then upscaled by CSS. Kept high enough that the upscale is a small step:
+// vertical softness is pure resampling loss with nothing analogue behind it,
+// since a tape's vertical resolution is its line count and that stays crisp.
+export const RenderVerticalResolution = 480;
+
+// --- Tape playback. All horizontal, all measured in tube pixels ---
+
+// Gaussian sigma of the luma low-pass. VHS keeps its full line count but has
+// roughly half the horizontal resolution, which is why it smears sideways
+// rather than looking uniformly soft.
+export const LumaBandwidth = 1.8;
+export const LumaTaps = 7;
+
+// Chroma is squeezed far harder than luma — a fraction of its bandwidth — so
+// colour visibly runs off the edges it belongs to.
+export const ChromaBandwidth = 4.4;
+export const ChromaTaps = 15;
+
+// How far chroma lags luma.
+export const ChromaDelay = 1.9;
+
+// Preemphasis ringing: the fringe trailing a sharp edge. Decay sets how many
+// times the echo bounces before it dies.
+export const RingStrength = 0.22;
+export const RingDecay = 0.6;
+export const RingTaps = 6;
+
+// Luma above this compresses instead of clipping.
+export const HighlightKnee = 0.62;
+
+// How often the noise field resamples, in Hz. Tape noise moves at field rate,
+// not at the monitor's refresh — running it per frame reads as digital sparkle.
+export const NoiseRate = 24;
+
+// Grain, biased into the shadows where tape noise actually lives.
+export const TapeGrain = 0.055;
+
+// Blotchy colour speckle, seeded on a coarser grid than the luma grain.
+export const ChromaNoise = 0.05;
+
+// Per-line tracking error, in tube pixels of horizontal shear.
+export const TrackingJitter = 0.9;
+
+// Dropouts: the odd line where a head loses contact and reads back as a bright
+// scratch. Chance is per line per field, so keep it small.
+export const DropoutChance = 0.004;
+export const DropoutStrength = 0.5;
+
+// Head switching: the bottom few lines are read by a head that is losing
+// contact, so they shear sideways and go noisy. Measured in tube pixels.
+// Only partly visible here — the chat panel sits over the bottom of the frame.
+export const HeadSwitchLines = 14;
+export const HeadSwitchShift = 16;
+
 // キャンバスの数
 export const CanvasNum = 1;
 

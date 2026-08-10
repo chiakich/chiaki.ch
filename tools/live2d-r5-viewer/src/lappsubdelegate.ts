@@ -5,6 +5,7 @@
  * that can be found at https://www.live2d.com/eula/live2d-open-software-license-agreement_en.html.
  */
 
+import { CrtPostProcess } from './crtpostprocess';
 import * as LAppDefine from './lappdefine';
 import { LAppGlManager } from './lappglmanager';
 import { LAppLive2DManager } from './lapplive2dmanager';
@@ -25,6 +26,7 @@ export class LAppSubdelegate {
     this._textureManager = new LAppTextureManager();
     this._live2dManager = new LAppLive2DManager();
     this._view = new LAppView();
+    this._postProcess = new CrtPostProcess();
     this._frameBuffer = null;
     this._captured = false;
   }
@@ -45,6 +47,9 @@ export class LAppSubdelegate {
 
     this._textureManager.release();
     this._textureManager = null;
+
+    this._postProcess.release();
+    this._postProcess = null;
 
     this._glManager.release();
     this._glManager = null;
@@ -71,9 +76,20 @@ export class LAppSubdelegate {
 
     const gl = this._glManager.getGl();
 
-    if (!this._frameBuffer) {
-      this._frameBuffer = gl.getParameter(gl.FRAMEBUFFER_BINDING);
+    if (
+      !this._postProcess.initialize(
+        gl as WebGL2RenderingContext,
+        this._canvas.width,
+        this._canvas.height
+      )
+    ) {
+      return false;
     }
+
+    // Cubism restores to this after its mask passes, so it has to be the
+    // offscreen target rather than the canvas — otherwise masked parts of the
+    // model would land on screen unprocessed.
+    this._frameBuffer = this._postProcess.getFramebuffer();
 
     // 透過設定
     gl.enable(gl.BLEND);
@@ -135,6 +151,8 @@ export class LAppSubdelegate {
 
     const gl = this._glManager.getGl();
 
+    this._postProcess.bind();
+
     // 画面の初期化
     gl.clearColor(0.0, 0.0, 0.0, 0.0);
 
@@ -154,6 +172,8 @@ export class LAppSubdelegate {
 
     // 描画更新
     this._view.render();
+
+    this._postProcess.render();
   }
 
   /**
@@ -247,10 +267,21 @@ export class LAppSubdelegate {
    * Resize the canvas to fill the screen.
    */
   private resizeCanvas(): void {
-    this._canvas.width = this._canvas.clientWidth * window.devicePixelRatio;
-    this._canvas.height = this._canvas.clientHeight * window.devicePixelRatio;
+    // Deliberately ignores devicePixelRatio: the backing store is capped at
+    // RenderVerticalResolution rows and CSS scales it back up, which throws
+    // detail away on a pixel grid instead of smearing it like a blur would.
+    const clientHeight = this._canvas.clientHeight;
+    const scale =
+      clientHeight > 0
+        ? Math.min(1, LAppDefine.RenderVerticalResolution / clientHeight)
+        : 1;
+
+    this._canvas.width = Math.max(1, Math.round(this._canvas.clientWidth * scale));
+    this._canvas.height = Math.max(1, Math.round(clientHeight * scale));
 
     const gl = this._glManager.getGl();
+
+    this._postProcess.resize(this._canvas.width, this._canvas.height);
 
     gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
   }
@@ -334,6 +365,7 @@ export class LAppSubdelegate {
    * テクスチャマネージャー
    */
   private _textureManager: LAppTextureManager;
+  private _postProcess: CrtPostProcess;
   private _frameBuffer: WebGLFramebuffer;
   private _glManager: LAppGlManager;
   private _live2dManager: LAppLive2DManager;
