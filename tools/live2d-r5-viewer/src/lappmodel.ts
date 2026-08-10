@@ -88,6 +88,28 @@ type GestureKey = {
 
 const GESTURE_REST: GestureKey = { at: 0, brow: 0, tilt: 0, nod: 0, gaze: 0, breath: 0 };
 
+type IdleFocusPhase = 'meeting' | 'averted' | 'returning';
+
+type IdleFocus = {
+  targetX: number;
+  targetY: number;
+  endsAt: number;
+  nextAt: number;
+  phase: IdleFocusPhase;
+};
+
+// Looking down is intentionally a little more common than looking sideways.
+// A person who has been holding eye contact tends to break it by checking the
+// desk or gathering a thought, rather than repeatedly sweeping their eyes from
+// left to right.
+const IDLE_AVERTED_TARGETS = [
+  { x: -0.3, y: 0.1 },
+  { x: 0.28, y: 0.08 },
+  { x: -0.16, y: 0.32 },
+  { x: 0.18, y: 0.36 },
+  { x: 0.04, y: 0.43 },
+];
+
 /**
  * Linear sample of a time-ordered keyframe track. `cursor` is carried between
  * frames so this stays O(1) in the common case and still catches up in one go
@@ -744,15 +766,27 @@ export class LAppModel extends CubismUserModel {
       pointer != null && performance.now() - pointer.movedAt < 1350;
     const idle = this._terminalIdle;
     if (!pointerIsInteresting) {
-      if (idle.endsAt > 0 && this._userTimeSeconds >= idle.endsAt) {
+      // Start by meeting the visitor's eyes. Once that opening beat has
+      // passed, attention moves away for a longer, intentional pause before
+      // coming back. The old behaviour made a quick random glance and snapped
+      // straight to centre, which read more like a cursor than a person.
+      if (idle.phase === 'meeting' && this._userTimeSeconds >= idle.nextAt) {
+        const target = IDLE_AVERTED_TARGETS[
+          Math.floor(Math.random() * IDLE_AVERTED_TARGETS.length)
+        ];
+        idle.phase = 'averted';
+        idle.targetX = target.x;
+        idle.targetY = target.y;
+        idle.endsAt = this._userTimeSeconds + 2.7 + Math.random() * 2.3;
+      } else if (idle.phase === 'averted' && this._userTimeSeconds >= idle.endsAt) {
+        idle.phase = 'returning';
         idle.targetX = 0;
         idle.targetY = 0;
+        idle.endsAt = this._userTimeSeconds + 0.75 + Math.random() * 0.45;
+      } else if (idle.phase === 'returning' && this._userTimeSeconds >= idle.endsAt) {
+        idle.phase = 'meeting';
         idle.endsAt = 0;
-        idle.nextAt = this._userTimeSeconds + 4.6 + Math.random() * 4.2;
-      } else if (this._userTimeSeconds >= idle.nextAt) {
-        idle.targetX = -0.24 + Math.random() * 0.48;
-        idle.targetY = -0.1 + Math.random() * 0.2;
-        idle.endsAt = this._userTimeSeconds + 1.8 + Math.random() * 1.5;
+        idle.nextAt = this._userTimeSeconds + 3.8 + Math.random() * 3.4;
       }
     }
     const desiredX = pointerIsInteresting ? pointer.targetX : idle.targetX;
@@ -760,10 +794,13 @@ export class LAppModel extends CubismUserModel {
     const look = this._terminalLook;
     const damp = (current: number, target: number, seconds: number) =>
       current + (target - current) * (1.0 - Math.exp(-deltaTimeSeconds / seconds));
-    look.eyeX = damp(look.eyeX, desiredX, 0.19);
-    look.eyeY = damp(look.eyeY, desiredY, 0.19);
-    look.headX = damp(look.headX, desiredX, 0.82);
-    look.headY = damp(look.headY, desiredY, 0.88);
+    // Eyes arrive first, then the head and finally the torso catch up. That
+    // stagger is subtle, but keeps a glance from moving the whole portrait as
+    // one rigid piece.
+    look.eyeX = damp(look.eyeX, desiredX, 0.13);
+    look.eyeY = damp(look.eyeY, desiredY, 0.13);
+    look.headX = damp(look.headX, desiredX, 0.76);
+    look.headY = damp(look.headY, desiredY, 0.82);
     look.bodyX = damp(look.bodyX, desiredX, 1.65);
     look.bodyY = damp(look.bodyY, desiredY, 1.8);
     const speakingNod =
@@ -789,10 +826,17 @@ export class LAppModel extends CubismUserModel {
     // this is the micro-saccade on top of it, applied without damping so it
     // lands in a single frame the way a real fixation shift does.
     const saccade = this._terminalSaccade;
-    if (this._userTimeSeconds >= saccade.nextAt) {
-      saccade.x = (Math.random() - 0.5) * 0.16;
-      saccade.y = (Math.random() - 0.5) * 0.1;
-      saccade.nextAt = this._userTimeSeconds + 0.5 + Math.random() * 1.7;
+    const gazeIsSettling = Math.hypot(desiredX - look.eyeX, desiredY - look.eyeY) < 0.045;
+    if (gazeIsSettling && this._userTimeSeconds >= saccade.nextAt) {
+      // Tiny, irregular changes in fixation. Keep them small and only make
+      // them while the gaze is settled; a large eye jump during a turn looks
+      // mechanical because the pupil races ahead twice.
+      saccade.x = (Math.random() - 0.5) * 0.15;
+      saccade.y = (Math.random() - 0.5) * 0.085;
+      // During a fixation the eyes are never completely still. This lands at
+      // roughly one to three small shifts a second, with enough variation to
+      // avoid becoming a metronome.
+      saccade.nextAt = this._userTimeSeconds + 0.35 + Math.random() * 0.85;
     }
     this._model.setParameterValueById(
       CubismFramework.getIdManager().getId('PARAM_EYE_BALL_X'),
@@ -1365,7 +1409,15 @@ export class LAppModel extends CubismUserModel {
   private _terminalBlink = { elapsed: -1, nextAt: 2.0, pending: 0 };
   private _terminalSaccade = { x: 0, y: 0, nextAt: 1.0 };
   private _terminalLook = { eyeX: 0, eyeY: 0, headX: 0, headY: 0, bodyX: 0, bodyY: 0 };
-  private _terminalIdle = { targetX: 0, targetY: 0, endsAt: 0, nextAt: 5.5 };
+  private _terminalIdle: IdleFocus = {
+    targetX: 0,
+    targetY: 0,
+    endsAt: 0,
+    // The opening beat deliberately holds centre, so she begins by looking at
+    // the visitor before allowing herself to look elsewhere.
+    nextAt: 4.2,
+    phase: 'meeting',
+  };
   private _terminalLastTapAt: number = -Infinity;
   private _terminalReaction: {
     area: 'head' | 'chest';
