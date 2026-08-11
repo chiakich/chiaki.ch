@@ -10,6 +10,7 @@ import {
   respond,
   setDirtyContent,
   type Session,
+  type SuggestionChip,
   suggestionsFor,
 } from 'lib/terminal/engine'
 import { ENDING_HANDOVER } from 'lib/terminal/rules'
@@ -65,7 +66,7 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
   const [typing, setTyping] = useState<string | null>(null)
   const [signal, setSignal] = useState(sessionRef.current.signal)
   const [tokens, setTokens] = useState<Token[]>([])
-  const [prompts, setPrompts] = useState<string[]>([])
+  const [prompts, setPrompts] = useState<SuggestionChip[]>([])
   // The panel is a reveal, not furniture: it only exists once she has offered
   // to show it. See the segmentation rule in lib/terminal/rules.ts.
   const [lexiconShown, setLexiconShown] = useState(false)
@@ -564,22 +565,33 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
               {ENDING_HANDOVER.label}
             </Chip>
           ) : (
-            prompts.map((suggestion) => (
+            prompts.map((chip) => (
               <Chip
-                key={suggestion}
+                key={`${chip.kind}:${chip.text}`}
                 type="button"
                 onClick={() => {
-                  asked.current.set(
-                    suggestion,
-                    (asked.current.get(suggestion) ?? 0) + 1
-                  )
-                  send(suggestion)
+                  // The follow chip is repeatable by design — it retires by
+                  // itself once the topic runs dry, not by ask count.
+                  if (chip.kind !== 'follow')
+                    asked.current.set(
+                      chip.text,
+                      (asked.current.get(chip.text) ?? 0) + 1
+                    )
+                  send(chip.text)
                 }}
                 disabled={typing !== null || locked}
                 px="9px"
                 py="4px"
-                border="1px solid rgba(231,105,45,.16)"
-                background="rgba(8,3,1,.34)"
+                border={
+                  chip.kind === 'follow'
+                    ? '1px solid rgba(238,150,98,.5)'
+                    : '1px solid rgba(231,105,45,.16)'
+                }
+                background={
+                  chip.kind === 'follow'
+                    ? 'rgba(231,105,45,.12)'
+                    : 'rgba(8,3,1,.34)'
+                }
                 color="#fff"
                 fontSize="11px"
                 cursor="pointer"
@@ -591,7 +603,7 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
                 }}
                 _disabled={{ opacity: 0.28, cursor: 'default' }}
               >
-                {suggestion}
+                {chip.text}
               </Chip>
             ))
           )}

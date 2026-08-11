@@ -73,9 +73,9 @@ const WORD_GAP_MS = 20
 const VOWELS = [
   { open: 0.78, form: 0 }, // A
   { open: 0.26, form: 0.55 }, // I
-  { open: 0.3, form: -0.55 }, // U
+  { open: 0.42, form: -0.98 }, // U
   { open: 0.5, form: 0.3 }, // E
-  { open: 0.6, form: -0.38 }, // O
+  { open: 0.84, form: -0.94 }, // O
 ] as const
 
 // How far the lips close to start the syllable, and how much of it that takes.

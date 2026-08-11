@@ -1926,6 +1926,18 @@ export const IDLE: Reply[] = [
   },
 ]
 
+// Layer 2.5: nothing matched, but the topic on the table still has unsaid
+// tiers. She concedes the miss in one clause and picks the thread back up —
+// from her side the conversation never left the subject, which is what makes
+// her read as holding context instead of resetting on every unplaceable
+// sentence. The engine never serves two of these in a row.
+export const RESUME = [
+  '這句我接不太上。……不過剛才那件事，我還沒說完——',
+  '唔，這個我不知道怎麼接。先回到剛才的：',
+  '……這句我先記下來。剛才說到的那個，其實還有下文——',
+  '這個等一下再說。剛才那件事，還有一段——',
+]
+
 // When a topic matches but every line she has on it is already spent. Repeating
 // herself verbatim would give the trick away worse than admitting she is out —
 // and being out is in character for someone whose memory has holes in it. Most
