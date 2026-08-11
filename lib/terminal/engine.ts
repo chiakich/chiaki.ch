@@ -123,18 +123,18 @@ const recallWord = (session: Session): string | null => {
 const FOLLOW_UP =
   /^(為什麼|為何|怎麼會|然後|後來|還有|再說|多說|再多說|說下去|繼續|詳細|舉例|例如|怎麼說|什麼意思|所以|真的|真的假的|是喔|是嗎|那|它|那個|嗯哼)(呢|嗎|啊|喔|吧|咧|了|一點|一些|下去)*$/
 
-// Rules and suggestion chips fetched from the CDN at runtime — see
+// Rules and suggestion chips decoded from the local after-dark payload — see
 // lib/terminal/dirty.ts. Empty until `setDirtyContent` resolves, so the table
-// works identically before the fetch lands; the explicit branch just isn't
+// works identically before decoding lands; the explicit branch just isn't
 // reachable yet.
 let dirtyRules: Rule[] = []
 let dirtySuggestions: Suggestion[] = []
 const RULES_BY_ID = new Map(rules.map((rule) => [rule.id, rule]))
 
-/** All rules currently live: the static table plus whatever the CDN handed back. */
+/** All rules currently live: the static table plus the decoded after-dark table. */
 const allRules = (): Rule[] => (dirtyRules.length === 0 ? rules : [...rules, ...dirtyRules])
 
-/** Installs the CDN-fetched rules and suggestions, replacing any set installed earlier. */
+/** Installs decoded rules and suggestions, replacing any set installed earlier. */
 export const setDirtyContent = ({ rules: extra, suggestions }: {
   rules: Rule[]
   suggestions: Suggestion[]
@@ -760,9 +760,9 @@ export const endingHandover = (session: Session): Turn => {
 }
 
 /**
- * The three shallowest prompts still open. SUGGESTIONS is ordered the way the
- * story reads, so taking from the front hands a newcomer the openers and lets
- * the deeper rungs surface as the ones above them retire.
+ * The three shallowest main-story prompts still open. SUGGESTIONS is ordered
+ * the way the story reads, so taking from the front hands a newcomer the
+ * openers and lets the deeper rungs surface as the ones above them retire.
  *
  * `asked` counts how often each was taken, and is a backstop rather than the
  * main mechanism: a prompt normally retires because its `done` flag got set.
@@ -789,8 +789,8 @@ const eligible = (
 export type SuggestionChip = {
   text: string
   /**
-   * `story` — a rung of the SUGGESTIONS ladder. `dirty` — CDN-fetched, capped
-   * at one slot. `follow` — the current topic has unlocked lines she hasn't
+  * `story` — a rung of the SUGGESTIONS ladder. `dirty` — an after-dark option.
+  * `follow` — the current topic has unlocked lines she hasn't
    * said, and this chip goes back for them.
    */
   kind: 'story' | 'dirty' | 'follow'
@@ -810,22 +810,30 @@ export const suggestionsFor = (
   // asking again would get a new answer, so the deeper lines mostly go
   // unread. The chip only exists while taking it actually yields one.
   if (canDeepen(session)) chips.push({ text: FOLLOW_CHIP, kind: 'follow' })
-  // A dirty prompt's `needs` gates it to a specific moment, so the first
-  // eligible one is highly relevant — but it gets exactly one slot. Putting
-  // the whole pool first, as an earlier cut did, let three simultaneous
-  // unlocks crowd the story ladder out of the row entirely.
-  const [dirty] = eligible(dirtySuggestions, session, asked)
-  const specials = dirty
-    ? [...chips, { text: dirty.text, kind: 'dirty' as const }]
-    : chips
+  // The explicit branch is entered by an explicit typed message, never by a
+  // card on a fresh conversation. From then on, every card must carry a real
+  // prerequisite flag. This prevents a malformed or newly edited payload from
+  // advertising the branch before its opening rule has actually fired.
+  const dirty = eligible(dirtySuggestions, session, asked).filter(
+    (item) => (item.needs?.length ?? 0) > 0
+  )
+  // Once the visitor has explicitly opened this branch, it becomes the active
+  // topic: show every currently viable direction and keep the ordinary story
+  // ladder out of the same row. The main story cannot use this treatment —
+  // several ungated openers deliberately coexist and would overwhelm a new
+  // visitor if they all appeared at once.
+  if (session.flags.has('enteredAfterDark'))
+    return [
+      ...chips,
+      ...dirty.map((item): SuggestionChip => ({ text: item.text, kind: 'dirty' })),
+    ]
+
   return [
-    ...specials,
+    ...chips,
     ...eligible(SUGGESTIONS, session, asked).map(
       (item): SuggestionChip => ({ text: item.text, kind: 'story' })
     ),
-    // The story ladder keeps its three slots no matter what: specials extend
-    // the row rather than eat it.
-  ].slice(0, specials.length + 3)
+  ].slice(0, chips.length + 3)
 }
 
 const address = (

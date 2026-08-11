@@ -86,9 +86,9 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
       .catch(() => undefined)
   }, [])
 
-  // Best-effort: if the CDN is unreachable she simply never reaches the
-  // explicit branch, same as before this table existed. Refreshes the chips
-  // too — the fetch can land after the restore effect below has already run.
+  // Best-effort: a malformed local payload simply leaves the explicit branch
+  // unavailable. Refresh the chips after decoding: the restore effect below
+  // may already have run by the time it lands.
   useEffect(() => {
     loadDirtyContent()
       .then((content) => {

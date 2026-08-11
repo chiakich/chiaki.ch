@@ -439,11 +439,11 @@ export const smallTalkRules: Rule[] = [
       },
     ],
   },
-  // Poking her (st.poke), and the rest of the explicit branch, moved out to the
-  // CDN-fetched table — see lib/terminal/dirty.ts. Nothing with those ids lives
-  // here anymore, so there is no risk of the local and remote copies of the
-  // same rule both matching. `toldNoTouch` / `toldCannotRefuse` stay defined by
-  // fox.touch in rules.ts, and the CDN rules key off those same flag names.
+  // Poking her (st.poke), and the rest of the explicit branch, moved into the
+  // locally-obfuscated table — see lib/terminal/dirty.ts. Nothing with those ids lives
+  // here anymore, so there is no risk of duplicate copies of the same rule
+  // both matching. `toldNoTouch` / `toldCannotRefuse` stay defined by fox.touch
+  // in rules.ts, and the after-dark rules key off those same flag names.
   {
     id: 'st.hug',
     priority: 4,

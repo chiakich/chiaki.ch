@@ -1,19 +1,18 @@
 import type { Emotion, Reply, Rule, Suggestion } from './types'
+import { decodeAfterDarkPayload } from './after-dark'
 
-// The explicit branch, kept off the bundle entirely. Same voice, same flag
+// The explicit branch. Same voice, same flag
 // vocabulary (`toldNoTouch`, `toldCannotRefuse`, `toldNeeded`, `toldBodyReacts`
 // are shared with fox.touch / st.poke in lib/terminal/rules.ts and
 // lib/terminal/smalltalk.ts — reuse them rather than inventing new ones, or a
-// tier written here will never unlock), but the content itself never ships in
-// the repo or the client bundle. It is fetched once from the CDN and merged
-// into the live rule table (and suggestion pool) — see `setDirtyContent` in
-// ./engine, called from TerminalChat on mount.
+// tier written here will never unlock). The content is kept in the locally
+// obfuscated `after-dark.ts` payload and merged into the live rule table (and
+// suggestion pool) — see `setDirtyContent` in ./engine, called from
+// TerminalChat on mount.
 //
 // This is why the file is a loader, not a table: rules.ts and smalltalk.ts are
-// the story as written; this is the story as served, which can be revised,
-// geo-restricted, or pulled without a deploy.
-
-const CDN_URL = 'https://cdn.chiaki.ch/story/dirty.json'
+// the story as written; this module compiles the separate payload into the
+// same runtime shape without putting its prose in the main source files.
 
 // Wire shape: identical to `Rule`/`Reply`, except a pattern is the *source* of
 // a RegExp (no slashes, no flags — compiled with 'u' to match every other
@@ -64,7 +63,7 @@ export type DirtySuggestionJSON = {
   done?: string
 }
 
-/** The whole payload at cdn.chiaki.ch/dirty.json. `suggestions` is optional —
+/** The whole local payload. `suggestions` is optional —
  * a rule reachable only by typing still works with no entry there. */
 export type DirtyPayloadJSON = {
   rules: DirtyRuleJSON[]
@@ -106,8 +105,8 @@ const compileRule = (raw: unknown): Rule | null => {
     try {
       return [new RegExp(source, 'u')]
     } catch {
-      // A malformed pattern drops only itself, not the whole rule — the CDN
-      // payload is untrusted input and one bad entry shouldn't sink the rest.
+      // A malformed pattern drops only itself, not the whole payload — one
+      // bad entry shouldn't sink the rest of the branch.
       return []
     }
   })
@@ -149,14 +148,11 @@ const compileSuggestion = (raw: unknown): Suggestion | null => {
 
 let pending: Promise<DirtyContent> | null = null
 
-/** Fetches and compiles the CDN payload once; later calls reuse the result. */
+/** Decodes and compiles the local payload once; later calls reuse the result. */
 export const loadDirtyContent = (): Promise<DirtyContent> => {
   if (!pending) {
-    pending = fetch(CDN_URL)
-      .then((response) => {
-        if (!response.ok) throw new Error(`dirty ${response.status}`)
-        return response.json()
-      })
+    pending = Promise.resolve()
+      .then(() => decodeAfterDarkPayload())
       .then((data: unknown) => {
         if (typeof data !== 'object' || data === null)
           return { rules: [], suggestions: [] }

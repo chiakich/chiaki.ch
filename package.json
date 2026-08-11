@@ -10,6 +10,7 @@
     "generate-blog-index": "node scripts/generateBlogIndex.js",
     "generate-sitemap": "node scripts/generateSitemap.js",
     "generate-chat-lexicon": "node scripts/generateChatLexicon.js",
+    "encode-after-dark": "node scripts/encodeAfterDarkPayload.js",
     "migrate-medium": "node scripts/migrateMedium.js",
     "generate-og-images": "node scripts/generateOgImages.js",
     "start": "next start",

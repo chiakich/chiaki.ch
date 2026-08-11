@@ -53,3 +53,7 @@ public/assets/character/*/*_thumb_large.jpg
 public/assets/character/*/*_thumb_small.jpg
 
 .claude
+
+# Local editable source for the after-dark terminal branch. The committed
+# lib/terminal/after-dark.ts is generated from this file via yarn encode-after-dark.
+/content/after-dark.json
