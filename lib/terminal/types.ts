@@ -19,6 +19,8 @@ export type Reply = {
   signal?: number
   /** Topic flags written to the session when this reply fires. */
   remember?: string[]
+  /** Topic flags removed from the session when this reply fires. */
+  forget?: string[]
   /**
    * Only offered once every one of these flags is set. This is how a topic
    * gets deeper the second and third time it comes up instead of repeating:
@@ -36,6 +38,10 @@ export type Reply = {
   needsWord?: boolean
   /** Arms a follow-up: the next turn can answer this instead of restarting. */
   opens?: string
+  /** Drops an outstanding follow-up when this reply changes the scene. */
+  clearsPending?: boolean
+  /** Clears flags created by the after-dark payload before applying this reply. */
+  clearsAfterDark?: boolean
   /** Commits or discards the pending name guess. */
   naming?: 'confirm' | 'reject'
 }

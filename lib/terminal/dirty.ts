@@ -22,10 +22,15 @@ export type DirtyReplyJSON = {
   emotion?: Emotion
   signal?: number
   remember?: string[]
+  forget?: string[]
   needs?: string[]
   minSignal?: number
   /** Arms a follow-up: the very next turn can answer this via a rule with matching `continues`. */
   opens?: string
+  /** Drops an outstanding follow-up when this reply changes the scene. */
+  clearsPending?: boolean
+  /** Clears flags created by the after-dark payload before applying this reply. */
+  clearsAfterDark?: boolean
 }
 
 export type DirtyRuleJSON = {
@@ -85,9 +90,12 @@ const compileReply = (raw: unknown): Reply | null => {
     remember: Array.isArray(reply.remember)
       ? reply.remember.filter(isString)
       : undefined,
+    forget: Array.isArray(reply.forget) ? reply.forget.filter(isString) : undefined,
     needs: Array.isArray(reply.needs) ? reply.needs.filter(isString) : undefined,
     minSignal: typeof reply.minSignal === 'number' ? reply.minSignal : undefined,
     opens: isString(reply.opens) ? reply.opens : undefined,
+    clearsPending: reply.clearsPending === true ? true : undefined,
+    clearsAfterDark: reply.clearsAfterDark === true ? true : undefined,
   }
 }
 

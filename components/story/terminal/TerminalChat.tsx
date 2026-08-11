@@ -6,6 +6,7 @@ import {
   endingHandover,
   endingReturn,
   idle,
+  isAfterDarkActive,
   opening,
   respond,
   setDirtyContent,
@@ -222,6 +223,10 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
       if (sessionRef.current.flags.has('showedLexicon')) setLexiconShown(true)
       if (turn.ending === 'offer') setPhase('offered')
       if (turn.ending === 'leaving') setPhase('away')
+      avatarRef.current?.setAfterDarkActive(
+        isAfterDarkActive(sessionRef.current) &&
+          sessionRef.current.flags.has('acceptedSex')
+      )
       avatarRef.current?.setEmotion(turn.emotion)
       window.setTimeout(() => {
         push({

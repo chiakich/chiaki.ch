@@ -129,6 +129,8 @@ const FOLLOW_UP =
 // reachable yet.
 let dirtyRules: Rule[] = []
 let dirtySuggestions: Suggestion[] = []
+let dirtySceneFlags = new Set<string>()
+let dirtyReplyTexts = new Set<string>()
 const RULES_BY_ID = new Map(rules.map((rule) => [rule.id, rule]))
 
 /** All rules currently live: the static table plus the decoded after-dark table. */
@@ -141,9 +143,19 @@ export const setDirtyContent = ({ rules: extra, suggestions }: {
 }) => {
   for (const rule of dirtyRules) RULES_BY_ID.delete(rule.id)
   dirtyRules = extra
+  dirtySceneFlags = new Set(
+    extra.flatMap((rule) => rule.replies.flatMap((reply) => reply.remember ?? []))
+  )
+  dirtyReplyTexts = new Set(
+    extra.flatMap((rule) => rule.replies.map((reply) => reply.text))
+  )
   for (const rule of dirtyRules) RULES_BY_ID.set(rule.id, rule)
   dirtySuggestions = suggestions
 }
+
+/** Whether the terminal is currently presenting the explicit branch as its topic. */
+export const isAfterDarkActive = (session: Session) =>
+  session.flags.has('enteredAfterDark') && !session.flags.has('leftAfterDark')
 
 // Rules that are conversational glue rather than subject matter. Sticking to
 // one of these would let 「為什麼」 re-answer 「你好」, which is worse than falling
@@ -538,7 +550,13 @@ export const respond = (
     ruleId = discovering ? 'discovery.peacetime' : source!.id
     delta = reply.signal ?? 2
     session.used.add(reply.text)
+    if (reply.clearsAfterDark) {
+      dirtySceneFlags.forEach((flag) => session.flags.delete(flag))
+      dirtyReplyTexts.forEach((text) => session.used.delete(text))
+    }
+    reply.forget?.forEach((flag) => session.flags.delete(flag))
     reply.remember?.forEach((flag) => session.flags.add(flag))
+    if (reply.clearsPending) armPending(session, null)
     if (reply.opens) armPending(session, reply.opens)
     if (discovering) session.lastTopic = 'peace'
     if (source) {
@@ -822,7 +840,7 @@ export const suggestionsFor = (
   // ladder out of the same row. The main story cannot use this treatment —
   // several ungated openers deliberately coexist and would overwhelm a new
   // visitor if they all appeared at once.
-  if (session.flags.has('enteredAfterDark'))
+  if (isAfterDarkActive(session))
     return [
       ...chips,
       ...dirty.map((item): SuggestionChip => ({ text: item.text, kind: 'dirty' })),

@@ -7,6 +7,8 @@ const Img = styled.img
 
 export type TerminalAvatarHandle = {
   setEmotion: (emotion: Emotion) => void
+  /** Keeps a half-lidded gaze while the accepted after-dark scene is active. */
+  setAfterDarkActive: (active: boolean) => void
   /** Hands the whole utterance over; the viewer samples it on its own clock. */
   speak: (keys: MouthKey[], gestures: GestureKey[]) => void
   stopSpeaking: () => void
@@ -65,6 +67,14 @@ const EMOTION_PARAMS: Record<Emotion, Record<string, number>> = {
   },
 }
 
+// This overlays every conversational expression rather than becoming one of
+// them: shy, sad, and surprised still keep their own mouth/brow language while
+// the gaze makes the current scene legible at a glance.
+const AFTER_DARK_EYES: Record<string, number> = {
+  PARAM_EYE_L_OPEN: 0.62,
+  PARAM_EYE_R_OPEN: 0.62,
+}
+
 // Tail amplitude and rate per emotion — tucked when shy or sad, a startled
 // flick on surprise. Her own dialogue claims the tail gives her away.
 const EMOTION_TAIL: Record<Emotion, { amp: number; rate: number }> = {
@@ -96,6 +106,8 @@ const EMOTION_SPEED: Record<Emotion, number> = {
 const TerminalAvatarClient = ({ controls }: TerminalAvatarClientProps) => {
   const frameRef = useRef<HTMLIFrameElement>(null)
   const paramsRef = useRef<Record<string, number>>({ ...BASE_PARAMS })
+  const emotionRef = useRef<Emotion>('neutral')
+  const afterDarkRef = useRef(false)
   const pointerRef = useRef({ x: 0, y: 0 })
   const [ready, setReady] = useState(false)
 
@@ -114,6 +126,20 @@ const TerminalAvatarClient = ({ controls }: TerminalAvatarClientProps) => {
     )
   }, [])
 
+  const applyEmotion = useCallback(
+    (emotion: Emotion) => {
+      paramsRef.current = {
+        ...BASE_PARAMS,
+        ...EMOTION_PARAMS[emotion],
+        ...(afterDarkRef.current ? AFTER_DARK_EYES : {}),
+      }
+      speedRef.current = EMOTION_SPEED[emotion]
+      tailRef.current = EMOTION_TAIL[emotion]
+      publish()
+    },
+    [publish]
+  )
+
   const speak = useCallback((keys: MouthKey[], gestures: GestureKey[]) => {
     frameRef.current?.contentWindow?.postMessage(
       { type: 'chiaki-terminal-speech', keys, gestures },
@@ -124,10 +150,12 @@ const TerminalAvatarClient = ({ controls }: TerminalAvatarClientProps) => {
   useEffect(() => {
     controls.current = {
       setEmotion: (emotion) => {
-        paramsRef.current = { ...BASE_PARAMS, ...EMOTION_PARAMS[emotion] }
-        speedRef.current = EMOTION_SPEED[emotion]
-        tailRef.current = EMOTION_TAIL[emotion]
-        publish()
+        emotionRef.current = emotion
+        applyEmotion(emotion)
+      },
+      setAfterDarkActive: (active) => {
+        afterDarkRef.current = active
+        applyEmotion(emotionRef.current)
       },
       speak,
       stopSpeaking: () => speak([], []),
@@ -143,7 +171,7 @@ const TerminalAvatarClient = ({ controls }: TerminalAvatarClientProps) => {
     return () => {
       controls.current = null
     }
-  }, [controls, publish, speak])
+  }, [applyEmotion, controls, speak])
 
   useEffect(() => {
     const onPointerMove = (event: PointerEvent) => {
