@@ -15,6 +15,7 @@ import {
   NO_ANSWER,
   OPENING_LINES,
   PEACE_DISCOVERY,
+  RESUME,
   rules,
   SUGGESTIONS,
 } from './rules'
@@ -44,8 +45,10 @@ export type Session = {
   history: string[]
   /** Link strength shown in the HUD, 0–100. */
   signal: number
-  /** Question she just asked, which the next turn is allowed to answer. */
+  /** Open question the next few turns are allowed to answer — see PENDING_TTL. */
   pending: string | null
+  /** Turns the open question has gone unanswered. */
+  pendingAge: number
   /** What the user confirmed they are called. */
   userName: string | null
   /** Name she has read off the input but not yet had confirmed. */
@@ -74,12 +77,26 @@ export const createSession = (restored?: {
   history: [],
   signal: restored ? RETURNING_SIGNAL : 62,
   pending: null,
+  pendingAge: 0,
   userName: restored?.userName ?? null,
   nameGuess: null,
   modernScore: 0,
   lastTopic: null,
   recalled: restored?.recalled ?? [],
 })
+
+/**
+ * How many turns an open question stays answerable. One detour mid-answer is
+ * normal conversation — she asks about the snow, the visitor says something
+ * else first, then answers — so the question has to survive it. By the second
+ * unanswered turn the visitor has plainly moved on.
+ */
+const PENDING_TTL = 2
+
+const armPending = (session: Session, id: string | null) => {
+  session.pending = id
+  session.pendingAge = 0
+}
 
 /** How many unplaceable words she carries. Old ones fall off the front. */
 const RECALL_LIMIT = 6
@@ -285,6 +302,21 @@ const isUnlocked = (reply: Reply, session: Session) =>
     reply.needs.every((flag) => session.flags.has(flag)))
 
 /**
+ * Whether the topic on the table still has an unlocked line she hasn't said.
+ * Powers both the resume fallback and the follow-up chip. Quiet while she has
+ * a question open — deepening a topic over her own unanswered question would
+ * bury it.
+ */
+const canDeepen = (session: Session): boolean => {
+  if (session.pending !== null || session.lastTopic === null) return false
+  const rule = RULES_BY_ID.get(session.lastTopic)
+  if (!rule || rule.repeatable) return false
+  return rule.replies.some(
+    (reply) => !session.used.has(reply.text) && isUnlocked(reply, session)
+  )
+}
+
+/**
  * Prefers the deepest reply the session has unlocked, and among those the ones
  * she hasn't said yet. Topics therefore open up as they are revisited instead
  * of cycling through the same two lines.
@@ -438,6 +470,11 @@ export const respond = (
   const tokens = segmentAll(input.text, lexicon)
   const seed = Math.random()
 
+  // Expire before matching, not after — an expired question must not be
+  // answerable on the very turn it expires.
+  if (session.pending !== null && session.pendingAge >= PENDING_TTL)
+    armPending(session, null)
+
   const nameHit =
     readName(raw) ??
     (session.pending === 'name.ask' ? readAnswerName(raw) : null)
@@ -454,8 +491,11 @@ export const respond = (
     session.modernScore >= PEACE_THRESHOLD &&
     match?.rule.continues === undefined
 
-  // An unanswered question only stays open for the turn right after it.
-  session.pending = null
+  // A `continues` match consumed the open question. Otherwise it stays open
+  // and ages toward PENDING_TTL: a question survives a short detour, so the
+  // visitor can answer 「有啊」 one turn late and still land on the follow-up.
+  if (match?.rule.continues !== undefined) armPending(session, null)
+  else if (session.pending !== null) session.pendingAge += 1
   if (match?.rule.capturesName && !discovering) session.nameGuess = nameHit
 
   // 「為什麼」「然後呢」 carry no topic of their own, so they inherit the last one.
@@ -499,7 +539,7 @@ export const respond = (
     delta = reply.signal ?? 2
     session.used.add(reply.text)
     reply.remember?.forEach((flag) => session.flags.add(flag))
-    if (reply.opens) session.pending = reply.opens
+    if (reply.opens) armPending(session, reply.opens)
     if (discovering) session.lastTopic = 'peace'
     if (source) {
       if (source.id.startsWith('greeting')) session.flags.add('greeted')
@@ -522,7 +562,7 @@ export const respond = (
     ruleId = `exhausted.${topical.id}`
     delta = spent.signal ?? -1
     session.used.add(spent.text)
-    if (spent.opens) session.pending = spent.opens
+    if (spent.opens) armPending(session, spent.opens)
   } else if (session.signal < DEGRADED_THRESHOLD) {
     text = pick(DEGRADED, seed)
     emotion = 'sad'
@@ -551,6 +591,23 @@ export const respond = (
     // always get the reaction written for them; the shape layer only handles
     // what would otherwise have been a shrug.
     const shape = classify(input.text)
+
+    // A statement she cannot place, while the topic on the table still has
+    // unsaid tiers: she concedes the miss and continues the topic instead of
+    // dropping out of it. Only for plain statements — a question deserves at
+    // least its shape answered — and never twice in a row, or she turns into
+    // a monologue machine. The word above was still remembered, so the miss
+    // can pay off later either way.
+    const resumable =
+      shape === 'plain' &&
+      !session.history[session.history.length - 1]?.startsWith('resume.') &&
+      canDeepen(session)
+        ? (RULES_BY_ID.get(session.lastTopic!) ?? null)
+        : null
+    const resumeReply = resumable
+      ? pickReply(resumable.replies, session, seed)
+      : null
+
     if (topic && topic.modern) {
       // Once she knows where the visitor is from, a word she doesn't have
       // stops being something wrong with her and becomes something to ask
@@ -562,6 +619,14 @@ export const respond = (
       emotion = 'surprised'
       ruleId = 'fallback.echo.modern'
       delta = -2
+    } else if (resumable && resumeReply) {
+      text = pick(RESUME, seed) + resumeReply.text
+      emotion = resumeReply.emotion ?? 'thinking'
+      ruleId = `resume.${resumable.id}`
+      delta = resumeReply.signal ?? 0
+      session.used.add(resumeReply.text)
+      resumeReply.remember?.forEach((flag) => session.flags.add(flag))
+      if (resumeReply.opens) armPending(session, resumeReply.opens)
     } else if (topic && shape !== 'plain') {
       // She could not answer what was asked, but she can answer the kind of
       // question it was — which is the difference between a reply and a shrug.
@@ -599,7 +664,7 @@ export const respond = (
         delta = lead ? -1 : (question.signal ?? 0)
         session.used.add(question.text)
         question.remember?.forEach((flag) => session.flags.add(flag))
-        if (question.opens) session.pending = question.opens
+        if (question.opens) armPending(session, question.opens)
       } else if (shape !== 'plain') {
         // Her questions are spent, but the shape of this one still has an
         // answer — better than opening a topic she has already opened.
@@ -653,7 +718,7 @@ export const respond = (
   ) {
     text += NAME_ASK
     session.flags.add('askedName')
-    session.pending = 'name.ask'
+    armPending(session, 'name.ask')
   }
 
   // Repeated ！ or ？ is a raised voice, so it lands harder in both directions —
@@ -721,20 +786,47 @@ const eligible = (
         item.needs.every((flag) => session.flags.has(flag)))
   )
 
+export type SuggestionChip = {
+  text: string
+  /**
+   * `story` — a rung of the SUGGESTIONS ladder. `dirty` — CDN-fetched, capped
+   * at one slot. `follow` — the current topic has unlocked lines she hasn't
+   * said, and this chip goes back for them.
+   */
+  kind: 'story' | 'dirty' | 'follow'
+}
+
+// Deliberately a FOLLOW_UP-shaped phrase: it goes through `respond` like any
+// typed text and rides the sticky-topic path, so the chip needs no plumbing of
+// its own and typing the same words works identically.
+export const FOLLOW_CHIP = '再多說一點'
+
 export const suggestionsFor = (
   session: Session,
   asked: ReadonlyMap<string, number> = new Map()
-): string[] =>
-  // CDN-fetched prompts — see lib/terminal/dirty.ts — go first. Their `needs`
-  // already gates them to a specific point in the conversation, so by the
-  // time one clears that bar it is the most relevant thing to offer; the
-  // eligible pool from the main SUGGESTIONS list is large enough (several
-  // ungated openers plus every unlocked-but-unretired rung) that appending
-  // dirty prompts after it, as a first cut did, meant they almost never
-  // reached the visible three.
-  [...eligible(dirtySuggestions, session, asked), ...eligible(SUGGESTIONS, session, asked)]
-    .slice(0, 3)
-    .map((item) => item.text)
+): SuggestionChip[] => {
+  const chips: SuggestionChip[] = []
+  // Tier unlocks are otherwise invisible — nothing tells the visitor that
+  // asking again would get a new answer, so the deeper lines mostly go
+  // unread. The chip only exists while taking it actually yields one.
+  if (canDeepen(session)) chips.push({ text: FOLLOW_CHIP, kind: 'follow' })
+  // A dirty prompt's `needs` gates it to a specific moment, so the first
+  // eligible one is highly relevant — but it gets exactly one slot. Putting
+  // the whole pool first, as an earlier cut did, let three simultaneous
+  // unlocks crowd the story ladder out of the row entirely.
+  const [dirty] = eligible(dirtySuggestions, session, asked)
+  const specials = dirty
+    ? [...chips, { text: dirty.text, kind: 'dirty' as const }]
+    : chips
+  return [
+    ...specials,
+    ...eligible(SUGGESTIONS, session, asked).map(
+      (item): SuggestionChip => ({ text: item.text, kind: 'story' })
+    ),
+    // The story ladder keeps its three slots no matter what: specials extend
+    // the row rather than eat it.
+  ].slice(0, specials.length + 3)
+}
 
 const address = (
   variants: { named: string; unnamed: string; refused?: string },
@@ -781,7 +873,7 @@ export const idle = (session: Session): Turn => {
 
   session.used.add(line.text)
   line.remember?.forEach((flag) => session.flags.add(flag))
-  session.pending = line.opens ?? null
+  armPending(session, line.opens ?? null)
   session.history.push('idle')
 
   return {

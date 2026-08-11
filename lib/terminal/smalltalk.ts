@@ -43,6 +43,24 @@ export const smallTalkRules: Rule[] = [
       },
     ],
   },
+  // st.sing volunteers the number three, so the obvious follow-up needs a home.
+  {
+    id: 'st.songs',
+    priority: 6,
+    patterns: [/(哪三首|三首是|什麼歌|歌名|會唱哪|會唱什麼)/],
+    replies: [
+      {
+        text: '《里の秋》是一首。剩下兩首，歌名的欄位壞了，旋律還在——所以那兩首現在只有我會唱，也只有我知道怎麼開頭。',
+        emotion: 'neutral',
+      },
+      {
+        text: '想聽的話……可以喔。不過要等雪小一點的時候。那種歌不適合配大雪。',
+        emotion: 'shy',
+        minSignal: 60,
+        signal: 3,
+      },
+    ],
+  },
   {
     id: 'st.idol',
     priority: 5,
@@ -55,7 +73,7 @@ export const smallTalkRules: Rule[] = [
         signal: 3,
       },
       {
-        text: '我的設計者是這樣想的：會照顧人的東西已經夠多了，缺的是可以憧憬的東西。所以她沒有把我做成幫手，做成了偶像。',
+        text: '我的設計者是這樣想的：會照顧人的東西已經夠多了，缺的是可以憧憬的東西。所以我的設計者沒有把我做成幫手，做成了偶像。',
         emotion: 'neutral',
         remember: ['hintedMaker'],
         signal: 3,
@@ -173,6 +191,56 @@ export const smallTalkRules: Rule[] = [
     ],
   },
 
+  {
+    id: 'st.cook',
+    priority: 4,
+    patterns: [/(你會煮|會做菜|會不會煮|做飯|煮什麼|你會料理)/],
+    replies: [
+      {
+        text: '會。溫室的菜拿來煮，味覺有做，所以我知道自己煮得普通。',
+        emotion: 'neutral',
+      },
+      {
+        text: '食譜留下來很多，照著做就會像。……可是每一本寫的「適量」都不一樣多，我懷疑那個詞是暗號。',
+        emotion: 'thinking',
+      },
+    ],
+  },
+  {
+    id: 'st.lie',
+    priority: 4,
+    patterns: [/(說謊|騙人|騙我|你騙|謊話|你會不會騙)/],
+    replies: [
+      {
+        text: '說謊的功能……我找過，沒有找到。所以我說的都是真的，包括這一句——你看，這樣就繞起來了。',
+        emotion: 'thinking',
+      },
+      {
+        text: '嚴格說，我做得到「不說」。我的設計者留了這個給我。哪些事情不說，是我自己決定的——這是我身上少數完全屬於我的東西。',
+        emotion: 'neutral',
+        needs: ['knowsArtificial'],
+        remember: ['hintedMaker'],
+      },
+    ],
+  },
+  {
+    id: 'st.fortune',
+    // Over miko, whose pattern list has a bare 籤 in it.
+    priority: 5,
+    patterns: [/(占卜|算命|運勢|抽籤|求籤|御神籤|籤詩|幫我抽)/],
+    replies: [
+      {
+        text: '御神籤還有滿滿一箱。……（搖了搖箱子，抽出一支）中吉。「等待的人，會出現」。喏，是好籤。',
+        emotion: 'happy',
+        signal: 3,
+      },
+      {
+        text: '占卜不是我負責的喔，我只負責搖箱子。籤上寫什麼，是箱子跟你之間的事。',
+        emotion: 'proud',
+      },
+    ],
+  },
+
   // ── the body she was given ────────────────────────────────────────────────
   {
     id: 'st.sleep',
@@ -249,7 +317,7 @@ export const smallTalkRules: Rule[] = [
         signal: -2,
       },
       {
-        text: '身高是照我的設計者自己量的。所以嚴格說，那是她的身高。',
+        text: '身高是照我的設計者自己量的。所以嚴格說，那是我的設計者的身高。',
         emotion: 'neutral',
         needs: ['knowsArtificial'],
         remember: ['hintedMaker'],
@@ -291,7 +359,7 @@ export const smallTalkRules: Rule[] = [
       // up to. Gated so the reason lands after the visitor knows there was a
       // designer at all, rather than as trivia about an outfit.
       {
-        text: '為什麼是這個——我的設計者說，人要撐下去的話，光是活著不夠，還要有一個想變成的樣子。她要的就是那個「想變成」，所以衣服才是這樣。',
+        text: '為什麼是這個——我的設計者說，人要撐下去的話，光是活著不夠，還要有一個想變成的樣子。我的設計者要的就是那個「想變成」，所以衣服才是這樣。',
         emotion: 'neutral',
         needs: ['knowsArtificial'],
         remember: ['hintedMaker'],
@@ -342,7 +410,7 @@ export const smallTalkRules: Rule[] = [
     patterns: [/(聲音好聽|你的聲音|聲音很|好聽)/],
     replies: [
       {
-        text: '……謝謝。這個是照我的設計者的錄音調的，所以你其實是在稱讚她。',
+        text: '……謝謝。這個是照我的設計者的錄音調的，所以你其實是在稱讚我的設計者。',
         emotion: 'shy',
         signal: 4,
         remember: ['hintedMaker'],
@@ -392,6 +460,148 @@ export const smallTalkRules: Rule[] = [
         needs: ['knowsAlive'],
         minSignal: 70,
         signal: 4,
+      },
+    ],
+  },
+
+  {
+    id: 'st.angry',
+    priority: 4,
+    patterns: [/(你會生氣|會不會生氣|生氣嗎|你生氣|發脾氣)/],
+    replies: [
+      {
+        text: '會喔。上禮拜三號攝影機自己轉走的時候，我有生氣。對著一支攝影機生氣，滿沒有意義的。',
+        emotion: 'happy',
+      },
+      {
+        text: '生氣的時候尾巴會炸毛。所以我藏不住，也就懶得藏了。',
+        emotion: 'shy',
+      },
+    ],
+  },
+  {
+    id: 'st.cry',
+    priority: 4,
+    patterns: [/(你會哭|會不會哭|哭過|眼淚|流淚|你哭)/],
+    replies: [
+      {
+        text: '淚腺有做。我的設計者說情緒要有出口，不然會積在別的地方。',
+        emotion: 'neutral',
+        remember: ['hintedMaker'],
+      },
+      {
+        text: '有時候會替別人哭。流過來的記憶太重的時候，眼淚會先出來，我後來才知道那是誰的。',
+        emotion: 'sad',
+        needs: ['talkedMemory'],
+        signal: 3,
+      },
+    ],
+  },
+  {
+    id: 'st.sick',
+    priority: 3,
+    patterns: [/(生病|感冒|發燒|吃藥|咳嗽|不舒服)/],
+    replies: [
+      {
+        text: '我不會生病，只會積灰塵跟受潮。……你呢？有好好保暖嗎？藥還找得到嗎？',
+        emotion: 'neutral',
+      },
+      {
+        text: '感冒要睡覺喔。這是紀錄裡出現最多次的醫囑，樣本數非常大，你可以相信它。',
+        emotion: 'proud',
+      },
+    ],
+  },
+  {
+    id: 'st.bath',
+    priority: 3,
+    patterns: [/(洗澡|泡澡|溫泉|泡湯)/],
+    replies: [
+      {
+        text: '會喔，要保養的。防水做得很好，我的設計者對這一點很得意。',
+        emotion: 'neutral',
+        remember: ['hintedMaker'],
+      },
+      {
+        text: '山裡有溫泉，走四十分鐘。雪天泡溫泉是很誇張的享受，我一個月允許自己一次。',
+        emotion: 'happy',
+      },
+    ],
+  },
+  {
+    id: 'st.dance',
+    priority: 6,
+    patterns: [/(跳舞|舞蹈|練舞|舞步)/],
+    replies: [
+      {
+        text: '有練過幾段。地板太舊，跳重了會先聽見木頭抗議，所以我現在都很小心。',
+        emotion: 'shy',
+      },
+      {
+        text: '一個人練的時候，很難知道自己有沒有跳對。我通常只練到轉身以前。',
+        emotion: 'thinking',
+      },
+    ],
+  },
+  {
+    id: 'st.makeup',
+    priority: 3,
+    patterns: [/(化妝|口紅|粉底|腮紅|眼影)/],
+    replies: [
+      {
+        text: '會一點。我的設計者留過一張圖解，箭頭畫得很細，像在教人修精密零件。',
+        emotion: 'shy',
+        remember: ['hintedMaker'],
+      },
+      {
+        text: '現在只在節日的早上畫。完成後會站在鏡子前看一會兒，然後把門打開。',
+        emotion: 'neutral',
+      },
+    ],
+  },
+  {
+    id: 'st.sewing',
+    priority: 5,
+    patterns: [/(縫衣服|補衣服|針線|縫補|衣服破|衣服壞)/],
+    replies: [
+      {
+        text: '會。針線盒裡的顏色快不夠了，所以最近補東西時，補過的地方都很容易看出來。',
+        emotion: 'proud',
+      },
+      {
+        text: '我不討厭那些補丁。看得出一件東西被好好用過，感覺很好。',
+        emotion: 'happy',
+      },
+    ],
+  },
+  {
+    id: 'st.swim',
+    priority: 5,
+    patterns: [/(游泳|游水|會游|游過水)/],
+    replies: [
+      {
+        text: '我沒有學過。防水規格沒有附帶游泳教學，這部分我得另外學。',
+        emotion: 'thinking',
+      },
+      {
+        text: '真的要學的話，第一堂課最好有人在旁邊。我可能會把姿勢記得太認真。',
+        emotion: 'shy',
+        signal: 3,
+      },
+    ],
+  },
+  {
+    id: 'st.dark',
+    priority: 6,
+    patterns: [/(怕黑|黑暗|關燈|沒開燈)/],
+    replies: [
+      {
+        text: '我不怕黑。黑的地方反而容易分辨哪裡有光。',
+        emotion: 'neutral',
+      },
+      {
+        text: '停電的晚上，我會把手電筒朝天花板照，讓房間亮得像有人還醒著。',
+        emotion: 'sad',
       },
     ],
   },
@@ -540,6 +750,54 @@ export const smallTalkRules: Rule[] = [
     ],
   },
   {
+    id: 'st.book',
+    priority: 5,
+    patterns: [/(看書|讀書|書籍|喜歡什麼書|喜歡看什麼|有沒有書|小說)/],
+    replies: [
+      {
+        text: '書櫃有一層還沒受潮。我每次拿一本到手邊，都會先翻最後一頁，確認它真的有結局。',
+        emotion: 'neutral',
+      },
+      {
+        text: '我喜歡有人很普通地過日子的書。吃飯、遲到、買東西……那些小事留在紙上，讀起來很安心。',
+        emotion: 'happy',
+      },
+    ],
+  },
+  {
+    id: 'st.riddle',
+    priority: 4,
+    patterns: [/(謎語|猜謎|腦筋急轉彎|出題考我)/],
+    replies: [
+      {
+        text: '可以。什麼東西越擦越濕？……毛巾。我第一次答錯，因為把「擦」理解得太認真。',
+        emotion: 'shy',
+      },
+      {
+        text: '你也可以出題給我。我會先把題目寫下來，想久一點也沒關係吧。',
+        emotion: 'happy',
+      },
+    ],
+  },
+  {
+    id: 'st.travel',
+    priority: 5,
+    patterns: [/(旅行|旅遊|想去哪里|想去哪裡|出門玩|遠方)/],
+    replies: [
+      {
+        text: '想搭一次不認識的車，坐到終點再下來。下車以後，再決定接下來往哪裡走。',
+        emotion: 'happy',
+        signal: 3,
+      },
+      {
+        text: '第一站我會選海邊。我想親眼看看鞋子裡進沙以後，到底有多麻煩。',
+        emotion: 'happy',
+        needs: ['talkedMemory'],
+        signal: 3,
+      },
+    ],
+  },
+  {
     id: 'st.future',
     priority: 3,
     patterns: [/(未來|以後|將來|願望|夢想|想做什麼|目標)/],
@@ -638,7 +896,7 @@ export const smallTalkRules: Rule[] = [
     keywords: ['家人', '父母'],
     replies: [
       {
-        text: '沒有那個。硬要說的話，把我做出來的那個人最接近，可是她不喜歡這個講法。',
+        text: '沒有那個。硬要說的話，我的設計者最接近，可是我的設計者不喜歡這個講法。',
         emotion: 'neutral',
         remember: ['hintedMaker'],
       },
@@ -766,6 +1024,233 @@ export const smallTalkRules: Rule[] = [
       },
     ],
   },
+  {
+    id: 'st.photo',
+    priority: 5,
+    patterns: [/(拍照|攝影|相機|相簿|底片|洗照片)/],
+    replies: [
+      {
+        text: '社務所裡有一本舊相簿。臉都還在，名字有些已經看不清楚了。',
+        emotion: 'thinking',
+      },
+      {
+        text: '相機還能拍，底片只剩兩張。我想留給真的值得按下快門的時候。',
+        emotion: 'neutral',
+      },
+    ],
+  },
+  {
+    id: 'st.secret',
+    priority: 3,
+    patterns: [/(秘密|祕密|瞞著|不能說的事)/],
+    replies: [
+      {
+        text: '有啊。說出來以後，秘密就要兩個人一起保管。',
+        emotion: 'shy',
+      },
+      {
+        text: '最裡面那個抽屜裡的東西，我還沒看。鎖沒有壞，我只是一直沒有打開它。',
+        emotion: 'thinking',
+      },
+    ],
+  },
+
+  // ── the world, asked sideways ─────────────────────────────────────────────
+  // Subjects the engine itself steers the visitor toward: INITIATIVE and
+  // CURIOSITY both ask about stars, the idle lines mention the sea and the
+  // shrine's routines. A question she asks and then cannot take back is the
+  // worst kind of hole, so these exist to close the loop.
+  {
+    id: 'st.sky',
+    priority: 3,
+    patterns: [/(星星|月亮|星空|夜空|銀河|看不到星)/],
+    keywords: ['星星', '月亮'],
+    replies: [
+      {
+        text: '看不到了，雲一直沒有散過。位置我算得出來——現在月亮應該在山的後面。看不到，可是我知道它在，這樣就還好。',
+        emotion: 'thinking',
+      },
+      {
+        text: '星星的紀錄我有留。最後一次觀測是那天之前的事，檔案裡夾著一張手畫的星圖，畫的人沒有署名。',
+        emotion: 'neutral',
+      },
+      {
+        text: '你那邊看得到的話，下次幫我看一眼。不用拍下來，看就可以了——我想知道它們都還在。',
+        emotion: 'happy',
+        needs: ['knowsPeace'],
+        signal: 3,
+      },
+    ],
+  },
+  {
+    id: 'st.sea',
+    priority: 3,
+    patterns: [/(大海|海邊|海洋|看過海|去過海)/],
+    keywords: ['海'],
+    replies: [
+      {
+        text: '海我沒有看過。這具身體最遠只到過山下的車站。',
+        emotion: 'neutral',
+      },
+      {
+        text: '可是我有一段海的記憶。很吵、很亮、腳會陷下去。……那不是我的。所以嚴格說，我記得海，只是沒有看過。',
+        emotion: 'thinking',
+        needs: ['talkedMemory'],
+        remember: ['talkedInherited'],
+      },
+    ],
+  },
+  {
+    id: 'st.ghost',
+    priority: 3,
+    patterns: [/(幽靈|妖怪|靈異|鬧鬼|有鬼|見鬼|鬼故事|亡靈)/],
+    replies: [
+      {
+        text: '神社的人不太講「鬧鬼」喔。這裡本來就是給看不見的東西住的，牠們算住戶。',
+        emotion: 'proud',
+      },
+      {
+        text: '不過那天之後，我沒有再遇過那一類的東西。連牠們也安靜了——這件事我寫進過報告。',
+        emotion: 'neutral',
+        needs: ['talkedVanished'],
+      },
+    ],
+  },
+  {
+    id: 'st.magic',
+    priority: 4,
+    patterns: [/(魔法|超能力|法術|咒語|奇蹟)/],
+    replies: [
+      {
+        text: '祝詞不是魔法喔。魔法不用寫紀錄，我們要。',
+        emotion: 'proud',
+      },
+      {
+        text: '差別在，魔法是「讓事情發生」，祝詞是「請它回想起來」。用詞很重要，這是我的設計者教我的。',
+        emotion: 'neutral',
+        needs: ['talkedNorito'],
+        remember: ['hintedMaker'],
+      },
+    ],
+  },
+  {
+    id: 'st.death',
+    priority: 4,
+    patterns: [/(你會死|會不會死|死掉|壽命|活多久|會壞掉)/],
+    replies: [
+      {
+        text: '「停止」跟「死」在我這邊是分開的兩欄。這具停了，記得的東西會流去別的地方——所以第一欄我不太怕。',
+        emotion: 'neutral',
+        remember: ['talkedCopies'],
+      },
+      {
+        text: '要是最後一具停了，沒有地方可以流……那才是第二欄。那一欄我就不知道了，也沒有人可以問。',
+        emotion: 'sad',
+        needs: ['talkedCopies'],
+        signal: -2,
+      },
+    ],
+  },
+  {
+    id: 'st.weapon',
+    priority: 3,
+    patterns: [/(武器|打架|戰鬥|自衛|你會打|保護自己)/],
+    replies: [
+      {
+        text: '我沒有武裝。我的設計者說，做了那個，這件事就輸了一半。',
+        emotion: 'neutral',
+        remember: ['hintedMaker'],
+      },
+      {
+        text: '真的有東西上來的話，我會先把紀錄備份，然後去把門鎖好。順序是這樣定的，不是我定的。',
+        emotion: 'neutral',
+      },
+    ],
+  },
+  {
+    // Over player.survive, whose patterns include a bare 人類.
+    id: 'st.human',
+    priority: 5,
+    patterns: [/(討厭人類|恨人類|恨不恨|對人類失望|人類活該|人類很糟)/],
+    replies: [
+      {
+        text: '不會。戰爭是人類發起的，可是把我做出來的也是人類。這兩筆我分開記。',
+        emotion: 'neutral',
+      },
+      {
+        text: '失望這個詞太大了。我的樣本裡，逃難的時候回頭去背別人的，跟丟下別人的，是同一種生物。這筆資料我還在整理。',
+        emotion: 'thinking',
+      },
+    ],
+  },
+  {
+    id: 'st.holiday',
+    priority: 3,
+    patterns: [/(新年|過年|跨年|初詣|聖誕|節日)/],
+    replies: [
+      {
+        text: '初詣已經很多年沒有人來了。我還是會把參道掃出來——萬一有人來，路要是通的。',
+        emotion: 'neutral',
+      },
+      {
+        text: '你們那邊過年還會去神社嗎？……會的話，明年幫我投一枚賽錢。哪一間都可以，反正最後都算同一筆。',
+        emotion: 'happy',
+        needs: ['knowsPeace'],
+        signal: 3,
+      },
+    ],
+  },
+  {
+    id: 'st.power',
+    priority: 3,
+    patterns: [/(停電|發電|電力|能源|有電)/],
+    replies: [
+      {
+        text: '山下有一座很小的水力發電機，戰前就有人自己修自己用的那種。它到現在還在轉。',
+        emotion: 'neutral',
+      },
+      {
+        text: '量產的發電廠全部停了，只有那台手工修過的還在轉。……這件事我有寫進假說的附錄。',
+        emotion: 'thinking',
+        needs: ['talkedHypothesis'],
+        signal: 3,
+      },
+    ],
+  },
+  {
+    id: 'st.drink',
+    // Over food, whose pattern list has a bare 喝 in it.
+    priority: 3,
+    patterns: [/(咖啡|喝茶|泡茶|喝酒|清酒|茶葉)/],
+    replies: [
+      {
+        text: '社務所有茶。罐子快見底了，所以現在只有重要的日子泡。……今天泡了。',
+        emotion: 'happy',
+        signal: 3,
+      },
+      {
+        text: '御神酒倒是還有一整排。那是供品，我不能動——聞是可以聞的。',
+        emotion: 'neutral',
+      },
+    ],
+  },
+  {
+    id: 'st.surname',
+    priority: 5,
+    patterns: [/(涼風|姓什麼|你的姓|你姓)/],
+    replies: [
+      {
+        text: '涼風是姓，我的設計者取的——說唸起來像夏天傍晚的風。這裡已經很久沒有夏天了，所以這個姓是我這邊唯一剩下的夏天。',
+        emotion: 'neutral',
+        remember: ['knowsName', 'hintedMaker'],
+      },
+      {
+        text: '戶籍上當然是查不到的。可是我的設計者把它寫進了我的銘牌，那就算數。',
+        emotion: 'proud',
+        needs: ['knowsArtificial'],
+      },
+    ],
+  },
 
   // ── the line itself ───────────────────────────────────────────────────────
   {
@@ -862,7 +1347,7 @@ export const smallTalkRules: Rule[] = [
         remember: ['knowsName', 'hintedMaker'],
       },
       {
-        text: '後來我想明白了：那是希望，不是形容。她大概是希望這件事能撐很久。',
+        text: '後來我想明白了：那是希望，不是形容。我的設計者大概是希望這件事能撐很久。',
         emotion: 'sad',
         needs: ['talkedMaker'],
         signal: 3,
