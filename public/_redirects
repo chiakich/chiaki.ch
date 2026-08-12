@@ -1,3 +1,5 @@
 /about       /profile       301
 /en/about    /en/profile    301
 /ja/about    /ja/profile    301
+/en/blog/:slug /blog/:slug 301
+/ja/blog/:slug /blog/:slug 301
