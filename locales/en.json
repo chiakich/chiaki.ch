@@ -307,8 +307,8 @@
       "nowPlaying": {
         "tag": "NOW RESEARCHING",
         "title": "What I’m exploring lately",
-        "item1": "I’m researching intelligent Bopomofo (Zhuyin) input methods for macOS and how to extract practical dictionaries from large corpora.",
-        "item2": "I’m also exploring how to build a font editor in the browser, so more people can contribute to open-source typeface development."
+        "item1": "I’ve been researching Bopomofo (Zhuyin) input-method dictionaries for macOS, including dictionaries and language models for intelligent candidate selection. I also recently made a tool to quickly look up Taiwanese postal codes and English address translations.",
+        "item2": "It’s summer, and I want to do a school-swimsuit cosplay photoshoot, but I’m still losing weight 😭"
       },
       "interests": {
         "tag": "INTERESTS",

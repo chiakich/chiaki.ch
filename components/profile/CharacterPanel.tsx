@@ -38,6 +38,30 @@ const PORTRAIT_GAIN = 1.1
 // faint; this is the knob for the whole layer.
 const GRILLE_STRENGTH = 1
 
+const ART_ASPECT = 1012 / 1800
+// The sticky header the panel sits under, and how much of the panel's height
+// the figure takes, so the feet clear the gradient at the bottom.
+const HEADER_HEIGHT = 44
+const PANEL_FILL = 0.88
+
+// The width the figure needs for the whole body to show, at a given viewport
+// height and as a live CSS length.
+const fullBodyWidthAt = (viewportHeight: number) =>
+  ART_ASPECT * PANEL_FILL * (viewportHeight - HEADER_HEIGHT)
+const FULL_BODY_WIDTH = `calc(${(100 * PANEL_FILL * ART_ASPECT).toFixed(2)}vh - ${(
+  HEADER_HEIGHT * PANEL_FILL * ART_ASPECT
+).toFixed(2)}px)`
+
+// The viewport height the size freezes at. Any shorter and a full body would be
+// too narrow to read, so the figure holds the size it had here and crops.
+const HOLD_SIZE_BELOW = 1000
+const MIN_FIGURE_WIDTH = `${fullBodyWidthAt(HOLD_SIZE_BELOW).toFixed(0)}px`
+
+const FIGURE_WIDTH = `max(${MIN_FIGURE_WIDTH}, ${FULL_BODY_WIDTH})`
+// How far the figure hangs past each edge of the column, floored at zero so the
+// bottom gradient never comes in narrower than the panel itself.
+const FIGURE_OVERHANG = `min(0px, calc(50% - ${FIGURE_WIDTH} / 2))`
+
 // Sticky character visual styled as an acrylic authorization pass
 const CharacterPanel = ({
   x,
@@ -88,8 +112,11 @@ const CharacterPanel = ({
     <Box
       position="relative"
       width="100%"
-      height={{ base: '68vh', lg: 'calc(100vh - 44px)' }}
-      overflow="hidden"
+      height={{ base: '68vh', lg: `calc(100vh - ${HEADER_HEIGHT}px)` }}
+      // The page root clips at the viewport edge. Keep this panel open so the
+      // character may overhang the narrower grid column without causing a
+      // horizontal scrollbar.
+      overflow="visible"
     >
       {/* Slanted accent panel */}
       <MotionBox
@@ -244,10 +271,15 @@ const CharacterPanel = ({
         position="absolute"
         bottom="0"
         left="50%"
-        height={{ base: '64vh', lg: '88%' }}
+        // Height drives the size, and the figure is free to overhang the column
+        // to keep the whole body in frame. Once the viewport is short enough
+        // that the full body would come in under the floor, the width holds
+        // there and the cover fit crops from the feet up, leaving the upper
+        // body at a readable size instead of a shrinking full figure.
+        width={{ base: 'auto', lg: FIGURE_WIDTH }}
+        height={{ base: '64vh', lg: `${PANEL_FILL * 100}%` }}
         aspectRatio="1012 / 1800"
-        maxWidth="none"
-        zIndex={1}
+        zIndex={{ base: 1, lg: 0 }}
         filter="brightness(var(--portrait-gain)) drop-shadow(0 0 40px #ff782930)"
         initial={{
           clipPath: 'polygon(0 0, 18% 0, 0 100%, 0 100%)',
@@ -282,7 +314,8 @@ const CharacterPanel = ({
             src={PORTRAIT_ART}
             alt={t('profilePage.characterPanel.alt')}
             params={PORTRAIT_TAPE}
-            fit="contain"
+            fit="cover"
+            fitPosition="top"
             onLoad={() => setImageLoaded(true)}
           />
 
@@ -296,9 +329,9 @@ const CharacterPanel = ({
             aria-hidden
             overflow="hidden"
             maskImage={PORTRAIT_MASK}
-            maskSize="contain"
+            maskSize="cover"
             maskRepeat="no-repeat"
-            maskPosition="center"
+            maskPosition="top"
           >
             {/* Soft-edged rather than a 1px band of solid colour. A hard edge
                 here was the most acute thing on screen — sharper than anything
@@ -388,12 +421,12 @@ const CharacterPanel = ({
         </Text>
       </Box>
 
-      {/* Blend the feet into the page bottom */}
+      {/* Blend the feet into the page bottom, out to wherever the figure ends */}
       <Box
         position="absolute"
         bottom="0"
-        left="0"
-        right="0"
+        left={{ base: '0', lg: FIGURE_OVERHANG }}
+        right={{ base: '0', lg: FIGURE_OVERHANG }}
         height={{ base: '18%', lg: '16%' }}
         background="linear-gradient(transparent, black)"
         display='block'

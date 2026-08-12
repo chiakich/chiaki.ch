@@ -5,7 +5,7 @@
 // count is the tape's vertical resolution, so this is not a saving, it is the
 // look. The passes are ~50 taps a pixel, and at that price the difference
 // between 600 rows and a retina backing store is roughly eightfold.
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { styled } from 'styled-system/jsx'
 import { NtscPipeline } from 'lib/ntsc/pipeline'
 import { NTSC_FULL_FRAME, ntscSurfaceSize, type NtscParams } from 'lib/ntsc/params'
@@ -15,10 +15,11 @@ import { NTSC_FULL_FRAME, ntscSurfaceSize, type NtscParams } from 'lib/ntsc/para
 const FIT_VERTEX = `#version 300 es
 in vec2 a_position;
 uniform vec2 u_scale;
+uniform vec2 u_offset;
 out vec2 v_uv;
 
 void main() {
-  v_uv = (a_position * 0.5 + 0.5 - 0.5) / u_scale + 0.5;
+  v_uv = (a_position * 0.5 + 0.5 - 0.5) / u_scale + 0.5 + u_offset;
   gl_Position = vec4(a_position, 0.0, 1.0);
 }
 `
@@ -48,6 +49,8 @@ type NtscImageProps = {
   params?: NtscParams
   /** 'cover' crops to fill, 'contain' fits the whole image in. */
   fit?: 'cover' | 'contain'
+  /** When cover crops vertically, pin the image to its top edge. */
+  fitPosition?: 'center' | 'top'
   /** Fired once the source is on the GPU — there is no <img> to listen to. */
   onLoad?: () => void
   className?: string
@@ -67,22 +70,27 @@ const compile = (gl: WebGL2RenderingContext, type: number, source: string) => {
 }
 
 const Surface = styled.canvas
+const Frame = styled.div
+const Fallback = styled.img
 
 const NtscImage = ({
   src,
   alt = '',
   params = NTSC_FULL_FRAME,
   fit = 'cover',
+  fitPosition = 'center',
   onLoad,
   className,
 }: NtscImageProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [webglReady, setWebglReady] = useState(false)
   // Held in a ref so a caller passing an inline arrow does not tear the whole
   // context down and rebuild it on every render.
   const onLoadRef = useRef(onLoad)
   onLoadRef.current = onLoad
 
   useEffect(() => {
+    setWebglReady(false)
     const canvas = canvasRef.current
     if (!canvas) return undefined
 
@@ -110,6 +118,7 @@ const NtscImage = ({
     }
     const positionLocation = gl.getAttribLocation(program, 'a_position')
     const scaleLocation = gl.getUniformLocation(program, 'u_scale')
+    const offsetLocation = gl.getUniformLocation(program, 'u_offset')
     const imageLocation = gl.getUniformLocation(program, 'u_image')
 
     const quad = gl.createBuffer()
@@ -148,6 +157,7 @@ const NtscImage = ({
       // prettier-ignore
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image)
       loaded = true
+      setWebglReady(true)
       schedule()
       onLoadRef.current?.()
     }
@@ -177,6 +187,9 @@ const NtscImage = ({
       const cover = fit === 'cover'
       const scaleX = wide === cover ? 1 : aspect / surfaceAspect
       const scaleY = wide === cover ? surfaceAspect / aspect : 1
+      // The flipped texture's top edge is at the high end of the UV axis. Pin
+      // there for a portrait crop so the face remains visible on wide screens.
+      const offsetY = fitPosition === 'top' && scaleY > 1 ? (1 - 1 / scaleY) / 2 : 0
 
       pipeline.bind()
       gl.disable(gl.DEPTH_TEST)
@@ -188,6 +201,7 @@ const NtscImage = ({
       gl.enableVertexAttribArray(positionLocation)
       gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0)
       gl.uniform2f(scaleLocation, scaleX, scaleY)
+      gl.uniform2f(offsetLocation, 0, offsetY)
       gl.activeTexture(gl.TEXTURE0)
       gl.bindTexture(gl.TEXTURE_2D, texture)
       gl.uniform1i(imageLocation, 0)
@@ -226,20 +240,37 @@ const NtscImage = ({
       // StrictMode's mount/unmount/mount, or any remount that reuses the node,
       // the second pass would draw into nothing and the canvas would stay blank.
     }
-  }, [fit, params, src])
+  }, [fit, fitPosition, params, src])
 
   return (
-    <Surface
-      ref={canvasRef}
-      className={className}
-      width="100%"
-      height="100%"
-      display="block"
-      role={alt ? 'img' : 'presentation'}
-      aria-label={alt || undefined}
-    />
+    <Frame position="relative" width="100%" height="100%">
+      {!webglReady && (
+        <Fallback
+          src={src}
+          alt={alt}
+          position="absolute"
+          inset="0"
+          width="100%"
+          height="100%"
+          display="block"
+          objectFit={fit}
+          objectPosition={fitPosition === 'top' ? 'top' : 'center'}
+          onLoad={() => onLoadRef.current?.()}
+        />
+      )}
+      <Surface
+        ref={canvasRef}
+        className={className}
+        width="100%"
+        height="100%"
+        display="block"
+        position="relative"
+        opacity={webglReady ? 1 : 0}
+        role={alt ? 'img' : 'presentation'}
+        aria-label={alt || undefined}
+      />
+    </Frame>
   )
 }
 
 export default NtscImage
-

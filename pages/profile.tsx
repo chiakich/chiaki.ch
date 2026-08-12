@@ -159,7 +159,7 @@ const Profile: NextPage = () => {
       <Grid
         gridTemplateColumns={{
           base: '1fr',
-          lg: 'minmax(0, 1fr) clamp(320px, 30vw, 400px)',
+          lg: 'minmax(0, 3fr) minmax(0, 2fr)',
         }}
         gap={0}
         pt="44px"
@@ -176,6 +176,9 @@ const Profile: NextPage = () => {
         {/* Content column */}
         <Box
           order={{ base: 1, lg: 0 }}
+          // Above the character, which overhangs into this column.
+          position="relative"
+          zIndex={1}
           px={{ base: '24px', md: '40px' }}
           pt={{ base: 0, lg: 20 }}
           pb="80px"
@@ -293,7 +296,7 @@ const Profile: NextPage = () => {
             >
               {t('profilePage.header.tagline')}
             </Text>
-            <Text fontSize={{ base: 'md', md: 'lg' }} lineHeight="1.9" maxW="520px">
+            <Text fontSize={{ base: 'md', md: 'lg' }} lineHeight="1.9">
               {t('profilePage.header.introLine1')}
               <br />
               {t('profilePage.header.introLine2')}

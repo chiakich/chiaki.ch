@@ -23,6 +23,7 @@ const chromePath =
 const sitePort = 4173
 const debugPort = 9222
 const captureDelay = Number(process.env.OG_CAPTURE_DELAY || 6000)
+const routes = process.env.OG_ROUTES?.split(',').filter(Boolean)
 
 const pages = [
   ['/', 'home'],
@@ -55,6 +56,8 @@ if (existsSync(blogDir)) {
     pages.push([`/blog/${slug}`, `blog-${slug}`])
   }
 }
+
+const capturesProfile = !routes || routes.includes('/profile')
 
 if (!existsSync(outputDir)) throw new Error('找不到 out 目錄。請先執行 next build。')
 if (!existsSync(chromePath)) throw new Error(`找不到 Chrome：${chromePath}`)
@@ -211,7 +214,9 @@ const capture = async () => {
     chromePath,
     [
       '--headless=new',
-      '--disable-gpu',
+      ...(capturesProfile
+        ? ['--enable-webgl', '--use-angle=swiftshader', '--enable-unsafe-swiftshader']
+        : ['--disable-gpu']),
       '--disable-background-networking',
       '--disable-component-update',
       '--disable-sync',
@@ -239,6 +244,7 @@ const capture = async () => {
     })
 
     for (const [route, filename] of pages) {
+      if (routes && !routes.includes(route)) continue
       await browser.send('Page.navigate', {
         url: `http://127.0.0.1:${sitePort}${route}`,
       })
