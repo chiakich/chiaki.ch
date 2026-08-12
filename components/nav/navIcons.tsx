@@ -151,6 +151,17 @@ export const SplitFlapIcon = (props: IconProps) => (
   </svg>
 )
 
+// tw-fuzzy-zipcode：信封上的郵遞區號格
+export const ZipcodeIcon = (props: IconProps) => (
+  <svg {...svgProps} {...props}>
+    <rect x="5" y="11" width="38" height="26" rx="3" />
+    <path d="M5 15l19 12 19-12" />
+    <rect x="26" y="29" width="4" height="6" rx="1" opacity=".7" />
+    <rect x="32" y="29" width="4" height="6" rx="1" opacity=".7" />
+    <rect x="38" y="29" width="4" height="6" rx="1" opacity=".7" />
+  </svg>
+)
+
 /* ---------- Story ---------- */
 
 // 故事：書本（外框封閉，左側為書背）

@@ -13,6 +13,7 @@ import {
   TerminalIcon,
   TgJpgIcon,
   TokyonoIcon,
+  ZipcodeIcon,
 } from './navIcons'
 
 export interface NavItem {
@@ -98,6 +99,12 @@ export const getNavSections = (t: Translate): Record<string, NavSection> => ({
         title: 'Split Flap',
         path: '/works/split-flap',
         icon: <SplitFlapIcon />,
+      },
+      {
+        id: 'tw-fuzzy-zipcode',
+        title: t('nav.zipcode'),
+        path: '/works/tw-fuzzy-zipcode',
+        icon: <ZipcodeIcon />,
       },
     ],
   },

@@ -65,3 +65,20 @@ export const TgJpgSpecimen = () => {
   </Flex>
   )
 }
+
+export const ZipcodeSpecimen = () => {
+  const { t } = useI18n()
+  return (
+  <Flex width="100%" height="100%" backgroundColor="#0f1a15" direction="column" justifyContent="center" px={{ base: 5, md: 8 }} gap={4} overflow="hidden">
+    <Box backgroundColor="rgba(255,255,255,.05)" border="1px solid rgba(255,255,255,.08)" borderRadius="10px" px={4} py={2.5}>
+      <Text fontSize="sm" color="#eafff5">松江路100號</Text>
+    </Box>
+    <HStack gap={1.5}>
+      {'104091'.split('').map((digit, index) => (
+        <m.div key={index} animate={{ opacity: [.15, 1, 1, .15] }} transition={{ duration: 3.4, repeat: Infinity, delay: index * .12 }} style={{ width: 26, height: 34, borderRadius: 7, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'monospace', fontWeight: 700, color: '#eafff5', background: 'rgba(63,207,142,.14)', border: '1px solid rgba(63,207,142,.45)' }}>{digit}</m.div>
+      ))}
+    </HStack>
+    <Text fontSize="10px" color="#3fcf8e" letterSpacing=".08em">{t('worksPage.specimens.zipcodeHint')}</Text>
+  </Flex>
+  )
+}

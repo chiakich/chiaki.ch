@@ -14,7 +14,8 @@
     "fontsIndex": "Font Collection",
     "akitra": "Taiwan Railways Typeface",
     "huninn": "Huninn",
-    "terminal": "AMADEUS"
+    "terminal": "AMADEUS",
+    "zipcode": "ZIP Code"
   },
   "language": {
     "label": "Change language",
@@ -67,6 +68,10 @@
     "splitFlap": {
       "title": "react-split-flap - Chiaki Inari Shrine",
       "description": "A React component that recreates station split-flap displays. It also animates large boards of flaps smoothly for station and airport-style displays."
+    },
+    "zipcode": {
+      "title": "tw-fuzzy-zipcode — Fuzzy Taiwan ZIP Code Lookup - Chiaki Inari Shrine",
+      "description": "A JavaScript package that looks up Taiwan ZIP codes from unsplit addresses. It normalizes 台/臺 and full-width characters, fills in the city when a road name is unique nationwide, and covers P.O. boxes — all client-side."
     },
     "tokyonoSora": {
       "title": "Tokyono Sora - Chiaki Inari Shrine",
@@ -127,13 +132,18 @@
       },
       "splitFlap": {
         "description": "A React component that recreates station split-flap displays. A shared animation clock and the Web Animations API keep hundreds of flaps moving smoothly together, including airport- and station-style boards."
+      },
+      "zipcode": {
+        "description": "An open-source package that turns a pasted Taiwan address into a ZIP code: it normalizes 台/臺 and full-width text, fills in the missing city when a road name is unique nationwide, and handles P.O. boxes — under 2 µs per lookup, entirely in the browser.",
+        "tag": "ZIP code"
       }
     },
     "specimens": {
       "chiakeyHint": "Press ↓ to open the candidate window",
       "kumikoAlt": "Kumiko font editor screen",
       "tokyonoAlt": "Tokyono Sora Plurk theme",
-      "tgJpgReply": "Found the first sendable GIF"
+      "tgJpgReply": "Found the first sendable GIF",
+      "zipcodeHint": "Unique road · city filled in"
     }
   },
   "fontsPage": {
@@ -714,6 +724,86 @@
     "currentTime": "Current time",
     "boardDestinations": "For Haneda Airport, Shinagawa, Shimbashi & Asakusa",
     "boardCaption": "A tribute to Keikyu Kawasaki Station’s pata-pata departure board, retired in 2022"
+  },
+  "zipcodePage": {
+    "eyebrow": "Paste the whole address and be done",
+    "hero": "Look up Taiwan ZIP codes from addresses that were never split into fields, and render them in English following Chunghwa Post's own rules. It understands 台/臺, full-width characters, and Chinese numerals, and works even without the city or district — every lookup runs client-side, with no server, WASM, or SQLite.",
+    "tryIt": "Web version",
+    "source": "View source",
+    "copyInstallCommand": "Copy the install command",
+    "demo": {
+      "zipLabel": "ZIP CODE",
+      "recipient": "RECIPIENT ADDRESS",
+      "sources": [
+        "House rules",
+        "House rules",
+        "House rules",
+        "P.O. box",
+        "Gradual index"
+      ],
+      "notes": [
+        "A full address resolves to six digits, carried into the English form.",
+        "台 is normalized to 臺, and Zhongzheng Dist. is filled in.",
+        "The road name is unique, so Zhongshan Dist., Taipei is filled in.",
+        "P.O. boxes use a separate post-office table.",
+        "Falls back to three digits, with the city still filled in."
+      ]
+    },
+    "idea": "Addresses as users actually paste them",
+    "ideaText": "Addresses in a form are rarely split cleanly: raw strings pasted by users, OCR output, and single text columns inherited from older systems all arrive as one run of text. tw-fuzzy-zipcode takes them as-is, with no requirement to separate city, district, and road first. It is a JavaScript port of the matching algorithm in moskytw/zipcodetw, with no runtime dependencies.",
+    "fuzzy": "However the address is written",
+    "fuzzyText": "It first normalizes 台/臺, full-width characters, and common Chinese numerals, then splits the address into city, district, road section, lane, alley, and house-number fragments and matches them layer by layer. With enough information it applies the house-number rules and returns six digits; with less, it falls back to a usable three-digit code — and when the address is ambiguous it returns an empty string rather than guessing.",
+    "fuzzyNotes": [
+      "A complete address matches the house-number rules and returns six digits.",
+      "台 is normalized to 臺; a road name alone is enough.",
+      "A district on its own returns a usable three-digit code.",
+      "The road name is unique nationwide, so the city and district are filled back in."
+    ],
+    "unique": "The missing parts, filled back in",
+    "uniqueText": "When an address omits the city or district, and what remains matches exactly one road in Taiwan, the missing fragments are restored and matching continues to six digits. If several roads match — Zhongzheng Rd. exists nearly everywhere — the address is left alone rather than guessed.",
+    "uniqueInput": "Input",
+    "uniqueFilled": "Filled in",
+    "speed": "Under 2 microseconds per lookup",
+    "speedText": "The browser index flattens sorted data into one string per column with Int32Array offsets and binary search: about a quarter of the memory, still around 500,000 lookups per second.",
+    "metrics": [
+      "Per lookup",
+      "Loading the index in a browser",
+      "Brotli transfer size (gzip approx. 1.21 MB)",
+      "Memory after loading (browser)"
+    ],
+    "speedFootnote": "Measured against Chunghwa Post's June 2026 3+3 ZIP code data — 79,845 house-number rules and 162,470 gradual address entries — on an Apple M3 Pro. A 90,950-query differential test against the Python reference implementation reports zero differences.",
+    "mailbox": "P.O. boxes too",
+    "mailboxText": "A box address is not a street address: its ZIP code comes straight from the post office's name, never from the house-number rules. 899 post offices that actually operate boxes are covered; the source data lists another 314 that have six-digit codes assigned but no box service yet, and those always return an empty string — the number looks deliverable but is not.",
+    "openSource": "MIT licensed, open source, free to use",
+    "openSourceText": "What ships is the source: no build step, loadable directly in a browser. TypeScript declarations are included for both the Node and browser entry points, so no @types package is needed. The data comes as three independent dictionaries — the address index, the P.O. box table, and the Chinese-English name tables — so you load only the ones you need.",
+    "credit": "The ZIP code directory, Chinese-English name tables, and P.O. box data all come from Chunghwa Post, used under its 3+3 ZIP code open licensing statement and the Open Government Data License. The matching algorithm is ported from moskytw/zipcodetw.",
+    "translate": "English addresses, while we are at it",
+    "translateText": "translate() reverses the word order and inserts the ZIP code following Chunghwa Post's own writing rules, producing an English address you can print straight onto an envelope. Every name comes from the official Chinese-English tables — nothing is romanized by guesswork — and against the bundled directory, 99.99% of addresses translate completely.",
+    "translateNotes": [
+      "Floor, number, alley, lane, and section each map to the official abbreviation, with the ZIP code looked up and inserted.",
+      "English post-office names for P.O. boxes also come from official data; the fields become the box number and the office name.",
+      "Siwei 3rd Rd. is in Lingya Dist., Kaohsiung — Xinyi Dist. has no such road. A name being translatable does not make the address real, so cross-validation returns an empty string rather than an English address that cannot be delivered."
+    ],
+    "usage": "How to use it",
+    "usageText": "No runtime dependencies, and what ships is the source. On Node you import and query directly; browsers have no fs, so loadZipcode() fetches the data files published with the package. TypeScript declarations are bundled, so no @types package is needed.",
+    "api": {
+      "title": "Common API",
+      "rows": [
+        "Returns a directly usable three- or six-digit ZIP code, or an empty string when nothing is certain — never an invalid four- or five-digit intermediate prefix.",
+        "Use it when the UI needs to show how the address matched: returns { zipcode, source, resolution }, or null when nothing is found.",
+        "Sub-functions that search only street addresses or only P.O. boxes, for when the data is guaranteed to be one form.",
+        "Returns { english, parts, untranslated, complete }. The ZIP code is looked up and inserted automatically, or supplied via { zipcode }.",
+        "Loads the data files in a browser and builds a Zipcode whose methods share the names above. The three dictionaries are independent — load only what you need.",
+        "The Chinese-English tables for browsers; wire up verify and mailbox for road cross-validation and P.O. box translation."
+      ],
+      "valuesTitle": "What lookup() returns",
+      "values": [
+        "Where the ZIP code came from: the house-number rules, the gradual address index, or the P.O. box table.",
+        "How far the address resolved: six digits, three digits, or a city-level prefix that is not a valid ZIP code on its own."
+      ]
+    },
+    "readDocs": "Full documentation",
+    "readBenchmark": "Benchmarks"
   },
   "chiakeyPage": {
     "hero": {

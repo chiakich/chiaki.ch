@@ -18,6 +18,7 @@ const routes: Record<string, ComponentType> = {
   'works/kumiko': dynamic(() => import('pages/works/kumiko')),
   'works/tg-jpg': dynamic(() => import('pages/works/tg-jpg')),
   'works/split-flap': dynamic(() => import('pages/works/split-flap')),
+  'works/tw-fuzzy-zipcode': dynamic(() => import('pages/works/tw-fuzzy-zipcode')),
   'works/tokyono-sora': dynamic(() => import('pages/works/tokyono-sora')),
   fonts: dynamic(() => import('pages/fonts')),
   'fonts/akitra': dynamic(() => import('pages/fonts/akitra')),

@@ -1,7 +1,7 @@
 import { m } from 'framer-motion'
 import { Box, Container, Stack, styled } from 'styled-system/jsx'
 import WorkCard, { WorkCardData } from './WorkCard'
-import { ChiaKeySpecimen, KumikoSpecimen, SplitFlapSpecimen, TgJpgSpecimen, TokyonoSpecimen } from './WorkSpecimens'
+import { ChiaKeySpecimen, KumikoSpecimen, SplitFlapSpecimen, TgJpgSpecimen, TokyonoSpecimen, ZipcodeSpecimen } from './WorkSpecimens'
 import { useI18n } from 'i18n'
 
 const Heading = styled.h1
@@ -16,6 +16,7 @@ const WorksIndexPage = () => {
     { id: 'kumiko', title: 'Kumiko Font Editor', en: 'FONT EDITOR', description: t('worksPage.items.kumiko.description'), tags: ['React', 'CJK', 'GitHub workflow'], href: '/works/kumiko', accent: '#ffea2f', specimen: <KumikoSpecimen /> },
     { id: 'tokyono-sora', title: t('worksPage.items.tokyono.title'), en: 'PLURK UI', description: t('worksPage.items.tokyono.description'), tags: ['UI Design', 'CSS', 'Plurk'], href: '/works/tokyono-sora', accent: '#68d5e3', specimen: <TokyonoSpecimen /> },
     { id: 'tg-jpg', title: 'tg.jpg', en: 'TELEGRAM BOT', description: t('worksPage.items.tgJpg.description'), tags: ['Rust', 'Telegram', 'Image search'], href: '/works/tg-jpg', accent: '#57b5ff', specimen: <TgJpgSpecimen /> },
+    { id: 'tw-fuzzy-zipcode', title: 'tw-fuzzy-zipcode', en: 'NPM PACKAGE', description: t('worksPage.items.zipcode.description'), tags: ['JavaScript', t('worksPage.items.zipcode.tag'), 'MIT'], href: '/works/tw-fuzzy-zipcode', accent: '#3fcf8e', specimen: <ZipcodeSpecimen /> },
     { id: 'split-flap', title: 'react-split-flap', en: 'REACT COMPONENT', description: t('worksPage.items.splitFlap.description'), tags: ['React', 'npm package', 'Animation'], href: '/works/split-flap', accent: '#ff5d52', specimen: <SplitFlapSpecimen /> },
   ]
 
