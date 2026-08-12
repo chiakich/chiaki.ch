@@ -1339,15 +1339,15 @@ export const smallTalkRules: Rule[] = [
   {
     id: 'st.name.meaning',
     priority: 6,
-    patterns: [/(名字的意思|為什麼叫千秋|千秋的意思|千秋是什麼意思)/],
+    patterns: [/(名字的意思|為什麼叫秋狐|秋狐的意思|秋狐是什麼意思)/],
     replies: [
       {
-        text: '千秋是很長很長的時間的意思。我的設計者說取這個是因為好聽，不過我不太相信。',
+        text: '秋天狐狸的意思。我的設計者說取這個只是因為我在秋天出生的。雖然我並不知道秋天是什麼樣子的。',
         emotion: 'neutral',
         remember: ['knowsName', 'hintedMaker'],
       },
       {
-        text: '後來我想明白了：那是希望，不是形容。我的設計者大概是希望這件事能撐很久。',
+        text: '後來我想，我的設計者大概是很想念秋天吧。',
         emotion: 'sad',
         needs: ['talkedMaker'],
         signal: 3,

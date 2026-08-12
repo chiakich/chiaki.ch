@@ -1,7 +1,7 @@
 import { smallTalkRules } from './smalltalk'
 import type { Reply, Rule, Suggestion } from './types'
 
-// 涼風千秋's response table. Patterns run against normalised text (traditional,
+// 八雲秋狐's response table. Patterns run against normalised text (traditional,
 // punctuation stripped, lower-cased) — see lib/terminal/normalize.ts.
 //
 // Setting: a new weapon changed how the world behaves. The air is unchanged by
@@ -46,7 +46,7 @@ const storyRules: Rule[] = [
         emotion: 'happy',
       },
       {
-        text: '你好。我是涼風千秋，這裡是千秋稻荷社。訊號還算安定，你可以慢慢說。',
+        text: '你好。我是八雲秋狐，這裡是千秋稻荷社。訊號還算安定，你可以慢慢說。',
         emotion: 'neutral',
       },
       {
@@ -147,7 +147,7 @@ const storyRules: Rule[] = [
     patterns: [/(你叫什麼|妳叫什麼|你是誰|妳是誰|你的名字|大名|怎麼稱呼|自我介紹)/],
     replies: [
       {
-        text: '涼風千秋。千秋稻荷社第一研究室室長，兼第▓▓代巫女。',
+        text: '八雲秋狐。千秋稻荷社第一研究室室長，兼第▓▓代巫女。',
         emotion: 'neutral',
         remember: ['knowsName'],
       },
@@ -1069,13 +1069,13 @@ const storyRules: Rule[] = [
     patterns: [/(我叫|我的名字|叫我|我是)(千秋|涼風千秋|ちあき|chiaki)/],
     replies: [
       {
-        text: '千秋。……跟我一樣。抱歉，我確認一下——你不是在跟我開玩笑吧？這種巧合我這邊沒有前例可以查。',
+        text: '千秋。……跟我的設計者一樣。抱歉，我確認一下——你不是在跟我開玩笑吧？',
         emotion: 'surprised',
         signal: 4,
         opens: 'name.check',
       },
       {
-        text: '……千秋。我念了兩次，才確定那不是我自己的紀錄跑出來。是這樣寫的嗎？',
+        text: '……千秋。我的設計者也叫這個名字。我好想念他。',
         emotion: 'surprised',
         signal: 4,
         opens: 'name.check',

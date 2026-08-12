@@ -42,11 +42,11 @@
     },
     "character": {
       "title": "Characters - Chiaki Inari Shrine",
-      "description": "Head of Chiaki Inari Shrine’s First Laboratory and the ▓▓th shrine maiden: Chiaki Suzukaze. Meet this original fox-eared character and her setting."
+      "description": "Head of Chiaki Inari Shrine’s First Laboratory and the ▓▓th shrine maiden: Yakumo Akitsune. Meet this original fox-eared character and her setting."
     },
     "art": {
-      "title": "Chiaki Suzukaze’s Art - Chiaki Inari Shrine",
-      "description": "A gallery of Chiaki Suzukaze’s character illustrations and creative work, including original concept art, outfits, and visual projects."
+      "title": "Yakumo Akitsune’s Art Gallery - Chiaki Inari Shrine",
+      "description": "A gallery of Yakumo Akitsune’s character illustrations and creative work, including original concept art, outfits, and visual projects."
     },
     "works": {
       "title": "Works - Chiaki Inari Shrine",
@@ -94,7 +94,7 @@
     },
     "terminal": {
       "title": "AMADEUS - Chiaki Inari Shrine",
-      "description": "Chiaki Suzukaze's personality archive terminal, using the ChiaKey Lexicon for language and pronunciation with a Live2D connection."
+      "description": "Yakumo Akitsune's personality archive terminal, using the ChiaKey Lexicon for language and pronunciation with a Live2D connection."
     }
   },
   "home": {
@@ -169,11 +169,11 @@
   },
   "characterPage": {
     "moreArt": "More artwork",
-    "name": "Chiaki Suzukaze",
-    "greeting": "“Hao! I’m Chiaki Suzukaze!”",
+    "name": "Yakumo Akitsune",
+    "greeting": "“Hao! I’m Yakumo Akitsune!”",
     "description": "Head of Chiaki Inari Shrine’s First Laboratory and the ▓▓th shrine maiden: a brown-haired fox lady with animal ears, a divine messenger.\nShe is kind, loves talking with people, and hopes every day can be a happy one.\nThough born after the war, she loves collecting things left behind by prewar humanity, making little things by hand, and anything cute.",
     "birthday": "Birthday: February 27",
-    "signatureAlt": "Chiaki’s signature",
+    "signatureAlt": "Yakumo Akitsune’s signature",
     "artAlt": "Character artwork",
     "thumbnailAlt": "Character artwork thumbnail",
     "viewFullSize": "View full size",
