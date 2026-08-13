@@ -49,6 +49,12 @@ export type Session = {
   pending: string | null
   /** Turns the open question has gone unanswered. */
   pendingAge: number
+  /**
+   * Suggestion ids the last line put on the table — see `Reply.offers`. Null
+   * means no line has named its exits, so the flag-gated pool stands in.
+   * Deliberately not persisted: a restored session re-enters through the pool.
+   */
+  offered: string[] | null
   /** What the user confirmed they are called. */
   userName: string | null
   /** Name she has read off the input but not yet had confirmed. */
@@ -78,6 +84,7 @@ export const createSession = (restored?: {
   signal: restored ? RETURNING_SIGNAL : 62,
   pending: null,
   pendingAge: 0,
+  offered: null,
   userName: restored?.userName ?? null,
   nameGuess: null,
   modernScore: 0,
@@ -131,6 +138,7 @@ let dirtyRules: Rule[] = []
 let dirtySuggestions: Suggestion[] = []
 let dirtySceneFlags = new Set<string>()
 let dirtyReplyTexts = new Set<string>()
+let dirtyById = new Map<string, Suggestion>()
 const RULES_BY_ID = new Map(rules.map((rule) => [rule.id, rule]))
 
 /** All rules currently live: the static table plus the decoded after-dark table. */
@@ -151,6 +159,9 @@ export const setDirtyContent = ({ rules: extra, suggestions }: {
   )
   for (const rule of dirtyRules) RULES_BY_ID.set(rule.id, rule)
   dirtySuggestions = suggestions
+  dirtyById = new Map(
+    suggestions.flatMap((item) => (item.id ? [[item.id, item] as const] : []))
+  )
 }
 
 /** Whether the terminal is currently presenting the explicit branch as its topic. */
@@ -558,6 +569,11 @@ export const respond = (
     reply.remember?.forEach((flag) => session.flags.add(flag))
     if (reply.clearsPending) armPending(session, null)
     if (reply.opens) armPending(session, reply.opens)
+    // A line that names its exits replaces the standing set; one that doesn't
+    // hands the scene back to the flag-gated pool. Only touched when a reply
+    // actually fires, so an EXHAUSTED turn can't strand a chips-only scene
+    // with nothing on the table.
+    session.offered = reply.offers ?? null
     if (discovering) session.lastTopic = 'peace'
     if (source) {
       if (source.id.startsWith('greeting')) session.flags.add('greeted')
@@ -819,6 +835,34 @@ export type SuggestionChip = {
 // its own and typing the same words works identically.
 export const FOLLOW_CHIP = '再多說一點'
 
+// What the branch's exit control sends. Routed through `respond` like any
+// other text so the rule that answers it — and the flags it clears — stay in
+// the payload rather than being special-cased in the UI.
+export const EXIT_PHRASE = '結束'
+
+/**
+ * The exits the last line named, or null when it named none and the pool
+ * stands in. `needs` still applies — a conditional exit is worth keeping — but
+ * ASK_LIMIT does not: these were chosen by the author for this scene, so they
+ * cannot run away the way an ungated pool entry can.
+ */
+const offeredChoices = (session: Session): Suggestion[] | null => {
+  if (session.offered === null) return null
+  const resolved = session.offered.flatMap((id) => {
+    const item = dirtyById.get(id)
+    return item ? [item] : []
+  })
+  const open = resolved.filter(
+    (item) =>
+      !(item.done !== undefined && session.flags.has(item.done)) &&
+      (item.needs === undefined ||
+        item.needs.every((flag) => session.flags.has(flag)))
+  )
+  // A typo'd id or a scene whose exits are all spent must not leave the
+  // visitor staring at an empty row — with no input box there is no way out.
+  return open.length > 0 ? open : null
+}
+
 export const suggestionsFor = (
   session: Session,
   asked: ReadonlyMap<string, number> = new Map()
@@ -827,7 +871,12 @@ export const suggestionsFor = (
   // Tier unlocks are otherwise invisible — nothing tells the visitor that
   // asking again would get a new answer, so the deeper lines mostly go
   // unread. The chip only exists while taking it actually yields one.
-  if (canDeepen(session)) chips.push({ text: FOLLOW_CHIP, kind: 'follow' })
+  // Kept out of the explicit branch on purpose: it is a deliberately vague
+  // prompt that rides the sticky-topic path, and where every other option
+  // names a definite destination, one card that lands somewhere unpredictable
+  // is exactly what makes a branching scene hard to author against.
+  if (canDeepen(session) && !isAfterDarkActive(session))
+    chips.push({ text: FOLLOW_CHIP, kind: 'follow' })
   // The explicit branch is entered by an explicit typed message, never by a
   // card on a fresh conversation. From then on, every card must carry a real
   // prerequisite flag. This prevents a malformed or newly edited payload from
@@ -843,7 +892,9 @@ export const suggestionsFor = (
   if (isAfterDarkActive(session))
     return [
       ...chips,
-      ...dirty.map((item): SuggestionChip => ({ text: item.text, kind: 'dirty' })),
+      ...(offeredChoices(session) ?? dirty).map(
+        (item): SuggestionChip => ({ text: item.text, kind: 'dirty' })
+      ),
     ]
 
   return [

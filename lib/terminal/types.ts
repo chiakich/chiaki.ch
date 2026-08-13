@@ -38,6 +38,16 @@ export type Reply = {
   needsWord?: boolean
   /** Arms a follow-up: the next turn can answer this instead of restarting. */
   opens?: string
+  /**
+   * Suggestion ids this line puts on the table, replacing the flag-gated pool
+   * for as long as they stand. This is how a branch stops being a global
+   * soup of every currently-unlocked prompt: the line that was just said
+   * names its own exits, so a scene's options are readable in one place
+   * instead of inferred from `needs`/`done` scattered across the payload.
+   * Unresolvable or fully gated ids fall back to the pool rather than
+   * dead-ending — which matters most where the input box is hidden.
+   */
+  offers?: string[]
   /** Drops an outstanding follow-up when this reply changes the scene. */
   clearsPending?: boolean
   /** Clears flags created by the after-dark payload before applying this reply. */
@@ -85,6 +95,8 @@ export type Rule = {
  * when its topic has been covered, and the ones it unlocks take its place.
  */
 export type Suggestion = {
+  /** Referenced by a reply's `offers`. Only needed for node-local choices. */
+  id?: string
   text: string
   /** Only offered once every one of these flags is set. */
   needs?: string[]

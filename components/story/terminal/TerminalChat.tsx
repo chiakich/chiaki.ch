@@ -5,6 +5,7 @@ import {
   createSession,
   endingHandover,
   endingReturn,
+  EXIT_PHRASE,
   idle,
   isAfterDarkActive,
   opening,
@@ -68,6 +69,7 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
   const [signal, setSignal] = useState(sessionRef.current.signal)
   const [tokens, setTokens] = useState<Token[]>([])
   const [prompts, setPrompts] = useState<SuggestionChip[]>([])
+  const [inBranch, setInBranch] = useState(false)
   // The panel is a reveal, not furniture: it only exists once she has offered
   // to show it. See the segmentation rule in lib/terminal/rules.ts.
   const [lexiconShown, setLexiconShown] = useState(false)
@@ -76,9 +78,21 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
   // the conversation, not an interruption of it.
   const locked = phase === 'away' || phase === 'closing' || phase === 'gone'
 
+  // Free text only comes down while there is something to click instead. The
+  // ending handover replaces the chip row with its own button, so the input
+  // has to come back for it — otherwise the branch would have no way out.
+  const choicesOnly = inBranch && phase !== 'offered' && prompts.length > 0
+
   const push = useCallback((message: Omit<Message, 'id'>) => {
     nextId.current += 1
     setMessages((current) => [...current, { ...message, id: nextId.current }])
+  }, [])
+
+  // The chips and the input box are one decision, so they are refreshed
+  // together: inside the explicit branch every turn is a named choice.
+  const refreshPrompts = useCallback(() => {
+    setPrompts(suggestionsFor(sessionRef.current, asked.current))
+    setInBranch(isAfterDarkActive(sessionRef.current))
   }, [])
 
   useEffect(() => {
@@ -94,10 +108,10 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
     loadDirtyContent()
       .then((content) => {
         setDirtyContent(content)
-        setPrompts(suggestionsFor(sessionRef.current, asked.current))
+        refreshPrompts()
       })
       .catch(() => undefined)
-  }, [])
+  }, [refreshPrompts])
 
   // Restoring has to happen on the client, so the session starts empty and is
   // replaced on mount. `ready` keeps the opening line from being chosen before
@@ -109,9 +123,9 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
       sessionRef.current = createSession(saved)
       setSignal(sessionRef.current.signal)
     }
-    setPrompts(suggestionsFor(sessionRef.current, asked.current))
+    refreshPrompts()
     setReady(true)
-  }, [])
+  }, [refreshPrompts])
 
   useEffect(() => {
     if (!started || !ready || messages.length > 0) return undefined
@@ -185,7 +199,14 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
   }, [messages])
 
   useEffect(() => {
-    if (!started || messages.length === 0 || locked) return undefined
+    // A silence inside the branch is just the visitor reading the line and
+    // picking a card — there is no input box to have gone quiet in. Idle was
+    // tuned for the pause before typing, and firing it here interrupted the
+    // choice on the table: the pushed line locks every card via
+    // `typing !== null` until it finishes, which reads as the story cutting
+    // itself off mid-scene.
+    if (!started || messages.length === 0 || locked || isAfterDarkActive(sessionRef.current))
+      return undefined
     const timer = window.setTimeout(() => {
       if (typing !== null) return
       const turn = idle(sessionRef.current)
@@ -219,7 +240,7 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
     (turn: ReturnType<typeof respond>) => {
       setSignal(turn.signal)
       save(sessionRef.current, visits.current)
-      setPrompts(suggestionsFor(sessionRef.current, asked.current))
+      refreshPrompts()
       if (sessionRef.current.flags.has('showedLexicon')) setLexiconShown(true)
       if (turn.ending === 'offer') setPhase('offered')
       if (turn.ending === 'leaving') setPhase('away')
@@ -238,7 +259,7 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
         setTyping(turn.text)
       }, 340)
     },
-    [push]
+    [push, refreshPrompts]
   )
 
   const send = useCallback(
@@ -590,12 +611,12 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
                 border={
                   chip.kind === 'follow'
                     ? '1px solid rgba(238,150,98,.5)'
-                    : '1px solid rgba(231,105,45,.16)'
+                    : '1px solid rgba(231,105,45,.38)'
                 }
                 background={
                   chip.kind === 'follow'
                     ? 'rgba(231,105,45,.12)'
-                    : 'rgba(8,3,1,.34)'
+                    : 'rgba(8,3,1,.62)'
                 }
                 color="#fff"
                 fontSize="11px"
@@ -606,14 +627,50 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
                   borderColor: 'rgba(238,150,98,.45)',
                   color: '#fff',
                 }}
-                _disabled={{ opacity: 0.28, cursor: 'default' }}
+                // Dimmed while she is still typing, but the cards are the whole
+              // interface inside the branch — at 0.28 the row read as broken
+              // rather than as briefly unavailable.
+              _disabled={{ opacity: 0.5, cursor: 'default' }}
               >
                 {chip.text}
               </Chip>
             ))
           )}
+
+          {/* Shares the row with the cards but not their voice: leaving is not
+              one of the things she is being asked. Pure white against the
+              branch's amber is what separates a control from a line of
+              dialogue, and `ml=auto` keeps it off the end of the run. */}
+          {choicesOnly && (
+            <Chip
+              type="button"
+              onClick={() => send(EXIT_PHRASE)}
+              disabled={typing !== null || locked}
+              ml="auto"
+              flexShrink="0"
+              px="10px"
+              py="4px"
+              border="1px solid rgba(255,255,255,.5)"
+              background="transparent"
+              color="#fff"
+              fontFamily="nixie"
+              fontSize="10px"
+              letterSpacing=".16em"
+              cursor="pointer"
+              whiteSpace="nowrap"
+              transition="all .18s"
+              _hover={{ borderColor: '#fff', background: 'rgba(255,255,255,.12)' }}
+              // Dimmed while she is still typing, but the cards are the whole
+              // interface inside the branch — at 0.28 the row read as broken
+              // rather than as briefly unavailable.
+              _disabled={{ opacity: 0.5, cursor: 'default' }}
+            >
+              結束
+            </Chip>
+          )}
         </Flex>
 
+        {!choicesOnly && (
         <Form
           display="flex"
           gap="7px"
@@ -668,6 +725,7 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
             SEND
           </Send>
         </Form>
+        )}
       </Flex>
     </Box>
   )

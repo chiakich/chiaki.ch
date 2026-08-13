@@ -27,6 +27,8 @@ export type DirtyReplyJSON = {
   minSignal?: number
   /** Arms a follow-up: the very next turn can answer this via a rule with matching `continues`. */
   opens?: string
+  /** Suggestion ids this line puts on the table, replacing the pool — see `Reply.offers`. */
+  offers?: string[]
   /** Drops an outstanding follow-up when this reply changes the scene. */
   clearsPending?: boolean
   /** Clears flags created by the after-dark payload before applying this reply. */
@@ -63,6 +65,8 @@ export type DirtyRuleJSON = {
 // Identical to `Suggestion` — listed here rather than reused directly so the
 // wire type stays independent of engine internals.
 export type DirtySuggestionJSON = {
+  /** Referenced by a reply's `offers`. Only needed for node-local choices. */
+  id?: string
   text: string
   needs?: string[]
   done?: string
@@ -94,6 +98,7 @@ const compileReply = (raw: unknown): Reply | null => {
     needs: Array.isArray(reply.needs) ? reply.needs.filter(isString) : undefined,
     minSignal: typeof reply.minSignal === 'number' ? reply.minSignal : undefined,
     opens: isString(reply.opens) ? reply.opens : undefined,
+    offers: Array.isArray(reply.offers) ? reply.offers.filter(isString) : undefined,
     clearsPending: reply.clearsPending === true ? true : undefined,
     clearsAfterDark: reply.clearsAfterDark === true ? true : undefined,
   }
@@ -146,6 +151,7 @@ const compileSuggestion = (raw: unknown): Suggestion | null => {
   const suggestion = raw as Record<string, unknown>
   if (!isString(suggestion.text)) return null
   return {
+    id: isString(suggestion.id) ? suggestion.id : undefined,
     text: suggestion.text,
     needs: Array.isArray(suggestion.needs)
       ? suggestion.needs.filter(isString)
