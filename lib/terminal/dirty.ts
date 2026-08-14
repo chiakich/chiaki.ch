@@ -70,6 +70,8 @@ export type DirtySuggestionJSON = {
   text: string
   needs?: string[]
   done?: string
+  /** The rule owning this chip's target passage — see `Suggestion.ruleId`. */
+  ruleId?: string
 }
 
 /** The whole local payload. `suggestions` is optional —
@@ -157,6 +159,7 @@ const compileSuggestion = (raw: unknown): Suggestion | null => {
       ? suggestion.needs.filter(isString)
       : undefined,
     done: isString(suggestion.done) ? suggestion.done : undefined,
+    ruleId: isString(suggestion.ruleId) ? suggestion.ruleId : undefined,
   }
 }
 

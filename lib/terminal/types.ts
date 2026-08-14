@@ -102,6 +102,12 @@ export type Suggestion = {
   needs?: string[]
   /** Retired once this flag is set — she has already covered it. */
   done?: string
+  /**
+   * The rule owning the passage this chip's `[[label->target]]` link points
+   * to. Lets the caller jump straight there instead of sending `text` back
+   * through pattern matching — see `jumpTo` in engine.ts.
+   */
+  ruleId?: string
 }
 
 export type Message = {

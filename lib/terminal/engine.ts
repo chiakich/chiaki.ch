@@ -797,6 +797,62 @@ export const endingHandover = (session: Session): Turn => {
 }
 
 /**
+ * Fired by a chip, not by anything typed: after-dark's `[[label->target]]`
+ * links already know exactly which passage they mean, so this applies that
+ * passage's rule directly rather than sending the label text back through
+ * `findRule`'s pattern matching. Pattern matching is what a chip click
+ * *used* to go through — but two different scenes can have chips whose
+ * labels both happen to satisfy some other rule's regex (an unanchored
+ * alternative meant for a different passage), and a click landing on the
+ * wrong scene there is a bug the visitor can't work around, since after-dark
+ * offers no free-text box to correct it with. A direct jump can't mismatch:
+ * there is no pattern to accidentally share.
+ */
+export const jumpTo = (ruleId: string, session: Session): Turn | null => {
+  const rule = RULES_BY_ID.get(ruleId)
+  if (!rule) return null
+  const seed = Math.random()
+  const reply = pickReply(rule.replies, session, seed, rule.repeatable)
+  if (!reply) return null
+
+  const emotion: Emotion = reply.emotion ?? 'neutral'
+  const delta = reply.signal ?? 2
+  session.used.add(reply.text)
+  if (reply.clearsAfterDark) {
+    dirtySceneFlags.forEach((flag) => session.flags.delete(flag))
+    dirtyReplyTexts.forEach((usedText) => session.used.delete(usedText))
+  }
+  reply.forget?.forEach((flag) => session.flags.delete(flag))
+  reply.remember?.forEach((flag) => session.flags.add(flag))
+  if (reply.clearsPending) armPending(session, null)
+  if (reply.opens) armPending(session, reply.opens)
+  session.offered = reply.offers ?? null
+  if (rule.id.startsWith('greeting')) session.flags.add('greeted')
+  const topic = isTopical(rule) ? rule.id : baseTopic(rule.id)
+  if (topic) session.lastTopic = topic
+  if (reply.naming === 'confirm') {
+    session.userName = session.nameGuess
+    session.flags.add('knowsYou')
+  }
+  if (reply.naming === 'reject') session.nameGuess = null
+
+  const headroom = Math.min(1, Math.max(0, (SIGNAL_CEILING - session.signal) / 40))
+  session.signal = clamp(
+    session.signal + (delta > 0 ? delta * headroom : delta)
+  )
+  session.history.push(rule.id)
+
+  return {
+    text: degrade(fill(reply.text, session), session.signal, seed * 1000),
+    emotion,
+    ruleId: rule.id,
+    tokens: [],
+    signal: session.signal,
+    ending: undefined,
+  }
+}
+
+/**
  * The three shallowest main-story prompts still open. SUGGESTIONS is ordered
  * the way the story reads, so taking from the front hands a newcomer the
  * openers and lets the deeper rungs surface as the ones above them retire.
@@ -831,6 +887,12 @@ export type SuggestionChip = {
    * said, and this chip goes back for them.
    */
   kind: 'story' | 'dirty' | 'follow'
+  /**
+   * Set on `dirty` chips whose target passage is known: lets the caller jump
+   * straight there with `jumpTo` instead of sending `text` through `respond`.
+   * Absent on pool-only cards, which have no single fixed destination.
+   */
+  ruleId?: string
 }
 
 // Deliberately a FOLLOW_UP-shaped phrase: it goes through `respond` like any
@@ -896,7 +958,11 @@ export const suggestionsFor = (
     return [
       ...chips,
       ...(offeredChoices(session) ?? dirty).map(
-        (item): SuggestionChip => ({ text: item.text, kind: 'dirty' })
+        (item): SuggestionChip => ({
+          text: item.text,
+          kind: 'dirty',
+          ruleId: item.ruleId,
+        })
       ),
     ]
 

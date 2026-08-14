@@ -8,6 +8,7 @@ import {
   EXIT_PHRASE,
   idle,
   isAfterDarkActive,
+  jumpTo,
   opening,
   respond,
   setDirtyContent,
@@ -273,6 +274,27 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
       speak(turn)
     },
     [lexicon, locked, push, speak, typing]
+  )
+
+  // A chip's label text going back through `respond`'s pattern matching is
+  // how after-dark used to advance — but the chip already names its exact
+  // destination, so a known `ruleId` jumps straight there instead. Falls back
+  // to the old text round-trip for chips `jumpTo` can't place (no ruleId, or
+  // the rule has nothing left to say), so nothing regresses silently.
+  const choose = useCallback(
+    (chip: SuggestionChip) => {
+      if (typing !== null || locked) return
+      const turn = chip.ruleId ? jumpTo(chip.ruleId, sessionRef.current) : null
+      if (!turn) {
+        send(chip.text)
+        return
+      }
+      push({ role: 'user', text: chip.text })
+      setDraft('')
+      setTokens([])
+      speak(turn)
+    },
+    [locked, push, send, speak, typing]
   )
 
   const handOver = useCallback(() => {
@@ -603,7 +625,7 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
                       chip.text,
                       (asked.current.get(chip.text) ?? 0) + 1
                     )
-                  send(chip.text)
+                  choose(chip)
                 }}
                 disabled={typing !== null || locked}
                 px="9px"

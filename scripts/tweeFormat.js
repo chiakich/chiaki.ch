@@ -233,6 +233,9 @@ const fromTwee = (text) => {
         // without it the first flag is the best guess available.
         done:
           readField(target.fields, 'card') ?? readField(target.fields, 'sets')?.[0],
+        // Lets a chip click jump straight to the rule that owns its target
+        // passage instead of re-matching `text` against every rule's patterns.
+        ruleId: target.ruleId,
       })
     }
   }
