@@ -741,6 +741,8 @@ export const respond = (
   // question is not intake. Appended rather than substituted: she answers what
   // was asked and *then* asks, which is the order a person does it in. Skipped
   // when she already has a question open, or when she is on her way out.
+  // Also skipped in after-dark: that flow is chip-only (no text input), and
+  // name.ask.tell needs genuinely typed text to resolve.
   if (
     reply &&
     ending === undefined &&
@@ -748,7 +750,8 @@ export const respond = (
     session.signal >= NAME_THRESHOLD &&
     !session.flags.has('knowsYou') &&
     !session.flags.has('askedName') &&
-    !session.flags.has('refusedName')
+    !session.flags.has('refusedName') &&
+    !isAfterDarkActive(session)
   ) {
     text += NAME_ASK
     session.flags.add('askedName')
