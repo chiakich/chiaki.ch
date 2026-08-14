@@ -15,7 +15,7 @@ const Button = styled.button
 
 const ACCENT = '#3fcf8e'
 
-const INSTALL_COMMAND = 'npm i tw-fuzzy-zipcode'
+const INSTALL_COMMAND = 'npm i tw-address-tools'
 
 const InstallCommand = () => {
   const [copied, setCopied] = useState(false)
@@ -73,7 +73,7 @@ const ZipcodeHero = () => {
               fontWeight="bold"
               letterSpacing="-.03em"
             >
-              tw<Span color={ACCENT}>-</Span>fuzzy<Span color={ACCENT}>-</Span>zipcode
+              tw<Span color={ACCENT}>-</Span>address<Span color={ACCENT}>-</Span>tools
             </Heading>
             <Text mt={5} maxW="680px" fontSize={{ base: 'lg', md: 'xl' }} lineHeight="1.85" opacity={0.82}>
               {t('zipcodePage.hero')}
@@ -82,13 +82,13 @@ const ZipcodeHero = () => {
               <InstallCommand />
               <ProjectLink href="https://zipcode.chiaki.ch/" label={t('zipcodePage.tryIt')} solid accent={ACCENT} />
               <ProjectLink
-                href="https://www.npmjs.com/package/tw-fuzzy-zipcode"
+                href="https://www.npmjs.com/package/tw-address-tools"
                 label="npm"
-                detail="tw-fuzzy-zipcode"
+                detail="tw-address-tools"
                 accent={ACCENT}
               />
               <ProjectLink
-                href="https://github.com/chiakich/tw-fuzzy-zipcode"
+                href="https://github.com/chiakich/tw-address-tools"
                 label={t('zipcodePage.source')}
                 detail="MIT"
                 accent={ACCENT}

@@ -70,8 +70,8 @@
       "description": "A React component that recreates station split-flap displays. It also animates large boards of flaps smoothly for station and airport-style displays."
     },
     "zipcode": {
-      "title": "tw-fuzzy-zipcode — Fuzzy Taiwan ZIP Code Lookup - Chiaki Inari Shrine",
-      "description": "A JavaScript package that looks up Taiwan ZIP codes from unsplit addresses. It normalizes 台/臺 and full-width characters, fills in the city when a road name is unique nationwide, and covers P.O. boxes — all client-side."
+      "title": "tw-address-tools — Taiwan Address Lookup & English Translation - Chiaki Inari Shrine",
+      "description": "A JavaScript package for fuzzy Taiwan address lookup, ZIP-code resolution, and English translation. It normalizes 台/臺 and full-width characters, fills in the city when a road name is unique nationwide, and covers P.O. boxes — all client-side."
     },
     "tokyonoSora": {
       "title": "Tokyono Sora - Chiaki Inari Shrine",
@@ -134,7 +134,7 @@
         "description": "A React component that recreates station split-flap displays. A shared animation clock and the Web Animations API keep hundreds of flaps moving smoothly together, including airport- and station-style boards."
       },
       "zipcode": {
-        "description": "An open-source package that turns a pasted Taiwan address into a ZIP code: it normalizes 台/臺 and full-width text, fills in the missing city when a road name is unique nationwide, and handles P.O. boxes — under 2 µs per lookup, entirely in the browser.",
+        "description": "An open-source package that turns a pasted Taiwan address into a ZIP code and English address: it normalizes 台/臺 and full-width text, fills in the missing city when a road name is unique nationwide, and handles P.O. boxes — under 2 µs per lookup, entirely in the browser.",
         "tag": "ZIP code"
       }
     },
@@ -750,7 +750,7 @@
       ]
     },
     "idea": "Addresses as users actually paste them",
-    "ideaText": "Addresses in a form are rarely split cleanly: raw strings pasted by users, OCR output, and single text columns inherited from older systems all arrive as one run of text. tw-fuzzy-zipcode takes them as-is, with no requirement to separate city, district, and road first. It is a JavaScript port of the matching algorithm in moskytw/zipcodetw, with no runtime dependencies.",
+    "ideaText": "Addresses in a form are rarely split cleanly: raw strings pasted by users, OCR output, and single text columns inherited from older systems all arrive as one run of text. tw-address-tools takes them as-is, with no requirement to separate city, district, and road first. It is a JavaScript port of the matching algorithm in moskytw/zipcodetw, with no runtime dependencies.",
     "fuzzy": "However the address is written",
     "fuzzyText": "It first normalizes 台/臺, full-width characters, and common Chinese numerals, then splits the address into city, district, road section, lane, alley, and house-number fragments and matches them layer by layer. With enough information it applies the house-number rules and returns six digits; with less, it falls back to a usable three-digit code — and when the address is ambiguous it returns an empty string rather than guessing.",
     "fuzzyNotes": [

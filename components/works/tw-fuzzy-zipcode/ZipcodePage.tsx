@@ -40,7 +40,7 @@ const TRANSLATE_ROWS = [
   ['臺北市信義區四維三路2號', ''],
 ]
 
-const NODE_SNIPPET = `import { find, lookup, translate } from 'tw-fuzzy-zipcode'
+const NODE_SNIPPET = `import { find, lookup, translate } from 'tw-address-tools'
 
 find('臺北市信義區市府路1號')
 // '110204'
@@ -51,7 +51,7 @@ lookup('臺北市')
 translate('臺北市信義區市府路1號').english
 // 'No. 1, Shifu Rd., Xinyi Dist., Taipei City 110204, Taiwan (R.O.C.)'`
 
-const BROWSER_SNIPPET = `import { loadZipcode } from 'tw-fuzzy-zipcode/browser'
+const BROWSER_SNIPPET = `import { loadZipcode } from 'tw-address-tools/browser'
 
 // 瀏覽器沒有 fs，改用 loadZipcode() 載入隨套件發布的資料檔
 const zip = await loadZipcode({
@@ -280,13 +280,13 @@ const ZipcodePage = () => {
             <Flex gap={3} flexWrap="wrap">
               <ProjectLink href="https://zipcode.chiaki.ch/" label={t('zipcodePage.tryIt')} solid accent={ACCENT} />
               <ProjectLink
-                href="https://www.npmjs.com/package/tw-fuzzy-zipcode"
+                href="https://www.npmjs.com/package/tw-address-tools"
                 label="npm"
-                detail="tw-fuzzy-zipcode"
+                detail="tw-address-tools"
                 accent={ACCENT}
               />
               <ProjectLink
-                href="https://github.com/chiakich/tw-fuzzy-zipcode"
+                href="https://github.com/chiakich/tw-address-tools"
                 label="GitHub Repository"
                 detail="MIT"
                 accent={ACCENT}
@@ -303,7 +303,7 @@ const ZipcodePage = () => {
             </SectionHeading>
             <Stack gap={4}>
               <MotionSection>
-                <CodeBlock label="TERMINAL" code={'$ npm install tw-fuzzy-zipcode'} />
+                <CodeBlock label="TERMINAL" code={'$ npm install tw-address-tools'} />
               </MotionSection>
               <MotionSection delay={0.06}>
                 <CodeBlock label="NODE.JS" code={NODE_SNIPPET} />
@@ -372,13 +372,13 @@ const ZipcodePage = () => {
             <MotionSection delay={0.06}>
               <Flex gap={3} flexWrap="wrap" mt={9}>
                 <ProjectLink
-                  href="https://github.com/chiakich/tw-fuzzy-zipcode#readme"
+                  href="https://github.com/chiakich/tw-address-tools#readme"
                   label={t('zipcodePage.readDocs')}
                   detail="README"
                   accent={ACCENT}
                 />
                 <ProjectLink
-                  href="https://github.com/chiakich/tw-fuzzy-zipcode/blob/main/docs/benchmark.md"
+                  href="https://github.com/chiakich/tw-address-tools/blob/main/docs/benchmark.md"
                   label={t('zipcodePage.readBenchmark')}
                   accent={ACCENT}
                 />
