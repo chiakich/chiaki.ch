@@ -59,6 +59,8 @@ export type DirtyRuleJSON = {
    * would risk, since the rule is not even a candidate outside that window.
    */
   continues?: string
+  /** Exempts the rule from the no-verbatim-repeat rule — see `Rule.repeatable`. */
+  repeatable?: boolean
   replies: DirtyReplyJSON[]
 }
 
@@ -144,6 +146,7 @@ const compileRule = (raw: unknown): Rule | null => {
       ? rule.blockedBy.filter(isString)
       : undefined,
     continues: isString(rule.continues) ? rule.continues : undefined,
+    repeatable: rule.repeatable === true ? true : undefined,
     replies,
   }
 }

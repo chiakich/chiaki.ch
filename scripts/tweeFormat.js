@@ -292,6 +292,11 @@ const fromTwee = (text) => {
       requires: readField(meta.fields, 'requires'),
       blockedBy: readField(meta.fields, 'blockedBy'),
       continues: readField(meta.fields, 'continues'),
+      // A jump-list target reachable again later (an after-dark scene the
+      // ending loops back to, say) must not read as her repeating herself —
+      // that is what routes a second visit to EXHAUSTED's meta "I already
+      // said this" lines instead of the reply itself.
+      repeatable: meta.flags.has('repeatable') || undefined,
       replies: members.map((entry) => ({
         text: entry.prose,
         emotion: entry.values.emotion,
@@ -355,8 +360,9 @@ const toTwee = (payload) => {
 
   const out = []
   for (const rule of rules) {
+    const ruleTags = ['rule', ...(rule.repeatable ? ['repeatable'] : [])]
     out.push(
-      `:: @${rule.id} [rule]`,
+      `:: @${rule.id} [${ruleTags.join(' ')}]`,
       ...[
         field('priority', rule.priority),
         field('requires', rule.requires),
