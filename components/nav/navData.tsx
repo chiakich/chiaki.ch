@@ -103,7 +103,7 @@ export const getNavSections = (t: Translate): Record<string, NavSection> => ({
       {
         id: 'tw-fuzzy-zipcode',
         title: t('nav.zipcode'),
-        path: '/works/tw-fuzzy-zipcode',
+        path: '/works/tw-address-tools',
         icon: <ZipcodeIcon />,
       },
     ],

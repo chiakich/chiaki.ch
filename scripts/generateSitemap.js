@@ -8,6 +8,7 @@ const { join, resolve } = require('node:path')
 const matter = require('gray-matter')
 
 const SITE_URL = 'https://chiaki.ch'
+const LEGACY_REDIRECT_ROUTES = new Set(['works/tw-fuzzy-zipcode'])
 const LOCALES = [
   ['zh-TW', ''],
   ['ja', '/ja'],
@@ -69,7 +70,9 @@ const blogUrl = (slug, lastmod) => {
 }
 
 const build = () => {
-  const rows = readLocalizedRoutes().map(localizedUrl)
+  const rows = readLocalizedRoutes()
+    .filter((route) => !LEGACY_REDIRECT_ROUTES.has(route))
+    .map(localizedUrl)
 
   if (existsSync(blogDir)) {
     for (const file of readdirSync(blogDir)) {
