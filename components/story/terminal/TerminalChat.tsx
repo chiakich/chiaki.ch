@@ -324,7 +324,7 @@ const TerminalChat = ({
       // the input below the fold, and the panel is laid out to survive being
       // short anyway.
       minHeight={{ md: keyboardOpen ? '0' : '600px' }}
-      overflow="hidden"
+      overflow="visible"
       isolation="isolate"
       background="radial-gradient(ellipse 72% 74% at 56% 35%, #2b1008 0%, #100704 46%, #030201 100%)"
       opacity={started ? 1 : 0}
@@ -429,7 +429,7 @@ const TerminalChat = ({
             letterSpacing=".22em"
             color="rgba(238,150,98,.76)"
           >
-            PERSONALITY ARCHIVE / 01
+            依代端末 / 01
           </Label>
         </Flex>
         <Flex alignItems="center" gap="8px">
@@ -497,7 +497,7 @@ const TerminalChat = ({
             letterSpacing=".2em"
             color="rgba(238,150,98,.28)"
           >
-            [社務所應答端末 · 待機]
+            [依代端末 · 待機]
           </Label>
         </Flex>
       )}

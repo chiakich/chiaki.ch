@@ -2126,7 +2126,7 @@ export const NO_ANSWER = [
 ]
 
 export const OPENING = [
-  '[千秋稻荷社 · 社務所應答端末]',
+  '[千秋稻荷社 · 依代端末]',
   '[本機模式：詞庫比對 · 未連接外部推論]',
 ]
 

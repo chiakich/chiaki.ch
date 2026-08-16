@@ -97,7 +97,7 @@ const StoryBootLoader = ({
       <Box width="min(520px, calc(100vw - 48px))">
         <LoaderAsciiDome progress={progress} tone={variant === 'terminal' ? 'amber' : 'story'} />
         <Text fontSize="10px" letterSpacing=".22em" mb="22px">
-          {variant === 'terminal' ? 'AMADEUS / PERSONALITY ARCHIVE' : 'CHIAKI INARI SHRINE / MEMORY TERMINAL'}
+          {variant === 'terminal' ? '依代端末 / PERSONALITY ARCHIVE' : 'CHIAKI INARI SHRINE / MEMORY TERMINAL'}
         </Text>
         <Box
           height="1px"

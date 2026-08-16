@@ -11,8 +11,51 @@ const isEditable = (element: Element | null) =>
   element instanceof HTMLTextAreaElement ||
   (element instanceof HTMLElement && element.isContentEditable)
 
+const useDocumentScrollLock = () => {
+  useEffect(() => {
+    const { body, documentElement } = document
+    const scrollY = window.scrollY
+    const previousBody = {
+      left: body.style.left,
+      overflow: body.style.overflow,
+      position: body.style.position,
+      right: body.style.right,
+      top: body.style.top,
+      width: body.style.width,
+    }
+    const previousDocumentElement = {
+      overflow: documentElement.style.overflow,
+      overscrollBehavior: documentElement.style.overscrollBehavior,
+    }
+
+    documentElement.style.overflow = 'hidden'
+    documentElement.style.overscrollBehavior = 'none'
+    body.style.position = 'fixed'
+    body.style.top = `-${scrollY}px`
+    body.style.left = '0'
+    body.style.right = '0'
+    body.style.width = '100%'
+    body.style.overflow = 'hidden'
+
+    return () => {
+      documentElement.style.overflow = previousDocumentElement.overflow
+      documentElement.style.overscrollBehavior =
+        previousDocumentElement.overscrollBehavior
+      body.style.position = previousBody.position
+      body.style.top = previousBody.top
+      body.style.left = previousBody.left
+      body.style.right = previousBody.right
+      body.style.width = previousBody.width
+      body.style.overflow = previousBody.overflow
+      window.scrollTo(0, scrollY)
+    }
+  }, [])
+}
+
 /** Tracks the part of the screen that remains above a mobile soft keyboard. */
 const useTerminalViewport = (): TerminalViewport => {
+  useDocumentScrollLock()
+
   const baselineHeightRef = useRef(0)
   const [viewport, setViewport] = useState<TerminalViewport>({
     height: null,
@@ -26,7 +69,6 @@ const useTerminalViewport = (): TerminalViewport => {
 
     const update = () => {
       const height = Math.round(visualViewport?.height ?? window.innerHeight)
-      const offsetTop = Math.round(visualViewport?.offsetTop ?? 0)
       const editableFocused = isEditable(document.activeElement)
 
       if (!baselineHeightRef.current) baselineHeightRef.current = height
@@ -42,12 +84,12 @@ const useTerminalViewport = (): TerminalViewport => {
           heightReduced && (editableFocused || current.keyboardOpen)
         if (
           current.height === height &&
-          current.offsetTop === offsetTop &&
+          current.offsetTop === 0 &&
           current.keyboardOpen === keyboardOpen
         ) {
           return current
         }
-        return { height, offsetTop, keyboardOpen }
+        return { height, offsetTop: 0, keyboardOpen }
       })
     }
 

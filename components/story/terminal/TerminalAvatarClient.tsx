@@ -254,15 +254,15 @@ const TerminalAvatarClient = ({
   }, [])
 
   return (
-    <Box position="relative" width="100%" height="100%" overflow="hidden">
+    <Box position="relative" width="100%" height="100%" overflow="visible">
       <Img
         src="/assets/story/character/gallery/portrait-5.webp"
         alt=""
         position="absolute"
         left={{ base: '59%', md: '31%' }}
         bottom={{
-          base: keyboardOpen ? '-101%' : '-92%',
-          md: keyboardOpen ? '-84%' : '-68%',
+          base: keyboardOpen ? '-92%' : '-82%',
+          md: keyboardOpen ? '-78%' : '-62%',
         }}
         height={{ base: '190%', md: '168%' }}
         maxWidth="none"
