@@ -14,7 +14,7 @@
     "fontsIndex": "Font Collection",
     "akitra": "Taiwan Railways Typeface",
     "huninn": "Huninn",
-    "terminal": "AMADEUS",
+    "terminal": "Yorishiro Terminal",
     "zipcode": "ZIP Code"
   },
   "language": {
@@ -98,7 +98,7 @@
       "description": "A Taiwanese open-source rounded typeface by justfont, refined for Taiwanese forms and everyday reading. Chiaki contributed while at justfont."
     },
     "terminal": {
-      "title": "AMADEUS - Chiaki Inari Shrine",
+      "title": "Yorishiro Terminal - Chiaki Inari Shrine",
       "description": "Yakumo Akitsune's personality archive terminal, using the ChiaKey Lexicon for language and pronunciation with a Live2D connection."
     }
   },
@@ -1057,7 +1057,7 @@
     }
   },
   "terminalPage": {
-    "eyebrow": "CHIAKI INARI SHRINE · RESPONSE TERMINAL",
+    "eyebrow": "CHIAKI INARI SHRINE · YORISHIRO TERMINAL",
     "title": "Talk to Chiaki",
     "intro": "A response terminal left behind in the shrine office. It is not connected to any language model — just the ChiaKey input method dictionary and a hand-written rule table. It segments what you type into words, then matches the closest rule. Fast to answer, and easy to catch out. Note: she only understands Chinese.",
     "placeholder": "Say something to the terminal…",

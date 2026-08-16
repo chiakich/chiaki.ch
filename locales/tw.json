@@ -14,7 +14,7 @@
     "fontsIndex": "字體集",
     "akitra": "台鐵字體",
     "huninn": "粉圓",
-    "terminal": "AMADEUS",
+    "terminal": "依代端末",
     "zipcode": "郵遞區號"
   },
   "language": {
@@ -98,7 +98,7 @@
       "description": "justfont 推出的一款台灣開源圓體，為台灣字形與日常閱讀調整。"
     },
     "terminal": {
-      "title": "AMADEUS - 千秋稻荷社",
+      "title": "依代端末 - 千秋稻荷社",
       "description": "八雲秋狐的人格檔案端末：以千秋輸入法詞庫解析語句與讀音，透過 Live2D 建立連線。"
     }
   },
@@ -1058,7 +1058,7 @@
     }
   },
   "terminalPage": {
-    "eyebrow": "千秋稻荷社 · 社務所應答端末",
+    "eyebrow": "千秋稻荷社 · 依代端末",
     "title": "和千秋說說話",
     "intro": "這是一台留在社務所的應答端末。它沒有連上任何語言模型，只有一份千秋輸入法的詞庫和一張規則表。先把你打的句子切成詞，再去對表裡最接近的那一條。所以她回得很快，也很容易露餡。",
     "placeholder": "對著端末說點什麼…",

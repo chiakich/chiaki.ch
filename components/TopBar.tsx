@@ -164,7 +164,7 @@ const TopBar: React.FC = () => {
             </Link>
 
             <HStack
-              gap={{ base: '10px', sm: '16px', md: '28px' }}
+              gap={{ base: '13px', sm: '16px', md: '28px' }}
               display={{ base: 'none', xs: 'flex' }}
               color="#F5F5F7"
               fontSize={{ base: '14px', sm: '15px', md: '17px' }}
@@ -379,9 +379,7 @@ const TopBar: React.FC = () => {
         </Box>
       </Box>
 
-      {currentSection && (
-        <SubNav section={currentSection} currentPath={pagePath} />
-      )}
+      {currentSection && <SubNav section={currentSection} currentPath={pagePath} />}
     </>
   )
 }

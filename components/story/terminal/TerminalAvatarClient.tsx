@@ -261,7 +261,7 @@ const TerminalAvatarClient = ({
         position="absolute"
         left={{ base: '59%', md: '31%' }}
         bottom={{
-          base: keyboardOpen ? '-92%' : '-82%',
+          base: keyboardOpen ? '-84%' : '-82%',
           md: keyboardOpen ? '-78%' : '-62%',
         }}
         height={{ base: '190%', md: '168%' }}
@@ -275,13 +275,14 @@ const TerminalAvatarClient = ({
       <Box
         position="absolute"
         insetX="0"
-        top="0"
+        top="44px"
         bottom="0"
         width="100%"
+        height="100%"
         // The normal portrait framing lifts her into the tall panel. With a
         // keyboard the panel becomes short, so bring her head back to centre.
         transform={{
-          base: keyboardOpen ? 'translateY(12%)' : 'translateY(-10%)',
+          base: keyboardOpen ? 'translateY(6%)' : 'translateY(-10%)',
           md: keyboardOpen ? 'translateY(12%)' : 'translateY(-3%)',
           lg: keyboardOpen ? 'translateY(12%)' : 'translateY(-6%)',
         }}

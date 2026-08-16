@@ -16,6 +16,12 @@ const TerminalPage: NextPage = () => {
     '--terminal-viewport-height': viewport.height
       ? `${viewport.height}px`
       : '100dvh',
+    '--terminal-frame-height':
+      viewport.keyboardOpen && viewport.height
+        ? `calc(${viewport.height}px + env(safe-area-inset-bottom))`
+        : viewport.height
+          ? `${viewport.height}px`
+          : '100dvh',
     '--terminal-viewport-offset-top': `${viewport.offsetTop}px`,
   } as CSSProperties
 
@@ -25,8 +31,8 @@ const TerminalPage: NextPage = () => {
       top="var(--terminal-viewport-offset-top)"
       left="0"
       width="100%"
-      height="var(--terminal-viewport-height)"
-      bg="black"
+      height="var(--terminal-frame-height)"
+      background="radial-gradient(ellipse 72% 74% at 56% 35%, #2b1008 0%, #100704 46%, #030201 100%)"
       overflow="hidden"
       overscrollBehavior="none"
       style={viewportStyle}
@@ -40,7 +46,7 @@ const TerminalPage: NextPage = () => {
         }}
         left="0"
         right="0"
-        bottom="0"
+        bottom={viewport.keyboardOpen ? 'env(safe-area-inset-bottom)' : '0'}
       >
         <TerminalChat
           started={started}
