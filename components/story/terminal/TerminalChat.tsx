@@ -49,9 +49,15 @@ const SURFACE_DELAY = 5_000
  */
 type EndingPhase = 'none' | 'offered' | 'away' | 'closing' | 'gone'
 
-type TerminalChatProps = { started?: boolean }
+type TerminalChatProps = {
+  started?: boolean
+  keyboardOpen?: boolean
+}
 
-const TerminalChat = ({ started = true }: TerminalChatProps) => {
+const TerminalChat = ({
+  started = true,
+  keyboardOpen = false,
+}: TerminalChatProps) => {
   const { t } = useI18n()
   const avatarRef = useRef<TerminalAvatarHandle | null>(null)
   const sessionRef = useRef<Session>(createSession())
@@ -311,11 +317,11 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
     <Box
       position="relative"
       width="100%"
-      height={{ base: 'calc(100svh - 44px)', md: 'calc(100svh - 92px)' }}
+      height="100%"
       // Deliberately no floor on a phone: a 680px minimum on a 700px screen put
       // the input below the fold, and the panel is laid out to survive being
       // short anyway.
-      minHeight={{ md: '600px' }}
+      minHeight={{ md: keyboardOpen ? '0' : '600px' }}
       overflow="hidden"
       isolation="isolate"
       background="radial-gradient(ellipse 72% 74% at 56% 35%, #2b1008 0%, #100704 46%, #030201 100%)"
@@ -333,7 +339,10 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
       />
 
       <Box position="absolute" inset="0" zIndex={0}>
-        <TerminalAvatarClient controls={avatarRef} />
+        <TerminalAvatarClient
+          controls={avatarRef}
+          keyboardOpen={keyboardOpen}
+        />
       </Box>
 
       <Box
@@ -502,7 +511,9 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
         maxHeight="100%"
         px={{ base: '14px', md: '0' }}
         pb={{
-          base: 'calc(16px + env(safe-area-inset-bottom))',
+          base: keyboardOpen
+            ? '8px'
+            : 'calc(16px + env(safe-area-inset-bottom))',
           md: '22px',
         }}
       >
@@ -510,7 +521,10 @@ const TerminalChat = ({ started = true }: TerminalChatProps) => {
           ref={transcriptRef}
           flex="0 1 auto"
           minHeight="0"
-          maxHeight={{ base: '170px', md: '185px' }}
+          maxHeight={{
+            base: keyboardOpen ? '108px' : '170px',
+            md: '185px',
+          }}
           overflowY="auto"
           px={{ base: '12px', md: '16px' }}
           py="12px"

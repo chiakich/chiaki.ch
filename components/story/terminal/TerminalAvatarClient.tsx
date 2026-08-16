@@ -18,6 +18,7 @@ export type TerminalAvatarHandle = {
 
 type TerminalAvatarClientProps = {
   controls: React.MutableRefObject<TerminalAvatarHandle | null>
+  keyboardOpen?: boolean
 }
 
 const VIEWER_READY_TIMEOUT_MS = 12_000
@@ -106,7 +107,10 @@ const EMOTION_SPEED: Record<Emotion, number> = {
 // shader now. Anything applied here would run after it and push the palette's
 // hand-picked colours back off the palette.
 
-const TerminalAvatarClient = ({ controls }: TerminalAvatarClientProps) => {
+const TerminalAvatarClient = ({
+  controls,
+  keyboardOpen = false,
+}: TerminalAvatarClientProps) => {
   const frameRef = useRef<HTMLIFrameElement>(null)
   const paramsRef = useRef<Record<string, number>>({ ...BASE_PARAMS })
   const emotionRef = useRef<Emotion>('neutral')
@@ -242,14 +246,17 @@ const TerminalAvatarClient = ({ controls }: TerminalAvatarClientProps) => {
         alt=""
         position="absolute"
         left={{ base: '50%', md: '31%' }}
-        bottom={{ base: '-79%', md: '-68%' }}
+        bottom={{
+          base: keyboardOpen ? '-107%' : '-79%',
+          md: keyboardOpen ? '-90%' : '-68%',
+        }}
         height={{ base: '190%', md: '168%' }}
         maxWidth="none"
         transform="translateX(-50%)"
         objectFit="contain"
         opacity={ready ? 0 : 0.88}
         filter="saturate(.72) contrast(1.08) drop-shadow(0 0 34px rgba(247,97,89,.18))"
-        transition="opacity .45s ease"
+        transition="opacity .45s ease, bottom .25s ease"
       />
       <Box
         position="absolute"
@@ -257,11 +264,15 @@ const TerminalAvatarClient = ({ controls }: TerminalAvatarClientProps) => {
         top="0"
         bottom="0"
         width="100%"
-        // Lifted further on a phone: the panel is portrait, so the same offset
-        // that frames her on a desktop leaves her sitting under the transcript.
-        transform={{ base: 'translateY(-10%)', md: 'translateY(-3%)', lg: 'translateY(-6%)' }}
+        // The normal portrait framing lifts her into the tall panel. With a
+        // keyboard the panel becomes short, so bring her head back to centre.
+        transform={{
+          base: keyboardOpen ? 'translateY(18%)' : 'translateY(-10%)',
+          md: keyboardOpen ? 'translateY(18%)' : 'translateY(-3%)',
+          lg: keyboardOpen ? 'translateY(18%)' : 'translateY(-6%)',
+        }}
         opacity={ready ? 1 : 0}
-        transition="opacity .45s ease"
+        transition="opacity .45s ease, transform .25s ease"
       >
         <iframe
           key={viewerAttempt}
