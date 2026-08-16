@@ -52,11 +52,13 @@ type EndingPhase = 'none' | 'offered' | 'away' | 'closing' | 'gone'
 type TerminalChatProps = {
   started?: boolean
   keyboardOpen?: boolean
+  onAvatarLoaded?: () => void
 }
 
 const TerminalChat = ({
   started = true,
   keyboardOpen = false,
+  onAvatarLoaded,
 }: TerminalChatProps) => {
   const { t } = useI18n()
   const avatarRef = useRef<TerminalAvatarHandle | null>(null)
@@ -342,6 +344,7 @@ const TerminalChat = ({
         <TerminalAvatarClient
           controls={avatarRef}
           keyboardOpen={keyboardOpen}
+          onPresentationReady={onAvatarLoaded}
         />
       </Box>
 

@@ -19,6 +19,7 @@ export type TerminalAvatarHandle = {
 type TerminalAvatarClientProps = {
   controls: React.MutableRefObject<TerminalAvatarHandle | null>
   keyboardOpen?: boolean
+  onPresentationReady?: () => void
 }
 
 const VIEWER_READY_TIMEOUT_MS = 12_000
@@ -110,17 +111,25 @@ const EMOTION_SPEED: Record<Emotion, number> = {
 const TerminalAvatarClient = ({
   controls,
   keyboardOpen = false,
+  onPresentationReady,
 }: TerminalAvatarClientProps) => {
   const frameRef = useRef<HTMLIFrameElement>(null)
   const paramsRef = useRef<Record<string, number>>({ ...BASE_PARAMS })
   const emotionRef = useRef<Emotion>('neutral')
   const afterDarkRef = useRef(false)
   const pointerRef = useRef({ x: 0, y: 0 })
+  const presentationReportedRef = useRef(false)
   const [ready, setReady] = useState(false)
   const [viewerAttempt, setViewerAttempt] = useState(0)
 
   const speedRef = useRef(EMOTION_SPEED.neutral)
   const tailRef = useRef(EMOTION_TAIL.neutral)
+
+  const reportPresentationReady = useCallback(() => {
+    if (presentationReportedRef.current) return
+    presentationReportedRef.current = true
+    onPresentationReady?.()
+  }, [onPresentationReady])
 
   const publish = useCallback(() => {
     frameRef.current?.contentWindow?.postMessage(
@@ -184,9 +193,13 @@ const TerminalAvatarClient = ({
   useEffect(() => {
     const retryViewer = () => {
       setReady(false)
-      setViewerAttempt((attempt) =>
-        attempt < MAX_VIEWER_RETRIES ? attempt + 1 : attempt
-      )
+      if (viewerAttempt < MAX_VIEWER_RETRIES) {
+        setViewerAttempt(viewerAttempt + 1)
+      } else {
+        // The boot loader has already preloaded the still portrait, so a final
+        // viewer failure can safely reveal that fallback instead of hanging.
+        reportPresentationReady()
+      }
     }
     const timeout = window.setTimeout(retryViewer, VIEWER_READY_TIMEOUT_MS)
 
@@ -202,6 +215,7 @@ const TerminalAvatarClient = ({
         window.clearTimeout(timeout)
         setReady(true)
         publish()
+        reportPresentationReady()
       } else if (event.data?.type === 'chiaki-live2d-error') {
         window.clearTimeout(timeout)
         retryViewer()
@@ -213,7 +227,7 @@ const TerminalAvatarClient = ({
       window.clearTimeout(timeout)
       window.removeEventListener('message', onMessage)
     }
-  }, [publish, viewerAttempt])
+  }, [publish, reportPresentationReady, viewerAttempt])
 
   useEffect(() => {
     const onPointerMove = (event: PointerEvent) => {
@@ -245,10 +259,10 @@ const TerminalAvatarClient = ({
         src="/assets/story/character/gallery/portrait-5.webp"
         alt=""
         position="absolute"
-        left={{ base: '50%', md: '31%' }}
+        left={{ base: '59%', md: '31%' }}
         bottom={{
-          base: keyboardOpen ? '-107%' : '-79%',
-          md: keyboardOpen ? '-90%' : '-68%',
+          base: keyboardOpen ? '-101%' : '-92%',
+          md: keyboardOpen ? '-84%' : '-68%',
         }}
         height={{ base: '190%', md: '168%' }}
         maxWidth="none"
@@ -267,9 +281,9 @@ const TerminalAvatarClient = ({
         // The normal portrait framing lifts her into the tall panel. With a
         // keyboard the panel becomes short, so bring her head back to centre.
         transform={{
-          base: keyboardOpen ? 'translateY(18%)' : 'translateY(-10%)',
-          md: keyboardOpen ? 'translateY(18%)' : 'translateY(-3%)',
-          lg: keyboardOpen ? 'translateY(18%)' : 'translateY(-6%)',
+          base: keyboardOpen ? 'translateY(12%)' : 'translateY(-10%)',
+          md: keyboardOpen ? 'translateY(12%)' : 'translateY(-3%)',
+          lg: keyboardOpen ? 'translateY(12%)' : 'translateY(-6%)',
         }}
         opacity={ready ? 1 : 0}
         transition="opacity .45s ease, transform .25s ease"

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Box, styled } from 'styled-system/jsx'
 import LoaderAsciiDome from './LoaderAsciiDome'
 
@@ -6,19 +6,25 @@ const Text = styled.p
 
 const StoryBootLoader = ({
   onComplete,
+  ready = true,
   variant = 'story',
 }: {
   onComplete?: () => void
+  ready?: boolean
   variant?: 'story' | 'terminal'
 }) => {
   const [progress, setProgress] = useState(0)
   const [done, setDone] = useState(false)
   const [hidden, setHidden] = useState(false)
+  const [assetsReady, setAssetsReady] = useState(false)
+  const startedAtRef = useRef(0)
+  const progressTimerRef = useRef(0)
+  const finishingRef = useRef(false)
 
   useEffect(() => {
-    const startedAt = Date.now()
+    startedAtRef.current = Date.now()
     let cancelled = false
-    const timer = window.setInterval(() => {
+    progressTimerRef.current = window.setInterval(() => {
       setProgress((value) => Math.min(92, value + Math.max(1, (92 - value) * 0.08)))
     }, 90)
 
@@ -36,24 +42,40 @@ const StoryBootLoader = ({
     )
 
     Promise.all(preload).then(() => {
-      const remaining = Math.max(0, 1200 - (Date.now() - startedAt))
-      window.setTimeout(() => {
-        if (cancelled) return
-        window.clearInterval(timer)
-        setProgress(100)
-        window.setTimeout(() => setDone(true), 220)
-        window.setTimeout(() => {
-          setHidden(true)
-          onComplete?.()
-        }, 950)
-      }, remaining)
+      if (!cancelled) setAssetsReady(true)
     })
 
     return () => {
       cancelled = true
-      window.clearInterval(timer)
+      window.clearInterval(progressTimerRef.current)
     }
-  }, [onComplete, variant])
+  }, [variant])
+
+  useEffect(() => {
+    if (!assetsReady || !ready || finishingRef.current) return undefined
+    finishingRef.current = true
+
+    const remaining = Math.max(
+      0,
+      1200 - (Date.now() - startedAtRef.current)
+    )
+    const finishTimer = window.setTimeout(() => {
+      window.clearInterval(progressTimerRef.current)
+      setProgress(100)
+    }, remaining)
+    const doneTimer = window.setTimeout(() => setDone(true), remaining + 220)
+    const hideTimer = window.setTimeout(() => {
+      setHidden(true)
+      onComplete?.()
+    }, remaining + 950)
+
+    return () => {
+      finishingRef.current = false
+      window.clearTimeout(finishTimer)
+      window.clearTimeout(doneTimer)
+      window.clearTimeout(hideTimer)
+    }
+  }, [assetsReady, onComplete, ready])
 
   if (hidden) return null
 

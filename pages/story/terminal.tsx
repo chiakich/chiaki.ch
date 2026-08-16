@@ -8,7 +8,9 @@ import { makeStaticProps } from 'i18n/messages'
 
 const TerminalPage: NextPage = () => {
   const [started, setStarted] = useState(false)
+  const [avatarLoaded, setAvatarLoaded] = useState(false)
   const onComplete = useCallback(() => setStarted(true), [])
+  const onAvatarLoaded = useCallback(() => setAvatarLoaded(true), [])
   const viewport = useTerminalViewport()
   const viewportStyle = {
     '--terminal-viewport-height': viewport.height
@@ -32,7 +34,10 @@ const TerminalPage: NextPage = () => {
       {/* TopBar is 44px and the desktop-only SubNav below it is another 48px. */}
       <Box
         position="absolute"
-        top={{ base: '44px', md: '92px' }}
+        top={{
+          base: viewport.keyboardOpen ? '0' : '44px',
+          md: viewport.keyboardOpen ? '0' : '92px',
+        }}
         left="0"
         right="0"
         bottom="0"
@@ -40,9 +45,14 @@ const TerminalPage: NextPage = () => {
         <TerminalChat
           started={started}
           keyboardOpen={viewport.keyboardOpen}
+          onAvatarLoaded={onAvatarLoaded}
         />
       </Box>
-      <StoryBootLoader variant="terminal" onComplete={onComplete} />
+      <StoryBootLoader
+        variant="terminal"
+        ready={avatarLoaded}
+        onComplete={onComplete}
+      />
     </Box>
   )
 }
