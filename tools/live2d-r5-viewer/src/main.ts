@@ -27,11 +27,19 @@ type TerminalWindow = Window & {
   __chiakiTerminalTail?: { amp: number; rate: number };
 };
 
+const postStatus = (type: 'chiaki-live2d-ready' | 'chiaki-live2d-error'): void => {
+  window.parent.postMessage({ type }, window.location.origin);
+};
+
 const terminalWindow = window as TerminalWindow;
 terminalWindow.__chiakiTerminalParams = {};
 terminalWindow.__chiakiTerminalPointer = { targetX: 0, targetY: 0, movedAt: -Infinity };
 window.addEventListener('message', event => {
   const data = event.data;
+  if (data?.type === 'chiaki-live2d-status-request') {
+    if (LAppDelegate.getInstance().isReady()) postStatus('chiaki-live2d-ready');
+    return;
+  }
   if (data?.type === 'chiaki-terminal-params' && typeof data.params === 'object') {
     terminalWindow.__chiakiTerminalParams = data.params;
     if (Number.isFinite(data.speed)) terminalWindow.__chiakiTerminalEmotionSpeed = data.speed;
@@ -95,12 +103,18 @@ document.addEventListener(
 window.addEventListener(
   'load',
   (): void => {
-    // Initialize WebGL and create the application instance
-    if (!LAppDelegate.getInstance().initialize()) {
-      return;
-    }
+    try {
+      // Initialize WebGL and create the application instance
+      if (!LAppDelegate.getInstance().initialize()) {
+        postStatus('chiaki-live2d-error');
+        return;
+      }
 
-    LAppDelegate.getInstance().run();
+      LAppDelegate.getInstance().run();
+    } catch (error) {
+      console.error(error);
+      postStatus('chiaki-live2d-error');
+    }
   },
   { passive: true }
 );

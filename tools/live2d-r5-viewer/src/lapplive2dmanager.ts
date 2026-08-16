@@ -33,6 +33,10 @@ export class LAppLive2DManager {
     }
   }
 
+  public isReady(): boolean {
+    return this._models.some(model => model?.isReady());
+  }
+
   /**
    * 画面をドラッグした時の処理
    *

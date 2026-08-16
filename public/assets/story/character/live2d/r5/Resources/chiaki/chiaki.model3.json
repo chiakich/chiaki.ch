@@ -3,7 +3,7 @@
 	"FileReferences": {
 		"Moc": "chiakiL2Dv2-cubism5-target.moc3",
 		"Textures": [
-			"chiakiL2Dv2-cubism5-target.8192/texture_00.png"
+			"chiakiL2Dv2-cubism5-target.2048/texture_00.webp"
 		],
 		"Physics": "chiakiL2Dv2-cubism5-target.physics3.json",
 		"DisplayInfo": "chiakiL2Dv2-cubism5-target.cdi3.json",

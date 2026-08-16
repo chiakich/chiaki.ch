@@ -23,6 +23,7 @@
     "optimize-assets": "node scripts/optimizeAssets.js",
     "convert-gifs": "node scripts/convertGifs.js",
     "generate-live2d-texture": "node scripts/generateLive2DTexture.js",
+    "generate-live2d-r5-texture": "node scripts/generateLive2DR5Texture.js",
     "update-projects": "node scripts/generateProjectIndex.js",
     "update-character": "npm run optimize-assets && npm run update-projects"
   },

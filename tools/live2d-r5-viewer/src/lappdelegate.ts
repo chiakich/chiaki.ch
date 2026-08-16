@@ -88,6 +88,10 @@ export class LAppDelegate {
     }
   }
 
+  public isReady(): boolean {
+    return this._subdelegates.some(subdelegate => subdelegate?.isReady());
+  }
+
   /**
    * 実行処理。
    */
@@ -158,7 +162,7 @@ export class LAppDelegate {
     // Cubism SDKの初期化
     this.initializeCubism();
 
-    this.initializeSubdelegates();
+    if (!this.initializeSubdelegates()) return false;
     this.initializeEventListener();
 
     return true;
@@ -206,7 +210,7 @@ export class LAppDelegate {
   /**
    * Canvasを生成配置、Subdelegateを初期化する
    */
-  private initializeSubdelegates(): void {
+  private initializeSubdelegates(): boolean {
     let width: number = 100;
     let height: number = 100;
     if (LAppDefine.CanvasNum > 3) {
@@ -232,7 +236,7 @@ export class LAppDelegate {
 
     for (let i = 0; i < this._canvases.length; i++) {
       const subdelegate = new LAppSubdelegate();
-      subdelegate.initialize(this._canvases[i]);
+      if (!subdelegate.initialize(this._canvases[i])) return false;
       this._subdelegates[i] = subdelegate;
     }
 
@@ -243,6 +247,8 @@ export class LAppDelegate {
         );
       }
     }
+
+    return true;
   }
 
   /**

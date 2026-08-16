@@ -20,6 +20,9 @@ type TerminalAvatarClientProps = {
   controls: React.MutableRefObject<TerminalAvatarHandle | null>
 }
 
+const VIEWER_READY_TIMEOUT_MS = 12_000
+const MAX_VIEWER_RETRIES = 1
+
 // PARAM_MOUTH_OPEN_Y is deliberately absent: the utterance timeline owns it.
 const BASE_PARAMS: Record<string, number> = {
   PARAM_MOUTH_FORM: 0,
@@ -110,6 +113,7 @@ const TerminalAvatarClient = ({ controls }: TerminalAvatarClientProps) => {
   const afterDarkRef = useRef(false)
   const pointerRef = useRef({ x: 0, y: 0 })
   const [ready, setReady] = useState(false)
+  const [viewerAttempt, setViewerAttempt] = useState(0)
 
   const speedRef = useRef(EMOTION_SPEED.neutral)
   const tailRef = useRef(EMOTION_TAIL.neutral)
@@ -174,6 +178,40 @@ const TerminalAvatarClient = ({ controls }: TerminalAvatarClientProps) => {
   }, [applyEmotion, controls, speak])
 
   useEffect(() => {
+    const retryViewer = () => {
+      setReady(false)
+      setViewerAttempt((attempt) =>
+        attempt < MAX_VIEWER_RETRIES ? attempt + 1 : attempt
+      )
+    }
+    const timeout = window.setTimeout(retryViewer, VIEWER_READY_TIMEOUT_MS)
+
+    const onMessage = (event: MessageEvent) => {
+      if (
+        event.origin !== window.location.origin ||
+        event.source !== frameRef.current?.contentWindow
+      ) {
+        return
+      }
+
+      if (event.data?.type === 'chiaki-live2d-ready') {
+        window.clearTimeout(timeout)
+        setReady(true)
+        publish()
+      } else if (event.data?.type === 'chiaki-live2d-error') {
+        window.clearTimeout(timeout)
+        retryViewer()
+      }
+    }
+
+    window.addEventListener('message', onMessage)
+    return () => {
+      window.clearTimeout(timeout)
+      window.removeEventListener('message', onMessage)
+    }
+  }, [publish, viewerAttempt])
+
+  useEffect(() => {
     const onPointerMove = (event: PointerEvent) => {
       const frame = frameRef.current
       const rect = frame?.parentElement?.getBoundingClientRect()
@@ -226,12 +264,16 @@ const TerminalAvatarClient = ({ controls }: TerminalAvatarClientProps) => {
         transition="opacity .45s ease"
       >
         <iframe
+          key={viewerAttempt}
           ref={frameRef}
           title="Chiaki Live2D portrait"
-          src="/assets/story/character/live2d/r5/index.html"
+          src={`/assets/story/character/live2d/r5/index.html?attempt=${viewerAttempt}`}
           onLoad={() => {
-            setReady(true)
-            window.setTimeout(publish, 80)
+            publish()
+            frameRef.current?.contentWindow?.postMessage(
+              { type: 'chiaki-live2d-status-request' },
+              window.location.origin
+            )
           }}
           style={{
             display: 'block',

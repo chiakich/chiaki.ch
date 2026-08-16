@@ -134,6 +134,10 @@ const sampleTrack = <T extends { at: number }>(
  * モデル生成、機能コンポーネント生成、更新処理とレンダリングの呼び出しを行う。
  */
 export class LAppModel extends CubismUserModel {
+  public isReady(): boolean {
+    return this._state == LoadStep.CompleteSetup;
+  }
+
   /**
    * model3.jsonが置かれたディレクトリとファイルパスからモデルを生成する
    * @param dir

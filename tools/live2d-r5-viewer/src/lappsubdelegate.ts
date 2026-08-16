@@ -29,12 +29,20 @@ export class LAppSubdelegate {
     this._postProcess = new CrtPostProcess();
     this._frameBuffer = null;
     this._captured = false;
+    this._readyPublished = false;
+    this._contextLostEventListener = null;
   }
 
   /**
    * デストラクタ相当の処理
    */
   public release(): void {
+    this._canvas.removeEventListener(
+      'webglcontextlost',
+      this._contextLostEventListener
+    );
+    this._contextLostEventListener = null;
+
     this._resizeObserver.unobserve(this._canvas);
     this._resizeObserver.disconnect();
     this._resizeObserver = null;
@@ -64,6 +72,17 @@ export class LAppSubdelegate {
     }
 
     this._canvas = canvas;
+    this._contextLostEventListener = (): void => {
+      window.parent.postMessage(
+        { type: 'chiaki-live2d-error' },
+        window.location.origin
+      );
+    };
+    canvas.addEventListener(
+      'webglcontextlost',
+      this._contextLostEventListener,
+      { once: true }
+    );
 
     if (LAppDefine.CanvasSize === 'auto') {
       this.resizeCanvas();
@@ -174,6 +193,18 @@ export class LAppSubdelegate {
     this._view.render();
 
     this._postProcess.render();
+
+    if (!this._readyPublished && this._live2dManager.isReady()) {
+      this._readyPublished = true;
+      window.parent.postMessage(
+        { type: 'chiaki-live2d-ready' },
+        window.location.origin
+      );
+    }
+  }
+
+  public isReady(): boolean {
+    return this._readyPublished;
   }
 
   /**
@@ -367,6 +398,8 @@ export class LAppSubdelegate {
   private _textureManager: LAppTextureManager;
   private _postProcess: CrtPostProcess;
   private _frameBuffer: WebGLFramebuffer;
+  private _readyPublished: boolean;
+  private _contextLostEventListener: (event: Event) => void;
   private _glManager: LAppGlManager;
   private _live2dManager: LAppLive2DManager;
 

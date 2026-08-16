@@ -19,7 +19,7 @@ export class LAppGlManager {
 
     if (!this._gl) {
       // gl初期化失敗
-      alert('Cannot initialize WebGL. This browser does not support.');
+      console.error('Cannot initialize WebGL2.');
       this._gl = null;
       // document.body.innerHTML =
       //   'This browser does not support the <code>&lt;canvas&gt;</code> element.';
