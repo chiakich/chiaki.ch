@@ -11,6 +11,29 @@ const isEditable = (element: Element | null) =>
   element instanceof HTMLTextAreaElement ||
   (element instanceof HTMLElement && element.isContentEditable)
 
+/**
+ * True when the touch landed inside something that legitimately scrolls
+ * (transcript, chip row, lexicon panel) or an editable field — those keep
+ * their native behaviour; everything else must not pan the page.
+ */
+const touchMayScroll = (target: EventTarget | null) => {
+  let element = target instanceof Element ? target : null
+  while (element && element !== document.body) {
+    if (isEditable(element)) return true
+    const style = window.getComputedStyle(element)
+    if (
+      (/(auto|scroll)/.test(style.overflowY) &&
+        element.scrollHeight > element.clientHeight) ||
+      (/(auto|scroll)/.test(style.overflowX) &&
+        element.scrollWidth > element.clientWidth)
+    ) {
+      return true
+    }
+    element = element.parentElement
+  }
+  return false
+}
+
 const useDocumentScrollLock = () => {
   useEffect(() => {
     const { body, documentElement } = document
@@ -37,7 +60,20 @@ const useDocumentScrollLock = () => {
     body.style.width = '100%'
     body.style.overflow = 'hidden'
 
+    // `overflow: hidden` does not stop iOS from letting a finger pan the
+    // visual viewport while the keyboard is up (the layout viewport is taller
+    // than what's visible, so the OS treats the page as pannable). The only
+    // reliable lock is refusing the touchmove itself, so refuse it everywhere
+    // except inside elements that actually scroll their own content.
+    const onTouchMove = (event: TouchEvent) => {
+      if (event.touches.length > 1) return
+      if (touchMayScroll(event.target)) return
+      event.preventDefault()
+    }
+    document.addEventListener('touchmove', onTouchMove, { passive: false })
+
     return () => {
+      document.removeEventListener('touchmove', onTouchMove)
       documentElement.style.overflow = previousDocumentElement.overflow
       documentElement.style.overscrollBehavior =
         previousDocumentElement.overscrollBehavior
@@ -95,6 +131,14 @@ const useTerminalViewport = (): TerminalViewport => {
         }
         return { height, offsetTop, keyboardOpen }
       })
+
+      // iOS pans the page automatically to reveal the focused input. Once the
+      // frame has compacted to the visual viewport the input is visible at
+      // offset 0, so undo the pan instead of living with the displacement.
+      // The offsetTop compensation above still covers the frames in between.
+      if (heightReduced && editableFocused && offsetTop > 0) {
+        window.scrollTo(0, 0)
+      }
     }
 
     const scheduleUpdate = () => {
