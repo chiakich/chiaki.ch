@@ -416,6 +416,11 @@ const TerminalChat = ({
         right={{ base: '16px', md: '34px' }}
         alignItems="center"
         justifyContent="space-between"
+        // With the keyboard up the content area reclaims the TopBar's 44px, so
+        // this row would sit half-hidden underneath it — fade it out instead.
+        opacity={keyboardOpen ? 0 : 1}
+        pointerEvents={keyboardOpen ? 'none' : 'auto'}
+        transition="opacity .25s ease"
       >
         <Flex alignItems="center" gap="11px">
           <Img

@@ -4,6 +4,14 @@ type TerminalViewport = {
   height: number | null
   offsetTop: number
   keyboardOpen: boolean
+  /**
+   * Layout-viewport pixels hidden below the visual viewport — the keyboard
+   * plus Safari's collapsed URL pill and form-assistant rows. The layout
+   * viewport still extends behind all of it, so the page can keep painting
+   * there (the pill floats over page pixels); only interactive UI must stay
+   * above this inset.
+   */
+  keyboardInset: number
 }
 
 const isEditable = (element: Element | null) =>
@@ -97,6 +105,7 @@ const useTerminalViewport = (): TerminalViewport => {
     height: null,
     offsetTop: 0,
     keyboardOpen: false,
+    keyboardInset: 0,
   })
 
   useEffect(() => {
@@ -109,6 +118,10 @@ const useTerminalViewport = (): TerminalViewport => {
       // while the document is scroll-locked; the fixed frame has to follow, or
       // the page shows shifted up with a black band under it.
       const offsetTop = Math.round(visualViewport?.offsetTop ?? 0)
+      const keyboardInset = Math.max(
+        0,
+        Math.round(window.innerHeight) - height - offsetTop
+      )
       const editableFocused = isEditable(document.activeElement)
 
       if (!baselineHeightRef.current) baselineHeightRef.current = height
@@ -125,11 +138,12 @@ const useTerminalViewport = (): TerminalViewport => {
         if (
           current.height === height &&
           current.offsetTop === offsetTop &&
-          current.keyboardOpen === keyboardOpen
+          current.keyboardOpen === keyboardOpen &&
+          current.keyboardInset === keyboardInset
         ) {
           return current
         }
-        return { height, offsetTop, keyboardOpen }
+        return { height, offsetTop, keyboardOpen, keyboardInset }
       })
 
       // iOS pans the page automatically to reveal the focused input. Once the

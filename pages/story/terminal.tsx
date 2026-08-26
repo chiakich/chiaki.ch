@@ -16,13 +16,18 @@ const TerminalPage: NextPage = () => {
     '--terminal-viewport-height': viewport.height
       ? `${viewport.height}px`
       : '100dvh',
+    // With the keyboard up the frame keeps covering the whole layout viewport
+    // — the strip that holds Safari's floating URL pill is page territory (the
+    // pill only overlays it), so painting it keeps the scene continuous
+    // instead of exposing the black body there.
     '--terminal-frame-height':
       viewport.keyboardOpen && viewport.height
-        ? `calc(${viewport.height}px + env(safe-area-inset-bottom))`
+        ? `${viewport.height + viewport.keyboardInset}px`
         : viewport.height
           ? `${viewport.height}px`
           : '100dvh',
     '--terminal-viewport-offset-top': `${viewport.offsetTop}px`,
+    '--terminal-keyboard-inset': `${viewport.keyboardInset}px`,
   } as CSSProperties
 
   return (
@@ -46,7 +51,9 @@ const TerminalPage: NextPage = () => {
         }}
         left="0"
         right="0"
-        bottom={viewport.keyboardOpen ? 'env(safe-area-inset-bottom)' : '0'}
+        // Interactive UI stops at the visual viewport's bottom edge — right
+        // above the URL pill; the frame behind keeps painting past it.
+        bottom={viewport.keyboardOpen ? 'var(--terminal-keyboard-inset)' : '0'}
       >
         <TerminalChat
           started={started}
