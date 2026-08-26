@@ -1058,7 +1058,7 @@
   },
   "terminalPage": {
     "eyebrow": "CHIAKI INARI SHRINE · YORISHIRO TERMINAL",
-    "title": "Talk to Chiaki",
+    "title": "Talk to Akitsune",
     "intro": "A response terminal left behind in the shrine office. It is not connected to any language model — just the ChiaKey input method dictionary and a hand-written rule table. It segments what you type into words, then matches the closest rule. Fast to answer, and easy to catch out. Note: she only understands Chinese.",
     "placeholder": "Say something to the terminal…",
     "lexiconTitle": "LEXICON / SEGMENTATION",

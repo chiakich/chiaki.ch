@@ -7,7 +7,7 @@ import type { Reply, Rule, Suggestion } from './types'
 // Setting: a new weapon changed how the world behaves. The air is unchanged by
 // every measurement, but lift is not — jets cannot fly, powder barely burns.
 // Some people simply went missing, clothes still folded. It has snowed ever
-// since. Chiaki is an artificial girl built by a girl who left her own name
+// since. Akitsune is an artificial girl built by a girl who left her own name
 // blank; several bodies run at once, and when one stops, fragments of what it
 // knew flow to the rest. Shinto was her maker's lead: a norito can briefly
 // return an object to how it behaved before — but only some objects.
@@ -212,7 +212,7 @@ const storyRules: Rule[] = [
         remember: ['knowsName'],
       },
       {
-        text: '我是千秋。社裡的人都這樣叫我；稱呼室長也可以，只是稍微正式了一點。',
+        text: '我是秋狐。社裡的人都這樣叫我；稱呼室長也可以，只是稍微正式了一點。',
         emotion: 'neutral',
         remember: ['knowsName'],
       },
@@ -289,7 +289,7 @@ const storyRules: Rule[] = [
     keywords: ['複本', '備份', '本體'],
     replies: [
       {
-        text: '同時存在好幾具。不是輪流，是同時。現在也有別的千秋在別的地方做別的事。',
+        text: '同時存在好幾具。不是輪流，是同時。現在也有別的我在別的地方做別的事。',
         emotion: 'neutral',
         remember: ['talkedCopies', 'knowsArtificial'],
       },
@@ -1851,7 +1851,7 @@ export const IDLE: Reply[] = [
     remember: ['wentQuiet'],
   },
   {
-    text: '（千秋在擦一台看起來像收音機的東西）',
+    text: '（秋狐在擦一台看起來像收音機的東西）',
     emotion: 'neutral',
     remember: ['wentQuiet'],
   },
@@ -1866,7 +1866,7 @@ export const IDLE: Reply[] = [
     remember: ['wentQuiet'],
   },
   {
-    text: '（千秋把某個東西拿起來，對著它很小聲地唸了一句話，然後放回去）',
+    text: '（秋狐把某個東西拿起來，對著它很小聲地唸了一句話，然後放回去）',
     emotion: 'thinking',
     remember: ['wentQuiet'],
   },
@@ -1890,7 +1890,7 @@ export const IDLE: Reply[] = [
     opens: 'relics.offer',
   },
   {
-    text: '（千秋翻開一本記錄簿，寫了一行，又把它劃掉）',
+    text: '（秋狐翻開一本記錄簿，寫了一行，又把它劃掉）',
     emotion: 'neutral',
     needs: ['wentQuiet'],
   },
@@ -1927,7 +1927,7 @@ export const IDLE: Reply[] = [
     needs: ['wentQuiet', 'talkedMaker'],
   },
   {
-    text: '（收音機還是只有底噪。千秋把它關掉，過了一下又打開）',
+    text: '（收音機還是只有底噪。秋狐把它關掉，過了一下又打開）',
     emotion: 'sad',
     needs: ['wentQuiet', 'talkedRadio'],
   },
@@ -1950,7 +1950,7 @@ export const IDLE: Reply[] = [
   // Once she knows the visitor is from somewhere the war never reached, the
   // silences stop being her waiting and start being her wanting to ask.
   {
-    text: '（千秋在畫一張表。左邊那欄寫著「這裡」，右邊那欄還是空的）',
+    text: '（秋狐在畫一張表。左邊那欄寫著「這裡」，右邊那欄還是空的）',
     emotion: 'thinking',
     needs: ['wentQuiet', 'knowsPeace'],
   },
@@ -1965,7 +1965,7 @@ export const IDLE: Reply[] = [
     needs: ['wentQuiet', 'knowsPeace', 'talkedInherited'],
   },
   {
-    text: '（千秋把一份紀錄從「未確認」那一疊，移到「已確認」那一疊。只有一張）',
+    text: '（秋狐把一份紀錄從「未確認」那一疊，移到「已確認」那一疊。只有一張）',
     emotion: 'happy',
     needs: ['wentQuiet', 'knowsPeace'],
   },
@@ -1981,7 +1981,7 @@ export const IDLE: Reply[] = [
     needsWord: true,
   },
   {
-    text: '（千秋把「{recall}」這幾個字寫在紙上，看了一會，沒有劃掉）',
+    text: '（秋狐把「{recall}」這幾個字寫在紙上，看了一會，沒有劃掉）',
     emotion: 'thinking',
     needs: ['wentQuiet'],
     needsWord: true,
@@ -2312,7 +2312,7 @@ export const ENDING_OFFER =
 
 /** The button, and the line the visitor's side of the transcript gets. */
 export const ENDING_HANDOVER = {
-  label: '把它交給千秋',
+  label: '把它交給秋狐',
   action: '（把那個東西拿到鏡頭前，遞過去）',
 }
 
@@ -2445,8 +2445,8 @@ export const TOPIC_LABELS: Record<string, string> = {
 
 export const OPENING_LINES = {
   fresh: {
-    named: '……欸，燈亮了。有人在嗎？我是千秋。',
-    unnamed: '……欸，燈亮了。有人在嗎？我是千秋。',
+    named: '……欸，燈亮了。有人在嗎？我是秋狐。',
+    unnamed: '……欸，燈亮了。有人在嗎？我是秋狐。',
   },
   // Ends on a question on purpose — `opening` arms `wellbeing.check`, so the
   // first thing a returning visitor types can be an answer instead of a

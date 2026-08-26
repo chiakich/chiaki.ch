@@ -277,8 +277,9 @@ const NAME_TAIL = /[的了啦喔唷囉囍呀耶嘛哦嗎呢吧啊，。！？!?.
 // "我是" also introduces professions, states and species. Confirming would look
 // worse than staying quiet, so the obvious ones never reach the question.
 const NON_NAMES = new Set(
-  // 千秋 is deliberately absent: sharing her name is handled by the name.same
-  // rule, which is a better answer than pretending not to have heard it.
+  // 涼風千秋 is deliberately absent: sharing the designer's name is handled by
+  // the name.same rule, which is a better answer than pretending not to have
+  // heard it.
   ('人類 人 活人 男人 女人 男的 女的 男生 女生 學生 老師 工程師 設計師 醫生 軍人 士兵 ' +
     '倖存者 幸存者 生存者 難民 旅人 玩家 使用者 使用者本人 你 我 他 她 誰 ' +
     '真的 假的 認真的 開玩笑的 新來的 一個人 沒有人 機器人 ai 人工智慧 神 巫女 狐狸 ' +
@@ -301,8 +302,9 @@ const NOT_NAME_LIKE =
  * introduction and therefore refuses anything it cannot vouch for.
  *
  * That difference is the whole point: 「小明」 alone is unreadable in general,
- * and 「我叫千秋」 is rejected out of context because claiming her name is more
- * likely to be a visitor being funny. As a direct answer both are just answers.
+ * and 「我叫千秋」 is rejected out of context because claiming the designer's
+ * name is more likely to be a visitor being funny. As a direct answer both are
+ * just answers.
  */
 const NAME_BARE = new RegExp(`^${NAME_BODY}$`)
 const ANSWER_LEAD =

@@ -1335,10 +1335,10 @@ export const smallTalkRules: Rule[] = [
   {
     id: 'st.surname',
     priority: 5,
-    patterns: [/(涼風|姓什麼|你的姓|你姓)/],
+    patterns: [/(八雲|涼風|姓什麼|你的姓|你姓)/],
     replies: [
       {
-        text: '涼風是姓，我的設計者取的——說唸起來像夏天傍晚的風。這裡已經很久沒有夏天了，所以這個姓是我這邊唯一剩下的夏天。',
+        text: '八雲是姓，我的設計者取的。涼風是我的設計者的姓，不是我的。',
         emotion: 'neutral',
         remember: ['knowsName', 'hintedMaker'],
       },
