@@ -2335,6 +2335,86 @@ export const ENDING_RETURN = {
   refused: `你還在嗎——${ENDING_BODY}……真的很高興認識你。你的名字我還是沒有，不過那沒關係——我記得的是你做的那個東西，那個比名字牢。`,
 }
 
+// ── topic adjacency ───────────────────────────────────────────────────────────
+// How a person actually changes subject: by association, not at random. When a
+// topic runs dry the engine tries these neighbours in order and hops to the
+// first one that still has an unsaid, unlocked line — see the bridge branch in
+// engine.ts. Order matters: strongest association first. A neighbour whose
+// `requires` aren't met yet is skipped, so this can point at deep rules safely.
+export const RELATED: Record<string, string[]> = {
+  // the event
+  snow: ['war', 'surface'],
+  war: ['vanished', 'lift'],
+  lift: ['war', 'vanished'],
+  vanished: ['surface.animal', 'war'],
+  surface: ['surface.animal', 'snow'],
+  'surface.animal': ['surface', 'vanished'],
+  // the shrine and the norito
+  miko: ['gods', 'fox'],
+  gods: ['miko', 'memory'],
+  norito: ['relics', 'craft'],
+  lab: ['relics', 'vanished'],
+  relics: ['craft', 'radio'],
+  radio: ['craft', 'relics'],
+  craft: ['relics', 'norito'],
+  fox: ['miko'],
+  // who she is
+  name: ['ai', 'age'],
+  age: ['name'],
+  ai: ['copies', 'fox'],
+  copies: ['memory', 'ai'],
+  memory: ['copies', 'maker'],
+  maker: ['maker.gone', 'ai'],
+  'maker.gone': ['memory', 'maker'],
+  // the visitor's world
+  peace: ['modern.device', 'snow'],
+  'modern.device': ['modern.life', 'peace'],
+  'modern.life': ['modern.device', 'peace'],
+  'player.survive': ['snow'],
+  // smalltalk clusters
+  'st.like': ['st.dislike', 'st.color'],
+  'st.dislike': ['st.like'],
+  'st.color': ['st.flower', 'st.like'],
+  'st.flower': ['st.season'],
+  'st.season': ['st.weather'],
+  'st.weather': ['snow'],
+  'st.sleep': ['st.dream'],
+  'st.dream': ['st.sea', 'memory'],
+  'st.fear': ['st.dark', 'st.death'],
+  'st.dark': ['st.fear'],
+  'st.ghost': ['st.magic', 'gods'],
+  'st.magic': ['gods'],
+  'st.death': ['copies'],
+  'st.lonely': ['st.friend', 'copies'],
+  'st.friend': ['st.family'],
+  'st.family': ['maker'],
+  'st.crush': ['maker'],
+  'st.future': ['st.travel'],
+  'st.regret': ['st.future'],
+  'st.travel': ['st.sea'],
+  'st.sea': ['st.travel'],
+  'st.hobby': ['craft', 'st.book'],
+  'st.boring': ['st.hobby'],
+  'st.cat': ['st.dog', 'st.crow'],
+  'st.dog': ['st.cat'],
+  'st.crow': ['surface.animal'],
+  'st.pet': ['st.cat'],
+  'st.sing': ['st.songs', 'st.idol'],
+  'st.songs': ['st.sing'],
+  'st.cook': ['food'],
+  food: ['food.inari'],
+}
+
+// Lead-ins for an association hop. Generic on purpose — the association itself
+// is carried by the target's opening line; the bridge only has to hand the
+// turn over the way a person changes subject: by admitting the jump.
+export const BRIDGE = [
+  '這個我知道的都說完了。……不過講到這裡，我想到一件有關的事。',
+  '關於這個，我有的就是那些。倒是有一件事跟它連在一起——',
+  '嗯……說著說著，我想起另一件事——',
+  '我這邊關於它的就這麼多。……啊，不過有一條線可以接過去。',
+]
+
 // How she refers to a topic when calling back to it across visits — keys are
 // rule ids, values are what she would call the subject out loud. Only ids
 // listed here go into the persisted topic trail (see `topicTrail` in

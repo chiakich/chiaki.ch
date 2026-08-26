@@ -1,6 +1,7 @@
 import { type Lexicon, segmentAll, type Token } from './lexicon'
 import { normalize, STOP_WORDS } from './normalize'
 import {
+  BRIDGE,
   CURIOSITY,
   DEGRADED,
   ECHO_TEMPLATES,
@@ -15,6 +16,7 @@ import {
   NO_ANSWER,
   OPENING_LINES,
   PEACE_DISCOVERY,
+  RELATED,
   RESUME,
   rules,
   SUGGESTIONS,
@@ -414,6 +416,27 @@ const pickReply = (
   )
 }
 
+/**
+ * The first neighbour of a dry topic that still has an unsaid, unlocked line.
+ * Neighbours whose `requires` aren't met yet are skipped rather than forced,
+ * so the graph can safely point at rules deep in the story.
+ */
+const bridgeFrom = (
+  from: Rule,
+  session: Session,
+  seed: number
+): { rule: Rule; reply: Reply } | null => {
+  for (const id of RELATED[from.id] ?? []) {
+    const rule = RULES_BY_ID.get(id)
+    if (!rule || rule.repeatable) continue
+    if (rule.requires?.some((flag) => !session.flags.has(flag))) continue
+    if (rule.blockedBy?.some((flag) => session.flags.has(flag))) continue
+    const reply = pickReply(rule.replies, session, seed)
+    if (reply) return { rule, reply }
+  }
+  return null
+}
+
 const isEligible = (rule: Rule, session: Session, nameHit: string | null) => {
   if (rule.capturesName && nameHit === null) return false
   if (rule.continues !== undefined && rule.continues !== session.pending)
@@ -628,16 +651,36 @@ export const respond = (
     if (reply.naming === 'reject') session.nameGuess = null
   } else if (topical) {
     // She matched the topic but has already said everything she has on it.
-    // Admitting that suits a finite lookup table better than repeating a line.
-    // Routed through the picker too, so she works through all of these before
-    // any of them comes round again.
-    const spent = pickReply(EXHAUSTED, session, seed, true)!
-    text = spent.text
-    emotion = spent.emotion ?? 'neutral'
-    ruleId = `exhausted.${topical.id}`
-    delta = spent.signal ?? -1
-    session.used.add(spent.text)
-    if (spent.opens) armPending(session, spent.opens)
+    // Before conceding, try the topic's neighbours: a person who runs out on
+    // one subject changes to an adjacent one by association, and the hop keeps
+    // her reading as someone with a train of thought rather than a table.
+    const bridged = bridgeFrom(topical, session, seed)
+    if (bridged) {
+      const hop = bridged.reply
+      text = pick(BRIDGE, seed) + hop.text
+      emotion = hop.emotion ?? 'neutral'
+      ruleId = `bridge.${bridged.rule.id}`
+      delta = hop.signal ?? 1
+      session.used.add(hop.text)
+      hop.remember?.forEach((flag) => session.flags.add(flag))
+      if (hop.opens) armPending(session, hop.opens)
+      session.offered = hop.offers ?? null
+      const topic = isTopical(bridged.rule)
+        ? bridged.rule.id
+        : baseTopic(bridged.rule.id)
+      if (topic) session.lastTopic = topic
+    } else {
+      // No neighbour has anything fresh either. Admitting that suits a finite
+      // lookup table better than repeating a line. Routed through the picker
+      // too, so she works through all of these before any comes round again.
+      const spent = pickReply(EXHAUSTED, session, seed, true)!
+      text = spent.text
+      emotion = spent.emotion ?? 'neutral'
+      ruleId = `exhausted.${topical.id}`
+      delta = spent.signal ?? -1
+      session.used.add(spent.text)
+      if (spent.opens) armPending(session, spent.opens)
+    }
   } else if (session.signal < DEGRADED_THRESHOLD) {
     text = pick(DEGRADED, seed)
     emotion = 'sad'

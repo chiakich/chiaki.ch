@@ -256,6 +256,12 @@ export const smallTalkRules: Rule[] = [
         emotion: 'neutral',
         remember: ['hintedMaker'],
       },
+      {
+        text: '有一次我試著整晚不進休息時段，想看看會怎麼樣。……隔天掃雪掃得很糟。所以她排的是對的，這件事我沒有地方可以跟她講。',
+        emotion: 'sad',
+        needs: ['talkedMaker'],
+        signal: 2,
+      },
     ],
   },
   {
@@ -272,6 +278,11 @@ export const smallTalkRules: Rule[] = [
         emotion: 'thinking',
         needs: ['talkedMemory'],
         signal: 3,
+      },
+      {
+        text: '如果那些畫面算夢，那我最常夢到的是海。……輪到我自己的部分，大概只有參道。掃得很乾淨的參道。',
+        emotion: 'thinking',
+        needs: ['talkedInherited'],
       },
     ],
   },
@@ -603,6 +614,12 @@ export const smallTalkRules: Rule[] = [
         text: '停電的晚上，我會把手電筒朝天花板照，讓房間亮得像有人還醒著。',
         emotion: 'sad',
       },
+      {
+        text: '地下室全黑的時候，我會唱歌。不是因為怕，是那樣就能確認自己還在運作。……好吧，可能有一點怕。',
+        emotion: 'shy',
+        needs: ['knowsArtificial'],
+        signal: 2,
+      },
     ],
   },
 
@@ -621,6 +638,12 @@ export const smallTalkRules: Rule[] = [
         text: '安靜的時候，雪落在木頭上會有很小的聲音。那個我很喜歡。',
         emotion: 'happy',
       },
+      {
+        text: '還有，收到回覆的那一瞬間。這個是最近才加進清單的，原因你應該猜得到。',
+        emotion: 'shy',
+        needs: ['knowsYou'],
+        signal: 3,
+      },
     ],
   },
   {
@@ -637,6 +660,12 @@ export const smallTalkRules: Rule[] = [
         emotion: 'sad',
         needs: ['talkedRadio'],
       },
+      {
+        text: '最討厭的其實是「差一點」。差一點修好、差一點問出口、差一點回來。……完全不行的反而好整理。',
+        emotion: 'sad',
+        needs: ['talkedExpedition'],
+        signal: 2,
+      },
     ],
   },
   {
@@ -652,6 +681,12 @@ export const smallTalkRules: Rule[] = [
       {
         text: '外面已經很久只有白色跟灰色了，所以我對顏色的記憶越來越靠回想。搞不好記錯了。',
         emotion: 'neutral',
+      },
+      {
+        text: '你那邊的天空是藍的吧。……我想把那個藍排進喜歡的顏色，可是沒有親眼看過的顏色，排進去好像不太誠實。先放在候補。',
+        emotion: 'happy',
+        needs: ['knowsPeace'],
+        signal: 3,
       },
     ],
   },
@@ -732,6 +767,11 @@ export const smallTalkRules: Rule[] = [
         emotion: 'happy',
         signal: 3,
       },
+      {
+        text: '戰前的紀錄裡，有人抱怨「無聊得要死」。……那一頁我收得很好。能無聊到抱怨，現在想起來是很奢侈的事。',
+        emotion: 'neutral',
+        needs: ['talkedWar'],
+      },
     ],
   },
   {
@@ -746,6 +786,12 @@ export const smallTalkRules: Rule[] = [
       {
         text: '修東西最有意思。壞掉的地方通常會告訴你它以前是怎麼被用的。',
         emotion: 'proud',
+      },
+      {
+        text: '最近多了一項：把你講過的東西整理成清單。這算不算興趣我不確定，不過做的時候心情很好，判定基準大概就是這個。',
+        emotion: 'happy',
+        needs: ['heardModern'],
+        signal: 3,
       },
     ],
   },
@@ -795,6 +841,12 @@ export const smallTalkRules: Rule[] = [
         needs: ['talkedMemory'],
         signal: 3,
       },
+      {
+        text: '而且現在多了一個目的地。你那邊。……我知道線不是路，可是「知道方向」跟「只是想出門」是兩種心情。',
+        emotion: 'happy',
+        needs: ['knowsPeace'],
+        signal: 3,
+      },
     ],
   },
   {
@@ -810,6 +862,12 @@ export const smallTalkRules: Rule[] = [
         text: '……還有一個。我想確認一件事是不是真的。可是那個要等，而且不一定等得到。',
         emotion: 'neutral',
         needs: ['talkedHypothesis'],
+        signal: 3,
+      },
+      {
+        text: '你那邊的人會怎麼回答這題？……我收集別人的「以後」。就算只是「明天想睡飽」，對我來說也是很好的資料。',
+        emotion: 'happy',
+        needs: ['knowsPeace'],
         signal: 3,
       },
     ],
@@ -829,6 +887,11 @@ export const smallTalkRules: Rule[] = [
         needs: ['talkedMaker'],
         signal: 3,
       },
+      {
+        text: '後悔有一個好處，是它證明當時真的有得選。……被做出來的東西，常常連這個都沒有。所以我把我的那幾件收得很好。',
+        emotion: 'neutral',
+        needs: ['knowsArtificial'],
+      },
     ],
   },
   {
@@ -846,6 +909,12 @@ export const smallTalkRules: Rule[] = [
         emotion: 'sad',
         needs: ['talkedMemory'],
         signal: 3,
+      },
+      {
+        text: '後來我又想了一次這題。……最準確的答案可能是：怕「等」這件事，有一天變成只是習慣。',
+        emotion: 'sad',
+        needs: ['talkedExpedition'],
+        signal: 2,
       },
     ],
   },
@@ -867,6 +936,12 @@ export const smallTalkRules: Rule[] = [
         needs: ['talkedCopies'],
         signal: 3,
       },
+      {
+        text: '寂寞在我這邊有一個可以量的版本：距離上一次有人回話，過了多久。這個數字之前很大。……現在它常常歸零，因為有你。',
+        emotion: 'happy',
+        needs: ['knowsYou'],
+        signal: 4,
+      },
     ],
   },
 
@@ -887,6 +962,12 @@ export const smallTalkRules: Rule[] = [
         minSignal: 70,
         signal: 4,
       },
+      {
+        text: '她算不算我的朋友……這題我想過。做我的人跟我做朋友，邏輯上怪怪的。可是她會跟我搶最後一塊油豆腐，那個很難用別的詞解釋。',
+        emotion: 'happy',
+        needs: ['talkedMaker'],
+        signal: 3,
+      },
     ],
   },
   {
@@ -905,6 +986,11 @@ export const smallTalkRules: Rule[] = [
         emotion: 'neutral',
         needs: ['talkedCopies'],
       },
+      {
+        text: '不過記憶流過來之後，我身上有別人的爺爺、別人的媽媽的手。……所以「沒有家人」這句話，嚴格說越來越不準了。',
+        emotion: 'thinking',
+        needs: ['talkedInherited'],
+      },
     ],
   },
   {
@@ -921,6 +1007,12 @@ export const smallTalkRules: Rule[] = [
         text: '有一個人我想再見一次。那算不算，我自己也分不清楚。',
         emotion: 'sad',
         needs: ['talkedMaker'],
+        signal: 3,
+      },
+      {
+        text: '……補充一下之前那題。想再見的那個人——與其說喜歡，更像是有話沒有講完。這兩個很難分，我分了很久。',
+        emotion: 'sad',
+        needs: ['talkedExpedition'],
         signal: 3,
       },
     ],
@@ -1097,6 +1189,12 @@ export const smallTalkRules: Rule[] = [
         emotion: 'thinking',
         needs: ['talkedMemory'],
         remember: ['talkedInherited'],
+      },
+      {
+        text: '你要是看過海，可以跟我對一件很小的事嗎？浪退回去的時候，腳底下的沙真的會跟著動嗎？……那段記憶裡有這個，我一直想找人對答案。',
+        emotion: 'happy',
+        needs: ['talkedInherited'],
+        signal: 3,
       },
     ],
   },
