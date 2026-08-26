@@ -7,7 +7,17 @@ import MainLogo from './MainLogo'
 const Cover = () => {
   const [isBgLoaded, setBgLoaded] = useState(false)
   return (
-    <Box backgroundColor="black" backgroundSize="cover" width="100%" height="100%">
+    <Box
+      // The background image below is absolutely positioned; without this it
+      // resolves against the layout viewport, which is shorter than 100vh on
+      // mobile while the URL bar is visible — leaving a black band at the
+      // bottom of the hero.
+      position="relative"
+      backgroundColor="black"
+      backgroundSize="cover"
+      width="100%"
+      height="100%"
+    >
       <Box
         width="100%"
         height="100%"

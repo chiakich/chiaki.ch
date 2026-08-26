@@ -69,6 +69,10 @@ const useTerminalViewport = (): TerminalViewport => {
 
     const update = () => {
       const height = Math.round(visualViewport?.height ?? window.innerHeight)
+      // iOS pans the visual viewport down to keep a focused input visible even
+      // while the document is scroll-locked; the fixed frame has to follow, or
+      // the page shows shifted up with a black band under it.
+      const offsetTop = Math.round(visualViewport?.offsetTop ?? 0)
       const editableFocused = isEditable(document.activeElement)
 
       if (!baselineHeightRef.current) baselineHeightRef.current = height
@@ -84,12 +88,12 @@ const useTerminalViewport = (): TerminalViewport => {
           heightReduced && (editableFocused || current.keyboardOpen)
         if (
           current.height === height &&
-          current.offsetTop === 0 &&
+          current.offsetTop === offsetTop &&
           current.keyboardOpen === keyboardOpen
         ) {
           return current
         }
-        return { height, offsetTop: 0, keyboardOpen }
+        return { height, offsetTop, keyboardOpen }
       })
     }
 
