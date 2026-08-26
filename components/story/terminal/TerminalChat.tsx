@@ -531,7 +531,7 @@ const TerminalChat = ({
           overflowY="auto"
           px={{ base: '12px', md: '16px' }}
           py="12px"
-          background="linear-gradient(180deg, rgba(8,3,1,.04), rgba(8,3,1,.8))"
+          background="rgba(0,0,0,.68)"
           borderLeft="1px solid rgba(231,105,45,.38)"
         >
           {/* Bottom-aligned, so the first line of a conversation opens just
