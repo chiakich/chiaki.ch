@@ -34,6 +34,14 @@ export const ViewScale = 1.0;
 export const ViewMaxScale = 2.0;
 export const ViewMinScale = 0.8;
 
+// The projection's vertical axis is always two logical units, so this maps to
+// roughly 165vh regardless of the canvas width. Keeping portrait scale in
+// viewport-height terms prevents a short, wide capture from making her loom.
+export const TerminalPortraitWidth = 3.3;
+// Logical y is height-normalised; moving the anchor down by 0.12 raises the
+// portrait by roughly 6vh without making its scale depend on the viewport width.
+export const TerminalPortraitOffsetY = 0.12;
+
 export const ViewLogicalLeft = -1.0;
 export const ViewLogicalRight = 1.0;
 export const ViewLogicalBottom = -1.0;

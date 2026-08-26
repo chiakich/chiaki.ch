@@ -37,7 +37,7 @@ const pageMetadata: Record<string, PageMeta> = {
   '/story': { key: 'story', image: '/og/story.jpeg' },
   '/story/character': { key: 'character', image: '/og/story-character.jpeg' },
   '/story/character/art': { key: 'art', image: '/og/story-character-art.jpeg' },
-  '/story/terminal': { key: 'terminal', image: '/og/story-character.jpeg' },
+  '/story/terminal': { key: 'terminal', image: '/og/story-terminal.jpeg' },
   '/works': { key: 'works', image: '/og/works.jpeg' },
   '/works/chiakey': { key: 'chiakey', image: '/og/works-chiakey.jpeg' },
   '/works/kumiko': { key: 'kumiko', image: '/og/works-kumiko.jpeg' },

@@ -98,8 +98,10 @@ export class LAppLive2DManager {
     const model: LAppModel = this._models[0];
 
     if (model.getModel()) {
-      // A terminal portrait deliberately crops to the upper body.
-      model.getModelMatrix().setWidth(4.0);
+      // Height-normalised rather than width-normalised: this remains about
+      // 165vh on the terminal's short, wide OG capture as well as in-browser.
+      model.getModelMatrix().setWidth(LAppDefine.TerminalPortraitWidth);
+      model.getModelMatrix().setPosition(0, LAppDefine.TerminalPortraitOffsetY);
       if (model.getModel().getCanvasWidth() > 1.0 && width < height) {
         // 横に長いモデルを縦長ウィンドウに表示する際モデルの横サイズでscaleを算出する
         projection.scale(1.0, width / height);
