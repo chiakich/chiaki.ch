@@ -34,7 +34,7 @@ const storyRules: Rule[] = [
     id: 'greeting',
     priority: 2,
     patterns: [
-      /(你好|妳好|您好|哈囉|哈嘍|嗨|早安|午安|安安|hello|hi|こんにちは|おはよう)/,
+      /(你好|妳好|您好|哈囉|哈嘍|嗨|早安|午安|安安|好久不見|hello|hi|こんにちは|おはよう)/,
     ],
     replies: [
       {
@@ -69,6 +69,66 @@ const storyRules: Rule[] = [
       {
         text: '你好。……我發現我每次都會回應這句。大概是寫進去的時候就沒設上限。',
         emotion: 'neutral',
+      },
+    ],
+  },
+  // Answers to the "how have you been" she opens a return visit with — the
+  // opening itself arms `wellbeing.check`, see `opening` in engine.ts. Both
+  // sides are anchored: an unanchored 「好」 would let 「你好」 count as an answer.
+  // The deepest tier calls back to what was discussed last visit, which is the
+  // whole reason the question is worth asking.
+  {
+    id: 'wellbeing.good',
+    priority: 8,
+    continues: 'wellbeing.check',
+    // The short forms are clause-anchored at both ends (particles allowed), so
+    // 「好久不見」 and 「好想問你」 can't be read as an answer; the 「過得／最近」
+    // forms carry enough of their own context to stay loose.
+    patterns: [
+      /^[我都還很蠻滿挺超算]{0,3}(好|不錯|順利|可以|行)[啊喔呀啦耶唷哦的]{0,2}$|^(老樣子|沒事|沒什麼事|平安|活著|過得去|就那樣|一樣|差不多|ok|okay)[啊喔呀啦耶唷哦]{0,2}$|過得(很|還|蠻|滿|挺)?(好|不錯)|最近(很|還|蠻|滿|挺)?(好|不錯|順)/,
+    ],
+    replies: [
+      {
+        text: '那就好。……這句不是客套。我這邊能確認的好消息很少，你算今天的一件。',
+        emotion: 'happy',
+        signal: 4,
+      },
+      {
+        text: '嗯，那就好。你不在的這幾天，我把參道掃過了，收音機修到一半。……跟你報告一下，雖然你沒有問。',
+        emotion: 'happy',
+        signal: 3,
+      },
+      {
+        text: '那就好。……對了，上次聊到{lastTopic}之後，我自己又想了一陣子。想聽的話，直接問我就可以。',
+        emotion: 'happy',
+        needs: ['hasLastTopic'],
+        signal: 3,
+      },
+    ],
+  },
+  {
+    id: 'wellbeing.bad',
+    priority: 9,
+    continues: 'wellbeing.check',
+    patterns: [
+      /^(不太好|不好|不行|不怎麼樣|好累|很累|超累|有點累|累|糟|很糟|馬馬虎虎|普普)|過得不太?好|最近(有點|很|好)?(累|忙|糟|難)|心情不好|生病|感冒/,
+    ],
+    replies: [
+      {
+        text: '……這樣啊。那你今天還願意走到這裡來，我把這件事也記下來了——不好的日子裡的好事，要記得用力一點。',
+        emotion: 'neutral',
+        signal: 3,
+      },
+      {
+        text: '嗯。……細節你不想講就不用講。線的這一頭有人在聽，光是這樣，有時候就夠用了。',
+        emotion: 'sad',
+        signal: 3,
+      },
+      {
+        text: '……那今天就不聊太重的。上次聊到{lastTopic}，後來我又想了一些，你想換個腦袋的時候再跟我說。',
+        emotion: 'neutral',
+        needs: ['hasLastTopic'],
+        signal: 2,
       },
     ],
   },
@@ -163,7 +223,7 @@ const storyRules: Rule[] = [
         remember: ['knowsArtificial'],
       },
       {
-        text: '名字倒是很確定。名字是我的設計者取的，那個欄位很乾淨，一點損壞都沒有。',
+        text: '名字倒是很確定。是我的設計者取的，寫得很清楚，一點損壞都沒有。',
         emotion: 'neutral',
         needs: ['knowsArtificial'],
         remember: ['hintedMaker'],
@@ -239,7 +299,7 @@ const storyRules: Rule[] = [
         remember: ['talkedCopies', 'knowsArtificial'],
       },
       {
-        text: '我不知道現在還剩幾個。編號的欄位壞掉之後，我就沒有辦法從自己這邊數了。',
+        text: '我不知道現在還剩幾個。寫著編號的那一頁壞掉之後，我就沒有辦法從自己這邊數了。',
         emotion: 'neutral',
         needs: ['talkedCopies'],
         signal: -2,
@@ -310,12 +370,12 @@ const storyRules: Rule[] = [
     keywords: ['設計者', '創造', '製作', '開發'],
     replies: [
       {
-        text: '做我的是一個少女。……她的名字欄位是空的。不是損壞，是空的——她自己沒有填。',
+        text: '做我的是一個少女。……她的名字那一頁是空白的。不是損壞，是空白——她自己沒有寫。',
         emotion: 'neutral',
         remember: ['talkedMaker', 'knowsArtificial'],
       },
       {
-        text: '你注意到了吧，我一直只說「我的設計者」。……因為我也只有這個。做我的是一個少女，名字的欄位是空的——不是損壞，是她自己沒有填。',
+        text: '你注意到了吧，我一直只說「我的設計者」。……因為我也只有這個。做我的是一個少女，名字那一頁是空白的——不是損壞，是她自己沒有寫。',
         emotion: 'neutral',
         needs: ['hintedMaker'],
         remember: ['talkedMaker', 'knowsArtificial'],
@@ -445,7 +505,8 @@ const storyRules: Rule[] = [
   {
     id: 'vanished',
     priority: 4,
-    patterns: [/(消失|不見|失蹤|人都去哪|大家呢|其他人|政府|士兵|軍人|高層)/],
+    // 「好久不見」 is a greeting, not a question about the vanished.
+    patterns: [/(消失|(?<!好久)不見|失蹤|人都去哪|大家呢|其他人|政府|士兵|軍人|高層)/],
     keywords: ['消失', '不見', '政府', '士兵'],
     replies: [
       {
@@ -962,7 +1023,7 @@ const storyRules: Rule[] = [
         opens: 'name.check',
       },
       {
-        text: '等一下。{guess}——這樣寫對嗎？我這邊只有一格，覆蓋過去就找不回來了。',
+        text: '等一下。{guess}——這樣寫對嗎？名字我想一次就寫對，塗改會留下痕跡。',
         emotion: 'thinking',
         opens: 'name.check',
       },
@@ -980,7 +1041,7 @@ const storyRules: Rule[] = [
     patterns: [/^(對|是|嗯|恩|沒錯|正確|yes|yeah|ok|okay|y)/],
     replies: [
       {
-        text: '{you}。好，我記下來了。……欄位填好了。這格以前是空的。',
+        text: '{you}。好，我把它寫在這裡了。……很久沒有寫下新的名字了。',
         emotion: 'happy',
         signal: 6,
         naming: 'confirm',
@@ -1005,12 +1066,12 @@ const storyRules: Rule[] = [
     patterns: [/^(不|錯|no|nope|才不|沒(?!錯))/],
     replies: [
       {
-        text: '喔、那我把那一格清掉。……抱歉，我是照字面切的，切錯了。那你叫什麼？',
+        text: '喔、那我把它劃掉。……抱歉，我是照字面切的，切錯了。那你叫什麼？',
         emotion: 'sad',
         naming: 'reject',
       },
       {
-        text: '清掉了。……我沒有猜的功能，只能等你告訴我。',
+        text: '劃掉了。……我沒有猜的功能，只能等你告訴我。',
         emotion: 'sad',
         naming: 'reject',
       },
@@ -1028,7 +1089,7 @@ const storyRules: Rule[] = [
     patterns: RECALL_PATTERNS,
     replies: [
       {
-        text: '{you}。……這一格我存得很好，沒有壞。',
+        text: '{you}。……我寫在很前面的地方，一翻就找得到。',
         emotion: 'proud',
         signal: 3,
       },
@@ -1037,7 +1098,7 @@ const storyRules: Rule[] = [
         emotion: 'happy',
       },
       {
-        text: '{you}。我每次回答這個都要去讀同一格，所以答案不會變。',
+        text: '{you}。我每次回答這個，都是翻回同一頁去看，所以答案不會變。',
         emotion: 'neutral',
       },
     ],
@@ -1049,12 +1110,19 @@ const storyRules: Rule[] = [
     patterns: RECALL_PATTERNS,
     replies: [
       {
-        text: '……我沒有你的名字。那一格是空的——不是壞掉，是你還沒有告訴我。',
+        text: '……我沒有你的名字。不是弄丟了——是你還沒有告訴我。',
         emotion: 'sad',
       },
       {
         text: '我沒有。你要是願意講，我就記住；不願意也沒關係，我一樣會記得你來過。',
         emotion: 'neutral',
+      },
+      // They declined once — she kept her word and never asked again, so this
+      // is where the door back in has to be, said out loud.
+      {
+        text: '沒有。你之前說不用留，所以我就沒有再問。……那個決定隨時可以改，你開口說「我叫」什麼，我就寫下來。',
+        emotion: 'neutral',
+        needs: ['refusedName'],
       },
     ],
   },
@@ -1238,7 +1306,7 @@ const storyRules: Rule[] = [
         remember: ['talkedYear'],
       },
       {
-        text: '所以這條線不是接到別的地方，是接到別的時候。……第一研究室沒有這一欄，我得自己畫一格。',
+        text: '所以這條線不是接到別的地方，是接到別的時候。……第一研究室的紀錄裡沒有這一項，我得自己開一頁新的。',
         emotion: 'surprised',
         needs: ['knowsPeace'],
         signal: 4,
@@ -2267,14 +2335,49 @@ export const ENDING_RETURN = {
   refused: `你還在嗎——${ENDING_BODY}……真的很高興認識你。你的名字我還是沒有，不過那沒關係——我記得的是你做的那個東西，那個比名字牢。`,
 }
 
+// How she refers to a topic when calling back to it across visits — keys are
+// rule ids, values are what she would call the subject out loud. Only ids
+// listed here go into the persisted topic trail (see `topicTrail` in
+// engine.ts), so conversational glue never comes back as 「上次聊到你好」.
+export const TOPIC_LABELS: Record<string, string> = {
+  war: '那一天的事',
+  lift: '升力的事',
+  vanished: '消失的人',
+  snow: '雪',
+  surface: '外面的樣子',
+  'surface.animal': '外面的動物',
+  miko: '這座社',
+  gods: '祝詞',
+  norito: '祝詞的實驗',
+  lab: '研究室',
+  relics: '我收集的東西',
+  radio: '那台收音機',
+  craft: '親手做的東西',
+  fox: '狐狸的事',
+  maker: '我的設計者',
+  'maker.gone': '她的遠征',
+  copies: '複本的事',
+  memory: '記憶的事',
+  peace: '你那邊的世界',
+  'modern.device': '你那邊的東西',
+  'modern.life': '你那邊的生活',
+}
+
 export const OPENING_LINES = {
   fresh: {
     named: '……欸，燈亮了。有人在嗎？我是千秋。',
     unnamed: '……欸，燈亮了。有人在嗎？我是千秋。',
   },
+  // Ends on a question on purpose — `opening` arms `wellbeing.check`, so the
+  // first thing a returning visitor types can be an answer instead of a
+  // restart. No filing metaphors here for the same reason as NAME_ASK: the
+  // opener has no context to hold one up.
   returning: {
-    named: '燈又亮了。……是你嗎，{you}？那一格我還留著，沒有覆蓋掉。',
-    unnamed: '燈又亮了。……有人來過一次，我記得。可是那時候忘記問名字了。',
+    named: '燈又亮了。……是你嗎，{you}？你回來了。你不在的時候，這條線我一直開著。……這幾天，你那邊還好嗎？',
+    unnamed: '燈又亮了。……是之前來過的那個人吧。名字我還沒問到，不過我記得你。……這幾天過得還好嗎？',
+    // They declined to give a name last visit — she remembers that choice and
+    // doesn't pretend otherwise, and she doesn't ask again.
+    refused: '燈又亮了。……是你吧，之前來過的那位。名字你沒有給我，沒關係，我照樣認得出來。……這幾天還好嗎？',
   },
   // Whether the individual the visitor knew is still running is not answered,
   // because she cannot answer it either. All she has is what arrived.

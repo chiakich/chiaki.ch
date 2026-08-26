@@ -10,13 +10,17 @@
 // so dropping the topic flags sends every subject back to its opening line,
 // while the lines that were *about you* unlock immediately and read as callbacks.
 
-import type { Session } from './engine'
+import { type Session, topicTrail } from './engine'
 
 const KEY = 'chiaki.terminal.v1'
+const MISS_KEY = 'chiaki.terminal.miss.v1'
 
 /** Facts about the visitor. Everything else is bookkeeping about her own lines. */
 const RESUMABLE = new Set([
   'knowsYou',
+  // A declined name is a fact about the visitor too: without it she re-asks
+  // every visit, and the returning opener claims she never asked at all.
+  'refusedName',
   'knowsAlive',
   'knowsPeace',
   'talkedClearSky',
@@ -32,6 +36,13 @@ export type Saved = {
   userName: string | null
   /** Words she couldn't place. A fact about the visitor, so it survives too. */
   recalled: string[]
+  /**
+   * Rule ids of the last topics discussed, most recent last. Topic flags are
+   * deliberately dropped so subjects replay from the top; this trail is what
+   * lets her still say 「上次聊到○○」 on the next visit — a callback about the
+   * conversation, not a save of it. Validated against TOPIC_LABELS on restore.
+   */
+  topics: string[]
   visits: number
 }
 
@@ -54,12 +65,56 @@ export const load = (): Saved | null => {
       recalled: Array.isArray(parsed.recalled)
         ? parsed.recalled.filter(isWord)
         : [],
+      topics: Array.isArray(parsed.topics)
+        ? parsed.topics.filter((id): id is string => typeof id === 'string')
+        : [],
       visits: typeof parsed.visits === 'number' ? parsed.visits : 0,
     }
   } catch {
     // A corrupt or unavailable store is a first visit, not an error worth
     // surfacing — private browsing hits this path routinely.
     return null
+  }
+}
+
+// ── miss log ─────────────────────────────────────────────────────────────────
+// Inputs that fell through to a fallback layer, kept locally so pattern gaps
+// can be diagnosed from real usage instead of guessed at. Read it back with
+// `misses()` from a devtools console, or via
+// JSON.parse(localStorage['chiaki.terminal.miss.v1']).
+
+export type Miss = {
+  /** What the visitor typed, verbatim. */
+  text: string
+  /** Which fallback layer answered it — `fallback.*` or `resume.*`. */
+  ruleId: string
+  /** Unix ms. */
+  at: number
+}
+
+const MISS_LIMIT = 100
+
+export const misses = (): Miss[] => {
+  if (typeof window === 'undefined') return []
+  try {
+    const raw = window.localStorage.getItem(MISS_KEY)
+    const parsed = raw ? (JSON.parse(raw) as unknown) : []
+    return Array.isArray(parsed) ? (parsed as Miss[]) : []
+  } catch {
+    return []
+  }
+}
+
+export const recordMiss = (text: string, ruleId: string) => {
+  if (typeof window === 'undefined') return
+  try {
+    const log = [...misses(), { text, ruleId, at: Date.now() }]
+    window.localStorage.setItem(
+      MISS_KEY,
+      JSON.stringify(log.slice(-MISS_LIMIT))
+    )
+  } catch {
+    // Same policy as `save`: losing diagnostics is fine, throwing is not.
   }
 }
 
@@ -71,6 +126,7 @@ export const save = (session: Session, visits: number) => {
       flags,
       userName: session.userName,
       recalled: session.recalled,
+      topics: topicTrail(session),
       visits,
     }
     window.localStorage.setItem(KEY, JSON.stringify(payload))

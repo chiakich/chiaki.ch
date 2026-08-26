@@ -18,6 +18,7 @@ import {
   RESUME,
   rules,
   SUGGESTIONS,
+  TOPIC_LABELS,
 } from './rules'
 import { classify, SHAPE_ECHO } from './shapes'
 import type { Emotion, Reply, Rule, Suggestion } from './types'
@@ -63,6 +64,10 @@ export type Session = {
   modernScore: number
   /** Last substantive topic, so a bare 「為什麼」 has something to attach to. */
   lastTopic: string | null
+  /** Topic trail carried over from earlier visits — see `topicTrail`. */
+  inheritedTopics: string[]
+  /** What she calls the last visit's subject out loud — expands `{lastTopic}`. */
+  lastVisitTopic: string | null
   /**
    * Words the visitor used that she had no answer for, oldest first. Spent by
    * `needsWord` replies, which is what turns a miss into a callback later on.
@@ -77,20 +82,51 @@ export const createSession = (restored?: {
   flags: string[]
   userName: string | null
   recalled?: string[]
-} | null): Session => ({
-  flags: new Set(restored?.flags ?? []),
-  used: new Set(),
-  history: [],
-  signal: restored ? RETURNING_SIGNAL : 62,
-  pending: null,
-  pendingAge: 0,
-  offered: null,
-  userName: restored?.userName ?? null,
-  nameGuess: null,
-  modernScore: 0,
-  lastTopic: null,
-  recalled: restored?.recalled ?? [],
-})
+  topics?: string[]
+} | null): Session => {
+  const inherited = (restored?.topics ?? []).filter((id) => id in TOPIC_LABELS)
+  const lastVisitTopic =
+    inherited.length > 0 ? TOPIC_LABELS[inherited[inherited.length - 1]] : null
+  const flags = new Set(restored?.flags ?? [])
+  // Session-local, never persisted: the callback lines gate on it, and it is
+  // recomputed from the trail every time she comes back up.
+  if (lastVisitTopic !== null) flags.add('hasLastTopic')
+  return {
+    flags,
+    used: new Set(),
+    history: [],
+    signal: restored ? RETURNING_SIGNAL : 62,
+    pending: null,
+    pendingAge: 0,
+    offered: null,
+    userName: restored?.userName ?? null,
+    nameGuess: null,
+    modernScore: 0,
+    lastTopic: null,
+    inheritedTopics: inherited,
+    lastVisitTopic,
+    recalled: restored?.recalled ?? [],
+  }
+}
+
+/** How many topics survive a visit. Enough for a callback, not a transcript. */
+const TOPIC_TRAIL_LIMIT = 3
+
+/**
+ * The labelled topics this session has touched, oldest first, most recent
+ * last — seeded with what earlier visits left behind, so a short return visit
+ * doesn't erase the trail. This is what `persist.save` writes back.
+ */
+export const topicTrail = (session: Session): string[] => {
+  const trail = [...session.inheritedTopics]
+  for (const id of session.history) {
+    if (!(id in TOPIC_LABELS)) continue
+    const at = trail.indexOf(id)
+    if (at !== -1) trail.splice(at, 1)
+    trail.push(id)
+  }
+  return trail.slice(-TOPIC_TRAIL_LIMIT)
+}
 
 /**
  * How many turns an open question stays answerable. One detour mid-answer is
@@ -307,6 +343,8 @@ const fill = (text: string, session: Session) =>
     // Only reachable from a `needsWord` reply, which the picker already gated
     // on there being one — the fallback is belt and braces.
     .replace(/\{recall\}/g, () => recallWord(session) ?? '那個東西')
+    // Gated behind `hasLastTopic` the same way — the fallback is for safety.
+    .replace(/\{lastTopic\}/g, session.lastVisitTopic ?? '上次那件事')
 
 // Below this the archive starts showing through instead of a normal fallback.
 const DEGRADED_THRESHOLD = 22
@@ -583,6 +621,9 @@ export const respond = (
     if (reply.naming === 'confirm') {
       session.userName = session.nameGuess
       session.flags.add('knowsYou')
+      // A volunteered name supersedes an earlier refusal — otherwise the
+      // stale flag persists and keeps serving refused-flavoured lines.
+      session.flags.delete('refusedName')
     }
     if (reply.naming === 'reject') session.nameGuess = null
   } else if (topical) {
@@ -833,6 +874,7 @@ export const jumpTo = (ruleId: string, session: Session): Turn | null => {
   if (reply.naming === 'confirm') {
     session.userName = session.nameGuess
     session.flags.add('knowsYou')
+    session.flags.delete('refusedName')
   }
   if (reply.naming === 'reject') session.nameGuess = null
 
@@ -997,15 +1039,20 @@ export const endingReturn = (session: Session): Turn => ({
 })
 
 /** How she opens, which depends entirely on whether this has happened before. */
-export const opening = (session: Session, returning: boolean): string =>
-  address(
-    session.flags.has('endingSeen')
+export const opening = (session: Session, returning: boolean): string => {
+  const afterEnding = session.flags.has('endingSeen')
+  // The returning opener ends on 「還好嗎」, so the visitor's first message is
+  // allowed to be the answer — see the wellbeing rules in rules.ts.
+  if (returning && !afterEnding) armPending(session, 'wellbeing.check')
+  return address(
+    afterEnding
       ? OPENING_LINES.afterEnding
       : returning
         ? OPENING_LINES.returning
         : OPENING_LINES.fresh,
     session
   )
+}
 
 /**
  * What she says into a silence. Runs through the same picker as a reply, so

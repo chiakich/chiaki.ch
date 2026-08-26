@@ -19,7 +19,7 @@ import {
 import { ENDING_HANDOVER } from 'lib/terminal/rules'
 import { loadDirtyContent } from 'lib/terminal/dirty'
 import { loadLexicon, type Lexicon } from 'lib/terminal/lexicon'
-import { load, save } from 'lib/terminal/persist'
+import { load, recordMiss, save } from 'lib/terminal/persist'
 import { createUtterance } from 'lib/terminal/speech'
 import type { Token } from 'lib/terminal/lexicon'
 import type { Message } from 'lib/terminal/types'
@@ -278,6 +278,9 @@ const TerminalChat = ({
       push({ role: 'user', text })
       setDraft('')
       const turn = respond(text, sessionRef.current, lexicon)
+      // Both prefixes mean no rule owned the input — `resume` recovered the
+      // topic, but the sentence itself still went unanswered.
+      if (/^(fallback|resume)\./.test(turn.ruleId)) recordMiss(text, turn.ruleId)
       setTokens(turn.tokens)
       speak(turn)
     },
