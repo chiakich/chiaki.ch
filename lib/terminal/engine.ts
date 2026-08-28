@@ -450,15 +450,35 @@ const isEligible = (rule: Rule, session: Session, nameHit: string | null) => {
 
 type Candidate = { rule: Rule; score: number }
 
+// A clause that is asking something of its own: sentence-final 嗎/呢/嘛, the
+// V-了-沒 and A-not-A forms, or a wh-word. None of these can be an answer to her
+// question, however the yes/no tokens happen to fall inside them — 「有沒有可能」
+// opens on 有 and 「好不好」 on 好. [^不] keeps 「不不不」 a refusal rather than a
+// malformed A-not-A. 「對了」 is here as a topic shift: it opens on 對 and means
+// the opposite of agreeing.
+const INTERROGATIVE =
+  /(嗎|呢|嘛)$|了沒$|([^不])不\2|有沒有|^對了$|(什麼|甚麼|怎麼|為何|幾|哪|誰|多少)/
+
 /**
  * A `continues` rule outranks everything else by 500 points, so it must not be
  * satisfied by a stray 「好」 from the middle of an unrelated sentence — that is
  * how 「你覺得羽球好玩嗎」 ends up being read as a yes. An answer to a yes/no
- * question is either short, or it leads with the answer.
+ * question is either short, or it leads with the answer — and either way it is
+ * not itself a question.
+ *
+ * The interrogative test is what the position test could not do alone: 「你不會
+ * 冷嗎」 is five characters, so the short-input allowance waved it straight past
+ * and she read it as 「不」. Anchoring the patterns does not cover it either,
+ * since plenty of questions open on a yes/no token — 「有沒有可能」, 「好玩嗎」.
+ *
+ * Clause-wise rather than whole-string, so 「有啊，你呢」 still answers: the 有
+ * lands in a clause that is not asking anything.
  */
 const answersQuestion = (pattern: RegExp, clauses: string[], whole: string) => {
-  if (whole.length <= 6) return true
-  return clauses.some((clause) => pattern.exec(clause)?.index === 0)
+  const answering = clauses.filter((clause) => !INTERROGATIVE.test(clause))
+  if (answering.length === 0) return false
+  if (whole.length <= 6) return answering.some((clause) => pattern.test(clause))
+  return answering.some((clause) => pattern.exec(clause)?.index === 0)
 }
 
 /**

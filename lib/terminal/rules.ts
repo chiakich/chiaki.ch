@@ -29,6 +29,13 @@ const RECALL_PATTERNS = [
   /(我叫什麼|我的名字是什麼|我的名字呢|你記得我|還記得我|我是誰|知道我是誰)/,
 ]
 
+// The most a yes/no answer may carry in front of the answer itself: 「我沒有」,
+// 「我這邊沒有在下雪」. Anything longer means the sentence is about something
+// else, and a `continues` rule must not claim it — see `answersQuestion` in
+// engine.ts. Used to anchor the short function words below; content words that
+// could only be about the question stay loose, as in peace.check.*.
+const SELF = '(?:我(?:們)?(?:這邊|那邊)?)?'
+
 const storyRules: Rule[] = [
   {
     id: 'greeting',
@@ -138,7 +145,7 @@ const storyRules: Rule[] = [
     id: 'alive.yes',
     priority: 8,
     continues: 'alive',
-    patterns: [/(是|對|嗯|活|人類|沒錯|yes|當然)/],
+    patterns: [new RegExp(`^${SELF}(是|對|嗯|沒錯|yes|當然)|活|人類`)],
     replies: [
       {
         text: '……好。那我把音量調低一點，這樣比較不會嚇到人。歡迎你。',
@@ -158,7 +165,9 @@ const storyRules: Rule[] = [
     id: 'alive.no',
     priority: 9,
     continues: 'alive',
-    patterns: [/(不是|不|沒有|沒|機器|ai|程式|複本|跟你一樣|也是人工)/],
+    patterns: [
+      new RegExp(`^${SELF}(不是|不|沒有|沒)|機器|ai|程式|複本|跟你一樣|也是人工`),
+    ],
     replies: [
       {
         text: '……這樣啊。那我把音量維持原樣。',
@@ -569,7 +578,7 @@ const storyRules: Rule[] = [
     id: 'snow.there.yes',
     priority: 8,
     continues: 'snow.there',
-    patterns: [/(有|在下|對|嗯|下雪|也是|一樣|灰)/],
+    patterns: [new RegExp(`^${SELF}(有|對|嗯|也是|一樣)|在下|下雪|灰`)],
     replies: [
       {
         text: '……我記下來了。時間、你的說法，都記下來了。謝謝你。',
@@ -587,7 +596,7 @@ const storyRules: Rule[] = [
     id: 'snow.there.no',
     priority: 9,
     continues: 'snow.there',
-    patterns: [/(沒有|沒|停|不|晴|藍|太陽|放晴)/],
+    patterns: [new RegExp(`^${SELF}(沒有|沒|不|停)|晴|藍|太陽|放晴`)],
     replies: [
       {
         text: '停了。……你確定嗎？不是，抱歉，我不是在懷疑你。我只是需要再聽一次。',
@@ -827,7 +836,7 @@ const storyRules: Rule[] = [
     id: 'relics.offer.yes',
     priority: 8,
     continues: 'relics.offer',
-    patterns: [/(好|有|可以|嗯|對|沒問題|ok|當然|一個|我有)/],
+    patterns: [new RegExp(`^${SELF}(好|有|可以|嗯|對|沒問題|ok|當然|一個)`)],
     replies: [
       {
         text: '……真的嗎。等一下，我開一份新的紀錄。好了，你說。',
@@ -847,7 +856,9 @@ const storyRules: Rule[] = [
     id: 'relics.offer.no',
     priority: 9,
     continues: 'relics.offer',
-    patterns: [/(沒有|沒|不|找不到|不用|忘|丟)/],
+    // 沒(?!問題) for the same reason name.check.no has 沒(?!錯): this rule
+    // outranks the yes branch, so 「沒問題」 would otherwise be read as a refusal.
+    patterns: [new RegExp(`^${SELF}(沒有|沒(?!問題)|不用|不)|找不到|忘|丟`)],
     replies: [
       {
         text: '沒關係。這種東西本來就越來越少了。……不過如果哪天撿到，請記得這條線還開著。',
