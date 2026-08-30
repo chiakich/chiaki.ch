@@ -429,8 +429,10 @@ const Live2DModelClient: React.FC<Live2DModelClientProps> = ({
   return (
     <Box
       ref={containerRef}
-      width="100vw"
-      height="80vh"
+      style={{
+        width: fixedWidth ? `${fixedWidth}px` : '100vw',
+        height: fixedHeight ? `${fixedHeight}px` : '80vh',
+      }}
       position="relative"
       overflow="hidden"
       backgroundColor="transparent"

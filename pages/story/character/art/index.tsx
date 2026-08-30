@@ -1,6 +1,5 @@
 import type { NextPage } from 'next'
 import { Box } from 'styled-system/jsx'
-import CharacterIntroduction from 'components/character/CharacterIntroduction'
 import ProjectGallery from 'components/character/ProjectGallery'
 import { useState, useEffect } from 'react'
 import { useI18n } from 'i18n'
