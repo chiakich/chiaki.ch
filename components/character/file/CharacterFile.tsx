@@ -5,7 +5,7 @@ import Zoom from 'yet-another-react-lightbox/plugins/zoom'
 import 'yet-another-react-lightbox/styles.css'
 import { localizedPath, useI18n } from 'i18n'
 import { thumbSrc } from 'lib/imageThumb'
-import { HAIRLINE, LetterpressFilters, LetterpressStyles, RULE } from './letterpress'
+import { DossierFilters, DossierStyles, HAIRLINE, RULE } from './letterpress'
 import {
   AnnexHeading,
   AnnexPanel,
@@ -959,8 +959,8 @@ const CharacterFile = () => {
 
   return (
     <div className="lp" style={{ position: 'relative', minHeight: '100vh', paddingTop: canScroll ? 0 : 92 }}>
-      <LetterpressStyles />
-      <LetterpressFilters />
+      <DossierStyles />
+      <DossierFilters />
       {!canScroll && <PaperBase />}
 
       <div style={{ position: 'relative' }}>{canScroll ? track : stack}</div>

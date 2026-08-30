@@ -1,5 +1,6 @@
 import React from 'react'
 import { HAIRLINE, PANEL_BG, RULE } from './letterpress'
+import { Redacted } from 'kappan/react'
 import { styled } from 'styled-system/jsx'
 
 const Img = styled.img
@@ -71,34 +72,6 @@ export const AnnexPanel = ({ children }: { children: React.ReactNode }) => (
   >
     {children}
   </div>
-)
-
-// 中日字才吃鉛字歪斜；拉丁字太密，歪起來不自然。空格不包，包了會被 inline-block 吃掉。
-const CJ = /[\u2E80-\u9FFF\u3000-\u30FF\uF900-\uFAFF\uFF00-\uFFEF]/
-
-// 逐字包成 span，打字時才有辦法一個一個放出來；連續的 █ 換成黑條。
-export const Redacted = ({ text }: { text: string }) => (
-  <>
-    {text.split(/(█+)/).map((chunk, i) =>
-      chunk.startsWith('█') ? (
-        <span
-          key={i}
-          className="lp-ch bar"
-          style={{ '--bar-w': `${chunk.length * 14}px` } as React.CSSProperties}
-        />
-      ) : (
-        Array.from(chunk).map((ch, j) =>
-          ch === ' ' ? (
-            ' '
-          ) : (
-            <span key={`${i}-${j}`} className={CJ.test(ch) ? 'lp-ch cj' : 'lp-ch'}>
-              {ch}
-            </span>
-          )
-        )
-      )
-    )}
-  </>
 )
 
 export const Seal = ({
@@ -381,3 +354,6 @@ export const PaperBase = () => (
     <div className="lp-spine" aria-hidden="true" />
   </>
 )
+
+// 逐字包 span 的邏輯屬於鉛字排版本身，留在套件；這裡轉出讓同層元件照舊 import。
+export { Redacted }
