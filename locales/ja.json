@@ -15,7 +15,8 @@
     "akitra": "台鉄書体",
     "huninn": "粉圓",
     "terminal": "依代端末",
-    "zipcode": "郵便番号"
+    "zipcode": "郵便番号",
+    "letterpress": "活版印刷"
   },
   "language": {
     "label": "言語を切り替える",
@@ -100,6 +101,10 @@
     "terminal": {
       "title": "依代端末 - 千秋稲荷社",
       "description": "八雲秋狐の人格アーカイブ端末。千秋入力法の辞書で言葉と発音を解析し、Live2D で接続します。"
+    },
+    "letterpress": {
+      "title": "千秋印書館 — 活版印刷の質感を再現するウェブパッケージ - 千秋稲荷社",
+      "description": "活版印刷の手ざわりをウェブに戻す試み。紙の繊維、インクの濃淡、活字の傾きと欠け。中文縦組・中文横組・欧文横組の活字見本帖。"
     }
   },
   "home": {
@@ -136,6 +141,9 @@
       "zipcode": {
         "description": "貼り付けた台湾の住所そのままから郵便番号を引き、英文住所へ変換するオープンソースのパッケージ。台／臺や全角の表記ゆれを吸収し、道路名が全国で一意なら県市を自動で補い、私書箱にも対応します。1 回の検索は 2 マイクロ秒未満、すべてブラウザ内で完結。",
         "tag": "郵便番号"
+      },
+      "letterpress": {
+        "description": "活版印刷の手ざわりをウェブに戻すパッケージ。紙の繊維、インクの濃淡、活字の傾きと欠けを層ごとに重ねます。活字見本帖つき。"
       }
     },
     "specimens": {
@@ -143,7 +151,8 @@
       "kumikoAlt": "Kumiko フォント編集画面",
       "tokyonoAlt": "東京乃空 Plurk テーマ",
       "tgJpgReply": "送信できる最初の GIF を見つけました",
-      "zipcodeHint": "道路名が一意 · 県市を自動補完"
+      "zipcodeHint": "道路名が一意 · 県市を自動補完",
+      "letterpressSample": "印書館"
     }
   },
   "fontsPage": {
@@ -767,6 +776,46 @@
     "currentTime": "現在時刻",
     "boardDestinations": "羽田空港　品川　新橋　浅草　方面",
     "boardCaption": "2022 年に引退した京急川崎駅「パタパタ」発車標へのオマージュ"
+  },
+  "letterpressPage": {
+    "house": "千秋印書館",
+    "intro": "紙の繊維、インクの濃淡、活字の傾き、刷りの欠けをデジタルで模す。ウェブ上で活版印刷を再現する試みです。",
+    "specimenTitle": "活字見本",
+    "facesTitle": "書体見本",
+    "modesTitle": "縦組と横組",
+    "dialTexture": "紙の質感",
+    "dialStrength": "インクの強さ",
+    "dialLean": "傾きの強さ",
+    "dialWeight": "インクの濃淡",
+    "modeVertical": "中文縦組",
+    "modeHorizontal": "中文横組",
+    "modeEnglish": "欧文横組",
+    "playTitle": "試し組み",
+    "playDirection": "組方向",
+    "playHorizontal": "横組",
+    "playVertical": "縦組",
+    "playSize": "級数",
+    "playSizeHint": "先に範囲を選んでから級数を押します",
+    "playSizeCustom": "級数を直接入力（Enter か「適用」）",
+    "playApply": "適用",
+    "playPitch": "行送り",
+    "playTracking": "字間",
+    "playFace": "書体",
+    "playWeight": "ウェイト",
+    "playExport": "書き出し",
+    "playHint": "組版は入力欄を離れてから —— 字ごとに分解するため、入力中に行うと変換が壊れます。",
+    "playLoading": "emfont から取得中…",
+    "playPrivacy": "Webfont サービスは emfont 提供",
+    "usageTitle": "使い方",
+    "usagePlain": "フレームワークなし",
+    "caveatTitle": "使う前に",
+    "caveat1": "書体は自前で用意します。オープンソース、システムフォント、justfont の webfont サービス、どれでも構いません。",
+    "caveat2": "縦組の約物には縦組用字形を持つ書体を別途当てる必要があります。多くの明朝にはありません。",
+    "caveat3": "ページ全体の文字にフィルターをかけると Safari では重くなります。文字量が多いときは見出しだけに。",
+    "playDownloaded": "今回の通信量",
+    "playFaceError": "書体の取得に失敗しました",
+    "playExportError": "書き出しに失敗しました。別のブラウザか SVG をお試しください",
+    "playResizeHint": "入力欄は右下をドラッグして大きさを変えられます。"
   },
   "zipcodePage": {
     "eyebrow": "住所をまるごと貼るだけ",

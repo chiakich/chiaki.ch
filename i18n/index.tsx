@@ -103,6 +103,7 @@ const LOCALIZED_ROUTES = new Set([
   'works/kumiko',
   'works/tg-jpg',
   'works/split-flap',
+  'works/letterpress',
   'works/tokyono-sora',
   'fonts',
   'fonts/akitra',

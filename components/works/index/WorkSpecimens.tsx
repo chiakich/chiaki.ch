@@ -4,6 +4,8 @@ import { Box, Flex, Grid, HStack, styled } from 'styled-system/jsx'
 import VerticalCandidateMenu from 'components/works/chiakey/VerticalCandidateMenu'
 import { useI18n } from 'i18n'
 import { LazyImg as Image } from 'components/ui/LazyImg'
+import { LetterpressFilters, LetterpressStyles } from 'kappan/react'
+import { DEMO_OPTIONS, demoCss } from 'components/works/letterpress/pressOptions'
 
 // Flap components are client-only (react-split-flap injects styles at runtime)
 export const SplitFlapSpecimen = dynamic(() => import('components/works/split-flap/BoardSpecimen'), { ssr: false })
@@ -32,6 +34,28 @@ export const KumikoSpecimen = () => {
   <Box width="100%" height="100%" backgroundColor="#17181b" position="relative" overflow="hidden">
     <Image src="/assets/works/kumiko/editor.webp" alt={t('worksPage.specimens.kumikoAlt')} width="100%" height="100%" objectFit="cover" objectPosition="center" opacity={.85} />
     <m.div style={{ position: 'absolute', left: 16, bottom: 14, background: 'rgba(23,24,27,.85)', border: '1px solid rgba(255,234,47,.4)', borderRadius: 8, padding: '6px 12px', fontFamily: 'monospace', color: '#ffea2f', fontSize: 13 }} animate={{ opacity: [.55, 1, .55] }} transition={{ duration: 3.2, repeat: Infinity }}>⿰糹扁 → 編</m.div>
+  </Box>
+  )
+}
+
+export const LetterpressSpecimen = () => {
+  const { t } = useI18n()
+  return (
+  <Box className="lp" width="100%" height="100%" position="relative" overflow="hidden">
+    {/* 這張卡是索引頁唯一用到質感層的地方，樣式與濾鏡就掛在這裡。
+        demoCss 也要跟著 —— 一點明體子集的 @font-face 只寫在那裡，
+        少了它這張卡會掉回系統明體，跟點進去之後的字不一樣。 */}
+    <LetterpressStyles {...DEMO_OPTIONS} />
+    <LetterpressFilters {...DEMO_OPTIONS} />
+    <style dangerouslySetInnerHTML={{ __html: demoCss }} />
+    <i className="lp-fibre" />
+    <i className="lp-expose" />
+    <i className="lp-grain" />
+    <Box position="relative" zIndex={1} height="100%" display="flex" alignItems="center" justifyContent="center">
+      <Text className="sg lp-v" style={{ fontSize: 'clamp(30px, 5vw, 44px)', letterSpacing: '.3em', textIndent: '.15em', fontWeight: 600 }}>
+        {t('worksPage.specimens.letterpressSample')}
+      </Text>
+    </Box>
   </Box>
   )
 }

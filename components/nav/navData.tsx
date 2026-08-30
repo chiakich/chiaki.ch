@@ -7,6 +7,7 @@ import {
   CollectionIcon,
   HuninnIcon,
   KumikoIcon,
+  LetterpressIcon,
   NixieIcon,
   SplitFlapIcon,
   StoryIcon,
@@ -99,6 +100,12 @@ export const getNavSections = (t: Translate): Record<string, NavSection> => ({
         title: 'Split Flap',
         path: '/works/split-flap',
         icon: <SplitFlapIcon />,
+      },
+      {
+        id: 'letterpress',
+        title: t('nav.letterpress'),
+        path: '/works/letterpress',
+        icon: <LetterpressIcon />,
       },
       {
         id: 'tw-fuzzy-zipcode',

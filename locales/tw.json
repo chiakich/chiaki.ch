@@ -15,7 +15,8 @@
     "akitra": "台鐵字體",
     "huninn": "粉圓",
     "terminal": "依代端末",
-    "zipcode": "郵遞區號"
+    "zipcode": "郵遞區號",
+    "letterpress": "活版印刷"
   },
   "language": {
     "label": "切換語言",
@@ -100,6 +101,10 @@
     "terminal": {
       "title": "依代端末 - 千秋稻荷社",
       "description": "八雲秋狐的人格檔案端末：以千秋輸入法詞庫解析語句與讀音，透過 Live2D 建立連線。"
+    },
+    "letterpress": {
+      "title": "千秋印書館 — 活版印刷質感的網頁套件 - 千秋稻荷社",
+      "description": "把活版印刷的手感做回網頁上：紙的纖維、墨的濃淡、鉛字的歪斜與缺角。中文直排、中文橫排與英文橫排的活字見本帖。"
     }
   },
   "home": {
@@ -136,6 +141,9 @@
       "zipcode": {
         "description": "從使用者貼上的整串台灣地址，查郵遞區號並翻成英文地址的開源套件：認得台／臺與全半形寫法，路名全臺唯一時自動補回縣市，也支援郵政信箱；單次查詢不到 2 微秒，全部在瀏覽器裡完成。",
         "tag": "郵遞區號"
+      },
+      "letterpress": {
+        "description": "把活版印刷的手感做回網頁上的套件：紙的纖維、墨的濃淡、鉛字的歪斜與缺角，一層一層疊回去。附一本活字見本帖。"
       }
     },
     "specimens": {
@@ -143,7 +151,8 @@
       "kumikoAlt": "Kumiko 字體編輯畫面",
       "tokyonoAlt": "東京乃空噗浪佈景",
       "tgJpgReply": "找到第一張可以傳送的圖片",
-      "zipcodeHint": "若路名唯一，會自動補齊縣市"
+      "zipcodeHint": "若路名唯一，會自動補齊縣市",
+      "letterpressSample": "印書館"
     }
   },
   "fontsPage": {
@@ -778,6 +787,46 @@
     "currentTime": "現在時刻",
     "boardDestinations": "羽田空港　品川　新橋　浅草　方面",
     "boardCaption": "致敬 2022 年退役的京急川崎駅「パタパタ」發車標"
+  },
+  "letterpressPage": {
+    "house": "千秋印書館",
+    "intro": "在數位中模擬紙的纖維，墨的濃淡，鉛字的歪斜，印刷的缺損。一個在網頁上重現活版印刷的專案。",
+    "specimenTitle": "活字見本",
+    "facesTitle": "字體見本",
+    "modesTitle": "豎排與橫排",
+    "dialTexture": "紙紋",
+    "dialStrength": "墨壓強度",
+    "dialLean": "歪斜程度",
+    "dialWeight": "墨色濃淡",
+    "modeVertical": "中文豎排",
+    "modeHorizontal": "中文橫排",
+    "modeEnglish": "英文橫排",
+    "playTitle": "試打",
+    "playDirection": "排向",
+    "playHorizontal": "橫排",
+    "playVertical": "直排",
+    "playSize": "字級",
+    "playSizeHint": "先選取一段字，再按字級",
+    "playSizeCustom": "自訂字級（按 Enter 或「套用」）",
+    "playApply": "套用",
+    "playPitch": "行高",
+    "playTracking": "字距",
+    "playFace": "字體",
+    "playWeight": "字重",
+    "playExport": "匯出",
+    "playHint": "離開輸入框才會上版排字 —— 逐字歪斜要把每個字拆開，邊打邊拆會弄壞輸入法。",
+    "playLoading": "向 emfont 取字中…",
+    "playPrivacy": "Webfont 服務由 emfont 提供",
+    "usageTitle": "用法",
+    "usagePlain": "不用框架",
+    "caveatTitle": "使用前要知道",
+    "caveat1": "字體要自己準備。開源自架、系統字、或申請 justfont 的 webfont 服務都可以。",
+    "caveat2": "直排的標點要另外指一套有直排字形的字，多數明體沒有。",
+    "caveat3": "整頁大量文字都套濾鏡，Safari 上會鈍。文字多時建議只給標題。",
+    "playDownloaded": "本次下載",
+    "playFaceError": "字體取得失敗，請再試一次",
+    "playExportError": "匯出失敗，請改用其他瀏覽器或改存 SVG",
+    "playResizeHint": "輸入框右下角可以拖曳調整大小。"
   },
   "zipcodePage": {
     "eyebrow": "把整串地址丟進來就好",

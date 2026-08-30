@@ -151,6 +151,28 @@ export const SplitFlapIcon = (props: IconProps) => (
   </svg>
 )
 
+// letterpress：一顆鉛字。字面朝上，下緣一道鑄字的凹槽（nick）
+export const LetterpressIcon = (props: IconProps) => (
+  <svg {...svgProps} {...props}>
+    <rect x="11" y="6" width="26" height="36" rx="2" />
+    <rect x="15" y="10" width="18" height="18" rx="1" />
+    <text
+      x="24"
+      y="19"
+      textAnchor="middle"
+      dominantBaseline="central"
+      fontSize="12"
+      fontWeight="bold"
+      fill="currentColor"
+      stroke="none"
+    >
+      活
+    </text>
+    <path d="M11 35h26" opacity=".7" />
+    <path d="M20 38h8" opacity=".7" />
+  </svg>
+)
+
 // tw-fuzzy-zipcode：信封上的郵遞區號格
 export const ZipcodeIcon = (props: IconProps) => (
   <svg {...svgProps} {...props}>

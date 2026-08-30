@@ -15,7 +15,8 @@
     "akitra": "Taiwan Railways Typeface",
     "huninn": "Huninn",
     "terminal": "Yorishiro Terminal",
-    "zipcode": "ZIP Code"
+    "zipcode": "ZIP Code",
+    "letterpress": "Letterpress"
   },
   "language": {
     "label": "Change language",
@@ -100,6 +101,10 @@
     "terminal": {
       "title": "Yorishiro Terminal - Chiaki Inari Shrine",
       "description": "Yakumo Akitsune's personality archive terminal, using the ChiaKey Lexicon for language and pronunciation with a Live2D connection."
+    },
+    "letterpress": {
+      "title": "千秋印書館 — a framework-free letterpress package for the web - Chiaki Inari Shrine",
+      "description": "Putting the feel of letterpress back into a web page: paper fibre, ink weight, and the lean and chipped corners of worn type. A specimen sheet in vertical Chinese, horizontal Chinese and English."
     }
   },
   "home": {
@@ -136,6 +141,9 @@
       "zipcode": {
         "description": "An open-source package that turns a pasted Taiwan address into a ZIP code and English address: it normalizes 台/臺 and full-width text, fills in the missing city when a road name is unique nationwide, and handles P.O. boxes — under 2 µs per lookup, entirely in the browser.",
         "tag": "ZIP code"
+      },
+      "letterpress": {
+        "description": "A package that puts the feel of letterpress back into a web page — paper fibre, ink weight, and the lean and chipped corners of worn type, layer by layer. With a type specimen sheet."
       }
     },
     "specimens": {
@@ -143,7 +151,8 @@
       "kumikoAlt": "Kumiko font editor screen",
       "tokyonoAlt": "Tokyono Sora Plurk theme",
       "tgJpgReply": "Found the first sendable GIF",
-      "zipcodeHint": "Unique road · city filled in"
+      "zipcodeHint": "Unique road · city filled in",
+      "letterpressSample": "印書館"
     }
   },
   "fontsPage": {
@@ -773,6 +782,46 @@
     "currentTime": "Current time",
     "boardDestinations": "For Haneda Airport, Shinagawa, Shimbashi & Asakusa",
     "boardCaption": "A tribute to Keikyu Kawasaki Station’s pata-pata departure board, retired in 2022"
+  },
+  "letterpressPage": {
+    "house": "千秋印書館",
+    "intro": "Simulating in the digital the fibre of the paper, the weight of the ink, the lean of the type, the flaws of the impression. A project that reproduces letterpress printing on the web.",
+    "specimenTitle": "活字見本",
+    "facesTitle": "Specimen of faces",
+    "modesTitle": "Vertical and horizontal",
+    "dialTexture": "Paper",
+    "dialStrength": "Ink strength",
+    "dialLean": "Lean",
+    "dialWeight": "Ink weight",
+    "modeVertical": "Chinese, vertical",
+    "modeHorizontal": "Chinese, horizontal",
+    "modeEnglish": "English, horizontal",
+    "playTitle": "Set your own",
+    "playDirection": "Direction",
+    "playHorizontal": "Horizontal",
+    "playVertical": "Vertical",
+    "playSize": "Size",
+    "playSizeHint": "Select some text first, then pick a size",
+    "playSizeCustom": "Custom size (Enter or Apply)",
+    "playApply": "Apply",
+    "playPitch": "Leading",
+    "playTracking": "Tracking",
+    "playFace": "Face",
+    "playWeight": "Weight",
+    "playExport": "Export",
+    "playHint": "Composition happens when you leave the box — the jitter splits every character, and doing that mid-typing breaks input methods.",
+    "playLoading": "Fetching from emfont…",
+    "playPrivacy": "Webfont service by emfont",
+    "usageTitle": "Usage",
+    "usagePlain": "Without a framework",
+    "caveatTitle": "Before you use it",
+    "caveat1": "Bring your own face — open source, a system font, or a justfont webfont subscription all work.",
+    "caveat2": "Vertical setting needs a separate face with vertical forms for the punctuation; most Ming faces have none.",
+    "caveat3": "Filtering a whole page of text is slow on Safari. With a lot of copy, keep it to the headings.",
+    "playDownloaded": "Downloaded",
+    "playFaceError": "Could not fetch the face; try again",
+    "playExportError": "Export failed — try another browser, or save as SVG",
+    "playResizeHint": "Drag the corner of the box to resize it."
   },
   "zipcodePage": {
     "eyebrow": "Paste the whole address and be done",

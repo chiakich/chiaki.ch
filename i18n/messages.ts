@@ -43,6 +43,7 @@ export const PAGE_NAMESPACES: Record<string, string[]> = {
   'works/kumiko': ['kumikoPage'],
   'works/tg-jpg': ['tgJpgPage'],
   'works/split-flap': ['splitFlapPage'],
+  'works/letterpress': ['letterpressPage'],
   'works/tw-address-tools': ['zipcodePage'],
   'works/tw-fuzzy-zipcode': [],
   'works/tokyono-sora': [],
