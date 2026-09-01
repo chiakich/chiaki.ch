@@ -15,7 +15,7 @@ draft: true
 （沒有紙就沒有鉛字。纖維的方向性、曝光不均、噪點、髒污。）
 
 ```widget
-{ "name": "letterpress-layers", "layer": "paper" }
+{ "name": "letterpress-press", "only": "paper" }
 ```
 
 ## 二、墨
@@ -23,43 +23,54 @@ draft: true
 （墨會滲進纖維 → 邊緣暈開；壓力又把字面沾的墨往外擠 → 整個字胖一圈。）
 
 ```widget
-{ "name": "letterpress-layers", "layer": "ink" }
+{ "name": "letterpress-press", "only": "ink" }
 ```
 
 ## 三、壓
 
-（紙面不平，字被推歪；鉛字用久了會磨損崩角。）
+（壓力輕了印不滿，重了墨被擠出邊緣。有趣的是壓力大反而讓紙被壓平，筆畫推歪變少。）
 
 ```widget
-{ "name": "letterpress-layers", "layer": "press", "text": "活版印刷" }
+{ "name": "letterpress-press", "only": "pressure", "text": "活版印刷" }
 ```
 
-## 四、一支濾鏡不夠
+## 四、字
 
-（轉折：同一組參數，小字好看、大字散掉。因為噪點週期是絕對長度，不會跟著字級放大。
+（鉛字會磨損。新字的缺陷是表面細斑點，舊字是真的崩掉一角 —— 不只變多，尺度也變大。）
+
+```widget
+{ "name": "letterpress-press", "only": "wear" }
+```
+
+## 五、一支濾鏡不夠
+
+（轉折：上面四個成因都調好了，換個字級卻整個垮掉。因為缺角與缺塊的尺度是絕對長度，
+不會跟著字級放大 —— 小字上的斑駁，放到 60px 就變成整塊筆畫被剪掉。
 所以大字要改走「調密度」而不是「挖」。）
 
 ```widget
-{ "name": "letterpress-layers", "layer": "press", "text": "見本", "size": 72 }
+{ "name": "letterpress-press", "only": "size", "text": "見本" }
 ```
 
-## 五、排字
+## 六、排字
 
-（一顆一顆排上去的，位置和沾墨都不一樣。逐字歪斜、逐字濃淡。）
+（一顆一顆排上去的，位置和沾墨都不一樣。逐字歪斜、逐字濃淡。
+　週期是 11／13／17／23 這些互質的大數，整段看下去才不會露出循環 ——
+　所以這裡的樣字非得是一整句不可，四個字是看不出來的。）
 
 ```widget
-{ "name": "letterpress-layers", "layer": "set", "text": "常世通信 第一號" }
+{ "name": "letterpress-press", "only": "set" }
 ```
 
 ## 附：自己玩玩看
 
-（五道濾鏡，每道都能單獨開關與調整。從「全部關掉」按起，一道一道加回去。）
+（四個成因加上字級，全部湊在一起。幾組預設是常見的印壞情況。）
 
 ```widget
-{ "name": "letterpress-chain" }
+{ "name": "letterpress-press" }
 ```
 
-## 六、然後 Safari 給了一腳
+## 七、然後 Safari 給了一腳
 
 （簡單提：次像素的 feGaussianBlur 兩個引擎實作不同。單看 blur 沒事，
 blur 之後再把 alpha 拉硬才會爆 —— 這是唯一反直覺、值得記住的一句。
