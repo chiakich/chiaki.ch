@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom'
 import { LetterpressStyles } from 'kappan/react'
 import { demoCss, DEMO_OPTIONS } from 'components/works/letterpress/pressOptions'
 import LetterpressLayers from './LetterpressLayers'
+import LetterpressChain from './LetterpressChain'
 
 /**
  * 把 ```widget 佔位符換成真的元件。
@@ -15,6 +16,7 @@ import LetterpressLayers from './LetterpressLayers'
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const REGISTRY: Record<string, React.ComponentType<any>> = {
   'letterpress-layers': LetterpressLayers,
+  'letterpress-chain': LetterpressChain,
 }
 
 type Mount = { el: HTMLElement; name: string; props: Record<string, unknown> }

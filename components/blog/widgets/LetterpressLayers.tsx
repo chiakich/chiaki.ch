@@ -58,7 +58,7 @@ const LetterpressLayers = ({
   // strength 會把位移、脹開、缺角一起縮放，那樣就沒辦法一次只動一層。
   const filters: FilterTuning = {
     text: {
-      bleed: ink > 0,
+      bleed: ink > 0 ? 3 : false,
       dilate: 0.3 * ink,
       contrast: 1 + 2.2 * ink,
       threshold: -0.06 * ink,

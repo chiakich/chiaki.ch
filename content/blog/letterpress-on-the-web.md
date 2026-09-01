@@ -51,6 +51,14 @@ draft: true
 { "name": "letterpress-layers", "layer": "set", "text": "常世通信 第一號" }
 ```
 
+## 附：自己玩玩看
+
+（五道濾鏡，每道都能單獨開關與調整。從「全部關掉」按起，一道一道加回去。）
+
+```widget
+{ "name": "letterpress-chain" }
+```
+
 ## 六、然後 Safari 給了一腳
 
 （簡單提：次像素的 feGaussianBlur 兩個引擎實作不同。單看 blur 沒事，
