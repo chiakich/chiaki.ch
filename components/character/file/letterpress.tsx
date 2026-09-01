@@ -21,6 +21,24 @@ const dossierCss = `
 /* 手寫批註。套件只管印刷，手寫是這一頁自己的東西，所以規則留在這裡。 */
 .lp .hand { font-family: 'huninn', 'Noto Sans TC', sans-serif; color: var(--red); filter: var(--lp-t); }
 
+/* 蓋章與逐字打字。同樣不屬於套件 —— 質感是靜態的，這兩個要 JS 切 class 才會動，
+   而且只有這一頁在用。留在 kappan 裡會害它沒辦法宣稱自己不執行任何東西。
+   .lp-ch 由 kappan 的 <Redacted> 產生，.pending 是這裡外掛上去的。 */
+@keyframes lp-press {
+  0% { opacity: 0; transform: scale(1.55) rotate(var(--press-rot, -6deg)); }
+  55% { opacity: .95; transform: scale(.94) rotate(var(--press-rot, -6deg)); }
+  75% { transform: scale(1.03) rotate(var(--press-rot, -6deg)); }
+  100% { opacity: .84; transform: scale(1) rotate(var(--press-rot, -6deg)); }
+}
+.lp-press { opacity: 0; }
+.lp-press.pressed { animation: lp-press .42s cubic-bezier(.2, .9, .3, 1) forwards; }
+.lp-ch.pending { opacity: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-press { opacity: .84; animation: none; }
+  .lp-ch.pending { opacity: 1; }
+}
+
 /* SSR 先送出橫排備援；寬螢幕會在水合後換直排，先藏住免得閃一下橫排。
    JS 沒跑起來的話 1.3 秒後自己現身。 */
 @keyframes lp-boot-in { to { opacity: 1; } }
