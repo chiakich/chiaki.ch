@@ -1,5 +1,5 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import NextLink from 'next/link'
 import { m } from 'framer-motion'
 import { Box, Flex, HStack, styled } from 'styled-system/jsx'
@@ -7,6 +7,7 @@ import { css } from 'styled-system/css'
 import { getPost, getPostSlugs, type Post } from 'lib/blog'
 import { getMessages } from 'i18n/messages'
 import type { PageMetaOverride } from 'components/PageMeta'
+import BlogWidgets from 'components/blog/widgets'
 
 const Heading = styled.h1
 const Span = styled.span
@@ -86,6 +87,11 @@ const prose = css({
     lineHeight: '1.6',
   },
   '& pre code': { backgroundColor: 'transparent', p: 0, fontSize: 'inherit' },
+  // Widgets are figures, not prose — keep the reading rhythm around them but
+  // stop the prose rules leaking into their own markup.
+  '& [data-blog-widget]': { my: 10 },
+  '& [data-blog-widget] p': { my: 0 },
+  '& [data-blog-widget] a': { border: 'none' },
   // Minimal highlight.js palette, readable on both themes
   '& .hljs-comment, & .hljs-quote': { color: 'var(--prose-muted)', fontStyle: 'italic' },
   '& .hljs-keyword, & .hljs-selector-tag, & .hljs-built_in': { color: '#c678dd' },
@@ -122,6 +128,7 @@ const formatDate = (iso: string) => iso.replace(/-/g, '.')
 
 const BlogPost: NextPage<{ post: Post }> = ({ post }) => {
   const [theme, setTheme] = useState<Theme>('dark')
+  const proseRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const stored = window.localStorage.getItem(STORAGE_KEY)
@@ -270,7 +277,8 @@ const BlogPost: NextPage<{ post: Post }> = ({ post }) => {
           px={{ base: theme === 'light' ? '16px' : '0', md: theme === 'light' ? '40px' : '0' }}
           py={theme === 'light' ? { base: 6, md: 10 } : '0'}
         >
-          <div className={prose} dangerouslySetInnerHTML={{ __html: post.html }} />
+          <div ref={proseRef} className={prose} dangerouslySetInnerHTML={{ __html: post.html }} />
+          <BlogWidgets containerRef={proseRef} />
         </Box>
 
         {/* Footer: back to list */}

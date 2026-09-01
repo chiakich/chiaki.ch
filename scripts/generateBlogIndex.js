@@ -20,9 +20,12 @@ const slugs = fs
   .filter((f) => f.endsWith('.md'))
   .map((f) => f.replace(/\.md$/, ''))
 
+// `draft: true` keeps a post out of the list while still building its page,
+// so a work-in-progress is reachable by URL without being announced.
 const posts = slugs
   .map((slug) => {
     const { data } = matter(fs.readFileSync(path.join(BLOG_DIR, `${slug}.md`), 'utf-8'))
+    if (data.draft) return null
     return {
       slug,
       title: data.title ?? slug,
@@ -34,6 +37,7 @@ const posts = slugs
       readingTime: data.readingTime ?? 1,
     }
   })
+  .filter(Boolean)
   .sort((a, b) => (a.date < b.date ? 1 : -1))
 
 fs.writeFileSync(OUT, JSON.stringify(posts, null, 2) + '\n', 'utf-8')

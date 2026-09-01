@@ -9,6 +9,7 @@ import rehypeSlug from 'rehype-slug'
 import rehypeHighlight from 'rehype-highlight'
 import rehypeStringify from 'rehype-stringify'
 import { rehypeBlogMedia } from './rehypeBlogMedia'
+import { rehypeBlogWidget } from './rehypeBlogWidget'
 
 export interface PostMeta {
   slug: string
@@ -69,6 +70,8 @@ const renderMarkdown = async (content: string): Promise<string> => {
     .use(remarkGfm)
     .use(remarkRehype)
     .use(rehypeSlug)
+    // Before rehypeHighlight, or `detect: true` tries to syntax-colour the JSON.
+    .use(rehypeBlogWidget)
     .use(rehypeHighlight, { detect: true })
     .use(rehypeBlogMedia)
     .use(rehypeStringify)
