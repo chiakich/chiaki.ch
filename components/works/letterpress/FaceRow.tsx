@@ -28,7 +28,7 @@ const FaceRow = ({
       {`${name} · ${note}`}
     </Text>
     <Text
-      className="sg lp-xl"
+      className="sg lp-f-x"
       style={{
         fontFamily: stack,
         fontSize: 42,

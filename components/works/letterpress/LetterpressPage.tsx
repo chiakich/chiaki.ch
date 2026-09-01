@@ -120,13 +120,13 @@ const LetterpressPage = () => {
         <Container maxW="920px" px={{ base: '24px', md: '40px' }}>
           {/* ── 扉頁 ───────────────────────────────────────── */}
           <Box textAlign="center" mb={{ base: 14, md: 20 }}>
-            {/* 拉丁小字吃不太到 -t，那支是照漢字筆畫調的；扉頁這行放大並換 .lp-xl 才看得出墨壓。 */}
-            <Text className="tp lp-xl" style={{ fontSize: 23, letterSpacing: '.22em', textIndent: '.11em' }}>
+            {/* 拉丁小字吃不太到 -t，那支是照漢字筆畫調的；扉頁這行放大並換 .lp-f-x 才看得出墨壓。 */}
+            <Text className="tp lp-f-x" style={{ fontSize: 23, letterSpacing: '.22em', textIndent: '.11em' }}>
               CHIAKI LETTERPRESS WORKS
             </Text>
             <Heading
               as="h1"
-              className="sg lp-xl"
+              className="sg lp-f-x"
               mt={5}
               style={{ fontSize: 'clamp(38px, 8vw, 76px)', fontWeight: 600, letterSpacing: '.34em', textIndent: '.17em', lineHeight: 1.3 }}
             >

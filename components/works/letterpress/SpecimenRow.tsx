@@ -6,7 +6,7 @@ const Text = styled.p
 /**
  * 見本帖的一行：上面一行英文級數名，下面一行漢字樣張。
  *
- * 31px 以上換上 .lp-xl 那支濾鏡。噪點的週期是絕對長度，不會跟著字級放大，
+ * 31px 以上換上 .lp-f-x 那支濾鏡。噪點的週期是絕對長度，不會跟著字級放大，
  * 一般那三支套在 68px 的字上細到看不見，斑駁感就整個不見了。
  */
 const SpecimenRow = ({ name, size, text }: { name: string; size: number; text: string }) => (
@@ -18,7 +18,7 @@ const SpecimenRow = ({ name, size, text }: { name: string; size: number; text: s
       {name}
     </Text>
     <Text
-      className={`sg${size >= 31 ? ' lp-xl' : ''}`}
+      className={`sg${size >= 31 ? ' lp-f-x' : ''}`}
       style={{
         fontSize: size,
         fontWeight: 600,
