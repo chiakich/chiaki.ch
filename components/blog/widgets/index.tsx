@@ -12,7 +12,6 @@ import LetterpressPress from './LetterpressPress'
  * hydration 落差。代價是 widget 需要 JS，靜態輸出裡只有一個空盒子。
  */
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const REGISTRY: Record<string, React.ComponentType<any>> = {
   'letterpress-press': LetterpressPress,
 }

@@ -16,8 +16,6 @@
     "baseUrl": ".",
     "incremental": true,
     "paths": {
-      "kappan": ["packages/kappan/src"],
-      "kappan/*": ["packages/kappan/src/*"],
       "@icon/*": ["public/assets/icon/*"],
       "@img/*": ["public/assets/img/*"]
     }

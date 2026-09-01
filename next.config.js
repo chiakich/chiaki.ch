@@ -3,7 +3,8 @@ const nextConfig = {
   reactStrictMode: true,
   output: 'export',
   // react-split-flap ships type:module with a CJS .js main; bundle it instead of requiring it
-  transpilePackages: ['react-split-flap'],
+  // kappan 直接發 TS 原始碼（沒有建置步驟），所以要讓 Next 自己轉。
+  transpilePackages: ['react-split-flap', 'kappan'],
   // Assets are resized and re-encoded ahead of time by scripts/optimizeAssets.js,
   // so there is nothing left for a loader to do.
   images: {

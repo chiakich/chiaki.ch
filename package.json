@@ -25,8 +25,7 @@
     "generate-live2d-texture": "node scripts/generateLive2DTexture.js",
     "generate-live2d-r5-texture": "node scripts/generateLive2DR5Texture.js",
     "update-projects": "node scripts/generateProjectIndex.js",
-    "update-character": "npm run optimize-assets && npm run update-projects",
-    "build:kappan": "esbuild packages/kappan/scripts/build-dist.ts --bundle --platform=node --format=esm --outfile=packages/kappan/scripts/.build-dist.mjs --log-level=error && node packages/kappan/scripts/.build-dist.mjs"
+    "update-character": "npm run optimize-assets && npm run update-projects"
   },
   "dependencies": {
     "@react-three/fiber": "^9.2.0",
@@ -34,6 +33,7 @@
     "gray-matter": "^4.0.3",
     "gsap": "^3.13.0",
     "iconoir-react": "^7.11.1",
+    "kappan": "github:chiakich/kappan#main",
     "next": "^15.3.2",
     "pixi-live2d-display": "0.4.0",
     "pixi.js": "6.5.10",
