@@ -143,7 +143,9 @@ const LetterpressPage = () => {
           {/* ── 活字見本 ───────────────────────────────────── */}
           <Box mb={{ base: 14, md: 20 }}>
             <Caption en="SPECIMEN OF CHINESE TYPE">{t('letterpressPage.specimenTitle')}</Caption>
-            <Stack gap={{ base: 8, md: 10 }}>
+            {/* 實體見本帖是 A4 大小的紙，螢幕不是。整份等比放大，號數之間的比例才留得住 ——
+                美華書館這套只到一號，硬加初號就是杜撰。 */}
+            <Stack gap={{ base: 8, md: 10 }} style={{ '--lp-scale': 1.6 } as React.CSSProperties}>
               {SPECIMEN_ROWS.map((row) => (
                 <SpecimenRow key={row.name} {...row} />
               ))}

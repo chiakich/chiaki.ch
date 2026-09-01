@@ -1,14 +1,24 @@
 // 見本帖上的樣張內容。這是「字」本身的樣品，不是介面文案，所以三個語系都印同一份 ——
 // 中文直排那塊在英文版也該印中文，不然就不叫中文見本了。
 
-/** 見本行。字級由大到小，英文級數名照美華書館見本帖的用語。 */
+/**
+ * 見本行，仿美華書館的見本帖。
+ *
+ * 那六個英文名不是隨手配的級數名，是美華書館拿來標自己漢字活字的分類。早期各地做的
+ * 漢字活字尺寸並不統一（戴爾、柏林、巴黎、香港、上海各一套），美華書館蒐集之後把它們
+ * 歸到最接近的西文字身上再編號，號數制就是這麼固定下來的。
+ *
+ * 兩套名字說的是同一批活字：五號 Small Pica、二號 Double Small Pica，而號數表上
+ * 二號正好是五號的兩倍；六號 Brevier、三號 Two-line Brevier，也正好兩倍。
+ * 所以這裡並列著印，字級直接用號數 class。
+ */
 export const SPECIMEN_ROWS = [
-  { name: 'Double Pica.', size: 68, text: '千秋印書館' },
-  { name: 'Double Small Pica.', size: 52, text: '常世電子活版所' },
-  { name: 'Two-line Brevier.', size: 40, text: '代印中西各種書籍' },
-  { name: 'Three-line Diamond.', size: 31, text: '鉛字紙墨與印工俱備' },
-  { name: 'Small Pica.', size: 23, text: '本館開設以來已有五十餘年' },
-  { name: 'Brevier.', size: 17, text: '承印經史子集章程契據名帖傳單' },
+  { hao: '一號', name: 'Double Pica.', cls: 'lp-sz-1', text: '千秋印書館' },
+  { hao: '二號', name: 'Double Small Pica.', cls: 'lp-sz-2', text: '常世電子活版所' },
+  { hao: '三號', name: 'Two-line Brevier.', cls: 'lp-sz-3', text: '代印中西各種書籍' },
+  { hao: '四號', name: 'Three-line Diamond.', cls: 'lp-sz-4', text: '鉛字紙墨與印工俱備' },
+  { hao: '五號', name: 'Small Pica.', cls: 'lp-sz-5', text: '本館開設以來已有五十餘年' },
+  { hao: '六號', name: 'Brevier.', cls: 'lp-sz-6', text: '承印經史子集章程契據名帖傳單' },
 ]
 
 /** 中文樣張。直排與橫排印的是同一份，才對照得出差別。 */
