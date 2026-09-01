@@ -5,13 +5,15 @@
  * 除了濾鏡參數以外的一切本來就只是 CSS 變數 —— 靜態檔完全夠用，不需要建置步驟、
  * 不需要框架、不用背 semver。要調濾鏡的人才回頭用原始碼或見本帖的試打區。
  *
- *   yarn build:kappan
+ *   npm run build
  */
 import { mkdirSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
-import { letterpressCss, filtersMarkup, splitRedacted, HAO_SIZES, LATIN_SIZES, VARIANT_NAMES } from 'kappan'
+import { fileURLToPath } from 'node:url'
+import { letterpressCss, filtersMarkup, splitRedacted, HAO_SIZES, LATIN_SIZES, VARIANT_NAMES } from '../src/index'
 
-const OUT = path.join(process.cwd(), 'packages', 'kappan', 'dist')
+// 以腳本自己為基準，從哪裡呼叫都一樣。
+const OUT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'dist')
 mkdirSync(OUT, { recursive: true })
 
 const write = (name: string, body: string) => {

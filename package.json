@@ -26,7 +26,7 @@
     "generate-live2d-r5-texture": "node scripts/generateLive2DR5Texture.js",
     "update-projects": "node scripts/generateProjectIndex.js",
     "update-character": "npm run optimize-assets && npm run update-projects",
-    "build:kappan": "esbuild scripts/buildKappanDist.ts --bundle --platform=node --format=esm --outfile=node_modules/.cache/buildKappanDist.mjs --log-level=error && node node_modules/.cache/buildKappanDist.mjs"
+    "build:kappan": "esbuild packages/kappan/scripts/build-dist.ts --bundle --platform=node --format=esm --outfile=packages/kappan/scripts/.build-dist.mjs --log-level=error && node packages/kappan/scripts/.build-dist.mjs"
   },
   "dependencies": {
     "@react-three/fiber": "^9.2.0",
