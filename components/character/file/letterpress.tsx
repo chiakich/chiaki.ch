@@ -18,6 +18,10 @@ const OPTIONS: LetterpressOptions = {
 }
 
 const dossierCss = `
+/* 細線色與選取用的琥珀色。套件不管這兩個 —— 它只有「紙、墨、硃」三個顏色，
+   其餘都是使用端的介面配色，所以定義在這裡。 */
+.lp { --rule: #c7bda8; --amber: #df8a42; }
+
 /* 手寫批註。套件只管印刷，手寫是這一頁自己的東西，所以規則留在這裡。 */
 .lp .hand { font-family: 'huninn', 'Noto Sans TC', sans-serif; color: var(--red); filter: var(--lp-t); }
 

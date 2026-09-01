@@ -26,8 +26,13 @@ OUT = ROOT / 'public' / 'fonts' / 'iming-subset.woff2'
 DERIVED_NAME = 'Chiaki IMing Subset'
 DERIVED_PS_NAME = 'ChiakiIMingSubset'
 
-# 文案來源：見本帖的樣張常數，加上三個語系裡這一頁會印出來的字串。
-SOURCES = [ROOT / 'components' / 'works' / 'letterpress' / 'specimenText.ts']
+# 文案來源：見本帖的樣張常數、部落格 widget 的樣字，加上三個語系裡這一頁會印出來的字串。
+# 漏掉任何一處都不會報錯 —— 缺的字會安靜地掉到 Noto Serif TC，只有盯著看才發現
+# 某幾個字的基線不一樣。新增會印在 .lp 底下的固定文案時記得加進來。
+SOURCES = [
+    ROOT / 'components' / 'works' / 'letterpress' / 'specimenText.ts',
+    ROOT / 'components' / 'blog' / 'widgets' / 'LetterpressPress.tsx',
+]
 LOCALE_KEYS = ['letterpressPage']
 
 # 介面上還會用到的固定字元。

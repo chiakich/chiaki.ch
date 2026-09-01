@@ -11,10 +11,8 @@ export const DEMO_OPTIONS: LetterpressOptions = {
   paper: '#ffffff',
   ink: '#000000',
   inkMuted: '#000000',
-  rule: '#d8d8d8',
   // 見本帖走黑白，只有程式碼那塊用硃色當第二次落版 —— 傳統雙色刷就是這麼來的。
   red: '#9d3327',
-  amber: '#111111',
   typeFamily: "'I.Ming', 'Chiaki IMing Subset', 'Noto Serif TC', 'Songti TC', serif",
   latinFamily: "'Courier Prime', 'Courier New', ui-monospace, monospace",
   // 傳統書：字排實，行間留半個到四分之三個字身。

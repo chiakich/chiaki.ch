@@ -1,8 +1,7 @@
 import { useId, useState } from 'react'
 import { Box, HStack, Wrap, styled } from 'styled-system/jsx'
 import { LetterpressFilters, Redacted } from 'kappan/react'
-import type { LetterpressOptions } from 'kappan'
-import { pressToTuning, ramp, clamp, type Press } from './press'
+import { pressTuning, pressTexture, NEUTRAL_PRESS, type LetterpressOptions, type Press } from 'kappan'
 import { Dial, Key } from 'components/works/letterpress/Controls'
 import { DEMO_OPTIONS } from 'components/works/letterpress/pressOptions'
 
@@ -29,11 +28,14 @@ const SET_HINT = '排字工的手不是尺，每顆字擺進去都差那麼一�
  * 刻意挑大的，整段文章才看不出循環；代價是七個字只命中四條規則裡的兩條，
  * 而且視覺最強的加粗那兩條（13n+8、23n+11）根本輪不到。
  */
-const SET_TEXT = '鉛字是一顆一顆排上去的，歪斜要按第幾顆變，不能整段套同一個值。'
+// 樣字必須落在 iming-subset 的字集內（見 scripts/subsetIMing.py）。子集外的字會
+// 悄悄掉到 Noto Serif TC，基線與字面框不同，看起來像某幾個字自己往下沉 ——
+// 而且拉到歪斜 0 也還在，因為那根本不是歪斜造成的。這句取自見本帖，保證在集內。
+const SET_TEXT = '排字工的手也不是尺。每顆字擺進去都差那麼一點點，整段看下去，字是活的，行是斜的。'
 // 缺角與缺塊的尺度是絕對長度，不會跟著字級放大 —— 這根滑桿就是要讓人看見這件事。
 const SIZE_HINT = '同一組參數，換個字級就是另一回事'
 
-const NEUTRAL: Press = { ink: 1, pressure: 1, paper: 1, wear: 1 }
+const NEUTRAL = NEUTRAL_PRESS
 const PRESETS: { label: string; press: Press }[] = [
   { label: '標準', press: NEUTRAL },
   { label: '墨上太多', press: { ink: 1.9, pressure: 1.3, paper: 1, wear: 1 } },
@@ -60,12 +62,12 @@ const LetterpressPress = ({
   const set = (k: keyof Press) => (v: number) => setPress((p) => ({ ...p, [k]: v }))
 
   const prefix = `lpp-${useId().replace(/[^a-zA-Z0-9]/g, '')}`
-  const tuning = pressToTuning(press)
-  const options: LetterpressOptions = { ...DEMO_OPTIONS, idPrefix: prefix, filters: { text: tuning } }
+  const filters = pressTuning(press)
+  const tuning = filters.text!
+  const options: LetterpressOptions = { ...DEMO_OPTIONS, idPrefix: prefix, filters }
   const vars = {
     '--lp-t': `url(#${prefix}-t)`,
-    // 紙粗糙的話紙紋本身也該濃一點 —— 那是同一張紙。
-    '--texture': clamp(ramp(press.paper, 0.35, 1, 1), 0, 1),
+    '--texture': pressTexture(press),
     '--lean': lean,
     '--weight': weight,
   } as React.CSSProperties
