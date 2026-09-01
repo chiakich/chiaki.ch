@@ -27,29 +27,18 @@ const Span = styled.span
 const USAGE_VANILLA = `import { mount, redact } from 'kappan'
 
 const dispose = mount({ typeFamily: "'I.Ming', serif" })
-document.querySelectorAll('.sg').forEach(redact)`
+document.querySelectorAll('.sg').forEach(redact)
+// <div class="lp lp-paper"> 就有紙，不用另外加疊層`
 
 const USAGE_REACT = `import { LetterpressStyles, LetterpressFilters, Redacted } from 'kappan/react'
 
-<div className="lp">
+<div className="lp lp-paper">
   <LetterpressStyles typeFamily="'I.Ming', serif" />
   <LetterpressFilters />
 
-  <i className="lp-fibre" /><i className="lp-grain" />
-
-  {/* 豎排加 .lp-v，橫排拿掉就好 */}
-  <p className="sg lp-v lp-typed"><Redacted text="常世通信 ███ 第一號" /></p>
+  {/* 豎排加 .lp-v，橫排拿掉就好；字級用號數 class */}
+  <p className="sg lp-v lp-typed lp-sz-3"><Redacted text="常世通信 ███ 第一號" /></p>
 </div>`
-
-// 紙上的髒污。位置寫死不用亂數 —— SSR 兩邊要畫在同一個地方。
-const DIRT = [
-  { top: '6%', left: '9%', width: 3, height: 3 },
-  { top: '23%', left: '92%', width: 2, height: 2 },
-  { top: '41%', left: '5%', width: 4, height: 1, hair: true },
-  { top: '58%', left: '95%', width: 2, height: 2 },
-  { top: '77%', left: '7%', width: 5, height: 1, hair: true },
-  { top: '89%', left: '90%', width: 3, height: 3 },
-]
 
 /** 調節鈕專用的那一組濾鏡。跟頁面本身那組用 idPrefix 分開，才不會連扉頁跟見本一起動。 */
 const DIAL_PREFIX = 'lpdial'
@@ -96,25 +85,12 @@ const LetterpressPage = () => {
   const caveats = [1, 2, 3].map((n) => t(`letterpressPage.caveat${n}`))
 
   return (
-    <Box className="lp" position="relative" minHeight="100vh">
+    <Box className="lp lp-paper" minHeight="100vh">
       {/* 整頁只掛一份樣式與濾鏡，底下所有樣張共用 —— 整本見本帖是同一張紙。 */}
       <LetterpressStyles {...DEMO_OPTIONS} />
       <LetterpressFilters {...DEMO_OPTIONS} />
       <LetterpressFilters {...dialFilters} />
       <style dangerouslySetInnerHTML={{ __html: demoCss }} />
-
-      <i className="lp-fibre" />
-      <i className="lp-expose" />
-      <i className="lp-grain" />
-      <span className="lp-dirt">
-        {DIRT.map((d, i) => (
-          <i
-            key={i}
-            className={d.hair ? 'hair' : undefined}
-            style={{ top: d.top, left: d.left, width: d.width, height: d.height }}
-          />
-        ))}
-      </span>
 
       <Box position="relative" zIndex={1} pt="112px" pb={{ base: 16, md: 24 }}>
         <Container maxW="920px" px={{ base: '24px', md: '40px' }}>
