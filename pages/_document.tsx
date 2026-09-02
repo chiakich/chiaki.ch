@@ -31,6 +31,9 @@ class MyDocument extends Document {
           <link rel="preconnect" href="https://ds.justfont.com" />
           <link rel="preconnect" href="https://cdn-go.justfont.com" crossOrigin="anonymous" />
           <link rel="preconnect" href="https://go.justfont.com" crossOrigin="anonymous" />
+          {/* blog 的等寬體是頁面注入的 @import，要等樣式表解析完才發得出去。 */}
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
           {/* justfont recommends this fixed snippet over the async loader for production */}
           <Script src="/scripts/justfont-init.js" strategy="beforeInteractive" />
           <link rel="icon" href="/favicon.ico" />

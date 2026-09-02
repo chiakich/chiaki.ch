@@ -1,61 +1,56 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next'
-import { useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
 import NextLink from 'next/link'
-import { m } from 'framer-motion'
 import { Box, Flex, HStack, styled } from 'styled-system/jsx'
 import { css } from 'styled-system/css'
+import { LetterpressStyles } from 'kappan/react'
 import { getPost, getPostSlugs, type Post } from 'lib/blog'
 import { getMessages } from 'i18n/messages'
 import type { PageMetaOverride } from 'components/PageMeta'
 import BlogWidgets from 'components/blog/widgets'
+import { BLOG_OPTIONS, SHEET_CLASS, blogLetterpressCss } from 'components/blog/letterpress'
 
 const Heading = styled.h1
 const Span = styled.span
-const MotionBox = m.create(Box)
 
-type Theme = 'dark' | 'light'
-const STORAGE_KEY = 'blog-reading-theme'
-
-// Medium-style reading column. Serif body, sans headings, generous rhythm.
-// Colors come from CSS variables so a single data-theme flip repaints everything.
 const prose = css({
-  fontFamily: '"Source Serif 4", Georgia, "Songti TC", "Noto Serif TC", serif',
-  fontSize: { base: '1.08rem', md: '1.2rem' },
-  lineHeight: '1.85',
-  color: 'var(--prose-text)',
+  fontFamily: 'var(--type)',
+  // 明寫 400：版心掛了 _medium 與 _bold，justfont 注入的規則可能帶著 font-weight。
+  fontWeight: 'regular',
+  fontSize: { base: '12pt', md: '13.5pt' },
+  lineHeight: '2',
+  color: 'var(--ink)',
   '& h2, & h3, & h4': {
-    fontFamily:
-      'var(--fonts-body, "PingFang TC", "Noto Sans TC", sans-serif)',
+    fontFamily: 'var(--type)',
     fontWeight: 'bold',
-    color: 'var(--prose-heading)',
-    lineHeight: '1.3',
-    letterSpacing: '-0.01em',
+    color: 'var(--ink)',
+    lineHeight: '1.5',
+    letterSpacing: '.08em',
   },
-  '& h2': { fontSize: { base: '1.6rem', md: '1.9rem' }, mt: 12, mb: 4 },
-  '& h3': { fontSize: { base: '1.3rem', md: '1.5rem' }, mt: 10, mb: 3 },
-  '& h4': { fontSize: '1.15rem', mt: 8, mb: 3 },
-  '& p': { my: 6 },
+  '& h2': { fontSize: { base: '17pt', md: '21pt' }, mt: 14, mb: 5 },
+  '& h3': { fontSize: { base: '14pt', md: '16pt' }, mt: 10, mb: 3 },
+  '& h4': { fontSize: '13.5pt', mt: 8, mb: 3 },
+  '& p': { my: 6, textAlign: 'justify' },
   '& a': {
-    color: 'var(--prose-link)',
-    borderBottom: '1px solid color-mix(in srgb, var(--prose-link) 45%, transparent)',
+    color: 'var(--red)',
+    borderBottom: '1px solid color-mix(in srgb, var(--red) 45%, transparent)',
     transition: 'border-color .2s',
-    _hover: { borderBottomColor: 'var(--prose-link)' },
+    _hover: { borderBottomColor: 'var(--red)' },
   },
-  '& strong': { fontWeight: 'bold', color: 'var(--prose-heading)' },
+  '& strong': { fontWeight: 'bold' },
   '& ul, & ol': { my: 6, pl: 7, display: 'flex', flexDirection: 'column', gap: 2 },
   '& li': { pl: 1 },
   '& blockquote': {
     my: 7,
     pl: 5,
-    borderLeft: '3px solid var(--prose-link)',
-    fontStyle: 'italic',
-    color: 'var(--prose-muted)',
+    borderLeft: '3px solid var(--red)',
+    color: 'var(--ink3)',
   },
   '& hr': {
     my: 12,
     border: 'none',
     height: '1px',
-    background: 'var(--prose-border)',
+    background: 'color-mix(in srgb, var(--ink) 22%, transparent)',
   },
   // video covers the ex-GIF clips rehypeBlogMedia swaps in
   '& img, & video': {
@@ -64,111 +59,51 @@ const prose = css({
     height: 'auto',
     mx: 'auto',
     my: 8,
-    borderRadius: '2px',
+    // 相片不是印出來的，給壓痕陰影而不是墨壓濾鏡。
+    boxShadow: '0 1px 2px rgba(22, 19, 15, .24), 0 10px 22px rgba(22, 19, 15, .12)',
   },
   // figure caption emitted as an italic paragraph right after an image
-  '& img + em, & video + em, & em': { color: 'var(--prose-muted)' },
+  '& img + em, & video + em, & em': { color: 'var(--ink3)' },
   '& code': {
-    fontFamily: 'var(--fonts-mono, ui-monospace, monospace)',
-    fontSize: '0.88em',
-    backgroundColor: 'var(--prose-code-bg)',
+    fontFamily: 'var(--latin)',
+    fontSize: '.86em',
+    backgroundColor: 'color-mix(in srgb, var(--ink) 7%, transparent)',
     px: '0.35em',
     py: '0.1em',
-    borderRadius: '3px',
   },
   '& pre': {
     my: 7,
     p: 5,
-    borderRadius: '6px',
     overflowX: 'auto',
-    backgroundColor: 'var(--prose-pre-bg)',
-    border: '1px solid var(--prose-border)',
-    fontSize: { base: '0.82rem', md: '0.9rem' },
-    lineHeight: '1.6',
+    backgroundColor: 'color-mix(in srgb, var(--red) 4%, transparent)',
+    border: '1px solid color-mix(in srgb, var(--red) 32%, transparent)',
+    fontSize: { base: '0.78rem', md: '0.86rem' },
+    lineHeight: '1.7',
   },
   '& pre code': { backgroundColor: 'transparent', p: 0, fontSize: 'inherit' },
   // Widgets are figures, not prose — keep the reading rhythm around them but
   // stop the prose rules leaking into their own markup.
-  '& [data-blog-widget]': { my: 10 },
-  '& [data-blog-widget] p': { my: 0 },
+  '& [data-blog-widget]': { my: 12 },
+  '& [data-blog-widget] p': { my: 0, textAlign: 'inherit' },
   '& [data-blog-widget] a': { border: 'none' },
-  // Minimal highlight.js palette, readable on both themes
-  '& .hljs-comment, & .hljs-quote': { color: 'var(--prose-muted)', fontStyle: 'italic' },
-  '& .hljs-keyword, & .hljs-selector-tag, & .hljs-built_in': { color: '#c678dd' },
-  '& .hljs-string, & .hljs-attr': { color: '#98c379' },
-  '& .hljs-number, & .hljs-literal': { color: '#d19a66' },
-  '& .hljs-title, & .hljs-function, & .hljs-name': { color: '#61afef' },
-  '& .hljs-type, & .hljs-class': { color: '#e5c07b' },
+  '& .hljs-comment, & .hljs-quote': { color: 'var(--ink3)' },
+  '& .hljs-keyword, & .hljs-selector-tag, & .hljs-built_in, & .hljs-literal': { color: 'var(--red)' },
+  '& .hljs-string, & .hljs-attr, & .hljs-number': { color: 'color-mix(in srgb, var(--red) 72%, var(--ink))' },
+  '& .hljs-title, & .hljs-function, & .hljs-name, & .hljs-type, & .hljs-class': { fontWeight: 'bold' },
 })
-
-const themeVars = (theme: Theme): Record<string, string> =>
-  theme === 'light'
-    ? {
-        '--prose-sheet': '#faf8f4',
-        '--prose-text': '#2b2926',
-        '--prose-heading': '#141312',
-        '--prose-muted': '#6b665e',
-        '--prose-link': '#c8641a',
-        '--prose-border': 'rgba(0,0,0,0.12)',
-        '--prose-code-bg': 'rgba(0,0,0,0.06)',
-        '--prose-pre-bg': '#f2efe8',
-      }
-    : {
-        '--prose-sheet': 'transparent',
-        '--prose-text': 'rgba(255,255,255,0.86)',
-        '--prose-heading': '#ffffff',
-        '--prose-muted': 'rgba(255,255,255,0.5)',
-        '--prose-link': '#df8a42',
-        '--prose-border': 'rgba(255,255,255,0.14)',
-        '--prose-code-bg': 'rgba(255,255,255,0.09)',
-        '--prose-pre-bg': '#0d0d0f',
-      }
 
 const formatDate = (iso: string) => iso.replace(/-/g, '.')
 
 const BlogPost: NextPage<{ post: Post }> = ({ post }) => {
-  const [theme, setTheme] = useState<Theme>('dark')
   const proseRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    const stored = window.localStorage.getItem(STORAGE_KEY)
-    if (stored === 'light' || stored === 'dark') setTheme(stored)
-  }, [])
-
-  const toggle = () => {
-    setTheme((prev) => {
-      const next = prev === 'dark' ? 'light' : 'dark'
-      window.localStorage.setItem(STORAGE_KEY, next)
-      return next
-    })
-  }
-
   return (
-    <Box
-      backgroundColor="black"
-      color="white"
-      minHeight="100vh"
-      overflowX="clip"
-      position="relative"
-    >
-      {/* Orange dot grid */}
-      <Box
-        position="fixed"
-        top="0"
-        left="0"
-        right="0"
-        height="100vh"
-        opacity=".18"
-        backgroundImage="radial-gradient(rgba(223, 138, 66, .2) 1px, transparent 1px)"
-        backgroundSize="18px 18px"
-        maskImage="linear-gradient(to bottom, black 30%, transparent)"
-        pointerEvents="none"
-        zIndex={0}
-        aria-hidden
-      />
+    <Box className={SHEET_CLASS} minHeight="100vh" overflowX="clip" position="relative">
+      <LetterpressStyles {...BLOG_OPTIONS} />
+      <style dangerouslySetInnerHTML={{ __html: blogLetterpressCss }} />
 
       <Box
-        maxW="820px"
+        maxW="760px"
         mx="auto"
         px={{ base: '24px', md: '32px' }}
         pt="96px"
@@ -176,122 +111,54 @@ const BlogPost: NextPage<{ post: Post }> = ({ post }) => {
         position="relative"
         zIndex={1}
       >
-        {/* Top rail: back + theme toggle */}
-        <Flex justify="space-between" alignItems="center" mb={10}>
-          <NextLink href="/blog" style={{ textDecoration: 'none' }}>
-            <Span
-              fontFamily="mono"
-              fontSize="xs"
-              letterSpacing="0.2em"
-              color="accent"
-              _hover={{ opacity: 0.7 }}
-            >
-              ◂ BLOG
-            </Span>
-          </NextLink>
-          <styled.button
-            onClick={toggle}
-            type="button"
-            display="flex"
-            alignItems="center"
-            gap={2}
-            fontFamily="mono"
-            fontSize="0.6rem"
-            letterSpacing="0.18em"
-            color="accent"
-            border="1px solid color-mix(in srgb, var(--colors-accent) 40%, transparent)"
-            px={3}
-            py={1.5}
-            cursor="pointer"
-            transition="background .2s"
-            _hover={{ backgroundColor: 'color-mix(in srgb, var(--colors-accent) 12%, transparent)' }}
-            aria-label="toggle reading theme"
-          >
-            {theme === 'dark' ? '◐ LIGHT' : '◑ DARK'}
-          </styled.button>
-        </Flex>
+        <NextLink href="/blog" style={{ textDecoration: 'none' }}>
+          <Span className="lbl" _hover={{ color: 'var(--red)' }}>◂ BLOG</Span>
+        </NextLink>
 
-        {/* Header — mechanical style */}
-        <MotionBox
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          mb={10}
-        >
-          <HStack gap={3} mb={5} flexWrap="wrap">
-            <Span
-              fontFamily="mono"
-              fontSize="0.55rem"
-              fontWeight="bold"
-              letterSpacing="0.15em"
-              backgroundColor="accent"
-              color="black"
-              px={2}
-              py={0.5}
-              transform="skewX(-8deg)"
-            >
-              <Box transform="skewX(8deg)">{post.lang === 'en' ? 'EN' : 'ZH'}</Box>
-            </Span>
-            <Span fontFamily="mono" fontSize="xs" color="accent" letterSpacing="0.15em">
-              {formatDate(post.date)}
-            </Span>
-            <Span fontFamily="mono" fontSize="xs" opacity={0.45} letterSpacing="0.15em">
-              {post.readingTime} MIN READ
-            </Span>
+        <Box mt={10} mb={12} textAlign="center">
+          <HStack gap={4} justifyContent="center" flexWrap="wrap" mb={6}>
+            <Span className="lbl" style={{ color: 'var(--red)' }}>{post.lang === 'en' ? 'EN' : 'ZH'}</Span>
+            <Span className="lbl">{formatDate(post.date)}</Span>
+            <Span className="lbl">{post.readingTime} MIN READ</Span>
           </HStack>
 
           <Heading
-            fontSize={{ base: '2.2rem', md: '3rem' }}
-            fontWeight="bold"
-            lineHeight="1.2"
-            letterSpacing="-0.01em"
-            mb={5}
+            style={{
+              fontFamily: 'var(--type)',
+              fontSize: 'clamp(26px, 5.4vw, 42px)',
+              fontWeight: 700,
+              letterSpacing: '.12em',
+              lineHeight: 1.45,
+            }}
           >
             {post.title}
           </Heading>
 
           {post.tags.length > 0 && (
-            <HStack gap={3} flexWrap="wrap" mb={2}>
+            <HStack gap={4} flexWrap="wrap" justifyContent="center" mt={6}>
               {post.tags.map((tag) => (
-                <Span key={tag} fontFamily="mono" fontSize="0.65rem" color="accentSoft" opacity={0.6}>
-                  #{tag}
-                </Span>
+                <Span key={tag} className="lbl" style={{ color: 'var(--red)' }}>{tag}</Span>
               ))}
             </HStack>
           )}
-          <Box
-            mt={4}
-            width="64px"
-            height="6px"
-            background="repeating-linear-gradient(-45deg, var(--colors-accent) 0 8px, transparent 8px 16px)"
-          />
-        </MotionBox>
-
-        {/* Reading sheet — theme-switchable */}
-        <Box
-          style={themeVars(theme)}
-          backgroundColor="var(--prose-sheet)"
-          borderRadius={theme === 'light' ? '8px' : '0'}
-          transition="background-color .3s"
-          mx={{ base: theme === 'light' ? '-16px' : '0', md: theme === 'light' ? '-40px' : '0' }}
-          px={{ base: theme === 'light' ? '16px' : '0', md: theme === 'light' ? '40px' : '0' }}
-          py={theme === 'light' ? { base: 6, md: 10 } : '0'}
-        >
-          <div ref={proseRef} className={prose} dangerouslySetInnerHTML={{ __html: post.html }} />
-          <BlogWidgets containerRef={proseRef} />
+          <Box mx="auto" mt={8} style={{ width: 46, borderTop: '1px solid var(--ink)' }} />
         </Box>
 
-        {/* Footer: back to list */}
-        <Box
-          mt={16}
-          pt={6}
-          borderTop="1px solid color-mix(in srgb, var(--colors-accent) 20%, transparent)"
-        >
-          <NextLink href="/blog" style={{ textDecoration: 'none' }}>
-            <Span fontFamily="mono" fontSize="xs" letterSpacing="0.2em" color="accent" _hover={{ opacity: 0.7 }}>
-              ◂ BACK TO BLOG
+        <div ref={proseRef} className={prose} dangerouslySetInnerHTML={{ __html: post.html }} />
+        <BlogWidgets containerRef={proseRef} />
+
+        <Box mt={16} pt={6} style={{ borderTop: '1px solid color-mix(in srgb, var(--ink) 25%, transparent)' }}>
+          <Flex justify="space-between" alignItems="baseline" flexWrap="wrap" gap={3}>
+            <NextLink href="/blog" style={{ textDecoration: 'none' }}>
+              <Span className="lbl" _hover={{ color: 'var(--red)' }}>◂ BACK TO BLOG</Span>
+            </NextLink>
+            {/* .lbl 走 --latin，沒有漢字。 */}
+            <Span
+              style={{ fontFamily: 'var(--type)', fontSize: '8pt', letterSpacing: '.3em', color: 'var(--red)' }}
+            >
+              千秋稻荷社印書館
             </Span>
-          </NextLink>
+          </Flex>
         </Box>
       </Box>
     </Box>
