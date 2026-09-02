@@ -6,7 +6,6 @@ import PressPanel, { type PanelMode } from './PressPanel'
 import SpecimenRow from './SpecimenRow'
 import FaceRow from './FaceRow'
 import CodeBlock from './CodeBlock'
-import PressPlayground from './PressPlayground'
 import { Dial, Switch } from './Controls'
 import { DEMO_OPTIONS, demoCss } from './pressOptions'
 import {
@@ -24,19 +23,40 @@ const Heading = styled.h2
 const Text = styled.p
 const Span = styled.span
 
-const USAGE_VANILLA = `import { mount, redact } from 'kappan'
+const USAGE_PASTE = `<link rel="stylesheet" href="kappan.css">
+<!-- kappan-filters.svg 的內容貼進 <body>，整頁一份 -->
 
-const dispose = mount({ typeFamily: "'I.Ming', serif" })
-document.querySelectorAll('.sg').forEach(redact)
-// <div class="lp lp-paper"> 就有紙，不用另外加疊層`
+<div class="lp lp-paper">
+  <h1 class="lp-sz-1">常世通信</h1>
+  <p class="lp-sz-5">第一號　千秋稻荷社印書館謹啟</p>
+</div>`
 
-const USAGE_REACT = `import { LetterpressStyles, LetterpressFilters, Redacted } from 'kappan/react'
+const USAGE_VANILLA = `import { mount, redact, pressTuning } from 'kappan'
+
+// 調的是印刷的成因，不是濾鏡的參數。一個成因牽動好幾道濾鏡。
+const dispose = mount({
+  typeFamily: "'I.Ming', serif",
+  filters: pressTuning({ ink: 1.4, pressure: 0.8, paper: 1.6, wear: 1.2 }),
+})
+
+// 逐字歪斜要每個字自己一個 span。別直接把 redact 交給 forEach ——
+// 它的第二個參數是 barUnit，會收到陣列索引。
+document.querySelectorAll('.sg').forEach((el) => redact(el))`
+
+const USAGE_REACT = `import { pressTuning } from 'kappan'
+import { LetterpressStyles, LetterpressFilters, Redacted } from 'kappan/react'
+
+// 兩個元件要吃同一份 options。只給其中一個的話，CSS 會指到不存在的濾鏡 id。
+const options = {
+  typeFamily: "'I.Ming', serif",
+  filters: pressTuning({ paper: 1.6 }),
+}
 
 <div className="lp lp-paper">
-  <LetterpressStyles typeFamily="'I.Ming', serif" />
-  <LetterpressFilters />
+  <LetterpressStyles {...options} />
+  <LetterpressFilters {...options} />
 
-  {/* 豎排加 .lp-v，橫排拿掉就好；字級用號數 class */}
+  {/* 字號 class 同時決定字級與該用哪支濾鏡；豎排加 .lp-v */}
   <p className="sg lp-v lp-typed lp-sz-3"><Redacted text="常世通信 ███ 第一號" /></p>
 </div>`
 
@@ -121,7 +141,7 @@ const LetterpressPage = () => {
             <Caption en="SPECIMEN OF CHINESE TYPE">{t('letterpressPage.specimenTitle')}</Caption>
             {/* 實體見本帖是 A4 大小的紙，螢幕不是。整份等比放大，號數之間的比例才留得住 ——
                 美華書館這套只到一號，硬加初號就是杜撰。 */}
-            <Stack gap={{ base: 8, md: 10 }} style={{ '--lp-scale': 1.6 } as React.CSSProperties}>
+            <Stack gap={{ base: 3, md: 6 }} style={{ '--lp-scale': 1.6 } as React.CSSProperties}>
               {SPECIMEN_ROWS.map((row) => (
                 <SpecimenRow key={row.name} {...row} />
               ))}
@@ -133,7 +153,7 @@ const LetterpressPage = () => {
             <Caption en="SPECIMEN OF FACES">{t('letterpressPage.facesTitle')}</Caption>
             <Stack gap={{ base: 8, md: 10 }}>
               {FACE_ROWS.map((face) => (
-                <FaceRow key={face.name} {...face} sample={FACE_SAMPLE} />
+                <FaceRow key={face.name} zh={face.zh} stack={face.stack} sample={FACE_SAMPLE} />
               ))}
             </Stack>
           </Box>
@@ -143,7 +163,15 @@ const LetterpressPage = () => {
             <Caption en="SETTING">{t('letterpressPage.modesTitle')}</Caption>
             <HStack gap={{ base: 6, md: 12 }} justifyContent="center" flexWrap="wrap" mb={10}>
               <Switch label={t('letterpressPage.dialTexture')} on={texture} onToggle={() => setTexture(!texture)} />
-              <Dial label={t('letterpressPage.dialStrength')} value={strength} onCommit={setStrength} />
+              {/* 上限 1：strength 超過 1 只是等比放大，缺塊門檻會被打到 .32，字整片碎掉。 */}
+              <Dial
+                label={t('letterpressPage.dialStrength')}
+                value={strength}
+                max={1}
+                step={0.05}
+                format={(v) => v.toFixed(2)}
+                onCommit={setStrength}
+              />
               <Dial label={t('letterpressPage.dialLean')} value={lean} onCommit={setLean} />
               <Dial label={t('letterpressPage.dialWeight')} value={weight} onCommit={setWeight} />
             </HStack>
@@ -164,17 +192,12 @@ const LetterpressPage = () => {
             </Stack>
           </Box>
 
-          {/* ── 試打 ───────────────────────────────────────── */}
-          <Box mb={{ base: 14, md: 20 }}>
-            <Caption en="SET YOUR OWN">{t('letterpressPage.playTitle')}</Caption>
-            <PressPlayground />
-          </Box>
-
           {/* ── 用法 ───────────────────────────────────────── */}
           <Box mb={{ base: 14, md: 20 }}>
             <Caption en="USAGE">{t('letterpressPage.usageTitle')}</Caption>
             <Stack gap={6}>
               {[
+                [t('letterpressPage.usagePaste'), USAGE_PASTE],
                 [t('letterpressPage.usagePlain'), USAGE_VANILLA],
                 ['React', USAGE_REACT],
               ].map(([label, code]) => (
