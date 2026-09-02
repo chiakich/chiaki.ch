@@ -57,8 +57,6 @@ export const FACE_ROWS = [
 /** 字體見本每一行印的樣字，接在字體名後面。 */
 export const FACE_SAMPLE = '千秋印書館'
 
-/** 試打區的初始內容。給個起頭，使用者自己改。 */
-export const PLAYGROUND_TEXT = '千秋印書館謹啟　承印中西書籍章程契據\n選一段字，改字級、換字體、切直排橫排。'
 
 /** 版權頁那一行，仿原帖的「上海美華書館北京路十八號」。 */
 export const COLOPHON = '千秋稻荷社印書館　常世町一丁目'
