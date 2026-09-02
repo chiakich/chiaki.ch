@@ -1,5 +1,20 @@
 [
   {
+    "slug": "letterpress-on-the-web",
+    "title": "想在網頁上重現鉛字印刷的質感，該怎麼做呢？",
+    "date": "2026-08-31",
+    "lang": "zh",
+    "excerpt": "鉛字壓在紙上會發生很多事：墨滲進纖維、壓力把字擠胖、紙面不平把筆畫推歪、用久的字會崩角。一件一件把它們寫回樣式裡。",
+    "tags": [
+      "css",
+      "svg",
+      "typography",
+      "letterpress"
+    ],
+    "cover": "/assets/blog/letterpress-on-the-web/01.webp",
+    "readingTime": 14
+  },
+  {
     "slug": "acf-akihabara-fes-2026",
     "title": "390 元的神級演出，附送一場不知道怎麼逛的展──淺談 ACF 秋葉原動漫祭",
     "date": "2026-04-05",
