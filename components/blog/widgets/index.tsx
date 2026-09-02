@@ -1,7 +1,6 @@
 import { useEffect, useState, type RefObject } from 'react'
 import { createPortal } from 'react-dom'
-import { LetterpressStyles } from 'kappan/react'
-import { demoCss, DEMO_OPTIONS } from 'components/works/letterpress/pressOptions'
+import { demoCss } from 'components/works/letterpress/pressOptions'
 import LetterpressPress from './LetterpressPress'
 
 /**
@@ -41,8 +40,7 @@ const BlogWidgets = ({ containerRef }: { containerRef: RefObject<HTMLDivElement 
 
   return (
     <>
-      {/* 質感樣式整頁一份就好，濾鏡則是每個 widget 自己一組。 */}
-      <LetterpressStyles {...DEMO_OPTIONS} />
+      {/* 只補字體檔。再掛一份 LetterpressStyles 會蓋掉整篇文章的 .lp。 */}
       <style dangerouslySetInnerHTML={{ __html: demoCss }} />
       {mounts.map(({ el, name, props }, index) => {
         const Widget = REGISTRY[name]

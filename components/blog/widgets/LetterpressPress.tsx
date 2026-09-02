@@ -18,9 +18,9 @@ type Cause = keyof Press | 'set' | 'size'
 
 const CAUSES: Record<keyof Press, { label: string; hint: string }> = {
   ink: { label: '上墨量', hint: '少了筆畫會斷，多了糊成一團' },
-  pressure: { label: '壓力', hint: '輕了印不滿，重了墨被擠出邊緣' },
+  pressure: { label: '壓力', hint: '輕了墨轉不滿、整體發灰，重了墨被擠出邊緣' },
   paper: { label: '紙的粗糙', hint: '光滑的塗佈紙，到粗糙吸墨的手工紙' },
-  wear: { label: '鉛字年紀', hint: '剛鑄好的新字，到崩了角的舊字' },
+  wear: { label: '鉛字年紀', hint: '舊字的字面被磨鈍、邊上崩角、也印得比較淡' },
 }
 const SET_HINT = '排字工的手不是尺，每顆字擺進去都差那麼一點'
 /**
@@ -39,8 +39,9 @@ const NEUTRAL = NEUTRAL_PRESS
 const PRESETS: { label: string; press: Press }[] = [
   { label: '標準', press: NEUTRAL },
   { label: '墨上太多', press: { ink: 1.9, pressure: 1.3, paper: 1, wear: 1 } },
-  { label: '墨不夠', press: { ink: 0.25, pressure: 0.6, paper: 1.2, wear: 1.2 } },
-  { label: '粗紙手刷', press: { ink: 1.2, pressure: 0.7, paper: 2, wear: 1.4 } },
+  // 四個成因都偏向缺墨的話 starve 會疊到把字打碎，這幾組刻意留在讀得出字的範圍內。
+  { label: '墨不夠', press: { ink: 0.6, pressure: 0.8, paper: 1.1, wear: 1 } },
+  { label: '粗紙手刷', press: { ink: 1.05, pressure: 0.8, paper: 1.7, wear: 1.15 } },
   { label: '新字好紙', press: { ink: 1, pressure: 1.4, paper: 0.2, wear: 0 } },
 ]
 
@@ -65,20 +66,34 @@ const LetterpressPress = ({
   const filters = pressTuning(press)
   const tuning = filters.text!
   const options: LetterpressOptions = { ...DEMO_OPTIONS, idPrefix: prefix, filters }
+  // --texture 要跟 .lp-paper 同層：紙紋是它的 ::before/::after，設在子層讀不到。
   const vars = {
+    // 四支都要覆蓋：文章頁沒掛濾鏡，繼承來的 url(#lp-*) 全是死連結。
+    '--lp-s': `url(#${prefix}-s)`,
     '--lp-t': `url(#${prefix}-t)`,
+    '--lp-d': `url(#${prefix}-d)`,
+    '--lp-x': `url(#${prefix}-x)`,
+    // 顏色與字堆不繼承文章頁：那組是為長篇閱讀調的，墨較淡，同一組濾鏡會啃掉更多。
+    // 標點字型排最前面，unicode-range 才搶得贏正文字型。
+    '--type': `'${DEMO_OPTIONS.punctFont!.family}', ${DEMO_OPTIONS.typeFamily}`,
+    '--latin': DEMO_OPTIONS.latinFamily,
+    '--ink': DEMO_OPTIONS.ink,
+    '--ink3': DEMO_OPTIONS.inkMuted,
+    '--red': DEMO_OPTIONS.red,
+    '--paper': DEMO_OPTIONS.paper,
     '--texture': pressTexture(press),
     '--lean': lean,
     '--weight': weight,
+    border: '1px solid color-mix(in srgb, var(--ink) 22%, transparent)',
   } as React.CSSProperties
 
   const show = (c: Cause) => !only || only === c
   const hint = !only ? null : only === 'set' ? SET_HINT : only === 'size' ? SIZE_HINT : CAUSES[only].hint
 
   return (
-    <Box className="lp lp-paper" position="relative">
+    <Box className="lp lp-paper" position="relative" style={vars}>
       <LetterpressFilters {...options} />
-      <Box px={{ base: 5, md: 8 }} py={{ base: 6, md: 8 }} style={vars}>
+      <Box px={{ base: 5, md: 8 }} py={{ base: 6, md: 8 }}>
         <Box textAlign={long ? 'justify' : 'center'} py={{ base: 4, md: 6 }} overflowX={long ? 'visible' : 'auto'}>
           <styled.p
             className="lp-f-t"
@@ -108,9 +123,8 @@ const LetterpressPress = ({
                 <Key key={p.label} onClick={() => setPress(p.press)}>{p.label}</Key>
               ))}
             </HStack>
-            {/* 一個成因牽動好幾道濾鏡，把算出來的值印出來才看得見。 */}
             <Text className="lbl" textAlign="center" mt={4} style={{ lineHeight: 1.9 }}>
-              {`推歪 ${tuning.displace!.toFixed(2)}　崩角 ${tuning.chipAmount!.toFixed(2)}／尺度 ${tuning.chipFrequency!.toFixed(2)}　缺塊門檻 ${tuning.voidThreshold!.toFixed(3)}　墨暈 ${tuning.bleed || '關'}　拉硬 ${tuning.contrast!.toFixed(1)}`}
+              {`推歪 ${tuning.displace!.toFixed(2)}　崩角 ${tuning.chipAmount!.toFixed(2)}／尺度 ${tuning.chipFrequency!.toFixed(2)}　缺塊門檻 ${tuning.voidThreshold!.toFixed(3)}　墨暈 ${tuning.bleed || '關'}　拉硬 ${tuning.contrast!.toFixed(1)}　墨量 ${tuning.fade!.toFixed(2)}`}
             </Text>
           </>
         )}
