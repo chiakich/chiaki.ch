@@ -25,8 +25,12 @@ const PressPanel = ({ mode, title, lines }: PressPanelProps) => {
         border: '1px solid var(--ink)',
         padding: '34px 38px',
         // 直排固定高度，那是行長；橫排讓紙自己長高，長短由字數決定。
-        height: vertical ? 470 : 'auto',
+        height: vertical ? 560 : 'auto',
         overflow: 'auto',
+        // 直排的欄數是算得出來的，寬度包住就好；撐滿會讓版心偏到某一側。
+        width: vertical ? 'max-content' : undefined,
+        maxWidth: '100%',
+        margin: vertical ? '0 auto' : undefined,
       }}
     >
       <div
