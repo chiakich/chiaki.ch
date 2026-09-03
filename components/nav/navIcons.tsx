@@ -151,27 +151,33 @@ export const SplitFlapIcon = (props: IconProps) => (
   </svg>
 )
 
-// letterpress：一顆鉛字。字面朝上，下緣一道鑄字的凹槽（nick）
-export const LetterpressIcon = (props: IconProps) => (
-  <svg {...svgProps} {...props}>
-    <rect x="11" y="6" width="26" height="36" rx="2" />
-    <rect x="15" y="10" width="18" height="18" rx="1" />
-    <text
-      x="24"
-      y="19"
-      textAnchor="middle"
-      dominantBaseline="central"
-      fontSize="12"
-      fontWeight="bold"
-      fill="currentColor"
-      stroke="none"
-    >
-      活
-    </text>
-    <path d="M11 35h26" opacity=".7" />
-    <path d="M20 38h8" opacity=".7" />
-  </svg>
-)
+export const LetterpressIcon = (props: IconProps) => {
+  const maskId = `lp-${useId().replace(/[^a-zA-Z0-9]/g, '')}`
+
+  return (
+    <svg {...svgProps} {...props}>
+      <mask id={maskId}>
+        <rect x="0" y="0" width="48" height="48" fill="white" />
+        <path d="M27.6 35.2l7-4" stroke="black" strokeWidth="1.7" strokeLinecap="round" />
+      </mask>
+      <g fill="currentColor" stroke="none" mask={`url(#${maskId})`}>
+        <path d="M11 16.5 24 24V42H11Z" />
+        <path d="M37 16.5 24 24V42H37Z" />
+      </g>
+      <text
+        transform="matrix(-13 7.5 13 7.5 24 16.5)"
+        textAnchor="middle"
+        dominantBaseline="central"
+        fontSize=".66"
+        fontWeight="bold"
+        fill="currentColor"
+        stroke="none"
+      >
+        千
+      </text>
+    </svg>
+  )
+}
 
 // tw-fuzzy-zipcode：信封上的郵遞區號格
 export const ZipcodeIcon = (props: IconProps) => (
