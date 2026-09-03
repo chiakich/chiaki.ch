@@ -29,8 +29,13 @@ const SpecimenRow = ({
         {name}
       </Text>
     </HStack>
-    {/* 一列就是一列。折行會讓號數之間的大小關係讀不出來，寬度不夠就讓它橫向捲。 */}
-    <Box overflowX="auto" overscrollBehaviorX="contain">
+    <Box
+      overflowX="auto"
+      overflowY="hidden"
+      overscrollBehaviorX="contain"
+      py="0.1em"
+      css={{ scrollbarWidth: 'none', '&::-webkit-scrollbar': { display: 'none' } }}
+    >
       <Text
         className={cls}
         style={{

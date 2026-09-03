@@ -20,8 +20,9 @@ export const DEMO_OPTIONS: LetterpressOptions = {
   punctFont: { family: 'lp-punct', src: '/fonts/lp-punct.woff2', weight: 600 },
 }
 
-/** 只有這個示範頁需要的規則：西文字體與一點明體的 @font-face。 */
 export const demoCss = `
+.lp ::selection { background: rgba(255, 228, 0, .55); color: inherit; }
+
 /* Courier Prime：Google Fonts 上的 Courier 重製，字面乾淨，破壞交給濾鏡去做。
    @import 必須排在整份樣式最前面。 */
 @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap');

@@ -806,7 +806,7 @@
     "caveatTitle": "使用前要知道",
     "caveat1": "字體要自己準備。開源自架、系統字、或申請 justfont 的 webfont 服務都可以。",
     "caveat2": "直排的標點要另外準備。多數明體其實鑄了直排字形，只是 justfont 這類 webfont 服務取不到，得自己切一份子集頂上。",
-    "caveat3": "濾鏡必須跟內容在同一份文件裡。指到外部 SVG 檔（放 CDN、或另存一個 .svg）Chrome 不會套用，也不會報錯 —— 就只是安靜地沒有效果。",
+    "caveat3": "濾鏡必須跟內容在同一份文件裡。指到外部 SVG 檔（放 CDN、或另存一個 .svg）瀏覽器不會套用。",
     "usagePaste": "貼上就能用"
   },
   "zipcodePage": {
