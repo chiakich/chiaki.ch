@@ -190,6 +190,11 @@ const LetterpressPage = () => {
                       title={latin ? EN_TITLE : CN_TITLE}
                       lines={latin ? EN_LINES : CN_LINES}
                     />
+                    {mode === 'cn-vertical' && (
+                      <Text className="lbl" textAlign="center" mt={3} display={{ base: 'block', md: 'none' }}>
+                        ◂ SCROLL
+                      </Text>
+                    )}
                   </Box>
                 )
               })}

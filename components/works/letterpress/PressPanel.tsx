@@ -1,4 +1,5 @@
 import { Redacted } from 'kappan/react'
+import { Box } from 'styled-system/jsx'
 
 export type PanelMode = 'cn-vertical' | 'cn-horizontal' | 'en-horizontal'
 
@@ -20,18 +21,20 @@ const PressPanel = ({ mode, title, lines }: PressPanelProps) => {
   const latin = mode === 'en-horizontal'
 
   return (
-    <div
-      style={{
-        border: '1px solid var(--ink)',
-        padding: '34px 38px',
-        // 直排固定高度，那是行長；橫排讓紙自己長高，長短由字數決定。
-        height: vertical ? 560 : 'auto',
-        overflow: 'auto',
-        // 直排的欄數是算得出來的，寬度包住就好；撐滿會讓版心偏到某一側。
-        width: vertical ? 'max-content' : undefined,
-        maxWidth: '100%',
-        margin: vertical ? '0 auto' : undefined,
-      }}
+    <Box
+      overflow="auto"
+      // 手機要放掉上限，不然負邊界推出去的寬度會被 100%（容器的 327px）夾回來。
+      maxWidth={vertical ? { base: 'none', md: '100%' } : '100%'}
+      overscrollBehaviorX="contain"
+      p={{ base: '22px 24px', md: '34px 38px' }}
+      // 直排固定高度，那是行長；橫排讓紙自己長高，長短由字數決定。
+      // 行長愈長，同樣字數需要的欄數愈少，整塊就愈窄 —— 所以手機上要拉高不是縮小。
+      height={vertical ? { base: '78vh', md: '560px' } : 'auto'}
+      // 桌機寬度包住版心就好，撐滿會偏到某一側。手機無論如何包不住 —— 八個段落
+      // 每段都要另起新欄，約十四欄；所以改成滿出容器的邊界，捲起來像一頁書。
+      width={vertical ? { base: 'auto', md: 'max-content' } : undefined}
+      mx={vertical ? { base: '-24px', md: 'auto' } : undefined}
+      style={{ border: '1px solid var(--ink)' }}
     >
       <div
         className={`lp-typed${vertical ? ' lp-v' : ''}`}
@@ -65,7 +68,7 @@ const PressPanel = ({ mode, title, lines }: PressPanelProps) => {
           </p>
         ))}
       </div>
-    </div>
+    </Box>
   )
 }
 
