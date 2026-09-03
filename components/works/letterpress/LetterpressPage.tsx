@@ -204,6 +204,17 @@ const LetterpressPage = () => {
           {/* ── 用法 ───────────────────────────────────────── */}
           <Box mb={{ base: 14, md: 20 }}>
             <Caption en="USAGE">{t('letterpressPage.usageTitle')}</Caption>
+            {/* 先玩再讀：獨立的產生器頁面，還有原始碼。 */}
+            <HStack justifyContent="center" gap={6} flexWrap="wrap" mb={7}>
+              {[
+                ['https://kappan.chiaki.ch/', t('letterpressPage.tryDemo')],
+                ['https://github.com/chiakich/kappan', t('letterpressPage.source')],
+              ].map(([href, label]) => (
+                <styled.a key={href} className="sg" href={href} target="_blank" rel="noreferrer" style={{ fontSize: 14, textDecoration: 'underline', textUnderlineOffset: 3 }}>
+                  <Redacted text={label} />
+                </styled.a>
+              ))}
+            </HStack>
             <Stack gap={6}>
               {[
                 [t('letterpressPage.usagePaste'), USAGE_PASTE],

@@ -802,7 +802,9 @@
     "caveat1": "Bring your own face — open source, a system font, or a justfont webfont subscription all work.",
     "caveat2": "Vertical punctuation needs a face of its own. Most Ming faces do carry vertical forms — webfont services like justfont just will not serve them, so you have to subset one yourself.",
     "caveat3": "The filters have to live in the same document as the content. Point at an external SVG file — on a CDN, or just a separate .svg — and the browser will not apply it.",
-    "usagePaste": "Paste it in"
+    "usagePaste": "Paste it in",
+    "tryDemo": "Type generator · try it",
+    "source": "Source · GitHub"
   },
   "zipcodePage": {
     "eyebrow": "Paste the whole address and be done",

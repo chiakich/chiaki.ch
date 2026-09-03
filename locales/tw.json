@@ -807,7 +807,9 @@
     "caveat1": "字體要自己準備。開源自架、系統字、或申請 justfont 的 webfont 服務都可以。",
     "caveat2": "直排的標點要另外準備。多數明體其實鑄了直排字形，只是 justfont 這類 webfont 服務取不到，得自己切一份子集頂上。",
     "caveat3": "濾鏡必須跟內容在同一份文件裡。指到外部 SVG 檔（放 CDN、或另存一個 .svg）瀏覽器不會套用。",
-    "usagePaste": "貼上就能用"
+    "usagePaste": "貼上就能用",
+    "tryDemo": "鉛字產生器 · 打一段字試印",
+    "source": "原始碼 · GitHub"
   },
   "zipcodePage": {
     "eyebrow": "把整串地址丟進來就好",
