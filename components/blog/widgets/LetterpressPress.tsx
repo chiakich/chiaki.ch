@@ -18,7 +18,7 @@ type Cause = keyof Press | 'set' | 'size'
 
 const CAUSES: Record<keyof Press, { label: string; hint: string }> = {
   ink: { label: '上墨量', hint: '少了筆畫會斷，多了糊成一團' },
-  pressure: { label: '壓力', hint: '輕了墨轉不滿、整體發灰，重了墨被擠出邊緣' },
+  pressure: { label: '壓力', hint: '輕了墨轉不滿、整體發灰，重了墨被擠到邊上，邊實中淡' },
   paper: { label: '紙的粗糙', hint: '光滑的塗佈紙，到粗糙吸墨的手工紙' },
   wear: { label: '鉛字年紀', hint: '舊字的字面被磨鈍、邊上崩角、也印得比較淡' },
 }
@@ -124,7 +124,7 @@ const LetterpressPress = ({
               ))}
             </HStack>
             <Text className="lbl" textAlign="center" mt={4} style={{ lineHeight: 1.9 }}>
-              {`推歪 ${tuning.displace!.toFixed(2)}　崩角 ${tuning.chipAmount!.toFixed(2)}／尺度 ${tuning.chipFrequency!.toFixed(2)}　缺塊門檻 ${tuning.voidThreshold!.toFixed(3)}　墨暈 ${tuning.bleed || '關'}　拉硬 ${tuning.contrast!.toFixed(1)}　墨量 ${tuning.fade!.toFixed(2)}`}
+              {`推歪 ${tuning.displace!.toFixed(2)}　崩角 ${tuning.chipAmount!.toFixed(2)}／尺度 ${tuning.chipFrequency!.toFixed(2)}　缺塊門檻 ${tuning.voidThreshold!.toFixed(3)}　墨暈 ${tuning.bleed || '關'}　拉硬 ${tuning.contrast!.toFixed(1)}　邊實 ${tuning.rim!.toFixed(2)}　墨量 ${tuning.fade!.toFixed(2)}`}
             </Text>
           </>
         )}
