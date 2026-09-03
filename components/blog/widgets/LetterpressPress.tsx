@@ -124,7 +124,7 @@ const LetterpressPress = ({
               ))}
             </HStack>
             <Text className="lbl" textAlign="center" mt={4} style={{ lineHeight: 1.9 }}>
-              {`推歪 ${tuning.displace!.toFixed(2)}　崩角 ${tuning.chipAmount!.toFixed(2)}／尺度 ${tuning.chipFrequency!.toFixed(2)}　缺塊門檻 ${tuning.voidThreshold!.toFixed(3)}　墨暈 ${tuning.bleed || '關'}　拉硬 ${tuning.contrast!.toFixed(1)}　邊實 ${tuning.rim!.toFixed(2)}　墨量 ${tuning.fade!.toFixed(2)}`}
+              {`推歪 ${tuning.displace!.toFixed(2)}　崩角 ${tuning.chipAmount!.toFixed(2)}／尺度 ${tuning.chipFrequency!.toFixed(2)}　缺塊門檻 ${tuning.voidThreshold!.toFixed(3)}　墨暈 ${tuning.bleed || '關'}　拉硬 ${tuning.contrast!.toFixed(1)}　邊實 ${tuning.rim!.toFixed(2)}　壓痕 ${tuning.deboss!.toFixed(2)}　墨量 ${tuning.fade!.toFixed(2)}`}
             </Text>
           </>
         )}
