@@ -29,18 +29,22 @@ const SpecimenRow = ({
         {name}
       </Text>
     </HStack>
-    <Text
-      className={cls}
-      style={{
-        fontWeight: 600,
-        lineHeight: 1.25,
-        // 見本帖的字距開得很大。置中時尾端會多出一個字距，往右補半個才回得到正中間。
-        letterSpacing: '.42em',
-        textIndent: '.21em',
-      }}
-    >
-      <Redacted text={text} />
-    </Text>
+    {/* 一列就是一列。折行會讓號數之間的大小關係讀不出來，寬度不夠就讓它橫向捲。 */}
+    <Box overflowX="auto" overscrollBehaviorX="contain">
+      <Text
+        className={cls}
+        style={{
+          whiteSpace: 'nowrap',
+          fontWeight: 600,
+          lineHeight: 1.25,
+          // 見本帖的字距開得很大。置中時尾端會多出一個字距，往右補半個才回得到正中間。
+          letterSpacing: '.42em',
+          textIndent: '.21em',
+        }}
+      >
+        <Redacted text={text} />
+      </Text>
+    </Box>
   </Box>
 )
 

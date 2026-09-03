@@ -140,8 +140,12 @@ const LetterpressPage = () => {
           <Box mb={{ base: 14, md: 20 }}>
             <Caption en="SPECIMEN OF CHINESE TYPE">{t('letterpressPage.specimenTitle')}</Caption>
             {/* 實體見本帖是 A4 大小的紙，螢幕不是。整份等比放大，號數之間的比例才留得住 ——
-                美華書館這套只到一號，硬加初號就是杜撰。 */}
-            <Stack gap={{ base: 3, md: 6 }} style={{ '--lp-scale': 1.6 } as React.CSSProperties}>
+                美華書館這套只到一號，硬加初號就是杜撰。手機放不下 1.6 倍：一號五個字
+                加 .42em 字距要 417px，可用寬度只有 327px，六列會全部折成兩行。 */}
+            <Stack
+              gap={{ base: 3, md: 6 }}
+              css={{ '--lp-scale': { base: 1, md: 1.6 } }}
+            >
               {SPECIMEN_ROWS.map((row) => (
                 <SpecimenRow key={row.name} {...row} />
               ))}
