@@ -97,7 +97,7 @@ const LetterpressPress = ({
         <Box textAlign={long ? 'justify' : 'center'} py={{ base: 4, md: 6 }} overflowX={long ? 'visible' : 'auto'}>
           <styled.p
             className="lp-f-t"
-            style={{ fontSize: size, fontWeight: 600, letterSpacing: '.12em', lineHeight: long ? 2 : 1.7, whiteSpace: long ? 'normal' : 'nowrap' }}
+            style={{ fontSize: size, letterSpacing: '.12em', lineHeight: long ? 2 : 1.7, whiteSpace: long ? 'normal' : 'nowrap' }}
           >
             <Redacted text={text} />
           </styled.p>

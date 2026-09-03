@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Box, Container, HStack, Stack, styled } from 'styled-system/jsx'
 import { LetterpressFilters, LetterpressStyles, Redacted } from 'kappan/react'
 import { useI18n } from 'i18n'
+import ProjectLink from 'components/portfolio/ProjectLink'
 import PressPanel, { type PanelMode } from './PressPanel'
 import SpecimenRow from './SpecimenRow'
 import FaceRow from './FaceRow'
@@ -134,6 +135,11 @@ const LetterpressPage = () => {
             <Text className="sg" mx="auto" mt={8} maxW="620px" style={{ fontSize: 16, lineHeight: 1.95, textAlign: 'justify' }}>
               <Redacted text={t('letterpressPage.intro')} />
             </Text>
+            {/* 白紙上用硃色與灰當按鈕色；hover 會填滿底色配黑字，不能用黑。 */}
+            <HStack justifyContent="center" gap={3} mt={8} flexWrap="wrap">
+              <ProjectLink href="https://kappan.chiaki.ch/" label={t('letterpressPage.tryDemo')} accent="#9d3327" />
+              <ProjectLink href="https://github.com/chiakich/kappan" label={t('letterpressPage.source')} detail="MIT" accent="#8d8781" />
+            </HStack>
           </Box>
 
           {/* ── 活字見本 ───────────────────────────────────── */}
@@ -204,17 +210,6 @@ const LetterpressPage = () => {
           {/* ── 用法 ───────────────────────────────────────── */}
           <Box mb={{ base: 14, md: 20 }}>
             <Caption en="USAGE">{t('letterpressPage.usageTitle')}</Caption>
-            {/* 先玩再讀：獨立的產生器頁面，還有原始碼。 */}
-            <HStack justifyContent="center" gap={6} flexWrap="wrap" mb={7}>
-              {[
-                ['https://kappan.chiaki.ch/', t('letterpressPage.tryDemo')],
-                ['https://github.com/chiakich/kappan', t('letterpressPage.source')],
-              ].map(([href, label]) => (
-                <styled.a key={href} className="sg" href={href} target="_blank" rel="noreferrer" style={{ fontSize: 14, textDecoration: 'underline', textUnderlineOffset: 3 }}>
-                  <Redacted text={label} />
-                </styled.a>
-              ))}
-            </HStack>
             <Stack gap={6}>
               {[
                 [t('letterpressPage.usagePaste'), USAGE_PASTE],
