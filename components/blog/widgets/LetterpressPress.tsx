@@ -19,8 +19,10 @@ type Cause = keyof Press | 'set' | 'size'
 const CAUSES: Record<keyof Press, { label: string; hint: string }> = {
   ink: { label: '上墨量', hint: '少了筆畫會斷，多了糊成一團' },
   pressure: { label: '壓力', hint: '輕了墨轉不滿、整體發灰，重了墨被擠到邊上，邊實中淡' },
-  paper: { label: '紙的粗糙', hint: '光滑的塗佈紙，到粗糙吸墨的手工紙' },
-  wear: { label: '鉛字年紀', hint: '舊字的字面被磨鈍、邊上崩角、也印得比較淡' },
+  roughness: { label: '紙面粗糙', hint: '光滑的塗佈紙，到纖維把筆畫邊推歪的手工紙' },
+  absorbency: { label: '紙的吸墨', hint: '塗佈紙不暈，新聞紙平但很吸墨、邊緣滲開' },
+  wear: { label: '字面磨損', hint: '舊字的字面被磨鈍、邊上崩角、也印得比較淡' },
+  unevenness: { label: '字內墨量差異', hint: '鉛字沒坐平，一顆字裡一側飽一側虛' },
 }
 const SET_HINT = '排字工的手不是尺，每顆字擺進去都差那麼一點'
 /**
@@ -38,11 +40,12 @@ const SIZE_HINT = '同一組參數，換個字級就是另一回事'
 const NEUTRAL = NEUTRAL_PRESS
 const PRESETS: { label: string; press: Press }[] = [
   { label: '標準', press: NEUTRAL },
-  { label: '墨上太多', press: { ink: 1.9, pressure: 1.3, paper: 1, wear: 1 } },
-  // 四個成因都偏向缺墨的話 starve 會疊到把字打碎，這幾組刻意留在讀得出字的範圍內。
-  { label: '墨不夠', press: { ink: 0.6, pressure: 0.8, paper: 1.1, wear: 1 } },
-  { label: '粗紙手刷', press: { ink: 1.05, pressure: 0.8, paper: 1.7, wear: 1.15 } },
-  { label: '新字好紙', press: { ink: 1, pressure: 1.4, paper: 0.2, wear: 0 } },
+  { label: '墨上太多', press: { ...NEUTRAL, ink: 1.9, pressure: 1.3, unevenness: 0.6 } },
+  // 成因都偏向缺墨的話 starve 會疊到把字打碎，這幾組刻意留在讀得出字的範圍內。
+  { label: '墨不夠', press: { ...NEUTRAL, ink: 0.6, pressure: 0.8, roughness: 1.1, unevenness: 1.4 } },
+  { label: '粗紙手刷', press: { ...NEUTRAL, ink: 1.05, pressure: 0.8, roughness: 1.7, absorbency: 1.6, wear: 1.15, unevenness: 1.3 } },
+  { label: '新聞紙', press: { ...NEUTRAL, ink: 1.1, roughness: 0.6, absorbency: 1.6, wear: 1.2 } },
+  { label: '新字好紙', press: { ...NEUTRAL, pressure: 1.4, roughness: 0.2, absorbency: 0.3, wear: 0, unevenness: 0.5 } },
 ]
 
 const LetterpressPress = ({
@@ -58,7 +61,7 @@ const LetterpressPress = ({
   // 長樣字要能換行，不然會變成一條橫向捲軸。
   const long = text.length > 12
   const [press, setPress] = useState<Press>(NEUTRAL)
-  const [lean, setLean] = useState(1)
+  const [lean, setLean] = useState(0.2)
   const [weight, setWeight] = useState(1)
   const set = (k: keyof Press) => (v: number) => setPress((p) => ({ ...p, [k]: v }))
 
@@ -109,8 +112,8 @@ const LetterpressPress = ({
           {(Object.keys(CAUSES) as (keyof Press)[]).map((c) =>
             show(c) ? <Dial key={c} label={CAUSES[c].label} value={press[c]} onCommit={set(c)} /> : null
           )}
-          {show('set') && <Dial label="歪斜" value={lean} live onCommit={setLean} />}
-          {show('set') && <Dial label="濃淡差異" value={weight} live onCommit={setWeight} />}
+          {show('set') && <Dial label="字間墨量差異" value={weight} live onCommit={setWeight} />}
+          {show('set') && <Dial label="字間歪斜" value={lean} live onCommit={setLean} />}
           {(show('size') || !only) && (
             <Dial label="字級" value={size} min={12} max={72} step={1} live format={(v) => `${v}px`} onCommit={setSize} />
           )}

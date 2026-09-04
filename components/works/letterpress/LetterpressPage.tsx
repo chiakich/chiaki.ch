@@ -37,7 +37,7 @@ const USAGE_VANILLA = `import { mount, redact, pressTuning } from 'kappan'
 // 調的是印刷的成因，不是濾鏡的參數。一個成因牽動好幾道濾鏡。
 const dispose = mount({
   typeFamily: "'I.Ming', serif",
-  filters: pressTuning({ ink: 1.4, pressure: 0.8, paper: 1.6, wear: 1.2 }),
+  filters: pressTuning({ ink: 1.4, pressure: 0.8, roughness: 1.6, absorbency: 1.4, wear: 1.2 }),
 })
 
 // 逐字歪斜要每個字自己一個 span。別直接把 redact 交給 forEach ——
@@ -50,7 +50,7 @@ import { LetterpressStyles, LetterpressFilters, Redacted } from 'kappan/react'
 // 兩個元件要吃同一份 options。只給其中一個的話，CSS 會指到不存在的濾鏡 id。
 const options = {
   typeFamily: "'I.Ming', serif",
-  filters: pressTuning({ paper: 1.6 }),
+  filters: pressTuning({ absorbency: 1.6 }),
 }
 
 <div className="lp lp-paper">
@@ -89,7 +89,7 @@ const LetterpressPage = () => {
   const { locale, t } = useI18n()
   const [texture, setTexture] = useState(true)
   const [strength, setStrength] = useState(1)
-  const [lean, setLean] = useState(1)
+  const [lean, setLean] = useState(0.2)
   const [weight, setWeight] = useState(1)
 
   const dialFilters = { ...DEMO_OPTIONS, idPrefix: DIAL_PREFIX, filters: { strength } }

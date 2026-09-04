@@ -4783,7 +4783,7 @@ jsonfile@^6.0.1:
 
 "kappan@github:chiakich/kappan#main":
   version "0.1.0"
-  resolved "https://codeload.github.com/chiakich/kappan/tar.gz/0780eb568f0377468367f21d02ddb3fde4324070"
+  resolved "https://codeload.github.com/chiakich/kappan/tar.gz/db182efc7af15c324c4abe08904477afc65bec33"
 
 keyv@^4.5.4:
   version "4.5.4"
