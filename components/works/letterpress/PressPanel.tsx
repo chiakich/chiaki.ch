@@ -59,8 +59,6 @@ const PressPanel = ({ mode, title, lines }: PressPanelProps) => {
             className="sg"
             style={{
               // 傳統書：漢字排實不加字距，拉丁字照字身走。
-              // 600 跟見本列一致：一點明體只有 400，這是合成粗體，但印得飽的感覺就是它給的。
-              fontWeight: 600,
               fontSize: latin ? 15 : 16,
               letterSpacing: latin ? '.01em' : 0,
               textAlign: latin ? 'justify' : undefined,
