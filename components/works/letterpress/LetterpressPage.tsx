@@ -95,6 +95,9 @@ const LetterpressPage = () => {
   const dialFilters = { ...DEMO_OPTIONS, idPrefix: DIAL_PREFIX, filters: { strength } }
   // 只有這個子樹改指到調節鈕那組濾鏡，頁面其他地方照舊。
   const dialVars = {
+    // 豎排橫排這幾塊改用日星宋體貳號（justfont webfont，class 由 loader 掃了才切子集）。
+    // 標點字型必須排最前面，unicode-range 才搶得贏正文字型。
+    '--type': "'lp-punct', 'rixingsong-semibold', 'Noto Serif TC', 'Songti TC', serif",
     '--texture': texture ? 1 : 0,
     '--lean': lean,
     '--weight': weight,
@@ -185,7 +188,7 @@ const LetterpressPage = () => {
               <Dial label={t('letterpressPage.dialLean')} value={lean} onCommit={setLean} />
               <Dial label={t('letterpressPage.dialWeight')} value={weight} onCommit={setWeight} />
             </HStack>
-            <Stack gap={12} style={dialVars}>
+            <Stack className="rixingsong-semibold" gap={12} style={dialVars}>
               {MODES.map(({ mode, labelKey }) => {
                 const latin = mode === 'en-horizontal'
                 return (
