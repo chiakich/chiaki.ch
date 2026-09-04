@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Box, Container, HStack, Stack, styled } from 'styled-system/jsx'
 import { LetterpressFilters, LetterpressStyles, Redacted } from 'kappan/react'
+import type { FilterTuning } from 'kappan'
 import { useI18n } from 'i18n'
 import ProjectLink from 'components/portfolio/ProjectLink'
 import PressPanel, { type PanelMode } from './PressPanel'
@@ -64,6 +65,23 @@ const options = {
 /** 調節鈕專用的那一組濾鏡。跟頁面本身那組用 idPrefix 分開，才不會連扉頁跟見本一起動。 */
 const DIAL_PREFIX = 'lpdial'
 
+/**
+ * 見本帖這一頁的邊緣調毛一點。兩個欄位一起動才有毛的感覺：
+ * displace 是邊被紙纖維推開幾個像素（幅度），grainFrequency 是那道噪點的細緻度（週期）。
+ * 只放大幅度，邊會變成大波浪的歪；週期也一起縮短，才會是短而密的起毛。
+ *
+ * 寫在這一頁而不是回頭改 kappan 的預設：預設是對著日星那張實印照片調出來的，
+ * 那是一張印得乾淨的樣張。見本帖要的是更手工的紙感，那是這一頁的美術決定。
+ */
+const ROUGH_EDGE: FilterTuning = {
+  small: { displace: 0.7, grainFrequency: 1.3 },
+  text: { displace: 0.95, grainFrequency: 1.05 },
+  heading: { displace: 1, grainFrequency: 0.75 },
+  large: { displace: 1.6, grainFrequency: 0.42 },
+}
+
+const PAGE_OPTIONS = { ...DEMO_OPTIONS, filters: ROUGH_EDGE }
+
 const MODES: { mode: PanelMode; labelKey: string }[] = [
   { mode: 'cn-vertical', labelKey: 'modeVertical' },
   { mode: 'cn-horizontal', labelKey: 'modeHorizontal' },
@@ -92,7 +110,7 @@ const LetterpressPage = () => {
   const [lean, setLean] = useState(0.2)
   const [weight, setWeight] = useState(1)
 
-  const dialFilters = { ...DEMO_OPTIONS, idPrefix: DIAL_PREFIX, filters: { strength } }
+  const dialFilters = { ...DEMO_OPTIONS, idPrefix: DIAL_PREFIX, filters: { strength, ...ROUGH_EDGE } }
   // 只有這個子樹改指到調節鈕那組濾鏡，頁面其他地方照舊。
   const dialVars = {
     // 豎排橫排這幾塊改用日星宋體貳號（justfont webfont，class 由 loader 掃了才切子集）。
@@ -112,7 +130,7 @@ const LetterpressPage = () => {
     <Box className="lp lp-paper" minHeight="100vh">
       {/* 整頁只掛一份樣式與濾鏡，底下所有樣張共用 —— 整本見本帖是同一張紙。 */}
       <LetterpressStyles {...DEMO_OPTIONS} />
-      <LetterpressFilters {...DEMO_OPTIONS} />
+      <LetterpressFilters {...PAGE_OPTIONS} />
       <LetterpressFilters {...dialFilters} />
       <style dangerouslySetInnerHTML={{ __html: demoCss }} />
 
