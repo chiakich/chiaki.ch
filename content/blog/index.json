@@ -1,10 +1,10 @@
 [
   {
     "slug": "letterpress-on-the-web",
-    "title": "想在網頁上重現鉛字印刷的質感，該怎麼做呢？",
-    "date": "2026-08-31",
+    "title": "如何在網頁上重現鉛字印刷的質感",
+    "date": "2026-09-03",
     "lang": "zh",
-    "excerpt": "鉛字壓在紙上會發生很多事：墨滲進纖維、壓力把字擠胖、紙面不平把筆畫推歪、用久的字會崩角。一件一件把它們寫回樣式裡。",
+    "excerpt": "在數位中模擬紙的纖維，墨的濃淡，鉛字的歪斜，印刷的缺損。一個在網頁上重現活版印刷的專案。",
     "tags": [
       "css",
       "svg",
@@ -12,7 +12,7 @@
       "letterpress"
     ],
     "cover": "/assets/blog/letterpress-on-the-web/01.webp",
-    "readingTime": 14
+    "readingTime": 16
   },
   {
     "slug": "acf-akihabara-fes-2026",
