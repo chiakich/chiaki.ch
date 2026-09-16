@@ -42,8 +42,13 @@ const prose = css({
   },
   // 信黑只掛到 W6，700 會落到 W8；內文粗體用 600 就夠對比，不會搶掉標題。
   '& strong': { fontWeight: 'medium' },
-  '& ul, & ol': { my: 6, pl: 7, display: 'flex', flexDirection: 'column', gap: 2 },
-  '& li': { pl: 1 },
+  // Panda preflight resets list-style; restore it explicitly or markers vanish.
+  '& ul, & ol': { my: 6, pl: 7, listStylePosition: 'outside' },
+  '& ul': { listStyleType: 'disc' },
+  '& ol': { listStyleType: 'decimal' },
+  '& li': { pl: 1, my: 2 },
+  '& li > p': { my: 0 },
+  '& li > p + p': { mt: 2 },
   '& li::marker': { color: 'var(--ink3)' },
   '& blockquote': {
     my: 7,
