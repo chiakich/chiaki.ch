@@ -27,6 +27,7 @@ class MyDocument extends Document {
           <meta name="apple-mobile-web-app-title" content="千秋稻荷社" />
           <meta name="apple-mobile-web-app-capable" content="yes" />
           <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+          <meta name="mobile-web-app-capable" content="yes" />
 
           <link rel="preconnect" href="https://ds.justfont.com" />
           <link rel="preconnect" href="https://cdn-go.justfont.com" crossOrigin="anonymous" />
