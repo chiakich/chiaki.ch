@@ -16,12 +16,10 @@ const Span = styled.span
 const prose = css({
   fontFamily: 'var(--type)',
   fontWeight: 'regular',
-  // 黑體字面比明體滿，級數略收；版心 696px 在 13pt 下約 40 字一行。
   fontSize: { base: '12pt', md: '13pt' },
   lineHeight: '1.9',
   letterSpacing: '.02em',
   color: 'var(--ink)',
-  hangingPunctuation: 'allow-end',
   '& h2, & h3, & h4': {
     fontFamily: 'var(--type)',
     color: 'var(--ink)',
@@ -33,7 +31,7 @@ const prose = css({
   '& h3': { fontSize: { base: '14pt', md: '15.5pt' }, fontWeight: 'medium', mt: 10, mb: 3 },
   '& h4': { fontSize: '13pt', fontWeight: 'medium', mt: 8, mb: 3 },
   '& h2 + h3': { mt: 6 },
-  '& p': { my: 6, textAlign: 'start', textWrap: 'pretty', overflowWrap: 'break-word' },
+  '& p': { my: 6, textAlign: 'start', overflowWrap: 'break-word' },
   '& a': {
     color: 'var(--red)',
     borderBottom: '1px solid color-mix(in srgb, var(--red) 45%, transparent)',
@@ -69,10 +67,8 @@ const prose = css({
     height: 'auto',
     mx: 'auto',
     my: 8,
-    // 相片不是印出來的，給壓痕陰影而不是墨壓濾鏡。
     boxShadow: '0 1px 2px rgba(22, 19, 15, .24), 0 10px 22px rgba(22, 19, 15, .12)',
   },
-  // 黑體沒有斜體，瀏覽器合成的假斜體很難看；強調靠墨色淡一級就好。
   '& em': { fontStyle: 'normal', color: 'var(--ink3)' },
   // figure caption: an emphasis-only paragraph right after an image
   '& p:has(> img:only-child, > video:only-child) + p:has(> em:only-child)': {
