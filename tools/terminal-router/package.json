@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "bundle": "../../node_modules/.bin/esbuild scripts/entry.ts --bundle --format=esm --platform=node --outfile=build/engine.mjs --log-level=warning",
+    "spec": "npm run bundle && node scripts/spec.mjs",
+    "prep": "npm run bundle && node scripts/prep.mjs",
+    "eval:regex": "npm run bundle && node scripts/eval-regex.mjs",
+    "eval:router": "npm run bundle && node scripts/eval-router.mjs"
+  },
+  "dependencies": {
+    "@huggingface/transformers": "4.3.0"
+  }
+}

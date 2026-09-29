@@ -1,0 +1,5 @@
+sentence-transformers>=6.1
+datasets
+accelerate>=1.1.0
+onnx
+onnxruntime

@@ -1,0 +1,6 @@
+node_modules/
+build/
+models/
+data/gen/spec-*.json
+train/data/
+train/out/
