@@ -2,7 +2,8 @@ import { smallTalkRules } from './smalltalk'
 import type { Reply, Rule, Suggestion } from './types'
 
 // 八雲秋狐's response table. Patterns run against normalised text (traditional,
-// punctuation stripped, lower-cased) — see lib/terminal/normalize.ts.
+// punctuation stripped, lower-cased, 妳/您 folded to 你) — see
+// lib/terminal/normalize.ts.
 //
 // Setting: a new weapon changed how the world behaves. The air is unchanged by
 // every measurement, but lift is not — jets cannot fly, powder barely burns.
@@ -36,12 +37,15 @@ const RECALL_PATTERNS = [
 // could only be about the question stay loose, as in peace.check.*.
 const SELF = '(?:我(?:們)?(?:這邊|那邊)?)?'
 
+// 「你好」 only as a whole clause — in 「你好笨」 and 「你好聰明」 the 好 means "so".
+const HELLO = '你好(?=[啊呀喔哦耶嗎呢啦唷囉嘛]*$)'
+
 const storyRules: Rule[] = [
   {
     id: 'greeting',
     priority: 2,
     patterns: [
-      /(你好|妳好|您好|哈囉|哈嘍|嗨|早安|午安|安安|好久不見|hello|hi|こんにちは|おはよう)/,
+      new RegExp(`(${HELLO}|哈囉|哈嘍|嗨|早安|午安|安安|好久不見|hello|hi|こんにちは|おはよう)`),
     ],
     replies: [
       {
@@ -69,7 +73,7 @@ const storyRules: Rule[] = [
     repeatable: true,
     priority: 3,
     requires: ['greeted'],
-    patterns: [/(你好|妳好|哈囉|嗨|安安|hello|hi)/],
+    patterns: [new RegExp(`(${HELLO}|哈囉|嗨|安安|hello|hi)`)],
     replies: [
       { text: '嗯，剛才已經見過了。你不必這麼拘謹。', emotion: 'neutral' },
       { text: '又一次嗎……那麼，我也再向你問候一次。', emotion: 'happy' },
@@ -213,7 +217,7 @@ const storyRules: Rule[] = [
   {
     id: 'name',
     priority: 3,
-    patterns: [/(你叫什麼|妳叫什麼|你是誰|妳是誰|你的名字|大名|怎麼稱呼|自我介紹)/],
+    patterns: [/(你叫什麼|你是誰|你的名字|大名|怎麼稱呼|自我介紹)/],
     replies: [
       {
         text: '八雲秋狐。千秋稻荷社第一研究室室長，兼第▓▓代巫女。',
@@ -265,7 +269,7 @@ const storyRules: Rule[] = [
     id: 'ai',
     priority: 5,
     patterns: [
-      /(你是ai|妳是ai|機器人|人工智慧|人工智能|chatgpt|gpt|llm|大模型|你是程式|你是假的|你是真的|真人|仿生|人造)/,
+      /(你是ai|機器人|人工智慧|人工智能|chatgpt|gpt|llm|大模型|你是程式|你是假的|你是真的|真人|仿生|人造)/,
     ],
     replies: [
       {
@@ -374,7 +378,7 @@ const storyRules: Rule[] = [
     // the only name she has for the maker, so every earlier mention hands the
     // visitor that word, and typing it back has to land here.
     patterns: [
-      /(設計者|設計你|設計妳|做你的|造你的|創造|開發|製作者|工程師是|誰做的|誰做出|誰造|造出你|把你做|主人|少女|那個女孩|她是誰|她去哪|她怎麼)/,
+      /(設計者|設計你|做你的|造你的|創造|開發|製作者|工程師是|誰做的|誰做出|誰造|造出你|把你做|主人|少女|那個女孩|她是誰|她去哪|她怎麼)/,
     ],
     keywords: ['設計者', '創造', '製作', '開發'],
     replies: [
@@ -1424,7 +1428,7 @@ const storyRules: Rule[] = [
   {
     id: 'confession',
     priority: 6,
-    patterns: [/(喜歡你|喜歡妳|愛你|愛妳|交往|告白|做我女朋友|嫁給我|結婚)/],
+    patterns: [/(喜歡你|愛你|交往|告白|做我女朋友|嫁給我|結婚)/],
     replies: [
       {
         text: '……欸。那個，這個端末只是留言用的，我沒辦法好好回答這種事。',

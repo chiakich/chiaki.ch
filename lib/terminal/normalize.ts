@@ -50,7 +50,8 @@ const strip = (text: string) => {
 export const normalize = (raw: string): NormalizedInput => {
   // NFKC folds full-width latin and digits; the rest is done by hand because
   // NFKC would also decompose characters we want to keep intact.
-  const folded = toTraditional(raw.normalize('NFKC').toLowerCase())
+  // Visitors address her as 妳 as often as 你, but patterns only spell 你.
+  const folded = toTraditional(raw.normalize('NFKC').toLowerCase()).replace(/[妳您]/g, '你')
 
   return {
     text: strip(folded),
