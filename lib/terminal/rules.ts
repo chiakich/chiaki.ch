@@ -39,13 +39,16 @@ const SELF = '(?:我(?:們)?(?:這邊|那邊)?)?'
 
 // 「你好」 only as a whole clause — in 「你好笨」 and 「你好聰明」 the 好 means "so".
 const HELLO = '你好(?=[啊呀喔哦耶嗎呢啦唷囉嘛]*$)'
+// Normalising drops spaces, so latin greetings can't lean on word boundaries: 「hi there」
+// arrives as 「hithere」 and 「keyword matching」 as 「keywordmatching」.
+const LATIN_HELLO = '^(?:hello|hi)|(?<![a-z])(?:hello|hi)(?![a-z])'
 
 const storyRules: Rule[] = [
   {
     id: 'greeting',
     priority: 2,
     patterns: [
-      new RegExp(`(${HELLO}|哈囉|哈嘍|嗨|早安|午安|安安|好久不見|hello|hi|こんにちは|おはよう)`),
+      new RegExp(`(${HELLO}|${LATIN_HELLO}|哈囉|哈嘍|嗨|早安|午安|安安|好久不見|こんにちは|おはよう)`),
     ],
     replies: [
       {
@@ -73,7 +76,7 @@ const storyRules: Rule[] = [
     repeatable: true,
     priority: 3,
     requires: ['greeted'],
-    patterns: [new RegExp(`(${HELLO}|哈囉|嗨|安安|hello|hi)`)],
+    patterns: [new RegExp(`(${HELLO}|${LATIN_HELLO}|哈囉|嗨|安安)`)],
     replies: [
       { text: '嗯，剛才已經見過了。你不必這麼拘謹。', emotion: 'neutral' },
       { text: '又一次嗎……那麼，我也再向你問候一次。', emotion: 'happy' },

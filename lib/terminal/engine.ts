@@ -274,6 +274,10 @@ const NAME_COPULA = new RegExp(
 
 // Trailing particles get swept up by the greedy character class above.
 const NAME_TAIL = /[的了啦喔唷囉囍呀耶嘛哦嗎呢吧啊，。！？!?.\s]+$/
+// So does the rest of 「叫我小夜就好」 — four characters fit the class exactly.
+const NAME_SUFFIX = /(?:就好了?|就行了?|就可以了?|即可|沒錯|就)$/
+const cleanName = (text: string) =>
+  text.replace(NAME_TAIL, '').replace(NAME_SUFFIX, '').replace(NAME_TAIL, '').trim()
 // "我是" also introduces professions, states and species. Confirming would look
 // worse than staying quiet, so the obvious ones never reach the question.
 const NON_NAMES = new Set(
@@ -284,7 +288,9 @@ const NON_NAMES = new Set(
     '倖存者 幸存者 生存者 難民 旅人 玩家 使用者 使用者本人 你 我 他 她 誰 ' +
     '真的 假的 認真的 開玩笑的 新來的 一個人 沒有人 機器人 ai 人工智慧 神 巫女 狐狸 ' +
     // Question words, or the sentence was a question about the name, not one.
-    '什麼 甚麼 什麼名字 誰 哪 哪個 名字 這樣 那樣 怎樣 好 不好 對 不對 真 假')
+    '什麼 甚麼 什麼名字 誰 哪 哪個 名字 這樣 那樣 怎樣 好 不好 對 不對 真 假 ' +
+    // Interjections, which is all 「蛤」 is when it answers 「你叫什麼」.
+    '蛤 喔 嗯 恩 啊 哈 哈哈 欸 呃 唉 哇 咦 嘿 喂')
     .split(' ')
     .filter(Boolean)
 )
@@ -316,7 +322,7 @@ const ANSWER_REFUSAL = /^(不|沒|秘密|算了|免|別問|no)|不想|不用|不
 const readAnswerName = (raw: string): string | null => {
   const trimmed = raw.trim()
   if (ANSWER_REFUSAL.test(trimmed)) return null
-  const name = trimmed.replace(ANSWER_LEAD, '').replace(NAME_TAIL, '').trim()
+  const name = cleanName(trimmed.replace(ANSWER_LEAD, ''))
   if (!NAME_BARE.test(name)) return null
   // Still worth screening: 「我是人類」 is an evasion, not an introduction, and
   // filing it as a name would be worse than letting it fall through.
@@ -332,12 +338,31 @@ const readName = (raw: string): string | null => {
   }
   if (!hit) return null
   const raw1 = hit[1].trim()
-  const name = raw1.replace(NAME_TAIL, '').trim()
+  const name = cleanName(raw1)
   if (name.length === 0) return null
   // Both forms, because stripping 「的」 off 「真的」 would otherwise smuggle it past.
   if (NON_NAMES.has(name.toLowerCase()) || NON_NAMES.has(raw1.toLowerCase()))
     return null
   return name
+}
+
+// While she is checking a name, 「是小夜啦」 opens on 是 but is a correction, not a yes.
+const NAME_CORRECTION = new RegExp(
+  `^(?:不(?:是|對)?[，,、\\s]*)?(?:是|叫)\\s*[「『"]?${NAME_BODY}`
+)
+
+// `same` is 「是阿考啦，就好不是名字」 once the guess is already 阿考: agreement with a
+// remark attached, which the remark's 「不是」 must not turn into a refusal.
+const readCorrection = (
+  raw: string,
+  guess: string | null
+): { name: string; same: boolean } | null => {
+  const hit = NAME_CORRECTION.exec(raw.trim())
+  if (!hit) return null
+  const name = cleanName(hit[1])
+  if (!name || NON_NAMES.has(name.toLowerCase())) return null
+  // 「是阿哲沒錯」 extends the guess and is agreement too.
+  return { name, same: guess !== null && name.startsWith(guess) }
 }
 
 const fill = (text: string, session: Session) =>
@@ -481,6 +506,11 @@ const answersQuestion = (pattern: RegExp, clauses: string[], whole: string) => {
   return answering.some((clause) => pattern.exec(clause)?.index === 0)
 }
 
+// 「我今天好累，你會寂寞嗎」 is about the question, not the statement in front of it.
+const QUESTION_BONUS = 30
+// 「哪來的戰爭」 is a denial dressed as a question and must not earn the bonus.
+const RHETORICAL = /哪來|哪有|哪裡有|怎麼可能|誰知道/
+
 /**
  * Two-pass match: literal patterns first, then a soft pass that scores rule
  * keywords against the segmenter's tokens. The soft pass is what lets
@@ -494,6 +524,12 @@ const findRule = (
   nameHit: string | null
 ): Candidate | null => {
   let best: Candidate | null = null
+  // Only a sentence that mixes telling and asking gets the bonus; a lone clause
+  // scores exactly as before.
+  const asking = clauses.filter(
+    (clause) => INTERROGATIVE.test(clause) && !RHETORICAL.test(clause)
+  )
+  const mixed = asking.length > 0 && asking.length < clauses.length
 
   for (const rule of allRules()) {
     if (!isEligible(rule, session, nameHit)) continue
@@ -507,8 +543,13 @@ const findRule = (
       if (rule.continues && !answersQuestion(pattern, clauses, whole)) continue
       // A rule answering the question she just asked outranks everything, so
       // "好啊" lands on the offer instead of the generic affirmation.
+      const inQuestion = mixed && asking.some((clause) => pattern.test(clause))
       const score =
-        100 + priority * 10 + (inClause ? 5 : 0) + (rule.continues ? 500 : 0)
+        100 +
+        priority * 10 +
+        (inClause ? 5 : 0) +
+        (inQuestion ? QUESTION_BONUS : 0) +
+        (rule.continues ? 500 : 0)
       if (!best || score > best.score) best = { rule, score }
       break
     }
@@ -567,13 +608,21 @@ const degrade = (text: string, signal: number, seed: number) => {
   return out
 }
 
+// Visitors quote her back at her. Her own words must not pick the rule, nor
+// count as the visitor's vocabulary, so matching tries the rest of the input first.
+const QUOTED = /「[^」]*」|『[^』]*』|“[^”]*”|"[^"]*"/g
+
 export const respond = (
   raw: string,
   session: Session,
   lexicon: Lexicon | null
 ): Turn => {
-  const input = normalize(raw)
-  const tokens = segmentAll(input.text, lexicon)
+  const full = normalize(raw)
+  const unquoted = normalize(raw.replace(QUOTED, '，'))
+  const quoted = unquoted.text.length > 0 && unquoted.text !== full.text
+  let input = quoted ? unquoted : full
+  let tokens = segmentAll(input.text, lexicon)
+  const ownTokens = tokens
   const seed = Math.random()
 
   // Expire before matching, not after — an expired question must not be
@@ -581,16 +630,29 @@ export const respond = (
   if (session.pending !== null && session.pendingAge >= PENDING_TTL)
     armPending(session, null)
 
+  const checked =
+    session.pending === 'name.check' ? readCorrection(raw, session.nameGuess) : null
+  const correction = checked && !checked.same ? checked.name : null
   const nameHit =
+    correction ??
     readName(raw) ??
     (session.pending === 'name.ask' ? readAnswerName(raw) : null)
-  const match = findRule(input.clauses, input.text, tokens, session, nameHit)
+  // A corrected name goes back through the introduction, which re-arms the check.
+  let match: Candidate | null = checked
+    ? { rule: RULES_BY_ID.get(checked.same ? 'name.check.yes' : 'player.name')!, score: 0 }
+    : findRule(input.clauses, input.text, tokens, session, nameHit)
+  // What she was quoted as saying is still better than nothing to go on.
+  if (!match && quoted) {
+    input = full
+    tokens = segmentAll(full.text, lexicon)
+    match = findRule(input.clauses, input.text, tokens, session, nameHit)
+  }
 
   // Suspicion accumulates across the whole session rather than firing on one
   // word: a single "手機" could be her mishearing, four of them could not.
   // She never interrupts a turn that is answering something she just asked —
   // cutting off her own question would read as a bug, not as a discovery.
-  session.modernScore += scoreModern(input.text, tokens)
+  session.modernScore += scoreModern(quoted ? unquoted.text : full.text, ownTokens)
   const discovering =
     !session.flags.has('askedPeace') &&
     !session.flags.has('knowsPeace') &&
