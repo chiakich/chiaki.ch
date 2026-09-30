@@ -14,8 +14,9 @@ instead of by regex. Nothing here is loaded by the site yet.
   bundle, so every number reflects the shipped matcher.
 - `train/` — fine-tuning and ONNX export, meant to run on a GPU pod.
 
-Only topical rules are routable. `continues` rules, name capture and empty input need turn
-context and stay with regex (see `scripts/protos.mjs`).
+Only topical rules are routable. `continues` rules and empty input need turn context and stay
+with regex, and rules without patterns (the name box's) are only ever jumped to (see
+`scripts/protos.mjs`).
 
 ## Measure the regex engine
 

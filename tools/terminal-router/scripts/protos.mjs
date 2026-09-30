@@ -10,8 +10,9 @@ const fragments = (re) =>
     .map((s) => s.trim())
     .filter((s) => s.length >= 2 && !/[\\\[\]{}]/.test(s))
 
-// Rules the router may pick. `continues` and name capture stay with regex: they need turn context.
-export const routable = rules.filter((r) => !r.continues && !r.capturesName)
+// Rules the router may pick. `continues` rules stay with regex: they need turn context. Rules
+// without patterns are only reached by jumping (the name box), never by what was typed.
+export const routable = rules.filter((r) => !r.continues && r.patterns.length > 0)
 
 export const prototypes = () => {
   const out = []

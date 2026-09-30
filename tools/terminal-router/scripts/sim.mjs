@@ -1,10 +1,15 @@
 // One turn of a simulated visit, driven the way TerminalChat.tsx drives the engine.
 //   node scripts/sim.mjs new <id>          opening line + chips
-//   node scripts/sim.mjs say <id> <text>   a typed message; "#N" clicks chip N, "#give" presses the ending button
+//   node scripts/sim.mjs say <id> <text>   a typed message; "#N" clicks chip N, "#give" presses the ending button,
+//                                          "#name X" / "#noname" answer the name box
 // stdout is only what the visitor would see. The full turn record (rule ids, state) goes to
 // build/sim/<id>.jsonl, which the visitor must not read.
 import { existsSync, mkdirSync, readFileSync, appendFileSync, writeFileSync } from 'node:fs'
-import {
+import * as engine from '../build/engine.mjs'
+
+// Namespace import so this also runs against an older engine build (bundle:head) that
+// predates the name box; there the box simply never opens.
+const {
   createSession,
   endingHandover,
   isAfterDarkActive,
@@ -15,7 +20,9 @@ import {
   respond,
   setDirtyContent,
   suggestionsFor,
-} from '../build/engine.mjs'
+} = engine
+const isAskingName = (session) => engine.isAskingName?.(session) ?? false
+const submitName = (raw, session) => engine.submitName(raw, session)
 import { LEXICON, TOOL } from './paths.mjs'
 
 export const SIM = `${TOOL}build/sim/`
@@ -40,8 +47,9 @@ export const boot = async () => {
   return parseLexicon(readFileSync(LEXICON, 'utf8'))
 }
 
-const show = (text, chips, ending) => {
+const show = (text, chips, ending, askingName) => {
   console.log(`秋狐：${text}`)
+  if (askingName) console.log('〔輸入框變成了名字欄：用 #name 你的名字 寫下，或 #noname 不告訴她〕')
   if (ending === 'offer') console.log('〔畫面上出現一個按鈕：「交給她」（輸入 #give 按下）〕')
   if (chips.length) console.log(`〔建議選項〕 ${chips.map((c, i) => `#${i + 1} ${c.text}`).join('  ')}`)
 }
@@ -76,6 +84,8 @@ const main = async () => {
   let turn, input = raw, chip = null
   if (raw === '#give') {
     turn = endingHandover(session)
+  } else if (raw === '#noname' || raw.startsWith('#name ')) {
+    turn = submitName(raw === '#noname' ? null : raw.slice(6), session)
   } else if (/^#\d+$/.test(raw)) {
     chip = suggestionsFor(session, asked)[Number(raw.slice(1)) - 1]
     if (!chip) return console.log('〔沒有這個選項〕')
@@ -103,7 +113,7 @@ const main = async () => {
   saveSession(id, { ...state, asked: [...asked] })
 
   if (afterDark) return console.log('〔對話在這裡中斷了。模擬結束。〕')
-  show(turn.text, state.ended ? [] : suggestionsFor(session, asked), turn.ending)
+  show(turn.text, state.ended ? [] : suggestionsFor(session, asked), turn.ending, isAskingName(session))
   if (turn.ending === 'leaving') console.log('〔她離開了畫面。模擬結束。〕')
 }
 

@@ -3,9 +3,11 @@
 // Strategy is "embedding first, regex fallback": the engine has no hook yet to force a
 // fallback, so input under the threshold still goes through the regex matcher.
 import { readFileSync, writeFileSync } from 'node:fs'
-import { createSession, isAfterDarkActive, jumpTo, opening, respond, rules } from '../build/engine.mjs'
+import * as engine from '../build/engine.mjs'
 import { loadRouter } from './router.mjs'
 import { SIM, boot } from './sim.mjs'
+
+const { createSession, isAfterDarkActive, jumpTo, opening, respond, rules } = engine
 
 const [modelArg, tauArg, tag, ...ids] = process.argv.slice(2)
 const tau = Number(tauArg)
@@ -28,16 +30,21 @@ for (const id of ids) {
 
   for (const rec of live.filter((r) => r.turn > 0 && r.input && r.input !== '#give')) {
     const before = { lastTopic: session.lastTopic, pending: session.pending }
+    if (engine.submitName && (rec.input === '#noname' || rec.input.startsWith('#name '))) {
+      const turn = engine.submitName(rec.input === '#noname' ? null : rec.input.slice(6), session)
+      out.push({ turn: rec.turn, input: rec.input, text: turn.text, ruleId: turn.ruleId, via: 'box', router: null, ...before })
+      continue
+    }
     // Dry run on a copy to see what regex alone would do with this turn.
     const probe = structuredClone(session)
     const dry = respond(rec.input, probe, lexicon)
     const dryRule = byId.get(dry.ruleId)
-    // Turn context beats the router: answers to her question, name capture, the explicit
+    // Turn context beats the router: answers to her question, the explicit
     // branch, and follow-ups that stay on the current topic all keep the regex result.
     const contextual =
       isAfterDarkActive(probe) ||
       dry.ruleId === session.lastTopic ||
-      (dryRule !== undefined && (dryRule.continues !== undefined || dryRule.capturesName))
+      (dryRule !== undefined && dryRule.continues !== undefined)
     const top = contextual || !route ? null : await route(rec.input, session.flags)
 
     let turn = null, via = 'regex'
