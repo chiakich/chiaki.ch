@@ -13,6 +13,8 @@ filled in from `personas.json`.
 > - 開始：`node scripts/sim.mjs new {id}`
 > - 每說一句：`node scripts/sim.mjs say {id} '<你要說的話>'`（用單引號包住）
 > - 點建議選項：`node scripts/sim.mjs say {id} '#2'`
+> - 畫面提示輸入框變成名字欄時：`node scripts/sim.mjs say {id} '#name <你的名字>'`，
+>   不想說就 `node scripts/sim.mjs say {id} '#noname'`
 >
 > 螢幕上只會顯示她說的話和建議選項，那就是你全部能看到的東西。
 >

@@ -1,7 +1,9 @@
 # Generation prompts
 
 `train-*.json` and `offtopic.json` were written by Claude subagents, one per file, from the
-prompts below. `spec-N.json` comes from `npm run spec`. The subagents were told not to read
+prompts below. `spec-N.json` comes from `npm run spec`, or `npm run spec:missing` for only the
+rules no `train-N.json` covers yet (that is how `train-5.json` was made, with 22 lines for each
+broad `visitor.*` category). The subagents were told not to read
 `data/test/`, and `npm run prep` still drops any generated line identical to a test sentence.
 
 ## Paraphrases (`train-N.json`, one run per spec batch)
@@ -37,7 +39,24 @@ prompts below. `spec-N.json` comes from `npm run spec`. The subagents were told 
 > Write a single JSON object mapping rule id → array of 15 strings to `data/gen/train-N.json`,
 > then validate it with node.
 
+## Relabeled off-topic (`train-6.json`)
+
+The first `offtopic.json` (200 lines of everyday chatter) went stale once the `visitor.*`
+categories existed: a subagent reading every rule's replies found a fitting rule for all 200, so
+they became paraphrases, grouped by that rule.
+
 ## Off-topic calibration (`offtopic.json`)
+
+The current file asks for lines no rule fits, the `visitor.*` catch-alls included:
+
+> Write 160 lines a real Taiwanese visitor might type where NO rule fits — the right behavior
+> is for her to say she didn't quite follow or ask back. Check each against the rules and drop
+> any that some rule's reply would answer sensibly: non sequiturs, half-finished or mis-sent
+> fragments, references to things she couldn't know without context, statements about unnamed
+> third parties, odd hypotheticals, abstract questions no rule covers. No keyboard mashing (a
+> rule handles it). 3–25 characters, no emoji.
+
+The original prompt, for reference:
 
 > Read the four spec files to learn which topics ARE covered. Then write 200 things a real
 > Taiwanese visitor might type into such a chat that NONE of those rules can sensibly answer:

@@ -6,10 +6,10 @@ instead of by regex. Nothing here is loaded by the site yet.
 
 ## Layout
 
-- `data/test/` — held-out test set: 354 hand-written paraphrases over 59 rules (`accept` lists
-  every rule that would be a fair answer) plus 40 off-topic lines. Never train on these.
+- `data/test/` — held-out test set: 515 hand-written paraphrases in 101 groups (`accept` lists
+  every rule that would be a fair answer) plus 79 lines no rule fits. Never train on these.
 - `data/gen/` — generated training data (`train-*.json`, 15 paraphrases per routable rule) and
-  200 off-topic calibration lines. See `PROMPT.md` for how they were produced.
+  160 lines no rule fits, for threshold calibration. See `PROMPT.md` for how they were produced.
 - `scripts/` — node scripts that drive the real engine from `lib/terminal/` through an esbuild
   bundle, so every number reflects the shipped matcher.
 - `train/` — fine-tuning and ONNX export, meant to run on a GPU pod.
@@ -30,7 +30,7 @@ Prints hit / wrong-rule / fallback rates, the weakest rules, and every wrong-rul
 
 ## Regenerate training data
 
-When rules change, `npm run spec` writes `data/gen/spec-{1..4}.json`; regenerate
+When rules change, `npm run spec` writes `data/gen/spec-{1..4}.json` (`npm run spec:missing` only the uncovered rules); regenerate
 `train-*.json` from them with the prompt in `data/gen/PROMPT.md`. Then:
 
 ```sh
@@ -83,6 +83,20 @@ Results from the first run (2026-09-29):
 | zero-shot, emb first, regex fallback | 73.4% | 9.0% | 17.5% | 17/40 |
 | `onnx-mnrl-e10`, emb only (τ=0.71) | 77.7% | 5.9% | 16.4% | 6/40 |
 | `onnx-mnrl-e10`, emb first, regex fallback | 83.9% | 8.8% | 7.3% | 18/40 |
+
+Second run (2026-09-30), after 17 new rules and a harder test set (515 lines, 79 that no rule
+fits, now that the `visitor.*` catch-alls answer everyday chatter):
+
+| Router | Hit | Wrong rule | Fallback | Off-topic routed |
+|---|---|---|---|---|
+| regex | 54.4% | 11.7% | 34.0% | 9/79 |
+| old `onnx-mnrl-e10`, emb first, regex fallback | 69.1% | 10.3% | 20.6% | 10/79 |
+| `v2/onnx-mnrl-e10`, emb only (τ=0.80) | 48.0% | 1.7% | 50.3% | 0/79 |
+| `v2/onnx-mnrl-e10`, emb first, regex fallback | 71.8% | 9.5% | 18.6% | 12/79 |
+
+Its unthresholded top-1 on the test lines is 83.7%, so what holds it back is the threshold, not
+the ranking: the dev split (generated paraphrases, one label each) scores far lower than the
+test set, so thresholds tuned on it come out too strict.
 
 The test sentences and the training data were both written by Claude, so treat these as
 optimistic until they are checked against real visitor input (`persist.recordMiss`).

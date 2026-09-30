@@ -7,7 +7,8 @@
     "prep": "npm run bundle && node scripts/prep.mjs",
     "eval:regex": "npm run bundle && node scripts/eval-regex.mjs",
     "eval:router": "npm run bundle && node scripts/eval-router.mjs",
-    "bundle:head": "rm -rf build/head && mkdir -p build/head && git -C ../.. archive HEAD lib/terminal | tar -x -C build/head && sed 's#../../../lib/terminal#./lib/terminal#' scripts/entry.ts > build/head/entry.ts && ../../node_modules/.bin/esbuild build/head/entry.ts --bundle --format=esm --platform=node --outfile=build/engine.mjs --log-level=warning"
+    "bundle:head": "rm -rf build/head && mkdir -p build/head && git -C ../.. archive HEAD lib/terminal | tar -x -C build/head && sed 's#../../../lib/terminal#./lib/terminal#' scripts/entry.ts > build/head/entry.ts && ../../node_modules/.bin/esbuild build/head/entry.ts --bundle --format=esm --platform=node --outfile=build/engine.mjs --log-level=warning",
+    "spec:missing": "npm run bundle && node scripts/spec.mjs --missing"
   },
   "dependencies": {
     "@huggingface/transformers": "4.3.0"

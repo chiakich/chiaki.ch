@@ -2,6 +2,7 @@
 import { mkdirSync, writeFileSync } from 'node:fs'
 import { normalize } from '../build/engine.mjs'
 import { GEN, TEST, TRAIN_DATA, readJson } from './paths.mjs'
+import { paraphrases as generated } from './gen.mjs'
 import { prototypes, routable } from './protos.mjs'
 
 const DEV_SHARE = 0.15
@@ -23,7 +24,7 @@ const push = (rows, text, label) => {
   rows.push({ text: t, label })
 }
 
-const paraphrases = Object.assign({}, ...[1, 2, 3, 4].map((i) => readJson(`${GEN}train-${i}.json`)))
+const paraphrases = generated().lines
 const missing = []
 for (const r of routable) {
   const lines = paraphrases[r.id]
