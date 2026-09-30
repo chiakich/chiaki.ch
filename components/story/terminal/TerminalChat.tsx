@@ -8,10 +8,12 @@ import {
   EXIT_PHRASE,
   idle,
   isAfterDarkActive,
+  isAskingName,
   jumpTo,
   opening,
   respond,
   setDirtyContent,
+  submitName,
   type Session,
   type SuggestionChip,
   suggestionsFor,
@@ -74,6 +76,9 @@ const TerminalChat = ({
   const [lexicon, setLexicon] = useState<Lexicon | null>(null)
   const [messages, setMessages] = useState<Message[]>([])
   const [draft, setDraft] = useState('')
+  const [nameDraft, setNameDraft] = useState('')
+  // She asked for a name: the input becomes the name box until it is answered.
+  const [askingName, setAskingName] = useState(false)
   const [typing, setTyping] = useState<string | null>(null)
   const [signal, setSignal] = useState(sessionRef.current.signal)
   const [tokens, setTokens] = useState<Token[]>([])
@@ -102,6 +107,7 @@ const TerminalChat = ({
   const refreshPrompts = useCallback(() => {
     setPrompts(suggestionsFor(sessionRef.current, asked.current))
     setInBranch(isAfterDarkActive(sessionRef.current))
+    setAskingName(isAskingName(sessionRef.current))
   }, [])
 
   useEffect(() => {
@@ -306,6 +312,20 @@ const TerminalChat = ({
       speak(turn)
     },
     [locked, push, send, speak, typing]
+  )
+
+  // The name is whatever they write in the box — nothing is read out of a
+  // sentence — and null is the 「不告訴你」 button.
+  const giveName = useCallback(
+    (raw: string | null) => {
+      if (typing !== null || locked) return
+      if (raw !== null && raw.trim().length === 0) return
+      push({ role: 'user', text: raw === null ? t('terminalPage.nameDecline') : raw.trim() })
+      setNameDraft('')
+      setTokens([])
+      speak(submitName(raw, sessionRef.current))
+    },
+    [locked, push, speak, t, typing]
   )
 
   const handOver = useCallback(() => {
@@ -717,7 +737,78 @@ const TerminalChat = ({
           )}
         </Flex>
 
-        {!choicesOnly && (
+        {!choicesOnly && askingName && (
+          <Form
+            display="flex"
+            gap="7px"
+            background="rgba(7,3,1,.7)"
+            animation="lexiconReveal .4s ease both"
+            onSubmit={(event: React.FormEvent) => {
+              event.preventDefault()
+              giveName(nameDraft)
+            }}
+          >
+            <Input
+              value={nameDraft}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                setNameDraft(event.target.value)
+              }
+              placeholder={t('terminalPage.namePlaceholder')}
+              aria-label={t('terminalPage.namePlaceholder')}
+              maxLength={16}
+              flex="1"
+              minWidth="0"
+              px="12px"
+              py="10px"
+              border="1px solid rgba(238,150,98,.45)"
+              borderLeft="2px solid rgba(255,204,168,.85)"
+              background="rgba(231,105,45,.08)"
+              color="rgba(255,238,222,.98)"
+              fontSize="14px"
+              fontFamily="body"
+              outline="none"
+              transition="border-color .18s"
+              _focus={{ borderColor: 'rgba(255,204,168,.8)' }}
+              _placeholder={{ color: 'rgba(238,150,98,.6)' }}
+            />
+            <Send
+              type="button"
+              onClick={() => giveName(null)}
+              disabled={typing !== null || locked}
+              px={{ base: '10px', md: '14px' }}
+              border="1px solid rgba(255,255,255,.4)"
+              background="transparent"
+              color="#fff"
+              fontSize="11px"
+              whiteSpace="nowrap"
+              cursor="pointer"
+              transition="all .18s"
+              _hover={{ borderColor: '#fff', background: 'rgba(255,255,255,.1)' }}
+              _disabled={{ opacity: 0.55, cursor: 'default' }}
+            >
+              {t('terminalPage.nameDecline')}
+            </Send>
+            <Send
+              type="submit"
+              disabled={typing !== null || locked || nameDraft.trim().length === 0}
+              px={{ base: '14px', md: '18px' }}
+              border="1px solid rgba(238,150,98,.55)"
+              background="rgba(231,105,45,.16)"
+              color="#fff"
+              fontFamily="nixie"
+              fontSize="10px"
+              letterSpacing=".18em"
+              cursor="pointer"
+              transition="all .18s"
+              _hover={{ background: 'rgba(231,105,45,.26)' }}
+              _disabled={{ opacity: 0.55, cursor: 'default' }}
+            >
+              WRITE
+            </Send>
+          </Form>
+        )}
+
+        {!choicesOnly && !askingName && (
         <Form
           display="flex"
           gap="7px"

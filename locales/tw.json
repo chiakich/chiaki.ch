@@ -1148,6 +1148,8 @@
     "title": "和秋狐說說話",
     "intro": "這是一台留在社務所的應答端末。它沒有連上任何語言模型，只有一份千秋輸入法的詞庫和一張規則表。先把你打的句子切成詞，再去對表裡最接近的那一條。所以她回得很快，也很容易露餡。",
     "placeholder": "對著端末說點什麼…",
+    "namePlaceholder": "寫下你的名字",
+    "nameDecline": "不告訴你",
     "lexiconTitle": "LEXICON / 斷詞結果",
     "lexiconEntries": "詞",
     "lexiconLoading": "詞庫載入中…",

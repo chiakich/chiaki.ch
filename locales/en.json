@@ -1142,6 +1142,8 @@
     "title": "Talk to Akitsune",
     "intro": "A response terminal left behind in the shrine office. It is not connected to any language model — just the ChiaKey input method dictionary and a hand-written rule table. It segments what you type into words, then matches the closest rule. Fast to answer, and easy to catch out. Note: she only understands Chinese.",
     "placeholder": "Say something to the terminal…",
+    "namePlaceholder": "Write your name",
+    "nameDecline": "Rather not",
     "lexiconTitle": "LEXICON / SEGMENTATION",
     "lexiconEntries": "entries",
     "lexiconLoading": "Loading dictionary…",

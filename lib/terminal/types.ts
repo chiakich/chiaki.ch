@@ -27,6 +27,16 @@ export type Reply = {
    * the engine always prefers the deepest reply currently unlocked.
    */
   needs?: string[]
+  /**
+   * Never offered once any of these flags is set — not even when nothing else is
+   * left. A question she already has the answer to must not come round again.
+   */
+  blockedBy?: string[]
+  /**
+   * Held back until one of this rule's other lines has been said, so the first
+   * answer to a question is always one of the originals and these only add variety.
+   */
+  later?: boolean
   /** Only offered once the link is at least this strong. */
   minSignal?: number
   /**
@@ -73,13 +83,6 @@ export type Rule = {
   blockedBy?: string[]
   /** Only fires as the answer to the question `opens` armed last turn. */
   continues?: string
-  /**
-   * Pulls the user's name out of the raw input into `session.nameGuess`. The
-   * rule only becomes a candidate if the extraction survives its plausibility
-   * check, so "我是人類" falls through to the survivor rule instead of being
-   * read as an introduction.
-   */
-  capturesName?: boolean
   /**
    * Conversational glue — greetings, thanks, yes/no. Saying these twice is
    * natural, so they are exempt from the no-verbatim-repeat rule that sends

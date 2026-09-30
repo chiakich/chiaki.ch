@@ -73,7 +73,7 @@ export const STOP_WORDS = new Set(
     '真的 其實 反正 然後 然後呢 不過 大概 有點 比較 最 更 太 超 好了 這樣 那樣 怎樣 ' +
     // Discourse glue the fallback used to echo back as if it were the subject.
     '可是 不然 還是 就是 而已 等一下 等等 剛剛 剛才 一開始 出來 起來 下去 過來 意思 ' +
-    '說什麼 在說什麼 好不好 對不對 是不是 有沒有 要不要 會不會 能不能 哪天 哪裡 哪邊')
+    '說什麼 在說什麼 好不好 對不對 是不是 有沒有 要不要 會不會 能不能 哪天 哪裡 哪邊 不用 不要')
     .split(' ')
     .filter(Boolean)
 )
