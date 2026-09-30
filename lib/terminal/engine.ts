@@ -65,6 +65,8 @@ export type Session = {
   nameGuess: string | null
   /** How much present-day vocabulary she has heard — see `scoreModern`. */
   modernScore: number
+  /** Turns she has been ready to ask the visitor's name without a moment for it. */
+  nameWait: number
   /** Last substantive topic, so a bare 「為什麼」 has something to attach to. */
   lastTopic: string | null
   /** Topic trail carried over from earlier visits — see `topicTrail`. */
@@ -105,6 +107,7 @@ export const createSession = (restored?: {
     userName: restored?.userName ?? null,
     nameGuess: null,
     modernScore: 0,
+    nameWait: 0,
     lastTopic: null,
     inheritedTopics: inherited,
     lastVisitTopic,
@@ -264,6 +267,15 @@ const CURIOSITY_ANSWER = 'curiosity.answer'
 
 /** Link strength at which asking someone's name stops being a form field. */
 const NAME_THRESHOLD = 76
+// Asking for a name only lands in a light moment: not on a sad, startled or
+// flustered line, not after a line that already asked something, and not while
+// the visitor is telling her she missed the point.
+const NAME_MOODS: Emotion[] = ['happy', 'neutral', 'proud']
+// Waiting on a light moment forever would mean some visitors are never asked,
+// so after a few turns a thoughtful or flustered line will do.
+const NAME_PATIENCE = 3
+const NAME_MOODS_LATE: Emotion[] = [...NAME_MOODS, 'thinking', 'shy']
+const CORRECTING = /不理我|沒在聽|答非所問|我是(說|問)|我問的是|你在說什麼|不是啦|接不上|牛頭不對馬嘴/
 
 // The name box takes what was typed as the name — nothing is parsed out of a
 // sentence any more — so all it does is trim it to something she can write down.
@@ -434,6 +446,7 @@ const RHETORICAL = /哪來|哪有|哪裡有|怎麼可能|誰知道/
  */
 const findRule = (
   clauses: string[],
+  phrases: string[],
   whole: string,
   tokens: Token[],
   session: Session
@@ -455,15 +468,20 @@ const findRule = (
       // the rule covers a self-contained thought, not a stray word two commas away.
       const inClause = clauses.some((clause) => pattern.test(clause))
       if (!inClause && !pattern.test(whole)) continue
-      if (rule.continues && !answersQuestion(pattern, clauses, whole)) continue
+      if (rule.continues && !answersQuestion(pattern, phrases, whole)) continue
       // A rule answering the question she just asked outranks everything, so
       // "好啊" lands on the offer instead of the generic affirmation.
       const inQuestion = mixed && asking.some((clause) => pattern.test(clause))
+      // A sign-off inside a longer message is what the visitor is doing now; the
+      // rest is the last thing they said on the way out.
+      const leaving =
+        rule.id === 'farewell' && phrases.length > 1 && phrases.some((phrase) => pattern.test(phrase))
       const score =
         100 +
         priority * 10 +
         (inClause ? 5 : 0) +
         (inQuestion ? QUESTION_BONUS : 0) +
+        (leaving ? QUESTION_BONUS : 0) +
         (rule.continues ? 500 : 0)
       if (!best || score > best.score) best = { rule, score }
       break
@@ -568,13 +586,13 @@ export const respond = (
   if (session.pending !== null && session.pendingAge >= PENDING_TTL)
     armPending(session, null)
 
-  let match = findRule(input.clauses, input.text, tokens, session)
+  let match = findRule(input.clauses, input.phrases, input.text, tokens, session)
   if (!match && quoted) match = quotedFrom(raw, session)
   // What she was quoted as saying is still better than nothing to go on.
   if (!match && quoted) {
     input = full
     tokens = segmentAll(full.text, lexicon)
-    match = findRule(input.clauses, input.text, tokens, session)
+    match = findRule(input.clauses, input.phrases, input.text, tokens, session)
   }
 
   // Suspicion accumulates across the whole session rather than firing on one
@@ -857,10 +875,9 @@ export const respond = (
   // question is not intake. Appended rather than substituted: she answers what
   // was asked and *then* asks, which is the order a person does it in. Skipped
   // when she already has a question open, or when she is on her way out.
-  // Also skipped in after-dark: that flow is chip-only (no text input), and
-  // name.ask.tell needs genuinely typed text to resolve.
-  if (
-    reply &&
+  // Also skipped in after-dark: that flow is chip-only, and the name box
+  // would replace its chips.
+  const nameDue =
     ending === undefined &&
     session.pending === null &&
     session.signal >= NAME_THRESHOLD &&
@@ -868,10 +885,18 @@ export const respond = (
     !session.flags.has('askedName') &&
     !session.flags.has('refusedName') &&
     !isAfterDarkActive(session)
-  ) {
-    text += NAME_ASK
-    session.flags.add('askedName')
-    armPending(session, 'name.ask')
+  if (nameDue) {
+    const moods = session.nameWait >= NAME_PATIENCE ? NAME_MOODS_LATE : NAME_MOODS
+    if (
+      reply &&
+      moods.includes(reply.emotion ?? 'neutral') &&
+      !/[？?]/.test(reply.text) &&
+      !CORRECTING.test(input.text)
+    ) {
+      text += NAME_ASK
+      session.flags.add('askedName')
+      armPending(session, 'name.ask')
+    } else session.nameWait += 1
   }
 
   // Repeated ！ or ？ is a raised voice, so it lands harder in both directions —

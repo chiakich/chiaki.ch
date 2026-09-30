@@ -20,12 +20,17 @@ for (let i = 0; i + 1 < SIMPLIFIED_PAIRS.length; i += 2) {
 // Anything here separates clauses; the matcher scores each clause on its own so
 // "你好，你叫什麼名字" can hit the name rule rather than only the greeting.
 const CLAUSE_BREAK = /[，。！？；、,.!?;~～\n\r]+/
+// Chat often separates clauses with a bare space: 「好啦 我要去煮飯了」.
+const CJK_SPACE = /([㐀-鿿])\s+(?=[㐀-鿿])/g
 
 export type NormalizedInput = {
   /** Punctuation-free, traditional, lower-cased — what patterns match against. */
   text: string
   /** Same treatment, split on clause punctuation. */
   clauses: string[]
+  /** Clauses split further at bare spaces between CJK — finer than a clause, so
+   * only used where a short answer or a sign-off may sit inside a longer line. */
+  phrases: string[]
   /** Trailing/embedded question marks, before punctuation was stripped. */
   hasQuestionMark: boolean
   /** Repeated ！ or ？ — treated as raised voice by a few rules. */
@@ -56,6 +61,11 @@ export const normalize = (raw: string): NormalizedInput => {
   return {
     text: strip(folded),
     clauses: folded
+      .split(CLAUSE_BREAK)
+      .map(strip)
+      .filter((clause) => clause.length > 0),
+    phrases: folded
+      .replace(CJK_SPACE, '$1，')
       .split(CLAUSE_BREAK)
       .map(strip)
       .filter((clause) => clause.length > 0),
