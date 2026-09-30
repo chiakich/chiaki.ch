@@ -111,13 +111,17 @@ node scripts/sim-ab.mjs score rx f65
 ```
 
 `score` reports turns the router answered apart from turns that differ only downstream (a
-different line picked later, the name question landing elsewhere). On the eight recorded visits
-(2026-09-30), against regex alone:
+different line picked later, the name question landing elsewhere, or a recorded visitor answering
+a question that only the other replay asked). Against regex alone (2026-09-30):
 
-| Strategy | Router turns won / lost / tied | Bad replies on those turns |
-|---|---|---|
-| embedding first, regex fallback, τ=0.70 | 6 / 6 / 2 | 2 vs 4 |
-| regex first, router fills misses, τ=0.65 | 6 / 1 / 1 | 0 vs 3 |
+| Strategy | Visits | Router turns won / lost / tied | Bad replies on those turns |
+|---|---|---|---|
+| embedding first, regex fallback, τ=0.70 | 8 | 6 / 6 / 2 | 2 vs 4 |
+| regex first, router fills misses, τ=0.65 | 8 | 6 / 1 / 1 | 0 vs 3 |
+| fills misses and vetoes stray-keyword hits (`--fill --veto`), τ=0.65 | 16 | 11 / 4 / 0 | 2 vs 7 |
 
 Embedding first overrides regex hits that turn context got right (「哪天」 after the war line, an
-answer to her own question), so filling misses is the strategy to ship.
+answer to her own question). On visitors who type full sentences, regex rarely misses outright;
+it lands on the wrong rule because of one stray word (「那邊」, 「設計」), which is what the veto
+catches: a regex hit whose rule scores under 0.3 against the input, when the router's pick scores
+0.6 or more. That is the strategy to ship.

@@ -1,7 +1,8 @@
 // Replays the visitor side of recorded simulations, through the embedding router or regex alone.
-//   node scripts/sim-replay.mjs <model|regex> <tau> <tag> [--fill] <id>...   -> build/sim/<id>.<tag>.jsonl
+//   node scripts/sim-replay.mjs <model|regex> <tau> <tag> [--fill] [--veto] <id>...   -> build/sim/<id>.<tag>.jsonl
 // Default strategy is "embedding first, regex fallback"; --fill only asks the router when regex
-// found no rule. Input under the threshold still goes through the regex matcher.
+// found no rule, and --veto also lets it overrule a regex hit that looks nothing like its rule.
+// Input under the threshold still goes through the regex matcher.
 import { readFileSync, writeFileSync } from 'node:fs'
 import * as engine from '../build/engine.mjs'
 import { loadRouter } from './router.mjs'
@@ -11,7 +12,11 @@ const { createSession, isAfterDarkActive, jumpTo, opening, respond, rules } = en
 
 const args = process.argv.slice(2)
 const fill = args.includes('--fill')
-const [modelArg, tauArg, tag, ...ids] = args.filter((a) => a !== '--fill')
+const veto = args.includes('--veto')
+const [modelArg, tauArg, tag, ...ids] = args.filter((a) => !a.startsWith('--'))
+// A regex hit this unlike its own rule was a stray keyword; overruled only by a confident router.
+const VETO_OWN = 0.3
+const VETO_MIN = 0.6
 const tau = Number(tauArg)
 const lexicon = await boot()
 const route = modelArg === 'regex' ? null : await loadRouter(modelArg)
@@ -48,11 +53,13 @@ for (const id of ids) {
       dry.ruleId === session.lastTopic ||
       (dryRule !== undefined && dryRule.continues !== undefined) ||
       // An answer to her curiosity question is context too, though no rule matched it.
-      (fill && (dryRule !== undefined || dry.ruleId === 'curiosity.ack'))
+      (fill && dry.ruleId === 'curiosity.ack')
     const top = contextual || !route ? null : await route(rec.input, session.flags)
+    const vetoed = veto && top && dryRule && top.rule !== dryRule.id && top.of(dryRule.id) < VETO_OWN && top.score >= VETO_MIN
+    const open = !fill || dryRule === undefined || vetoed
 
     let turn = null, via = 'regex'
-    if (top && top.score >= tau) {
+    if (top && open && top.score >= tau) {
       turn = jumpTo(top.rule, session)
       if (turn) via = 'router'
     }

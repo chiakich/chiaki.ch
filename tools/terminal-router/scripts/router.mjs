@@ -21,7 +21,8 @@ export const loadRouter = async (modelArg) => {
   const protos = readJsonl(`${TRAIN_DATA}train.jsonl`)
   const pv = await embed(protos.map((p) => p.text))
 
-  // Best-scoring rule the session may currently reach, or null for input with nothing to embed.
+  // Best-scoring rule the session may currently reach, plus how well the input matches any
+  // given rule (`of`), or null for input with nothing to embed.
   return async (raw, flags) => {
     const text = normalize(raw).text
     if (!text) return null
@@ -38,6 +39,6 @@ export const loadRouter = async (modelArg) => {
       const s = best.get(r.id)
       if (s !== undefined && (!top || s > top.score)) top = { rule: r.id, score: s }
     }
-    return top
+    return top && { ...top, of: (id) => best.get(id) ?? 0 }
   }
 }
