@@ -39,6 +39,6 @@ export const loadRouter = async (modelArg) => {
       const s = best.get(r.id)
       if (s !== undefined && (!top || s > top.score)) top = { rule: r.id, score: s }
     }
-    return top && { ...top, of: (id) => best.get(id) ?? 0 }
+    return top && { ...top, of: (id) => best.get(id) ?? 0, scores: best }
   }
 }

@@ -2,7 +2,8 @@
 
 Measures how well `/story/terminal` lands visitor input on the right rule, and trains a small
 embedding model (`bge-small-zh-v1.5`, 23 MB int8 ONNX) to route topical input semantically
-instead of by regex. Nothing here is loaded by the site yet.
+instead of by regex. The site runs it in a Web Worker (`lib/terminal/router/`) and hands the
+scores to `respond()`, which only lets it answer where regex found nothing or hit a stray word.
 
 ## Layout
 
@@ -125,3 +126,16 @@ answer to her own question). On visitors who type full sentences, regex rarely m
 it lands on the wrong rule because of one stray word (「那邊」, 「設計」), which is what the veto
 catches: a regex hit whose rule scores under 0.3 against the input, when the router's pick scores
 0.6 or more. That is the strategy to ship.
+
+## Ship a model to the site
+
+```sh
+npm run export:web -- v2/onnx-mnrl-e10   # -> public/assets/story/terminal/router/v2/
+```
+
+Checks the browser tokenizer against transformers.js on every training and test sentence and the
+browser embedding against the evaluation pipeline, then writes the int8 model, the vocabulary and
+the prototypes (int8, one scale per row). A retrained model goes out under a new folder, with
+`ROUTER_VERSION` in `lib/terminal/router/client.ts` bumped to match, because `/assets/*` is cached
+for a week and a new model read against old prototypes would score nonsense. The onnxruntime wasm
+is not copied: webpack emits it content-hashed under `/_next/static/media/`.

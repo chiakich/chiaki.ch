@@ -2,7 +2,8 @@
 //   node scripts/sim-replay.mjs <model|regex> <tau> <tag> [--fill] [--veto] <id>...   -> build/sim/<id>.<tag>.jsonl
 // Default strategy is "embedding first, regex fallback"; --fill only asks the router when regex
 // found no rule, and --veto also lets it overrule a regex hit that looks nothing like its rule.
-// Input under the threshold still goes through the regex matcher.
+// Input under the threshold still goes through the regex matcher. --engine hands the scores to
+// respond() instead and lets the engine's own routing decide, which is what the site runs.
 import { readFileSync, writeFileSync } from 'node:fs'
 import * as engine from '../build/engine.mjs'
 import { loadRouter } from './router.mjs'
@@ -13,6 +14,7 @@ const { createSession, isAfterDarkActive, jumpTo, opening, respond, rules } = en
 const args = process.argv.slice(2)
 const fill = args.includes('--fill')
 const veto = args.includes('--veto')
+const engineRoutes = args.includes('--engine')
 const [modelArg, tauArg, tag, ...ids] = args.filter((a) => !a.startsWith('--'))
 // A regex hit this unlike its own rule was a stray keyword; overruled only by a confident router.
 const VETO_OWN = 0.3
@@ -40,6 +42,22 @@ for (const id of ids) {
     if (engine.submitName && (rec.input === '#noname' || rec.input.startsWith('#name '))) {
       const turn = engine.submitName(rec.input === '#noname' ? null : rec.input.slice(6), session)
       out.push({ turn: rec.turn, input: rec.input, text: turn.text, ruleId: turn.ruleId, via: 'box', router: null, ...before })
+      continue
+    }
+    if (engineRoutes) {
+      const top = route ? await route(rec.input, session.flags) : null
+      const turn = respond(rec.input, session, lexicon, top?.scores ?? null)
+      const afterDark = isAfterDarkActive(session)
+      out.push({
+        turn: rec.turn,
+        input: rec.input,
+        text: afterDark ? '[after-dark]' : turn.text,
+        ruleId: turn.ruleId,
+        via: turn.routed ? 'router' : 'regex',
+        router: top ? { rule: top.rule, score: +top.score.toFixed(3) } : null,
+        ...before,
+      })
+      if (afterDark) break
       continue
     }
     // Dry run on a copy to see what regex alone would do with this turn.
