@@ -1,12 +1,12 @@
 // Blind A/B between two replays of the same visits (see sim-replay.mjs and bundle:head).
-//   node scripts/sim-ab.mjs pack <tagA> <tagB> <id>...   -> build/sim/ab/items.md + key.json
-//   node scripts/sim-ab.mjs score                        -> unblinds build/sim/ab/labels.json
+//   node scripts/sim-ab.mjs pack <tagA> <tagB> <id>...   -> build/sim/ab/<tagA>-<tagB>/items.md + key.json
+//   node scripts/sim-ab.mjs score <tagA> <tagB>          -> unblinds labels.json in that folder
 // Only turns whose reply differs are packed. Each side is shown with its own last few turns,
 // because once two replays diverge a shared history would make one side look repetitive.
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { SIM } from './sim.mjs'
 
-const AB = `${SIM}ab/`
+const abDir = (tagA, tagB) => `${SIM}ab/${tagA}-${tagB}/`
 const CONTEXT = 3
 const read = (path) => readFileSync(path, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l))
 const bad = (v) => ['off_topic', 'missed', 'repetitive'].includes(v)
@@ -18,6 +18,7 @@ const history = (rows, turn) =>
     .join('\n')
 
 const pack = (tagA, tagB, ids) => {
+  const AB = abDir(tagA, tagB)
   mkdirSync(AB, { recursive: true })
   const items = [], key = []
   for (const id of ids) {
@@ -45,27 +46,35 @@ const pack = (tagA, tagB, ids) => {
   console.log(`${items.length} differing turns packed`)
 }
 
-const score = () => {
+// Turns the router answered on either side are scored apart from turns that only differ because
+// an earlier router turn changed what she had already said.
+const score = (AB) => {
   const { tags, items } = JSON.parse(readFileSync(`${AB}key.json`, 'utf8'))
   const labels = new Map(JSON.parse(readFileSync(`${AB}labels.json`, 'utf8')).map((l) => [l.item, l]))
-  const wins = Object.fromEntries([...tags, 'tie'].map((t) => [t, 0]))
-  const badCount = Object.fromEntries(tags.map((t) => [t, 0]))
+  const tally = () => ({ wins: Object.fromEntries([...tags, 'tie'].map((t) => [t, 0])), bad: Object.fromEntries(tags.map((t) => [t, 0])) })
+  const groups = { direct: tally(), downstream: tally() }
+  const viaRouter = new Set()
+  for (const id of new Set(items.map((k) => k.id)))
+    for (const t of tags) for (const r of read(`${SIM}${id}.${t}.jsonl`)) if (r.via === 'router') viaRouter.add(`${id}#${r.turn}`)
   for (const k of items) {
     const l = labels.get(k.item)
     if (!l) continue
     const sideOf = (tag) => (k.A === tag ? 'A' : 'B')
     const winner = l.better === 'tie' ? 'tie' : l.better === 'A' ? k.A : tags.find((t) => t !== k.A)
-    wins[winner] += 1
-    for (const t of tags) if (bad(l[sideOf(t)])) badCount[t] += 1
+    const g = groups[viaRouter.has(`${k.id}#${k.turn}`) ? 'direct' : 'downstream']
+    g.wins[winner] += 1
+    for (const t of tags) if (bad(l[sideOf(t)])) g.bad[t] += 1
     if (winner !== tags[1])
       console.log(
         `${winner.padEnd(5)} ${`${k.id}#${k.turn}`.padEnd(18)} ${tags.map((t) => `${t}:${k.rules[t]}=${l[sideOf(t)]}`).join('  ')}  ${l.note ?? ''}`
       )
   }
-  console.log(`\nwins ${JSON.stringify(wins)}  off_topic/missed/repetitive: ${JSON.stringify(badCount)}`)
+  console.log('')
+  for (const [name, g] of Object.entries(groups))
+    console.log(`${name.padEnd(10)} wins ${JSON.stringify(g.wins)}  off_topic/missed/repetitive: ${JSON.stringify(g.bad)}`)
 }
 
 const [cmd, ...rest] = process.argv.slice(2)
 if (cmd === 'pack') pack(rest[0], rest[1], rest.slice(2))
-else if (cmd === 'score') score()
-else console.error('usage: sim-ab.mjs pack <tagA> <tagB> <id>... | score')
+else if (cmd === 'score') score(abDir(rest[0], rest[1]))
+else console.error('usage: sim-ab.mjs pack <tagA> <tagB> <id>... | score <tagA> <tagB>')

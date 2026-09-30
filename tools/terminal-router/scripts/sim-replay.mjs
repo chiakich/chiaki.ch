@@ -1,7 +1,7 @@
 // Replays the visitor side of recorded simulations, through the embedding router or regex alone.
-//   node scripts/sim-replay.mjs <model|regex> <tau> <tag> <id>...   -> build/sim/<id>.<tag>.jsonl
-// Strategy is "embedding first, regex fallback": the engine has no hook yet to force a
-// fallback, so input under the threshold still goes through the regex matcher.
+//   node scripts/sim-replay.mjs <model|regex> <tau> <tag> [--fill] <id>...   -> build/sim/<id>.<tag>.jsonl
+// Default strategy is "embedding first, regex fallback"; --fill only asks the router when regex
+// found no rule. Input under the threshold still goes through the regex matcher.
 import { readFileSync, writeFileSync } from 'node:fs'
 import * as engine from '../build/engine.mjs'
 import { loadRouter } from './router.mjs'
@@ -9,7 +9,9 @@ import { SIM, boot } from './sim.mjs'
 
 const { createSession, isAfterDarkActive, jumpTo, opening, respond, rules } = engine
 
-const [modelArg, tauArg, tag, ...ids] = process.argv.slice(2)
+const args = process.argv.slice(2)
+const fill = args.includes('--fill')
+const [modelArg, tauArg, tag, ...ids] = args.filter((a) => a !== '--fill')
 const tau = Number(tauArg)
 const lexicon = await boot()
 const route = modelArg === 'regex' ? null : await loadRouter(modelArg)
@@ -44,7 +46,9 @@ for (const id of ids) {
     const contextual =
       isAfterDarkActive(probe) ||
       dry.ruleId === session.lastTopic ||
-      (dryRule !== undefined && dryRule.continues !== undefined)
+      (dryRule !== undefined && dryRule.continues !== undefined) ||
+      // An answer to her curiosity question is context too, though no rule matched it.
+      (fill && (dryRule !== undefined || dry.ruleId === 'curiosity.ack'))
     const top = contextual || !route ? null : await route(rec.input, session.flags)
 
     let turn = null, via = 'regex'

@@ -100,3 +100,24 @@ test set, so thresholds tuned on it come out too strict.
 
 The test sentences and the training data were both written by Claude, so treat these as
 optimistic until they are checked against real visitor input (`persist.recordMiss`).
+
+## Replay simulated visits through a router
+
+```sh
+node scripts/sim-replay.mjs regex 0 rx <id>...
+node scripts/sim-replay.mjs v2/onnx-mnrl-e10 0.65 f65 --fill <id>...   # router only on regex misses
+node scripts/sim-ab.mjs pack rx f65 <id>...   # then a blind judge writes labels.json
+node scripts/sim-ab.mjs score rx f65
+```
+
+`score` reports turns the router answered apart from turns that differ only downstream (a
+different line picked later, the name question landing elsewhere). On the eight recorded visits
+(2026-09-30), against regex alone:
+
+| Strategy | Router turns won / lost / tied | Bad replies on those turns |
+|---|---|---|
+| embedding first, regex fallback, τ=0.70 | 6 / 6 / 2 | 2 vs 4 |
+| regex first, router fills misses, τ=0.65 | 6 / 1 / 1 | 0 vs 3 |
+
+Embedding first overrides regex hits that turn context got right (「哪天」 after the war line, an
+answer to her own question), so filling misses is the strategy to ship.
