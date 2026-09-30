@@ -649,6 +649,8 @@ const storyRules: Rule[] = [
       {
         text: '今天的雪比較細耶。細的時候會比較冷喔，這是經驗，不是資料啦！',
         emotion: 'neutral',
+        // Doesn't say why it snows, so it waits until the line that does is out.
+        later: true,
         remember: ['talkedSnow'],
       },
       {
@@ -712,7 +714,7 @@ const storyRules: Rule[] = [
     patterns: [new RegExp(`^${SELF}(沒有|沒|不|停)|(沒|不)有?在?下|晴|藍|太陽|放晴`)],
     replies: [
       {
-        text: '停、停了？……你確定嗎？啊，不是，對不起，我不是在懷疑你喔！我只是……需要再聽你說一次。',
+        text: '停、停了？……你那邊沒有在下雪？等一下喔，我要把你這句話一字不漏地記下來！',
         emotion: 'surprised',
         signal: 6,
         remember: ['talkedClearSky', 'saidClearSky'],
@@ -741,7 +743,7 @@ const storyRules: Rule[] = [
     patterns: [/(沒|沒有|不會)在?下雪|沒在下|^沒下|(這邊|這裡|我這)(也)?沒有?在?下/],
     replies: [
       {
-        text: '停、停了？……你確定嗎？啊，不是，對不起，我不是在懷疑你喔！我只是……需要再聽你說一次。',
+        text: '停、停了？……你那邊沒有在下雪？等一下喔，我要把你這句話一字不漏地記下來！',
         emotion: 'surprised',
         signal: 6,
         blockedBy: ['saidClearSky'],

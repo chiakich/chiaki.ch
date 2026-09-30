@@ -1,5 +1,5 @@
 import { type Lexicon, segmentAll, type Token } from './lexicon'
-import { normalize, STOP_WORDS } from './normalize'
+import { normalize, type NormalizedInput, STOP_WORDS } from './normalize'
 import {
   BRIDGE,
   CURIOSITY,
@@ -38,7 +38,12 @@ export type Turn = {
    * button. `leaving` — she has it and has gone up to look.
    */
   ending?: 'offer' | 'leaving'
+  /** The embedding router chose the rule, not the regex table. */
+  routed?: boolean
 }
+
+/** Best similarity of this turn's input to each rule — see lib/terminal/router. */
+export type RouterScores = ReadonlyMap<string, number>
 
 export type Session = {
   /** Topic flags written by rules that fired. */
@@ -568,10 +573,59 @@ const quotedFrom = (raw: string, session: Session): Candidate | null => {
   return best ? { rule: best.rule, score: 100 } : null
 }
 
+// The router only speaks where regex has nothing to offer, or where regex hit a
+// word that has nothing to do with the rule it fired (「那邊」 for 常世). These
+// were tuned on replayed visits; see tools/terminal-router/README.md.
+const ROUTE_MIN = 0.65
+const VETO_OWN = 0.3
+
+const routeFor = (
+  scores: RouterScores | null | undefined,
+  match: Candidate | null,
+  interrupting: boolean,
+  input: NormalizedInput,
+  session: Session
+): Rule | null => {
+  if (!scores || isAfterDarkActive(session) || FOLLOW_UP.test(input.text)) return null
+  // Turn context outranks it: an answer to her question, or more on the topic at
+  // hand. A sign-off too — it is what the visitor is doing, however long the line.
+  // (When the discovery is about to cut in, the regex hit would not be said anyway.)
+  if (
+    match &&
+    !interrupting &&
+    (match.rule.continues !== undefined ||
+      match.rule.id === session.lastTopic ||
+      match.rule.id === 'farewell')
+  )
+    return null
+  if (
+    !match &&
+    !interrupting &&
+    session.pending === CURIOSITY_ANSWER &&
+    !input.hasQuestionMark &&
+    !input.clauses.some((clause) => INTERROGATIVE.test(clause))
+  )
+    return null
+  let top: Rule | null = null
+  let best = -1
+  for (const [id, score] of scores) {
+    const rule = RULES_BY_ID.get(id)
+    if (!rule || rule.continues !== undefined || rule.patterns.length === 0) continue
+    if (!isEligible(rule, session) || score <= best) continue
+    top = rule
+    best = score
+  }
+  if (!top || best < ROUTE_MIN) return null
+  if (!match || interrupting) return top
+  const stray = top.id !== match.rule.id && (scores.get(match.rule.id) ?? 0) < VETO_OWN
+  return stray ? top : null
+}
+
 export const respond = (
   raw: string,
   session: Session,
-  lexicon: Lexicon | null
+  lexicon: Lexicon | null,
+  scores?: RouterScores | null
 ): Turn => {
   const full = normalize(raw)
   const unquoted = normalize(raw.replace(QUOTED, '，'))
@@ -603,7 +657,7 @@ export const respond = (
   session.modernScore += turnModern
   // She only stops the conversation on a turn that itself carries one of the
   // words, or the line claiming she never heard 「those words」 points at nothing.
-  const discovering =
+  const peaceDue =
     !session.flags.has('askedPeace') &&
     !session.flags.has('knowsPeace') &&
     session.modernScore >= PEACE_THRESHOLD &&
@@ -611,6 +665,11 @@ export const respond = (
     // 「我叫阿哲，大學生」 is an introduction first; the 大學 can wait a turn.
     match?.rule.id !== 'player.name' &&
     match?.rule.continues === undefined
+  // A visitor asking something the router can place gets the answer; the
+  // discovery keeps until a turn that carries the words without a question.
+  const routedRule = routeFor(scores, match, peaceDue, input, session)
+  if (routedRule) match = { rule: routedRule, score: 0 }
+  const discovering = peaceDue && !routedRule
 
   // A `continues` match consumed the open question. Otherwise it stays open
   // and ages toward PENDING_TTL: a question survives a short detour, so the
@@ -920,6 +979,7 @@ export const respond = (
     tokens,
     signal: session.signal,
     ending,
+    ...(routedRule ? { routed: true } : {}),
   }
 }
 
@@ -1024,6 +1084,8 @@ export const submitName = (raw: string | null, session: Session): Turn => {
  * aim at a rule's second or third tier, and those need asking twice.
  */
 export const ASK_LIMIT = 3
+const STORY_CHIPS = 3
+const CHIP_WINDOW = 6
 
 const eligible = (
   items: Suggestion[],
@@ -1125,12 +1187,17 @@ export const suggestionsFor = (
       ),
     ]
 
+  // A visitor who types rather than clicks never retires the openers, so the
+  // row would sit unchanged all visit. Sliding one rung per turn through the
+  // front of the ladder keeps it moving while the openers still come first.
+  const story = eligible(SUGGESTIONS, session, asked).slice(0, CHIP_WINDOW)
+  const shift = story.length > STORY_CHIPS ? session.history.length % story.length : 0
   return [
     ...chips,
-    ...eligible(SUGGESTIONS, session, asked).map(
-      (item): SuggestionChip => ({ text: item.text, kind: 'story' })
-    ),
-  ].slice(0, chips.length + 3)
+    ...[...story.slice(shift), ...story.slice(0, shift)]
+      .slice(0, STORY_CHIPS)
+      .map((item): SuggestionChip => ({ text: item.text, kind: 'story' })),
+  ]
 }
 
 const address = (

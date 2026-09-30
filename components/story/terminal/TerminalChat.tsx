@@ -22,6 +22,7 @@ import { ENDING_HANDOVER } from 'lib/terminal/rules'
 import { loadDirtyContent } from 'lib/terminal/dirty'
 import { loadLexicon, type Lexicon } from 'lib/terminal/lexicon'
 import { load, recordMiss, save } from 'lib/terminal/persist'
+import { type Router, startRouter } from 'lib/terminal/router/client'
 import { createUtterance } from 'lib/terminal/speech'
 import type { Token } from 'lib/terminal/lexicon'
 import type { Message } from 'lib/terminal/types'
@@ -69,6 +70,9 @@ const TerminalChat = ({
   const transcriptRef = useRef<HTMLDivElement>(null)
 
   const visits = useRef(0)
+  const router = useRef<Router | null>(null)
+  // Set while a line waits on the router, so a second Enter can't send twice.
+  const sending = useRef(false)
   // Prompts the visitor has already taken — see `suggestionsFor`.
   const asked = useRef<Map<string, number>>(new Map())
   const [ready, setReady] = useState(false)
@@ -114,6 +118,13 @@ const TerminalChat = ({
     loadLexicon()
       .then(setLexicon)
       .catch(() => undefined)
+  }, [])
+
+  // Loads in the background; until it is ready, or if it never is, every turn
+  // is regex alone.
+  useEffect(() => {
+    router.current = startRouter()
+    return () => router.current?.stop()
   }, [])
 
   // Best-effort: a malformed local payload simply leaves the explicit branch
@@ -278,12 +289,15 @@ const TerminalChat = ({
   )
 
   const send = useCallback(
-    (raw: string) => {
+    async (raw: string) => {
       const text = raw.trim()
-      if (!text || typing !== null || locked) return
+      if (!text || typing !== null || locked || sending.current) return
       push({ role: 'user', text })
       setDraft('')
-      const turn = respond(text, sessionRef.current, lexicon)
+      sending.current = true
+      const scores = await (router.current?.score(text) ?? null)
+      sending.current = false
+      const turn = respond(text, sessionRef.current, lexicon, scores)
       // Both prefixes mean no rule owned the input — `resume` recovered the
       // topic, but the sentence itself still went unanswered.
       if (/^(fallback|resume)\./.test(turn.ruleId)) recordMiss(text, turn.ruleId)
