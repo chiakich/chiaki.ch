@@ -14,6 +14,10 @@ type TerminalViewport = {
   keyboardInset: number
 }
 
+// Long enough for the keyboard's closing animation, short enough that a
+// viewport which never grows back can't hold the compact layout on its own.
+const CLOSING_GRACE_MS = 700
+
 const isEditable = (element: Element | null) =>
   element instanceof HTMLInputElement ||
   element instanceof HTMLTextAreaElement ||
@@ -111,6 +115,8 @@ const useTerminalViewport = (): TerminalViewport => {
   useEffect(() => {
     const visualViewport = window.visualViewport
     let frame = 0
+    let closingTimer = 0
+    let blurredAt = -Infinity
 
     const update = () => {
       const height = Math.round(visualViewport?.height ?? window.innerHeight)
@@ -130,11 +136,15 @@ const useTerminalViewport = (): TerminalViewport => {
       }
 
       const heightReduced = baselineHeightRef.current - height > 120
+      const closing = performance.now() - blurredAt < CLOSING_GRACE_MS
       setViewport((current) => {
         // Keep the compact layout through the keyboard's closing animation;
-        // focusout usually arrives before visualViewport has grown again.
+        // focusout usually arrives before visualViewport has grown again. Only
+        // briefly, though: Safari often brings its toolbar back as the keyboard
+        // goes, so the height may never return to the baseline, and holding on
+        // until it did left the page shifted up with no keyboard in sight.
         const keyboardOpen =
-          heightReduced && (editableFocused || current.keyboardOpen)
+          heightReduced && (editableFocused || (current.keyboardOpen && closing))
         if (
           current.height === height &&
           current.offsetTop === offsetTop &&
@@ -159,6 +169,12 @@ const useTerminalViewport = (): TerminalViewport => {
       window.cancelAnimationFrame(frame)
       frame = window.requestAnimationFrame(update)
     }
+    const onFocusOut = () => {
+      blurredAt = performance.now()
+      scheduleUpdate()
+      window.clearTimeout(closingTimer)
+      closingTimer = window.setTimeout(scheduleUpdate, CLOSING_GRACE_MS)
+    }
     const resetBaseline = () => {
       baselineHeightRef.current = 0
       scheduleUpdate()
@@ -170,16 +186,17 @@ const useTerminalViewport = (): TerminalViewport => {
     window.addEventListener('resize', scheduleUpdate)
     window.addEventListener('orientationchange', resetBaseline)
     document.addEventListener('focusin', scheduleUpdate)
-    document.addEventListener('focusout', scheduleUpdate)
+    document.addEventListener('focusout', onFocusOut)
 
     return () => {
       window.cancelAnimationFrame(frame)
+      window.clearTimeout(closingTimer)
       visualViewport?.removeEventListener('resize', scheduleUpdate)
       visualViewport?.removeEventListener('scroll', scheduleUpdate)
       window.removeEventListener('resize', scheduleUpdate)
       window.removeEventListener('orientationchange', resetBaseline)
       document.removeEventListener('focusin', scheduleUpdate)
-      document.removeEventListener('focusout', scheduleUpdate)
+      document.removeEventListener('focusout', onFocusOut)
     }
   }, [])
 

@@ -38,9 +38,16 @@ const TerminalPage: NextPage = () => {
       width="100%"
       height="var(--terminal-frame-height)"
       background="radial-gradient(ellipse 72% 74% at 56% 35%, #2b1008 0%, #100704 46%, #030201 100%)"
-      overflow="hidden"
+      // `clip`, not `hidden`: the avatar hangs far below the frame, and a hidden
+      // overflow is still scrollable — focusing the input let the browser scroll
+      // the whole scene up to reveal it, keyboard or not. onScroll covers
+      // browsers without `clip`.
+      overflow="clip"
       overscrollBehavior="none"
       style={viewportStyle}
+      onScroll={(event) => {
+        event.currentTarget.scrollTop = 0
+      }}
     >
       {/* TopBar is 44px and the desktop-only SubNav below it is another 48px. */}
       <Box
