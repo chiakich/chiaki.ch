@@ -1,0 +1,12 @@
+{
+  "model": "v2/onnx-mnrl-e10",
+  "modelSha256": "c7ef6d0f9299428e075b5edaedc84943ce511a6943289a1673ed9a5ef8a0b4fd",
+  "trainingSha256": "ee409efb9f24cccf32dd15dddd5119d3a01746f4c1822c2bdee2d71417eb622b",
+  "prototypes": 2205,
+  "policy": {
+    "fillMin": 0.7,
+    "fillMargin": 0.15,
+    "overrideMin": 0.8,
+    "overrideMargin": 0.15
+  }
+}

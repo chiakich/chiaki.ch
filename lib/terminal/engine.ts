@@ -1,5 +1,6 @@
 import { type Lexicon, segmentAll, type Token } from './lexicon'
-import { normalize, type NormalizedInput, STOP_WORDS } from './normalize'
+import { focusUtterance, normalize, type NormalizedInput, STOP_WORDS } from './normalize'
+import { answerIntents, answerIntentById, type AnswerIntent } from './answer-intents'
 import {
   BRIDGE,
   CURIOSITY,
@@ -40,10 +41,30 @@ export type Turn = {
   ending?: 'offer' | 'leaving'
   /** The embedding router chose the rule, not the regex table. */
   routed?: boolean
+  /** Specific answer selected within a broad topic, exposed for dialogue evaluation. */
+  intentId?: string
 }
 
 /** Best similarity of this turn's input to each rule — see lib/terminal/router. */
 export type RouterScores = ReadonlyMap<string, number>
+
+/** Separate acceptance of an unmatched input from correction of a regex hit. */
+export type RouterPolicy = {
+  fillMin: number
+  fillMargin: number
+  overrideMin: number
+  overrideMargin: number
+  /** Historical policy, retained for controlled engine replays. */
+  vetoOwn?: number
+}
+
+export const LEGACY_ROUTER_POLICY: RouterPolicy = {
+  fillMin: 0.65, fillMargin: 0, overrideMin: 0.65, overrideMargin: 0, vetoOwn: 0.3,
+}
+
+export const DEFAULT_ROUTER_POLICY: RouterPolicy = {
+  fillMin: 0.7, fillMargin: 0.15, overrideMin: 0.8, overrideMargin: 0.15,
+}
 
 export type Session = {
   /** Topic flags written by rules that fired. */
@@ -74,6 +95,8 @@ export type Session = {
   nameWait: number
   /** Last substantive topic, so a bare 「為什麼」 has something to attach to. */
   lastTopic: string | null
+  /** Last actual answer's scope, session-local; not restored across visits. */
+  lastAnswerIntent: string | null
   /** Topic trail carried over from earlier visits — see `topicTrail`. */
   inheritedTopics: string[]
   /** What she calls the last visit's subject out loud — expands `{lastTopic}`. */
@@ -114,6 +137,7 @@ export const createSession = (restored?: {
     modernScore: 0,
     nameWait: 0,
     lastTopic: null,
+    lastAnswerIntent: null,
     inheritedTopics: inherited,
     lastVisitTopic,
     recalled: restored?.recalled ?? [],
@@ -328,7 +352,7 @@ const canDeepen = (session: Session): boolean => {
   const rule = RULES_BY_ID.get(session.lastTopic)
   if (!rule || rule.repeatable) return false
   return rule.replies.some(
-    (reply) => !session.used.has(reply.text) && isUnlocked(reply, session)
+    (reply) => !reply.forInput && !session.used.has(reply.text) && isUnlocked(reply, session)
   )
 }
 
@@ -344,14 +368,16 @@ const pickReply = (
   replies: Reply[],
   session: Session,
   seed: number,
-  repeatable = false
+  repeatable = false,
+  input?: string
 ): Reply | null => {
   // Blocked lines are wrong rather than premature, so no fallback reaches them.
   // `later` lines wait until the rule has answered once with an original.
   const opened = replies.some((reply) => !reply.later && session.used.has(reply.text))
   const allowed = replies.filter(
     (reply) =>
-      !reply.blockedBy?.some((flag) => session.flags.has(flag)) && (opened || !reply.later)
+      !reply.blockedBy?.some((flag) => session.flags.has(flag)) && (opened || !reply.later) &&
+      (!reply.forInput || (input !== undefined && reply.forInput.test(input)))
   )
   if (allowed.length === 0) return null
   // A line that quotes a word she has not heard is broken rather than merely
@@ -364,15 +390,19 @@ const pickReply = (
     unlocked.length > 0 ? unlocked : usable.length > 0 ? usable : allowed
   const fresh = pool.filter((reply) => !session.used.has(reply.text))
   if (fresh.length === 0) return repeatable ? pick(pool, seed) : null
+  // An answer about the requested aspect outranks generic lines in the topic.
+  const relevant = fresh.some((reply) => reply.forInput)
+    ? fresh.filter((reply) => reply.forInput)
+    : fresh
   // Deepest tier first, but only among lines she can still say. `needsWord`
   // counts as a tier of its own: it is unlocked by the conversation having
   // gone somewhere, exactly like a flag, and at tier zero it would be buried
   // under every line the flags have already opened up.
   const depth = (reply: Reply) =>
     (reply.needs?.length ?? 0) + (reply.needsWord ? 1 : 0)
-  const deepest = Math.max(...fresh.map(depth))
+  const deepest = Math.max(...relevant.map(depth))
   return pick(
-    fresh.filter((reply) => depth(reply) === deepest),
+    relevant.filter((reply) => depth(reply) === deepest),
     seed
   )
 }
@@ -406,7 +436,7 @@ const isEligible = (rule: Rule, session: Session) => {
   return true
 }
 
-type Candidate = { rule: Rule; score: number }
+type Candidate = { rule: Rule; score: number; answersQuestion?: boolean }
 
 // A clause that is asking something of its own: sentence-final 嗎/呢/嘛, the
 // V-了-沒 and A-not-A forms, or a wh-word. None of these can be an answer to her
@@ -454,7 +484,8 @@ const findRule = (
   phrases: string[],
   whole: string,
   tokens: Token[],
-  session: Session
+  session: Session,
+  candidates: Candidate[] = []
 ): Candidate | null => {
   let best: Candidate | null = null
   // Only a sentence that mixes telling and asking gets the bonus; a lone clause
@@ -488,12 +519,13 @@ const findRule = (
         (inQuestion ? QUESTION_BONUS : 0) +
         (leaving ? QUESTION_BONUS : 0) +
         (rule.continues ? 500 : 0)
-      if (!best || score > best.score) best = { rule, score }
+      const candidate = { rule, score, answersQuestion: inQuestion }
+      candidates.push(candidate)
+      if (!best || score > best.score) best = candidate
       break
     }
   }
-  if (best) return best
-
+  const literal = best
   const words = new Set(tokens.map((token) => token.text))
   for (const rule of allRules()) {
     if (!rule.keywords || !isEligible(rule, session)) continue
@@ -506,7 +538,9 @@ const findRule = (
       hits * 10 +
       (rule.priority ?? 0) +
       (rule.id === session.lastTopic ? 5 : 0)
-    if (!best || score > best.score) best = { rule, score }
+    const candidate = { rule, score }
+    candidates.push(candidate)
+    if (!literal && (!best || score > best.score)) best = candidate
   }
   return best
 }
@@ -573,18 +607,15 @@ const quotedFrom = (raw: string, session: Session): Candidate | null => {
   return best ? { rule: best.rule, score: 100 } : null
 }
 
-// The router only speaks where regex has nothing to offer, or where regex hit a
-// word that has nothing to do with the rule it fired (「那邊」 for 常世). These
-// were tuned on replayed visits; see tools/terminal-router/README.md.
-const ROUTE_MIN = 0.65
-const VETO_OWN = 0.3
-
+// Contextual answers stay with the engine. Otherwise calibrate filling a miss
+// separately from correcting a related-but-wrong regex hit. See eval-engine.mjs.
 const routeFor = (
   scores: RouterScores | null | undefined,
   match: Candidate | null,
   interrupting: boolean,
   input: NormalizedInput,
-  session: Session
+  session: Session,
+  policy: RouterPolicy
 ): Rule | null => {
   if (!scores || isAfterDarkActive(session) || FOLLOW_UP.test(input.text)) return null
   // Turn context outranks it: an answer to her question, or more on the topic at
@@ -594,7 +625,9 @@ const routeFor = (
     match &&
     !interrupting &&
     (match.rule.continues !== undefined ||
+      match.answersQuestion ||
       match.rule.id === session.lastTopic ||
+      match.rule.id === 'player.name' ||
       match.rule.id === 'farewell')
   )
     return null
@@ -608,27 +641,77 @@ const routeFor = (
     return null
   let top: Rule | null = null
   let best = -1
+  let second = -1
   for (const [id, score] of scores) {
     const rule = RULES_BY_ID.get(id)
     if (!rule || rule.continues !== undefined || rule.patterns.length === 0) continue
-    if (!isEligible(rule, session) || score <= best) continue
+    if (!isEligible(rule, session)) continue
+    if (score <= best) {
+      second = Math.max(second, score)
+      continue
+    }
+    second = best
     top = rule
     best = score
   }
-  if (!top || best < ROUTE_MIN) return null
-  if (!match || interrupting) return top
-  const stray = top.id !== match.rule.id && (scores.get(match.rule.id) ?? 0) < VETO_OWN
-  return stray ? top : null
+  if (!top) return null
+  if (!match || interrupting)
+    return best >= policy.fillMin && best - second >= policy.fillMargin ? top : null
+  if (top.id === match.rule.id || best < policy.overrideMin) return null
+  const own = scores.get(match.rule.id) ?? 0
+  if (policy.vetoOwn !== undefined && own >= policy.vetoOwn) return null
+  // Compare with every eligible alternative, including the regex candidate.
+  return best - Math.max(second, own) >= policy.overrideMargin ? top : null
+}
+
+/** Compare answerable intents from lexical candidates and the semantic shortlist.
+ * A vector can support a topic; it cannot invent the aspect the visitor asked for.
+ */
+const chooseAnswerIntent = (
+  input: NormalizedInput,
+  session: Session,
+  match: Candidate | null,
+  candidates: Candidate[],
+  scores?: RouterScores | null
+): AnswerIntent | null => {
+  if (isAfterDarkActive(session) || match?.rule.continues !== undefined ||
+      match?.rule.id === 'player.name' || match?.rule.id === 'farewell') return null
+  const previous = session.lastAnswerIntent && answerIntentById.get(session.lastAnswerIntent)
+  if (previous && previous.ruleId === session.lastTopic && session.pending === null && FOLLOW_UP.test(input.text)) {
+    const id = /^(為什麼|為何|怎麼會)/.test(input.text) ? previous.why : previous.id
+    return id ? answerIntentById.get(id) ?? null : {
+      ...previous, replies: [{ text: '原因這一點，我沒有確定的記錄可以回答呢。不能只因為記得結果，就把原因也當成知道了。', emotion: 'thinking' }],
+    }
+  }
+  const questions = input.clauses.filter((clause) => INTERROGATIVE.test(clause) && !RHETORICAL.test(clause))
+  const focus = questions.at(-1) ?? input.text
+  const semantic = [...(scores ?? [])]
+    .filter(([id, score]) => { const r = RULES_BY_ID.get(id); return score >= DEFAULT_ROUTER_POLICY.fillMin && r && isEligible(r, session) })
+    .sort((a, b) => b[1] - a[1]).slice(0, 3)
+  const shortlist = new Set([...candidates.map((c) => c.rule.id), ...semantic.map(([id]) => id)])
+  const ranked = answerIntents.flatMap((intent) => {
+    const rule = RULES_BY_ID.get(intent.ruleId)
+    if (!rule || !isEligible(rule, session) || !shortlist.has(intent.ruleId)) return []
+    if (intent.exclude?.test(focus) || !intent.cues.every((cue) => cue.test(focus))) return []
+    const lexical = candidates.find((c) => c.rule.id === intent.ruleId)
+    // Explicit aspect cues are mandatory. Similarity only ranks compatible answers.
+    const rank = 1 + (scores?.get(intent.ruleId) ?? 0) * .25 + (lexical?.answersQuestion ? .15 : 0)
+    return [{ intent, rank }]
+  }).sort((a, b) => b.rank - a.rank)
+  if (!ranked.length || (ranked[1] && ranked[0].rank - ranked[1].rank < .05)) return null
+  return ranked[0].intent
 }
 
 export const respond = (
   raw: string,
   session: Session,
   lexicon: Lexicon | null,
-  scores?: RouterScores | null
+  scores?: RouterScores | null,
+  policy: RouterPolicy = DEFAULT_ROUTER_POLICY
 ): Turn => {
-  const full = normalize(raw)
-  const unquoted = normalize(raw.replace(QUOTED, '，'))
+  const focused = focusUtterance(raw)
+  const full = normalize(focused)
+  const unquoted = normalize(focused.replace(QUOTED, '，'))
   const quoted = unquoted.text.length > 0 && unquoted.text !== full.text
   let input = quoted ? unquoted : full
   let tokens = segmentAll(input.text, lexicon)
@@ -640,13 +723,15 @@ export const respond = (
   if (session.pending !== null && session.pendingAge >= PENDING_TTL)
     armPending(session, null)
 
-  let match = findRule(input.clauses, input.phrases, input.text, tokens, session)
+  const candidates: Candidate[] = []
+  let match = findRule(input.clauses, input.phrases, input.text, tokens, session, candidates)
   if (!match && quoted) match = quotedFrom(raw, session)
   // What she was quoted as saying is still better than nothing to go on.
   if (!match && quoted) {
     input = full
     tokens = segmentAll(full.text, lexicon)
-    match = findRule(input.clauses, input.phrases, input.text, tokens, session)
+    candidates.length = 0
+    match = findRule(input.clauses, input.phrases, input.text, tokens, session, candidates)
   }
 
   // Suspicion accumulates across the whole session rather than firing on one
@@ -662,12 +747,21 @@ export const respond = (
     !session.flags.has('knowsPeace') &&
     session.modernScore >= PEACE_THRESHOLD &&
     turnModern > 0 &&
+    // Discovery is an initiative, not a replacement for the visitor's question.
+    // Its timing must not depend on whether the semantic router accepts a turn.
+    !input.hasQuestionMark &&
+    !input.clauses.some((clause) => INTERROGATIVE.test(clause)) &&
     // 「我叫阿哲，大學生」 is an introduction first; the 大學 can wait a turn.
     match?.rule.id !== 'player.name' &&
     match?.rule.continues === undefined
   // A visitor asking something the router can place gets the answer; the
   // discovery keeps until a turn that carries the words without a question.
-  const routedRule = routeFor(scores, match, peaceDue, input, session)
+  const answerIntent = peaceDue ? null : chooseAnswerIntent(input, session, match, candidates, scores)
+  const originalRule = match?.rule.id
+  if (answerIntent) match = { rule: RULES_BY_ID.get(answerIntent.ruleId)!, score: 0 }
+  const routedRule = answerIntent
+    ? (originalRule !== answerIntent.ruleId && !candidates.some((c) => c.rule.id === answerIntent.ruleId) ? match!.rule : null)
+    : routeFor(scores, match, peaceDue, input, session, policy)
   if (routedRule) match = { rule: routedRule, score: 0 }
   const discovering = peaceDue && !routedRule
 
@@ -699,12 +793,19 @@ export const respond = (
   if (discovering) {
     reply = pickReply(PEACE_DISCOVERY, session, seed, true)
   } else {
-    if (sticky) {
+    if (answerIntent && match) {
+      reply = pickReply(answerIntent.replies, session, seed, false, input.text) ?? {
+        text: '這一點我沒有更多確定的事可以補充了呢。你想問的是別的部分嗎？可以再說清楚一點喔。',
+        emotion: 'thinking',
+      }
+      source = match.rule
+    }
+    if (!reply && sticky) {
       reply = pickReply(sticky.replies, session, seed, sticky.repeatable)
       if (reply) source = sticky
     }
     if (!reply && match) {
-      reply = pickReply(match.rule.replies, session, seed, match.rule.repeatable)
+      reply = pickReply(match.rule.replies, session, seed, match.rule.repeatable, input.text)
       if (reply) source = match.rule
     }
   }
@@ -970,6 +1071,7 @@ export const respond = (
   )
   session.history.push(ruleId)
 
+  session.lastAnswerIntent = answerIntent && source?.id === answerIntent.ruleId ? answerIntent.id : null
   // Placeholders expand after `used` has been written, so the dedup key stays
   // the template rather than one session's name.
   return {
@@ -980,6 +1082,7 @@ export const respond = (
     signal: session.signal,
     ending,
     ...(routedRule ? { routed: true } : {}),
+    ...(session.lastAnswerIntent ? { intentId: session.lastAnswerIntent } : {}),
   }
 }
 
@@ -1016,6 +1119,7 @@ export const jumpTo = (ruleId: string, session: Session): Turn | null => {
   const reply = pickReply(rule.replies, session, seed, rule.repeatable)
   if (!reply) return null
 
+  session.lastAnswerIntent = null
   const emotion: Emotion = reply.emotion ?? 'neutral'
   const delta = reply.signal ?? 2
   session.used.add(reply.text)

@@ -1,5 +1,5 @@
 import type { RouterScores } from '../engine'
-import { normalize } from '../normalize'
+import { focusUtterance, normalize } from '../normalize'
 import type { RouterReply, RouterRequest } from './worker'
 
 export type Router = {
@@ -9,7 +9,7 @@ export type Router = {
 }
 
 // Written by tools/terminal-router/scripts/export-web.mjs; a retrained model gets a new folder.
-const ROUTER_VERSION = 'v2'
+const ROUTER_VERSION = 'v4'
 const BASE = `/assets/story/terminal/router/${ROUTER_VERSION}/`
 // Inference takes tens of milliseconds; anything slower is a stalled worker, and
 // regex alone is a better reply than a late one.
@@ -45,7 +45,7 @@ export const startRouter = (): Router => {
 
   return {
     score: (raw) => {
-      const text = normalize(raw).text
+      const text = normalize(focusUtterance(raw)).text
       if (state !== 'ready' || !text) return Promise.resolve(null)
       const id = next++
       return new Promise((resolve) => {

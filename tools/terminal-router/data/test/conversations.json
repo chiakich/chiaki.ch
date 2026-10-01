@@ -1,0 +1,177 @@
+[
+  {
+    "id": "identity",
+    "turns": [
+      {
+        "text": "你的生日是幾月幾號？",
+        "accept": [
+          "age"
+        ],
+        "contains": "二月二十七"
+      },
+      {
+        "text": "不是，我問的是你幾歲？",
+        "accept": [
+          "age"
+        ],
+        "contains": "確定|運作多久",
+        "absent": "狐狸不太計較"
+      },
+      {
+        "text": "是誰製造你的？",
+        "accept": [
+          "maker"
+        ],
+        "contains": "少女|設計者"
+      },
+      {
+        "text": "你是機器人嗎？",
+        "accept": [
+          "ai"
+        ],
+        "contains": "人工|被做出來|端末上的我|做我的人"
+      }
+    ]
+  },
+  {
+    "id": "snow",
+    "turns": [
+      {
+        "text": "雪下了多久？",
+        "accept": [
+          "snow"
+        ],
+        "contains": "那一天|那天"
+      },
+      {
+        "text": "為什麼？",
+        "accept": [
+          "snow"
+        ],
+        "contains": "原因|確定的答案",
+        "absent": "因為戰爭|因為核"
+      },
+      {
+        "text": "不是，我問的是積雪有多厚？",
+        "accept": [
+          "snow"
+        ],
+        "contains": "深度|厚度|數字"
+      },
+      {
+        "text": "再多說一點",
+        "accept": [
+          "snow"
+        ],
+        "contains": "深度|厚度|數字|更多確定"
+      },
+      {
+        "text": "再多說一點",
+        "accept": [
+          "snow"
+        ],
+        "contains": "更多確定",
+        "absent": "結晶"
+      }
+    ]
+  },
+  {
+    "id": "weather",
+    "turns": [
+      {
+        "text": "你那裡看得到太陽嗎？",
+        "accept": [
+          "st.weather"
+        ],
+        "contains": "看不到|擋著"
+      },
+      {
+        "text": "那你那裡的氣溫幾度？",
+        "accept": [
+          "st.weather"
+        ],
+        "contains": "數字|讀數"
+      },
+      {
+        "text": "為什麼？",
+        "accept": [
+          "st.weather"
+        ],
+        "contains": "沒有確定的記錄"
+      }
+    ]
+  },
+  {
+    "id": "tech-correction",
+    "turns": [
+      {
+        "text": "javascript迴圈怎麼寫？",
+        "accept": [
+          "visitor.tech"
+        ],
+        "contains": "不會寫|不能改"
+      },
+      {
+        "text": "不是程式，我問的是印表機壞了",
+        "accept": [
+          "visitor.tech"
+        ],
+        "contains": "故障|設備|機器",
+        "absent": "程式|除錯"
+      },
+      {
+        "text": "然後呢",
+        "accept": [
+          "visitor.tech"
+        ],
+        "contains": "故障|設備|機器|解不開|看不見的地方",
+        "absent": "程式|除錯"
+      },
+      {
+        "text": "你是人工智慧嗎？",
+        "accept": [
+          "ai"
+        ],
+        "contains": "人工|被做出來|做我的人|端末上的我"
+      }
+    ]
+  },
+  {
+    "id": "work-and-question",
+    "turns": [
+      {
+        "text": "我今天一直在開會",
+        "accept": [
+          "visitor.day",
+          "modern.life"
+        ],
+        "contains": "工作|同一個地方"
+      },
+      {
+        "text": "我今天好累，你會寂寞嗎？",
+        "accept": [
+          "st.lonely"
+        ]
+      },
+      {
+        "text": "我要走了掰掰",
+        "accept": [
+          "farewell"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "visitor-weather",
+    "turns": [
+      {
+        "text": "我這邊今天有太陽",
+        "noIntent": true
+      },
+      {
+        "text": "我這裡的氣溫二十五度",
+        "noIntent": true
+      }
+    ]
+  }
+]

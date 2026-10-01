@@ -52,6 +52,12 @@ const strip = (text: string) => {
   return out
 }
 
+/** In an explicit correction, the negated topic is not the new question. */
+export const focusUtterance = (raw: string): string => {
+  const correction = /(?:^|[，,。！？!?]\s*)(?:我(?:是)?(?:在)?問的是|我是(?:在)?問|我是說|我指的是|我想問的是)[，,：:\s]*([\s\S]+)$/.exec(toTraditional(raw.normalize('NFKC')))
+  return correction?.[1]?.trim() || raw
+}
+
 export const normalize = (raw: string): NormalizedInput => {
   // NFKC folds full-width latin and digits; the rest is done by hand because
   // NFKC would also decompose characters we want to keep intact.

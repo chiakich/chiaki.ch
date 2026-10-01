@@ -15,6 +15,8 @@ export type Reply = {
    */
   text: string
   emotion?: Emotion
+  /** Only usable for a direct input about this aspect; never via an idle/bridge. */
+  forInput?: RegExp
   /** Link-strength delta, in percentage points. Defaults to +2 on a hit. */
   signal?: number
   /** Topic flags written to the session when this reply fires. */

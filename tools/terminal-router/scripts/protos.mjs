@@ -1,6 +1,8 @@
 import { rules } from '../build/engine.mjs'
 
-// Literal alternatives out of a pattern: 「(你叫什麼|你是誰|大名)」 -> three anchors.
+// Authoring hints / historical ablation ONLY. Removing regex conditions changes
+// intent (e.g. 煮飯 from a farewell). Never feed these fragments to prep/export.
+// Literal alternatives out of a pattern: 「(你叫什麼|你是誰|大名)」 -> three hints.
 const fragments = (re) =>
   re.source
     .replace(/\(\?[=!<][^)]*\)/g, '')

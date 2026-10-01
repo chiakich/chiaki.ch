@@ -1,22 +1,24 @@
 // Writes the router the site loads into public/assets/story/terminal/router/<version>/:
-//   node scripts/export-web.mjs [model]   (default v2/onnx-mnrl-e10; version is its first folder)
+//   node scripts/export-web.mjs [model] [version]   (default v2/onnx-mnrl-e10; version defaults
+//   to the model's first folder, and needs bumping on its own when only the prototypes changed)
 // Assets there are cached for days, so a retrained model ships under a new version, never over
 // the old one: a new model read against old prototypes would score nonsense. Bump ROUTER_VERSION
 // in lib/terminal/router/client.ts to match.
 // Prototypes are embedded with the same tokenizer and int8 model the browser runs, and the
 // tokenizer is checked against transformers.js on every training and test sentence first.
-import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { createHash } from 'node:crypto'
 import { basename, dirname, resolve } from 'node:path'
 import { AutoTokenizer, env, pipeline } from '@huggingface/transformers'
 import * as ort from 'onnxruntime-node'
-import { normalize } from '../build/engine.mjs'
+import { normalize, DEFAULT_ROUTER_POLICY } from '../build/engine.mjs'
 import { parseVocab, poolCls, tokenize } from '../build/router.mjs'
 import { MODELS, TEST, TOOL, TRAIN_DATA, readJson, readJsonl } from './paths.mjs'
 
 const modelArg = process.argv[2] ?? 'v2/onnx-mnrl-e10'
 const modelDir = resolve(MODELS, modelArg)
-const OUT = resolve(TOOL, `../../public/assets/story/terminal/router/${modelArg.split('/')[0]}`)
-mkdirSync(OUT, { recursive: true })
+const OUT = resolve(TOOL, `../../public/assets/story/terminal/router/${process.argv[3] ?? modelArg.split('/')[0]}`)
+if (existsSync(OUT)) throw new Error(`refusing to overwrite a cached router version: ${OUT}; choose a new version`)
 
 const tokenizerJson = JSON.parse(readFileSync(`${modelDir}/tokenizer.json`, 'utf8'))
 const vocabText = Object.entries(tokenizerJson.model.vocab).sort((a, b) => a[1] - b[1]).map(([t]) => t).join('\n')
@@ -64,8 +66,11 @@ for (const [row, p] of protos.entries()) {
   v.forEach((x, k) => (values[row * 512 + k] = Math.round(x / scale)))
   scales.push(+scale.toPrecision(6))
 }
+mkdirSync(OUT, { recursive: true })
 writeFileSync(`${OUT}/protos.bin`, values)
 writeFileSync(`${OUT}/protos.json`, JSON.stringify({ labels, rows: protos.map((p) => labels.indexOf(p.label)), scales }))
 writeFileSync(`${OUT}/vocab.txt`, vocabText)
 copyFileSync(modelPath, `${OUT}/model.onnx`)
+const sha = (path) => createHash('sha256').update(readFileSync(path)).digest('hex')
+writeFileSync(`${OUT}/manifest.json`, JSON.stringify({ model: modelArg, modelSha256: sha(modelPath), trainingSha256: sha(`${TRAIN_DATA}train.jsonl`), prototypes: protos.length, policy: DEFAULT_ROUTER_POLICY }, null, 2))
 console.log(`${texts.length} sentences tokenize identically; ${protos.length} prototypes over ${labels.length} rules -> ${OUT}`)

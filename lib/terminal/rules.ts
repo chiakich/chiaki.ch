@@ -2725,6 +2725,13 @@ export const RELATED: Record<string, string[]> = {
   'modern.life': ['modern.device', 'peace'],
   'player.survive': ['snow'],
   // smalltalk clusters
+  'st.send': ['st.help', 'st.gift'],
+  'st.rescue': ['st.help', 'st.stay'],
+  'st.help': ['st.stay'],
+  'st.supply': ['food', 'st.cold'],
+  'st.shelter': ['st.leak', 'st.cold'],
+  'st.leak': ['st.shelter'],
+  'st.caretaker': ['maker'],
   'st.like': ['st.dislike', 'st.color'],
   'st.dislike': ['st.like'],
   'st.color': ['st.flower', 'st.like'],

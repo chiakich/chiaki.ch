@@ -1,7 +1,6 @@
 # Fine-tunes bge-small-zh for rule routing and exports a transformers.js-compatible int8 ONNX model.
 # Usage on the pod: python train.py  (expects data/ from `npm run prep` next to this file, writes out/)
 import json
-import random
 import shutil
 from pathlib import Path
 
@@ -15,7 +14,6 @@ from sentence_transformers.training_args import BatchSamplers
 BASE = "BAAI/bge-small-zh-v1.5"
 ROOT = Path(__file__).parent
 DATA, OUT = ROOT / "data", ROOT / "out"
-random.seed(0)
 
 
 def read_jsonl(path):
@@ -59,18 +57,13 @@ def evaluate(model, tag):
     return report
 
 
-def train_mnrl():
-    # Pairs of two phrasings of the same rule; in-batch negatives do the rest.
-    by_label = {}
-    for r in train_rows:
-        by_label.setdefault(r["label"], []).append(r["text"])
-    pairs = []
-    for texts in by_label.values():
-        for t in texts:
-            other = random.choice([x for x in texts if x != t] or texts)
-            pairs.append({"anchor": t, "positive": other})
-    random.shuffle(pairs)
-    return Dataset.from_list(pairs), BatchSamplers.NO_DUPLICATES, lambda m: losses.MultipleNegativesRankingLoss(m)
+def train_softmargin():
+    # Label-aware mining: different paraphrases of one intent are never negatives.
+    # NO_DUPLICATES + MNRL only removed identical strings, not same-label pairs.
+    ds = Dataset.from_list([{"sentence": r["text"], "label": label_id[r["label"]]} for r in train_rows])
+    return ds, BatchSamplers.GROUP_BY_LABEL, lambda m: losses.BatchHardSoftMarginTripletLoss(
+        m, distance_metric=BatchHardTripletLossDistanceFunction.cosine_distance
+    )
 
 
 def train_triplet():
@@ -144,9 +137,9 @@ if __name__ == "__main__":
     OUT.mkdir(exist_ok=True)
     reports = [evaluate(SentenceTransformer(BASE), "zero-shot")]
     variants = [
-        ("mnrl", train_mnrl, 4, 3e-5),
+        ("softmargin", train_softmargin, 4, 3e-5),
         ("triplet", train_triplet, 4, 3e-5),
-        ("mnrl-e10", train_mnrl, 10, 5e-5),
+        ("softmargin-e10", train_softmargin, 10, 5e-5),
         ("triplet-e10", train_triplet, 10, 5e-5),
     ]
     for tag, make, epochs, lr in variants:

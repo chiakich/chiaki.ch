@@ -15,13 +15,16 @@ const args = process.argv.slice(2)
 const fill = args.includes('--fill')
 const veto = args.includes('--veto')
 const engineRoutes = args.includes('--engine')
+const legacy = args.includes('--legacy')
+const prototypePath = args.find((a) => a.startsWith('--protos='))?.slice('--protos='.length)
+if (legacy && !engineRoutes) throw new Error('--legacy requires --engine')
 const [modelArg, tauArg, tag, ...ids] = args.filter((a) => !a.startsWith('--'))
 // A regex hit this unlike its own rule was a stray keyword; overruled only by a confident router.
 const VETO_OWN = 0.3
 const VETO_MIN = 0.6
 const tau = Number(tauArg)
 const lexicon = await boot()
-const route = modelArg === 'regex' ? null : await loadRouter(modelArg)
+const route = modelArg === 'regex' ? null : await loadRouter(modelArg, prototypePath)
 const byId = new Map(rules.map((r) => [r.id, r]))
 
 // Seeded per visit, so two engine builds replaying the same input draw the same lines
@@ -46,7 +49,7 @@ for (const id of ids) {
     }
     if (engineRoutes) {
       const top = route ? await route(rec.input, session.flags) : null
-      const turn = respond(rec.input, session, lexicon, top?.scores ?? null)
+      const turn = respond(rec.input, session, lexicon, top?.scores ?? null, legacy ? engine.LEGACY_ROUTER_POLICY : undefined)
       const afterDark = isAfterDarkActive(session)
       out.push({
         turn: rec.turn,

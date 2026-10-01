@@ -22,10 +22,12 @@ export const visitorRules: Rule[] = [
       {
         text: '要查東西的話，總得有地方可以查才行嘛。可是這條線的另一頭只有我一個，沒有書庫耶……真的很抱歉。',
         emotion: 'sad',
+        forInput: /查|找|搜尋|搜索/,
       },
       {
         text: '寫東西是要會思考的，可是這裡的我沒有裝那一塊，只是在查表而已……所以這件事，就拜託你囉！',
         emotion: 'shy',
+        forInput: /寫|作文|文章|報告|文案/,
       },
       {
         text: '唔，這個我做不到……不過，你要拿它來做什麼呢？那一部分我聽得懂喔，說給我聽嘛！',
@@ -58,6 +60,7 @@ export const visitorRules: Rule[] = [
       {
         text: '「壞掉」這個狀態我超熟的喔！研究室的機器，也是一台接一台這樣壞的呀。',
         emotion: 'happy',
+        forInput: /壞|故障|當機|開不了|不能|不會動|斷線|中毒/,
       },
       {
         text: '看得見焊點的東西我修得了喔！可是你說的那個，聽起來問題是在裡面看不見的地方呢……',
@@ -66,10 +69,12 @@ export const visitorRules: Rule[] = [
       {
         text: '程式我不會寫耶……我自己是跑在一張規則表上的，連這張表都改不了啦。',
         emotion: 'shy',
+        forInput: /程式|python|javascript|debug|代碼|code/,
       },
       {
         text: '哇，你那邊的機器多到會一起壞給你看啊……我這邊是剩下的太少了，壞一台就少一台呢。',
         emotion: 'surprised',
+        forInput: /壞|故障|當機|開不了|斷線|中毒/,
         needs: ['knowsPeace'],
       },
     ],

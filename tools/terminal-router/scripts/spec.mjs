@@ -15,6 +15,7 @@ const specs = routable.filter((r) => !missingOnly || !lines[r.id]).map((r) => ({
   requires: r.requires ?? [],
   pattern_fragments: protos.filter((p) => p.rule === r.id && p.kind !== 'reply').map((p) => p.text),
   her_replies: r.replies.map((x) => x.text),
+  reply_conditions: r.replies.filter((x) => x.forInput).map((x) => ({ text: x.text, input_pattern: x.forInput.source })),
 }))
 const size = Math.ceil(specs.length / BATCHES)
 for (let i = 0; i < BATCHES; i++)

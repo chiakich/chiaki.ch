@@ -2,11 +2,11 @@
 import { existsSync } from 'node:fs'
 import { basename, dirname, resolve } from 'node:path'
 import { env, pipeline } from '@huggingface/transformers'
-import { normalize } from '../build/engine.mjs'
+import { focusUtterance, normalize } from '../build/engine.mjs'
 import { MODELS, TRAIN_DATA, readJsonl } from './paths.mjs'
 import { routable } from './protos.mjs'
 
-export const loadRouter = async (modelArg) => {
+export const loadRouter = async (modelArg, prototypePath = `${TRAIN_DATA}train.jsonl`) => {
   const local = [modelArg, `${MODELS}${modelArg}`].find((p) => existsSync(p))
   if (!local) throw new Error(`model not found: ${modelArg}`)
   env.localModelPath = `${dirname(resolve(local))}/`
@@ -18,13 +18,13 @@ export const loadRouter = async (modelArg) => {
       out.push(...(await extractor(texts.slice(i, i + 64), { pooling: 'cls', normalize: true })).tolist())
     return out
   }
-  const protos = readJsonl(`${TRAIN_DATA}train.jsonl`)
+  const protos = readJsonl(prototypePath)
   const pv = await embed(protos.map((p) => p.text))
 
   // Best-scoring rule the session may currently reach, plus how well the input matches any
   // given rule (`of`), or null for input with nothing to embed.
   return async (raw, flags) => {
-    const text = normalize(raw).text
+    const text = normalize(focusUtterance(raw)).text
     if (!text) return null
     const [q] = await embed([text])
     const best = new Map()

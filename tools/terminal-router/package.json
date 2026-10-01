@@ -7,9 +7,12 @@
     "prep": "npm run bundle && node scripts/prep.mjs",
     "eval:regex": "npm run bundle && node scripts/eval-regex.mjs",
     "eval:router": "npm run bundle && node scripts/eval-router.mjs",
+    "eval:engine": "npm run bundle && node scripts/eval-engine.mjs",
+    "test": "npm run prep && node --test scripts/engine.test.mjs",
     "bundle:head": "rm -rf build/head && mkdir -p build/head && git -C ../.. archive HEAD lib/terminal | tar -x -C build/head && sed 's#../../../lib/terminal#./lib/terminal#' scripts/entry.ts > build/head/entry.ts && ../../node_modules/.bin/esbuild build/head/entry.ts --bundle --format=esm --platform=node --outfile=build/engine.mjs --log-level=warning",
     "spec:missing": "npm run bundle && node scripts/spec.mjs --missing",
-    "export:web": "npm run bundle && ../../node_modules/.bin/esbuild scripts/entry-router.ts --bundle --format=esm --platform=node --outfile=build/router.mjs --log-level=warning && node scripts/export-web.mjs"
+    "export:web": "npm run bundle && ../../node_modules/.bin/esbuild scripts/entry-router.ts --bundle --format=esm --platform=node --outfile=build/router.mjs --log-level=warning && node scripts/export-web.mjs",
+    "eval:conversations": "npm run bundle && ../../node_modules/.bin/esbuild scripts/entry-router.ts --bundle --format=esm --platform=node --outfile=build/router.mjs --log-level=warning && node scripts/eval-conversations.mjs"
   },
   "dependencies": {
     "@huggingface/transformers": "4.3.0"

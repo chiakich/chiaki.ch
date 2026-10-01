@@ -2,6 +2,6 @@
 export * from '../../../lib/terminal/engine'
 export * from '../../../lib/terminal/rules'
 export { parseLexicon } from '../../../lib/terminal/lexicon'
-export { normalize } from '../../../lib/terminal/normalize'
+export { focusUtterance, normalize } from '../../../lib/terminal/normalize'
 export { loadDirtyContent } from '../../../lib/terminal/dirty'
 export { SHAPE_ECHO } from '../../../lib/terminal/shapes'
