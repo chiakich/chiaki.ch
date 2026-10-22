@@ -64,7 +64,7 @@ const Item = ({ index, title, en, children }: { index: number; title: string; en
       <Span fontFamily="'Jost', sans-serif" fontWeight="medium" width="28px" flexShrink={0}>{String(index).padStart(2, '0')}</Span>
       <Flex flex="1" flexWrap="wrap" alignItems="baseline" columnGap={4} rowGap={1}>
         <Span fontSize="xl" fontWeight="bold">{title}</Span>
-        <Span fontFamily="'Jost', sans-serif" fontWeight="normal">{en}</Span>
+        <Span fontFamily="'Jost', sans-serif" fontWeight="regular">{en}</Span>
       </Flex>
     </Heading3>
     <Box pl={{ base: 2, md: '60px' }} pr={2} pb="44px">{children}</Box>
