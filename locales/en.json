@@ -16,7 +16,8 @@
     "huninn": "Huninn",
     "terminal": "Yorishiro Terminal",
     "zipcode": "ZIP Code",
-    "letterpress": "Letterpress"
+    "letterpress": "Letterpress",
+    "voicebank": "Chiaki Voicebank"
   },
   "language": {
     "label": "Change language",
@@ -105,6 +106,10 @@
     "letterpress": {
       "title": "千秋印書館 — a framework-free letterpress package for the web - Chiaki Inari Shrine",
       "description": "Putting the feel of letterpress back into a web page: paper fibre, ink weight, and the lean and chipped corners of worn type. A specimen sheet in vertical Chinese, horizontal Chinese and English."
+    },
+    "voicebank": {
+      "title": "Chiaki DiffSinger Voicebank - Chiaki Inari Shrine",
+      "description": "Chiaki is a DiffSinger singing voicebank supporting 28 languages. Download OpenUtau-Chiaki with the voicebank built in and start singing right away."
     }
   },
   "home": {
@@ -144,6 +149,11 @@
       },
       "letterpress": {
         "description": "A package that puts the feel of letterpress back into a web page — paper fibre, ink weight, and the lean and chipped corners of worn type, layer by layer. With a type specimen sheet."
+      },
+      "voicebank": {
+        "title": "Chiaki Voicebank",
+        "description": "A multilingual DiffSinger singing voicebank supporting 28 languages, shipped with OpenUtau-Chiaki, a dedicated OpenUtau fork with the voicebank and phonemizers built in.",
+        "tag": "Singing synthesis"
       }
     },
     "specimens": {
@@ -1158,5 +1168,176 @@
     "how3": "LINK in the bottom left tracks whether the conversation is landing. It rises when she has an answer and falls when she does not; at the bottom the line starts breaking up. The whole page is under 300 KB.",
     "toCharacter": "Character",
     "toChiaKey": "About ChiaKey"
+  },
+  "voicebankPage": {
+    "subtitle": "Chiaki · DiffSinger voicebank",
+    "languages": "Supports 28 languages",
+    "accuracyNote": "Pronunciation in non-native languages may not be accurate",
+    "improveLink": "Help improve pronunciation",
+    "downloadApp": "Download OpenUtau-Chiaki",
+    "downloadZip": "Voicebank zip only",
+    "forkNote": "OpenUtau-Chiaki is a fork of OpenUtau. Please don't report issues with it to the official OpenUtau project.",
+    "comingSoon": "Coming soon",
+    "portraitAlt": "Full-body illustration of Chiaki",
+    "data": {
+      "title": "Download",
+      "intro": "We recommend OpenUtau-Chiaki: it comes with the Chiaki voicebank, dedicated phonemizers, and optimizations built in. If you already use the official OpenUtau, you can download just the voicebank."
+    },
+    "app": {
+      "title": "OpenUtau-Chiaki",
+      "desc": "A fork of OpenUtau tuned for Chiaki, with the voicebank and dedicated phonemizers built in. No separate voicebank install needed.",
+      "steps": [
+        "Download and open OpenUtau-Chiaki.",
+        "Click \"Select singer\" on a track and choose Chiaki.",
+        "Pick the phonemizer for your lyrics' language and start singing."
+      ]
+    },
+    "zip": {
+      "title": "Voicebank only",
+      "desc": "The voicebank zip for the official OpenUtau. No need to unzip it. Finnish and Ecclesiastical Latin need the DiffSinger Finnish / Latin Phonemizer plugins.",
+      "button": "Download Chiaki.zip",
+      "steps": [
+        "Drag Chiaki.zip into the OpenUtau window, or choose \"Install Singer\" from the Tools menu.",
+        "Click \"Select singer\" on a track and choose Chiaki.",
+        "Choose the DiffSinger phonemizer for your language, e.g. DiffSinger Japanese for Japanese."
+      ]
+    },
+    "extra": {
+      "title": "Extra language plugin",
+      "desc": "The model already sings these languages, but OpenUtau has no built-in phonemizers for them, so install this plugin separately. One plugin file contains 13 phonemizers. OpenUtau-Chiaki and the official OpenUtau use different builds of the plugin.",
+      "buttonChiaki": "Plugin (for OpenUtau-Chiaki)",
+      "buttonOfficial": "Plugin (for official OpenUtau)",
+      "steps": [
+        "Put the plugin file in the Plugins folder.",
+        "Restart OpenUtau and choose Chiaki as the singer.",
+        "Choose the phonemizer for the language, e.g. DiffSinger Indonesian Phonemizer.",
+        "Write lyrics in the language's normal spelling, one syllable per note. You can also put a whole multi-syllable word on the first note and extend it with \"+\"."
+      ],
+      "notesTitle": "Language notes",
+      "notes": [
+        {
+          "lang": "Serbo-Croatian / Bosnian",
+          "note": "Latin or Cyrillic script both work."
+        },
+        {
+          "lang": "Lao",
+          "note": "Use Lao script with only one syllable per note; multi-syllable words only register their first syllable. Tones come from the melody."
+        },
+        {
+          "lang": "Catalan",
+          "note": "Valencian-style pronunciation without reduction of unstressed vowels. è / ò are sung open."
+        },
+        {
+          "lang": "Indonesian / Malay",
+          "note": "e is sung as ə by default; write é to sing e. Final k is a glottal stop."
+        },
+        {
+          "lang": "Hawaiian",
+          "note": "The ʻokina (ʻ or ') is a glottal stop; diphthongs such as ai and au count as one syllable."
+        },
+        {
+          "lang": "Esperanto",
+          "note": "Supports ĉ ĝ ĥ ĵ ŝ ŭ as well as the x-system (cx, gx…)."
+        }
+      ]
+    },
+    "languageList": {
+      "title": "Languages",
+      "fluent": {
+        "label": "Languages I speak",
+        "desc": "Languages I speak myself, with the most natural pronunciation."
+      },
+      "other": {
+        "label": "Other languages",
+        "desc": "Not languages I speak natively, so pronunciation may be inaccurate."
+      }
+    },
+    "render": {
+      "title": "Recommended render settings"
+    },
+    "demos": {
+      "title": "Demos",
+      "intro": "One short song for each supported language. Songs marked \"original melody\" had no reliable score, so the melody is not the original. Extra-language pronunciation has not been checked by native speakers yet.",
+      "selfComposed": "Original melody",
+      "play": "Play",
+      "pause": "Pause"
+    },
+    "improve": {
+      "title": "Help improve pronunciation",
+      "text": "If you'd like to help improve Chiaki's pronunciation in a language, please get in touch. Include the language, the words that sound wrong, and how they should be pronounced. A reference recording helps even more."
+    },
+    "guidelines": {
+      "title": "Terms of use",
+      "may": [
+        "Publish, sell, and use works commercially",
+        "Any subject, including R-18 and political content",
+        "Character fan works and merchandise",
+        "Embed it in games and apps",
+        "Train derived models on generated audio (research and non-commercial)"
+      ],
+      "mayNot": [
+        "Impersonate Chiaki, the creator, or the official project",
+        "Damage the reputation of Chiaki or the creator",
+        "Defame, insult, or harass real people or groups",
+        "Reverse engineer the model or extract its weights",
+        "Sell or distribute the voicebank itself on its own",
+        "Extract or reuse the illustration by shONe"
+      ],
+      "fullTerms": "Full terms of use"
+    },
+    "terms": {
+      "updated": "2026-10-21",
+      "intro": "These terms apply to the Chiaki voicebank (\"the voicebank\") and to any audio generated with it. By downloading or using the voicebank, you agree to these terms.",
+      "sections": [
+        {
+          "title": "You may",
+          "items": [
+            "Create songs, speech, and other works with the voicebank, and publish or sell them, including commissions, games, advertising, and ad revenue.",
+            "Create works on any subject, including R-18 and political content.",
+            "Make derivative works of the Chiaki character, and make and sell merchandise.",
+            "Embed the voicebank in games, apps, and other works.",
+            "Train or build new models (singing, speech TTS, or voice conversion) from audio generated with the voicebank, and release them for free."
+          ]
+        },
+        {
+          "title": "When you use it",
+          "items": [
+            "Credit the voicebank, e.g. \"Vocal: Chiaki\". If you can't credit it within the work, the description, end credits, or a related web page is fine.",
+            "When embedding the voicebank, don't let users extract its files. Contact us before embedding it in a commercial work, because the bundled vocoder's license does not allow commercial distribution.",
+            "Models trained on audio from the voicebank (\"derived models\") may be used for research and non-commercial purposes only. Contact us before selling a derived model or using one to make commercial works.",
+            "When releasing a derived model, state that it is derived from Chiaki, and don't name it \"Chiaki\" or anything that could be mistaken for an official release.",
+            "A derived model's own terms must likewise prohibit impersonating Chiaki or the creator and damaging the reputation of Chiaki or the creator, restrict commercial use, and require the same of any further derived models."
+          ]
+        },
+        {
+          "title": "You may not",
+          "items": [
+            "Impersonate Chiaki or the creator: faking statements, making fake recordings, fraud, or presenting a work as the official or personal position of the creator.",
+            "Use the voicebank in ways that damage the reputation of Chiaki or the creator. The creator decides what counts; subject matter alone (including R-18 and political content) does not.",
+            "Defame, insult, or harass real people, groups, or products.",
+            "Reverse engineer, decompile, or disassemble the voicebank's model files, extract or modify their weights, or publish methods for doing so.",
+            "Sell or distribute the voicebank itself on its own, modified or not. Link to the official download page instead.",
+            "Extract or reuse the portrait and icon drawn by shONe. They are copyrighted by shONe and licensed only for display with the voicebank inside OpenUtau.",
+            "Claim the voicebank as your own work.",
+            "Use the voicebank for anything illegal."
+          ]
+        },
+        {
+          "title": "Vocoder",
+          "items": [
+            "The bundled vocoder PC-NSF-HiFiGAN by OpenVPI (unmodified) is licensed under CC BY-NC-SA 4.0. This license restricts the distribution and modification of the vocoder itself, not the audio generated through it, so works made with the voicebank may be used commercially. Do not sell the vocoder on its own or distribute a modified copy of it."
+          ]
+        },
+        {
+          "title": "Other",
+          "items": [
+            "If you violate these terms, your permission to use the voicebank ends, and the creator may ask for works to be taken down or no longer used.",
+            "These terms may be updated; the latest version applies. Works already published are governed by the version in effect when they were published.",
+            "The voicebank is provided as is. The creator is not liable for any damage arising from its use.",
+            "If translations differ, the Chinese version prevails."
+          ]
+        }
+      ]
+    }
   }
 }

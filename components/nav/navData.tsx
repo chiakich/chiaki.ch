@@ -14,6 +14,7 @@ import {
   TerminalIcon,
   TgJpgIcon,
   TokyonoIcon,
+  VoicebankIcon,
   ZipcodeIcon,
 } from './navIcons'
 
@@ -93,6 +94,12 @@ export const getNavSections = (t: Translate): Record<string, NavSection> => ({
         title: t('tokyonoPage.title'),
         path: '/works/tokyono-sora',
         icon: <TokyonoIcon />,
+      },
+      {
+        id: 'voicebank',
+        title: t('nav.voicebank'),
+        path: '/works/voicebank',
+        icon: <VoicebankIcon />,
       },
       { id: 'tg-jpg', title: 'tg.jpg', path: '/works/tg-jpg', icon: <TgJpgIcon /> },
       {

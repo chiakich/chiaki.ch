@@ -105,6 +105,7 @@ const LOCALIZED_ROUTES = new Set([
   'works/split-flap',
   'works/letterpress',
   'works/tokyono-sora',
+  'works/voicebank',
   'fonts',
   'fonts/akitra',
   'fonts/huninn',

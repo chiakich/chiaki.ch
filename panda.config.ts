@@ -204,6 +204,10 @@ export default defineConfig({
           '0%': { transform: 'translateY(-130%)' },
           '100%': { transform: 'translateY(130%)' },
         },
+        snowfall: {
+          from: { backgroundPosition: '0 0, 40px 0, 10px 0' },
+          to: { backgroundPosition: '0 400px, 40px 260px, 10px 180px' },
+        },
         artReveal: {
           '0%': { opacity: 0, filter: 'blur(6px)', transform: 'translateY(6px)' },
           '100%': { opacity: 1, filter: 'blur(0)', transform: 'translateY(0)' },

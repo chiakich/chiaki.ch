@@ -47,6 +47,7 @@ export const PAGE_NAMESPACES: Record<string, string[]> = {
   'works/tw-address-tools': ['zipcodePage'],
   'works/tw-fuzzy-zipcode': [],
   'works/tokyono-sora': [],
+  'works/voicebank': ['voicebankPage'],
   fonts: ['fontsPage'],
   'fonts/akitra': ['akitraPage'],
   'fonts/huninn': ['huninnPage'],

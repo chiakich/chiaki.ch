@@ -60,6 +60,14 @@ export const LetterpressSpecimen = () => {
   )
 }
 
+export const VoicebankSpecimen = () => (
+  <Box width="100%" height="100%" position="relative" overflow="hidden" backgroundImage="linear-gradient(180deg, #a9b7c5 0%, #c9d3dc 60%, #edf1f4 100%)">
+    <Box position="absolute" inset="0" backgroundImage="radial-gradient(circle, rgba(255,255,255,.9) 1.4px, transparent 2px), radial-gradient(circle, rgba(255,255,255,.6) 1px, transparent 1.4px)" backgroundSize="90px 80px, 52px 48px" animation="snowfall 14s linear infinite" _motionReduce={{ animation: 'none' }} />
+    <Text position="absolute" style={{ left: 24, bottom: 20 }} fontWeight="bold" fontSize="1.4rem" lineHeight="1.05" letterSpacing=".04em" color="#1b2430">DIFFSINGER<br /><Span color="#a94f0f">VOICE ARCHIVE</Span></Text>
+    <Image src="/assets/works/voicebank/portrait.webp" alt="" position="absolute" style={{ right: '8%', top: 18 }} width="46%" objectFit="cover" objectPosition="top" />
+  </Box>
+)
+
 export const TokyonoSpecimen = () => {
   const { t } = useI18n()
   return (

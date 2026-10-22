@@ -22,6 +22,7 @@ const routes: Record<string, ComponentType> = {
   'works/tw-address-tools': dynamic(() => import('pages/works/tw-address-tools')),
   'works/tw-fuzzy-zipcode': dynamic(() => import('pages/works/tw-fuzzy-zipcode')),
   'works/tokyono-sora': dynamic(() => import('pages/works/tokyono-sora')),
+  'works/voicebank': dynamic(() => import('pages/works/voicebank')),
   fonts: dynamic(() => import('pages/fonts')),
   'fonts/akitra': dynamic(() => import('pages/fonts/akitra')),
   'fonts/huninn': dynamic(() => import('pages/fonts/huninn')),

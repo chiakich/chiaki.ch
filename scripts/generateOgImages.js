@@ -40,6 +40,7 @@ const pages = [
   ['/works/tw-address-tools', 'works-tw-fuzzy-zipcode'],
   ['/works/tg-jpg', 'works-tg-jpg'],
   ['/works/tokyono-sora', 'works-tokyono-sora'],
+  ['/works/voicebank', 'works-voicebank'],
   ['/fonts', 'fonts'],
   ['/fonts/akitra', 'fonts-akitra'],
   ['/fonts/nixie', 'fonts-nixie'],

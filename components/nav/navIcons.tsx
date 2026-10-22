@@ -90,6 +90,13 @@ export const KumikoIcon = (props: IconProps) => (
 )
 
 // 東京乃空：噗浪面板與天空
+export const VoicebankIcon = (props: IconProps) => (
+  <svg {...svgProps} {...props}>
+    <rect x="18" y="6" width="12" height="22" rx="6" />
+    <path d="M12 22a12 12 0 0 0 24 0M24 34v8M17 42h14" />
+  </svg>
+)
+
 export const TokyonoIcon = (props: IconProps) => (
   <svg {...svgProps} {...props}>
     <rect x="5" y="10" width="38" height="28" rx="4" />
