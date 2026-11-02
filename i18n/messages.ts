@@ -34,6 +34,8 @@ export const COMMON_NAMESPACES = [
 export const PAGE_NAMESPACES: Record<string, string[]> = {
   '': ['home'],
   profile: ['profilePage'],
+  character: ['charactersPage'],
+  'character/chiaki': ['chiakiPage', 'voicebankPage'],
   story: [],
   'story/character': ['characterPage'],
   'story/character/art': ['characterPage'],

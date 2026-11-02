@@ -95,6 +95,8 @@ export const pagePathFromLocalePath = (path: string) => {
 const LOCALIZED_ROUTES = new Set([
   '',
   'profile',
+  'character',
+  'character/chiaki',
   'story',
   'story/character',
   'story/character/art',

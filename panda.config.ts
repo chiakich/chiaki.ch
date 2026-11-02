@@ -208,6 +208,15 @@ export default defineConfig({
           from: { backgroundPosition: '0 0, 40px 0, 10px 0' },
           to: { backgroundPosition: '0 400px, 40px 260px, 10px 180px' },
         },
+        snowDrift: {
+          from: { transform: 'translateY(0)' },
+          to: { transform: 'translateY(var(--fall))' },
+        },
+        // Uses the standalone scale/translate properties so it composes with an element's own transform
+        breathe: {
+          '0%, 100%': { scale: '1 1', translate: '0 0' },
+          '50%': { scale: '1.001 1.004', translate: '0 -1px' },
+        },
         artReveal: {
           '0%': { opacity: 0, filter: 'blur(6px)', transform: 'translateY(6px)' },
           '100%': { opacity: 1, filter: 'blur(0)', transform: 'translateY(0)' },

@@ -17,6 +17,7 @@ export interface WorkCardData {
   href: string
   accent: string
   specimen: React.ReactNode
+  cta?: string
 }
 
 const WorkCard = ({ work, index }: { work: WorkCardData; index: number }) => {
@@ -44,7 +45,7 @@ const WorkCard = ({ work, index }: { work: WorkCardData; index: number }) => {
           <Heading fontSize={{ base: '1.5rem', md: '2rem' }} letterSpacing="-.02em">{work.title}</Heading>
           <Text lineHeight="1.85" opacity={.7} fontSize="sm">{work.description}</Text>
           <HStack gap={2} flexWrap="wrap">{work.tags.map((tag) => <Span key={tag} backgroundColor="rgba(255,255,255,.07)" borderRadius="980px" px={3} py={1} fontSize="xs" opacity={.75}>{tag}</Span>)}</HStack>
-          <HStack color="var(--accent)" fontWeight="medium"><Span>{t('worksPage.view')}</Span><Span className="arrow" style={{ transition: 'transform .3s ease' }}>→</Span></HStack>
+          <HStack color="var(--accent)" fontWeight="medium"><Span>{work.cta ?? t('worksPage.view')}</Span><Span className="arrow" style={{ transition: 'transform .3s ease' }}>→</Span></HStack>
         </Flex>
       </Grid>
     </Link>

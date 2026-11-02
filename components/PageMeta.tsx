@@ -34,6 +34,8 @@ export type PageMetaOverride = {
 const pageMetadata: Record<string, PageMeta> = {
   '/': { key: 'home', image: '/og/home.jpeg' },
   '/profile': { key: 'profile', image: '/og/profile.jpeg' },
+  '/character': { key: 'characters', image: '/og/story.jpeg' },
+  '/character/chiaki': { key: 'chiaki', image: '/og/works-voicebank.jpeg' },
   '/story': { key: 'story', image: '/og/story.jpeg' },
   '/story/character': { key: 'character', image: '/og/story-character.jpeg' },
   '/story/character/art': { key: 'art', image: '/og/story-character-art.jpeg' },
@@ -89,6 +91,7 @@ const pageSchemaType: Record<string, string> = {
   '/works/tw-address-tools': 'SoftwareSourceCode',
   '/works/tokyono-sora': 'SoftwareSourceCode',
   '/works/voicebank': 'CreativeWork',
+  '/character/chiaki': 'ProfilePage',
   '/fonts/akitra': 'CreativeWork',
   '/fonts/nixie': 'CreativeWork',
   '/fonts/huninn': 'CreativeWork',

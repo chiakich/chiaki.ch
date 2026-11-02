@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react'
 import {
   AkitraIcon,
-  ArtIcon,
   CharacterIcon,
   ChiaKeyIcon,
   CollectionIcon,
@@ -10,8 +9,6 @@ import {
   LetterpressIcon,
   NixieIcon,
   SplitFlapIcon,
-  StoryIcon,
-  TerminalIcon,
   TgJpgIcon,
   TokyonoIcon,
   VoicebankIcon,
@@ -36,7 +33,7 @@ export type Translate = (key: string) => string
 // Home is reachable via the logo, so it is intentionally absent here to keep the top bar compact.
 export const getMainLinks = (t: Translate): [string, string][] => [
   [t('nav.profile'), '/profile'],
-  [t('nav.story'), '/story'],
+  [t('nav.characters'), '/character'],
   [t('nav.works'), '/works'],
   [t('nav.fonts'), '/fonts'],
   [t('nav.blog'), '/blog'],
@@ -44,32 +41,14 @@ export const getMainLinks = (t: Translate): [string, string][] => [
 
 // 有 flyout 的區段。每個區段的第一個項目就是該區的 landing page。
 export const getNavSections = (t: Translate): Record<string, NavSection> => ({
-  [t('nav.story')]: {
-    title: t('nav.storyTitle'),
+  [t('nav.characters')]: {
+    title: t('nav.characters'),
     items: [
       {
-        id: 'story',
-        title: t('nav.storyIndex'),
-        path: '/story',
-        icon: <StoryIcon />,
-      },
-      {
-        id: 'character',
-        title: t('nav.character'),
-        path: '/story/character',
+        id: 'chiaki',
+        title: t('nav.chiaki'),
+        path: '/character/chiaki',
         icon: <CharacterIcon />,
-      },
-      {
-        id: 'art',
-        title: t('nav.art'),
-        path: '/story/character/art',
-        icon: <ArtIcon />,
-      },
-      {
-        id: 'terminal',
-        title: t('nav.terminal'),
-        path: '/story/terminal',
-        icon: <TerminalIcon />,
       },
     ],
   },

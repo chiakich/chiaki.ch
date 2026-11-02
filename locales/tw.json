@@ -2,6 +2,8 @@
   "nav": {
     "home": "首頁",
     "profile": "關於我",
+    "characters": "角色介紹",
+    "chiaki": "千亞紀",
     "story": "故事",
     "works": "作品",
     "fonts": "字體",
@@ -17,7 +19,7 @@
     "terminal": "依代端末",
     "zipcode": "郵遞區號",
     "letterpress": "活版印刷",
-    "voicebank": "千亜紀 聲庫"
+    "voicebank": "千亞紀 聲庫"
   },
   "language": {
     "label": "切換語言",
@@ -108,8 +110,16 @@
       "description": "把活版印刷的手感做回網頁上：紙的纖維、墨的濃淡、鉛字的歪斜與缺角。中文直排、中文橫排與英文橫排的活字見本帖。"
     },
     "voicebank": {
-      "title": "千亜紀 Chiaki DiffSinger 聲庫 - 千秋稻荷社",
-      "description": "千亜紀（Chiaki）是 DiffSinger 歌聲合成聲庫，支援 28 種語言。下載內建聲庫的 OpenUtau-Chiaki，打開就能唱。"
+      "title": "千亞紀 Chiaki DiffSinger 聲庫 - 千秋稻荷社",
+      "description": "千亞紀（Chiaki）是 DiffSinger 歌聲合成聲庫，支援 28 種語言。下載內建聲庫的 OpenUtau-Chiaki，打開就能唱。"
+    },
+    "chiaki": {
+      "title": "千亞紀 CHIAKI - 千秋稻荷社",
+      "description": "千亞紀是以涼風千秋的聲音為原型製作的虛擬歌手，DiffSinger 聲庫支援 28 種語言，免費、可商用。"
+    },
+    "characters": {
+      "title": "角色介紹 - 千秋稻荷社",
+      "description": "千秋稻荷社的原創角色介紹，包括以涼風千秋的聲音為原型的虛擬歌手千亞紀。"
     }
   },
   "home": {
@@ -151,7 +161,7 @@
         "description": "把活版印刷的手感做回網頁上的套件：紙的纖維、墨的濃淡、鉛字的歪斜與缺角，一層一層疊回去。附一本活字見本帖。"
       },
       "voicebank": {
-        "title": "千亜紀 聲庫",
+        "title": "千亞紀 聲庫",
         "description": "以 DiffSinger 訓練的多語言歌聲合成聲庫，支援 28 種語言。附專屬的 OpenUtau 分支 OpenUtau-Chiaki，內建聲庫與音素器。",
         "tag": "歌聲合成"
       }
@@ -1184,14 +1194,14 @@
     "downloadZip": "只下載聲庫 zip",
     "forkNote": "OpenUtau-Chiaki 是 OpenUtau 的分支版本，使用上的問題請不要回報給 OpenUtau 官方。",
     "comingSoon": "準備中",
-    "portraitAlt": "千亜紀 全身立繪",
+    "portraitAlt": "千亞紀 全身立繪",
     "data": {
       "title": "下載",
-      "intro": "推薦直接使用 OpenUtau-Chiaki：已內建千亜紀聲庫、專屬音素器與最佳化。已經在用官方 OpenUtau 的話，也可以只下載聲庫。"
+      "intro": "推薦直接使用 OpenUtau-Chiaki：已內建千亞紀聲庫、專屬音素器與最佳化。已經在用官方 OpenUtau 的話，也可以只下載聲庫。"
     },
     "app": {
       "title": "OpenUtau-Chiaki",
-      "desc": "內建千亜紀聲庫、專屬音素器，以及針對千亜紀最佳化的 OpenUtau 分支。不需要另外安裝聲庫。",
+      "desc": "內建千亞紀聲庫、專屬音素器，以及針對千亞紀最佳化的 OpenUtau 分支。不需要另外安裝聲庫。",
       "steps": [
         "下載並開啟 OpenUtau-Chiaki。",
         "點軌道上的「選擇歌手」，選 Chiaki。",
@@ -1282,8 +1292,8 @@
         "用生成的語音訓練衍生模型（研究與非營利）"
       ],
       "mayNot": [
-        "冒充千亜紀、製作者本人或官方",
-        "損害千亜紀或製作者的名譽",
+        "冒充千亞紀、製作者本人或官方",
+        "損害千亞紀或製作者的名譽",
         "誹謗、侮辱、騷擾真實的人或團體",
         "對模型逆向工程、抽取權重",
         "單獨販售或散布聲庫本身",
@@ -1344,6 +1354,154 @@
           ]
         }
       ]
+    }
+  },
+  "charactersPage": {
+    "eyebrow": "CHARACTERS · 原創角色",
+    "title": "角色介紹",
+    "intro": "住在千秋稻荷社的原創角色們。",
+    "view": "認識她",
+    "items": {
+      "chiaki": {
+        "title": "千亞紀",
+        "description": "以涼風千秋的聲音為原型製作的虛擬歌手。喜歡學各個地方的語言，DiffSinger 聲庫免費、可商用。",
+        "tag": "虛擬歌手",
+        "tag2": "28 種語言"
+      }
+    }
+  },
+  "chiakiPage": {
+    "name": "千亞紀",
+    "portraitAlt": "千亞紀 全身立繪",
+    "intro": "千亞紀是以涼風千秋的聲音為原型，製作的虛擬歌手，免費、可商用。她喜歡學各個地方的語言，不管你在哪裡、說什麼語言，她都想用你的語言，唱一首歌給你聽。",
+    "freeDownload": "免費下載",
+    "profile": {
+      "birthday": "2月27日",
+      "age": "20",
+      "height": "156 cm",
+      "voice": "涼風千秋",
+      "illust": "shONe",
+      "design": "亞莓"
+    },
+    "demo": {
+      "play": "播放",
+      "pause": "暫停",
+      "prev": "上一首",
+      "next": "下一首"
+    },
+    "sing": {
+      "otherEditors": "使用其他 DiffSinger 編輯器",
+      "pluginDesc": "模型本身已經會唱 Learning 的語言，但 OpenUtau 沒有內建它們的音素器，要另外安裝這個外掛。OpenUtau-Chiaki 和官方 OpenUtau 要用不同版本的外掛。"
+    },
+    "spec": {
+      "learningNote": "還在練習，口音較重",
+      "engine": "引擎",
+      "editor": "編輯器",
+      "vocoder": "聲碼器",
+      "renderSteps": "建議渲染步數",
+      "params": "可調參數"
+    },
+    "params": {
+      "TENC": {
+        "name": "張力",
+        "desc": "往上更用力、更有穿透感；往下更放鬆、柔軟。"
+      },
+      "GENC": {
+        "name": "性別",
+        "desc": "調整聲音的厚薄，往正值更成熟、往負值更稚嫩。"
+      },
+      "VELC": {
+        "name": "子音速度",
+        "desc": "改變子音的長短，咬字可以更俐落或更黏。"
+      },
+      "PEXP": {
+        "name": "音高表現力",
+        "desc": "控制自動音高的起伏程度，從平穩到表情豐富。"
+      },
+      "BREC": {
+        "name": "氣音",
+        "desc": "加入或減少氣息感。"
+      }
+    },
+    "terms": {
+      "status": {
+        "ok": "可以",
+        "ask": "先聯絡",
+        "no": "禁止"
+      },
+      "cards": [
+        {
+          "title": "商業使用",
+          "text": "歌曲販售、委託、遊戲與廣告都可以，不用另外申請。"
+        },
+        {
+          "title": "二次創作與周邊",
+          "text": "角色同人、翻唱、周邊都可以製作與販售。"
+        },
+        {
+          "title": "R-18、政治題材",
+          "text": "題材本身不受限制。"
+        },
+        {
+          "title": "內嵌在商業作品",
+          "text": "遊戲、App 內嵌請先聯絡，而且不能讓人取出聲庫檔案。"
+        },
+        {
+          "title": "訓練衍生模型",
+          "text": "研究與非營利可以，商業用途請先聯絡。"
+        },
+        {
+          "title": "冒充與假錄音",
+          "text": "不能假冒千亞紀或製作者發言，也不能用來詐騙。"
+        },
+        {
+          "title": "單獨散布聲庫",
+          "text": "想分享的話，請附上官方下載頁的連結。"
+        },
+        {
+          "title": "擷取立繪",
+          "text": "shONe 的立繪只授權在 OpenUtau 裡顯示。"
+        }
+      ],
+      "credit": "發表作品時請標示",
+      "readMore": "+ 閱讀全文",
+      "collapse": "− 收合"
+    },
+    "looks": {
+      "default": "基本衣裝",
+      "newOutfit": "新衣裝",
+      "birthday": "生日衣裝",
+      "alt": "千亞紀 {look} 設定圖"
+    },
+    "lang": {
+      "JA": "日語",
+      "ZH": "中文",
+      "EN": "英語",
+      "KO": "韓語",
+      "FR": "法語",
+      "ES": "西班牙語",
+      "IT": "義大利語",
+      "PT": "葡萄牙語",
+      "DE": "德語",
+      "RU": "俄語",
+      "PL": "波蘭語",
+      "UK": "烏克蘭語",
+      "TH": "泰語",
+      "FI": "芬蘭語",
+      "LA": "拉丁語",
+      "BE": "白俄羅斯語",
+      "BG": "保加利亞語",
+      "MK": "馬其頓語",
+      "HBS": "塞爾維亞克羅埃西亞語",
+      "LO": "寮語",
+      "CA": "加泰隆尼亞語",
+      "GL": "加利西亞語",
+      "ID": "印尼語",
+      "MS": "馬來語",
+      "EO": "世界語",
+      "SW": "史瓦希里語",
+      "HAW": "夏威夷語",
+      "MI": "毛利語"
     }
   }
 }

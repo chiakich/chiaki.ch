@@ -9,6 +9,8 @@ import dynamic from 'next/dynamic'
 const routes: Record<string, ComponentType> = {
   '': dynamic(() => import('pages/index')),
   profile: dynamic(() => import('pages/profile')),
+  character: dynamic(() => import('pages/character')),
+  'character/chiaki': dynamic(() => import('pages/character/chiaki')),
   story: dynamic(() => import('pages/story')),
   'story/character': dynamic(() => import('pages/story/character')),
   'story/character/art': dynamic(() => import('pages/story/character/art')),

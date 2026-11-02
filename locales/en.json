@@ -2,6 +2,8 @@
   "nav": {
     "home": "Home",
     "profile": "Profile",
+    "characters": "Characters",
+    "chiaki": "Chiaki",
     "story": "Story",
     "works": "Works",
     "fonts": "Fonts",
@@ -110,6 +112,14 @@
     "voicebank": {
       "title": "Chiaki DiffSinger Voicebank - Chiaki Inari Shrine",
       "description": "Chiaki is a DiffSinger singing voicebank supporting 28 languages. Download OpenUtau-Chiaki with the voicebank built in and start singing right away."
+    },
+    "chiaki": {
+      "title": "Chiaki - Virtual Singer - Chiaki Inari Shrine",
+      "description": "Chiaki is a virtual singer built from the voice of Suzukaze Chiaki. Her DiffSinger voicebank sings in 28 languages and is free to use, including commercially."
+    },
+    "characters": {
+      "title": "Characters - Chiaki Inari Shrine",
+      "description": "The original characters of Chiaki Inari Shrine, including Chiaki, a virtual singer built from the voice of Suzukaze Chiaki."
     }
   },
   "home": {
@@ -1338,6 +1348,154 @@
           ]
         }
       ]
+    }
+  },
+  "charactersPage": {
+    "eyebrow": "CHARACTERS · ORIGINALS",
+    "title": "Characters",
+    "intro": "The original characters who live at Chiaki Inari Shrine.",
+    "view": "Meet her",
+    "items": {
+      "chiaki": {
+        "title": "Chiaki",
+        "description": "A virtual singer built from the voice of Suzukaze Chiaki. She loves learning the languages of different places, and her DiffSinger voicebank is free to use, including commercially.",
+        "tag": "Virtual singer",
+        "tag2": "28 languages"
+      }
+    }
+  },
+  "chiakiPage": {
+    "name": "千亜紀",
+    "portraitAlt": "Full-body portrait of Chiaki",
+    "intro": "Chiaki is a virtual singer built from the voice of Suzukaze Chiaki. She is free to use, including commercially. She loves learning the languages of different places — wherever you are and whatever language you speak, she wants to sing you a song in yours.",
+    "freeDownload": "Free download",
+    "profile": {
+      "birthday": "Feb 27",
+      "age": "20",
+      "height": "156 cm",
+      "voice": "Suzukaze Chiaki",
+      "illust": "shONe",
+      "design": "亞莓"
+    },
+    "demo": {
+      "play": "Play",
+      "pause": "Pause",
+      "prev": "Previous song",
+      "next": "Next song"
+    },
+    "sing": {
+      "otherEditors": "Use another DiffSinger editor",
+      "pluginDesc": "The model can already sing the Learning languages, but OpenUtau has no built-in phonemizers for them, so install this plugin. OpenUtau-Chiaki and the official OpenUtau need different versions of it."
+    },
+    "spec": {
+      "learningNote": "Still practicing, with a stronger accent",
+      "engine": "Engine",
+      "editor": "Editor",
+      "vocoder": "Vocoder",
+      "renderSteps": "Recommended render steps",
+      "params": "Adjustable parameters"
+    },
+    "params": {
+      "TENC": {
+        "name": "Tension",
+        "desc": "Higher sounds stronger and more piercing; lower sounds relaxed and soft."
+      },
+      "GENC": {
+        "name": "Gender",
+        "desc": "Adjusts the thickness of the voice: positive sounds more mature, negative more youthful."
+      },
+      "VELC": {
+        "name": "Consonant velocity",
+        "desc": "Changes consonant length, from crisp to drawn-out articulation."
+      },
+      "PEXP": {
+        "name": "Pitch expressiveness",
+        "desc": "Controls how much the automatic pitch moves, from steady to expressive."
+      },
+      "BREC": {
+        "name": "Breathiness",
+        "desc": "Adds or reduces breathiness."
+      }
+    },
+    "terms": {
+      "status": {
+        "ok": "Allowed",
+        "ask": "Ask first",
+        "no": "Not allowed"
+      },
+      "cards": [
+        {
+          "title": "Commercial use",
+          "text": "Selling songs, commissions, games, and ads are all fine. No application needed."
+        },
+        {
+          "title": "Fan works and merch",
+          "text": "You can make and sell fan works, covers, and merchandise of the character."
+        },
+        {
+          "title": "R-18 and political content",
+          "text": "Subject matter itself is not restricted."
+        },
+        {
+          "title": "Embedding in commercial works",
+          "text": "Contact us before embedding it in a game or app, and make sure users can’t extract the voicebank files."
+        },
+        {
+          "title": "Training derived models",
+          "text": "Fine for research and non-commercial use. Contact us for commercial use."
+        },
+        {
+          "title": "Impersonation and fake recordings",
+          "text": "Don’t fake statements by Chiaki or the creator, and don’t use it for fraud."
+        },
+        {
+          "title": "Redistributing the voicebank",
+          "text": "If you want to share it, link to the official download page instead."
+        },
+        {
+          "title": "Extracting the portrait",
+          "text": "shONe’s portrait is licensed only for display inside OpenUtau."
+        }
+      ],
+      "credit": "When you publish a work, credit it as",
+      "readMore": "+ Read the full terms",
+      "collapse": "− Collapse"
+    },
+    "looks": {
+      "default": "Default outfit",
+      "newOutfit": "New outfit",
+      "birthday": "Birthday outfit",
+      "alt": "Chiaki {look} design sheet"
+    },
+    "lang": {
+      "JA": "Japanese",
+      "ZH": "Chinese",
+      "EN": "English",
+      "KO": "Korean",
+      "FR": "French",
+      "ES": "Spanish",
+      "IT": "Italian",
+      "PT": "Portuguese",
+      "DE": "German",
+      "RU": "Russian",
+      "PL": "Polish",
+      "UK": "Ukrainian",
+      "TH": "Thai",
+      "FI": "Finnish",
+      "LA": "Latin",
+      "BE": "Belarusian",
+      "BG": "Bulgarian",
+      "MK": "Macedonian",
+      "HBS": "Serbo-Croatian",
+      "LO": "Lao",
+      "CA": "Catalan",
+      "GL": "Galician",
+      "ID": "Indonesian",
+      "MS": "Malay",
+      "EO": "Esperanto",
+      "SW": "Swahili",
+      "HAW": "Hawaiian",
+      "MI": "Māori"
     }
   }
 }
