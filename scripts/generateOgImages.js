@@ -20,6 +20,8 @@ const exportedImageDir = join(outputDir, 'og')
 const chromePath =
   process.env.CHROME_PATH ||
   '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+const OG_WIDTH = 1200
+const OG_HEIGHT = 630
 const sitePort = 4173
 const debugPort = 9222
 const captureDelay = Number(process.env.OG_CAPTURE_DELAY || 6000)
@@ -32,6 +34,7 @@ const pages = [
   ['/story/terminal', 'story-terminal'],
   ['/story/character', 'story-character'],
   ['/story/character/art', 'story-character-art'],
+  ['/character/chiaki', 'character-chiaki'],
   ['/works', 'works'],
   ['/works/chiakey', 'works-chiakey'],
   ['/works/kumiko', 'works-kumiko'],
@@ -40,7 +43,6 @@ const pages = [
   ['/works/tw-address-tools', 'works-tw-fuzzy-zipcode'],
   ['/works/tg-jpg', 'works-tg-jpg'],
   ['/works/tokyono-sora', 'works-tokyono-sora'],
-  ['/works/voicebank', 'works-voicebank'],
   ['/fonts', 'fonts'],
   ['/fonts/akitra', 'fonts-akitra'],
   ['/fonts/nixie', 'fonts-nixie'],
@@ -243,6 +245,20 @@ const waitForTerminalPortrait = async (browser) => {
   })
 }
 
+// Bottom edge of the fixed bars pinned to the top (TopBar, SubNav)
+const measureNavBottom = async (browser) => {
+  const { result } = await browser.send('Runtime.evaluate', {
+    returnByValue: true,
+    expression: `Math.ceil(Array.from(document.querySelectorAll('body *'))
+      .filter((element) => getComputedStyle(element).position === 'fixed')
+      .map((element) => element.getBoundingClientRect())
+      .filter((rect) => rect.height > 0 && rect.width >= window.innerWidth * 0.9 && rect.height < window.innerHeight / 3)
+      .sort((a, b) => a.top - b.top)
+      .reduce((bottom, rect) => (rect.top <= bottom + 1 ? Math.max(bottom, rect.bottom) : bottom), 0))`,
+  })
+  return result.value || 0
+}
+
 const capture = async () => {
   mkdirSync(imageDir, { recursive: true })
   mkdirSync(exportedImageDir, { recursive: true })
@@ -271,8 +287,8 @@ const capture = async () => {
     const browser = await createCdpClient(target.webSocketDebuggerUrl)
     await browser.send('Page.enable')
     await browser.send('Emulation.setDeviceMetricsOverride', {
-      width: 1200,
-      height: 630,
+      width: OG_WIDTH,
+      height: OG_HEIGHT,
       deviceScaleFactor: 1,
       mobile: false,
     })
@@ -288,11 +304,31 @@ const capture = async () => {
       await waitForRoute(browser, route)
       await waitForStableHero(browser)
       if (route === '/story/terminal') await waitForTerminalPortrait(browser)
+      const navBottom = await measureNavBottom(browser)
+      // Grow the viewport by the nav height so the card shows a full 1200×630 below the bars
+      if (navBottom) {
+        await browser.send('Emulation.setDeviceMetricsOverride', {
+          width: OG_WIDTH,
+          height: OG_HEIGHT + navBottom,
+          deviceScaleFactor: 1,
+          mobile: false,
+        })
+        await delay(800)
+      }
       const { data } = await browser.send('Page.captureScreenshot', {
         format: 'jpeg',
         quality: 85,
         fromSurface: true,
+        clip: { x: 0, y: navBottom, width: OG_WIDTH, height: OG_HEIGHT, scale: 1 },
       })
+      if (navBottom) {
+        await browser.send('Emulation.setDeviceMetricsOverride', {
+          width: OG_WIDTH,
+          height: OG_HEIGHT,
+          deviceScaleFactor: 1,
+          mobile: false,
+        })
+      }
       const image = Buffer.from(data, 'base64')
       writeFileSync(join(imageDir, `${filename}.jpeg`), image)
       writeFileSync(join(exportedImageDir, `${filename}.jpeg`), image)
