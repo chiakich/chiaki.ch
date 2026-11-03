@@ -1,8 +1,7 @@
 import type { ReactNode } from 'react'
 import { Box, Flex, Grid, styled } from 'styled-system/jsx'
 import { useI18n } from 'i18n'
-import { DOWNLOADS } from 'components/works/voicebank/voicebankData'
-import { listOf } from 'components/works/voicebank/VoicebankDownloads'
+import { DOWNLOADS, listOf } from './voicebankData'
 import { NAVY, CREAM, RUST } from './chiakiData'
 import SectionTitle from './SectionTitle'
 

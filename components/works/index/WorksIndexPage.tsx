@@ -12,7 +12,7 @@ const MotionBox = m.create(Box)
 const WorksIndexPage = () => {
   const { t } = useI18n()
   const works: WorkCardData[] = [
-    { id: 'voicebank', title: t('worksPage.items.voicebank.title'), en: 'DIFFSINGER VOICEBANK', description: t('worksPage.items.voicebank.description'), tags: ['DiffSinger', 'OpenUtau', t('worksPage.items.voicebank.tag')], href: '/works/voicebank', accent: '#df8a42', specimen: <VoicebankSpecimen /> },
+    { id: 'voicebank', title: t('worksPage.items.voicebank.title'), en: 'DIFFSINGER VOICEBANK', description: t('worksPage.items.voicebank.description'), tags: ['DiffSinger', 'OpenUtau', t('worksPage.items.voicebank.tag')], href: '/character/chiaki', accent: '#df8a42', specimen: <VoicebankSpecimen /> },
     { id: 'chiakey', title: t('worksPage.items.chiakey.title'), en: 'CHIAKEY', description: t('worksPage.items.chiakey.description'), tags: ['macOS', t('worksPage.items.chiakey.tag'), t('worksPage.items.chiakey.tag2')], href: '/works/chiakey', accent: '#b06ee8', specimen: <ChiaKeySpecimen /> },
     { id: 'kumiko', title: 'Kumiko Font Editor', en: 'FONT EDITOR', description: t('worksPage.items.kumiko.description'), tags: ['React', 'CJK', 'GitHub workflow'], href: '/works/kumiko', accent: '#ffea2f', specimen: <KumikoSpecimen /> },
     { id: 'tokyono-sora', title: t('worksPage.items.tokyono.title'), en: 'PLURK UI', description: t('worksPage.items.tokyono.description'), tags: ['UI Design', 'CSS', 'Plurk'], href: '/works/tokyono-sora', accent: '#68d5e3', specimen: <TokyonoSpecimen /> },

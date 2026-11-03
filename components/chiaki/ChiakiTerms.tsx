@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Box, Flex, Grid, styled } from 'styled-system/jsx'
 import { useI18n } from 'i18n'
-import { listOf } from 'components/works/voicebank/VoicebankDownloads'
+import { listOf } from './voicebankData'
 import { NAVY, CREAM, TERM_COLORS, TERM_STATUSES } from './chiakiData'
 import SectionTitle from './SectionTitle'
 
@@ -56,7 +56,7 @@ const FullTerms = () => {
 const ChiakiTerms = () => {
   const { t } = useI18n()
   return (
-    <Box as="section" mt={{ base: 24, md: '140px' }}>
+    <Box as="section" id="guidelines" scrollMarginTop="96px" mt={{ base: 24, md: '140px' }}>
       <SectionTitle>TERMS</SectionTitle>
       <Grid gridTemplateColumns={{ base: 'repeat(2, minmax(0, 1fr))', md: 'repeat(auto-fill, minmax(270px, 1fr))' }} gap={{ base: 3, md: 4 }}>
         {TERM_STATUSES.map((status, index) => {

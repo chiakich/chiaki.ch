@@ -18,8 +18,7 @@
     "huninn": "Huninn",
     "terminal": "Yorishiro Terminal",
     "zipcode": "ZIP Code",
-    "letterpress": "Letterpress",
-    "voicebank": "Chiaki Voicebank"
+    "letterpress": "Letterpress"
   },
   "language": {
     "label": "Change language",
@@ -108,10 +107,6 @@
     "letterpress": {
       "title": "千秋印書館 — a framework-free letterpress package for the web - Chiaki Inari Shrine",
       "description": "Putting the feel of letterpress back into a web page: paper fibre, ink weight, and the lean and chipped corners of worn type. A specimen sheet in vertical Chinese, horizontal Chinese and English."
-    },
-    "voicebank": {
-      "title": "Chiaki DiffSinger Voicebank - Chiaki Inari Shrine",
-      "description": "Chiaki is a DiffSinger singing voicebank supporting 28 languages. Download OpenUtau-Chiaki with the voicebank built in and start singing right away."
     },
     "chiaki": {
       "title": "Chiaki - Virtual Singer - Chiaki Inari Shrine",
@@ -1180,19 +1175,7 @@
     "toChiaKey": "About ChiaKey"
   },
   "voicebankPage": {
-    "subtitle": "Chiaki · DiffSinger voicebank",
-    "languages": "Supports 28 languages",
-    "accuracyNote": "Pronunciation in non-native languages may not be accurate",
-    "improveLink": "Help improve pronunciation",
-    "downloadApp": "Download OpenUtau-Chiaki",
-    "downloadZip": "Voicebank zip only",
-    "forkNote": "OpenUtau-Chiaki is a fork of OpenUtau. Please don't report issues with it to the official OpenUtau project.",
     "comingSoon": "Coming soon",
-    "portraitAlt": "Full-body illustration of Chiaki",
-    "data": {
-      "title": "Download",
-      "intro": "We recommend OpenUtau-Chiaki: it comes with the Chiaki voicebank, dedicated phonemizers, and optimizations built in. If you already use the official OpenUtau, you can download just the voicebank."
-    },
     "app": {
       "title": "OpenUtau-Chiaki",
       "desc": "A fork of OpenUtau tuned for Chiaki, with the voicebank and dedicated phonemizers built in. No separate voicebank install needed.",
@@ -1250,50 +1233,6 @@
           "note": "Supports ĉ ĝ ĥ ĵ ŝ ŭ as well as the x-system (cx, gx…)."
         }
       ]
-    },
-    "languageList": {
-      "title": "Languages",
-      "fluent": {
-        "label": "Languages I speak",
-        "desc": "Languages I speak myself, with the most natural pronunciation."
-      },
-      "other": {
-        "label": "Other languages",
-        "desc": "Not languages I speak natively, so pronunciation may be inaccurate."
-      }
-    },
-    "render": {
-      "title": "Recommended render settings"
-    },
-    "demos": {
-      "title": "Demos",
-      "intro": "One short song for each supported language. Songs marked \"original melody\" had no reliable score, so the melody is not the original. Extra-language pronunciation has not been checked by native speakers yet.",
-      "selfComposed": "Original melody",
-      "play": "Play",
-      "pause": "Pause"
-    },
-    "improve": {
-      "title": "Help improve pronunciation",
-      "text": "If you'd like to help improve Chiaki's pronunciation in a language, please get in touch. Include the language, the words that sound wrong, and how they should be pronounced. A reference recording helps even more."
-    },
-    "guidelines": {
-      "title": "Terms of use",
-      "may": [
-        "Publish, sell, and use works commercially",
-        "Any subject, including R-18 and political content",
-        "Character fan works and merchandise",
-        "Embed it in games and apps",
-        "Train derived models on generated audio (research and non-commercial)"
-      ],
-      "mayNot": [
-        "Impersonate Chiaki, the creator, or the official project",
-        "Damage the reputation of Chiaki or the creator",
-        "Defame, insult, or harass real people or groups",
-        "Reverse engineer the model or extract its weights",
-        "Sell or distribute the voicebank itself on its own",
-        "Extract or reuse the illustration by shONe"
-      ],
-      "fullTerms": "Full terms of use"
     },
     "terms": {
       "updated": "2026-10-21",
@@ -1496,6 +1435,7 @@
       "SW": "Swahili",
       "HAW": "Hawaiian",
       "MI": "Māori"
-    }
+    },
+    "contact": "Collaborations & pronunciation feedback"
   }
 }

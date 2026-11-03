@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { Box, Flex, Grid, styled } from 'styled-system/jsx'
 import { useI18n } from 'i18n'
-import { demoSrc } from 'components/works/voicebank/voicebankData'
+import { demoSrc } from './voicebankData'
 import { CREAM, LANGS, NAVY, ORANGE } from './chiakiData'
 import SectionTitle from './SectionTitle'
 

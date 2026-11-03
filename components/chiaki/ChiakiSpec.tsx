@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { Box, Flex, Grid, styled } from 'styled-system/jsx'
 import { useI18n } from 'i18n'
-import { RENDER_STEPS } from 'components/works/voicebank/voicebankData'
+import { RENDER_STEPS } from './voicebankData'
 import { LANGS, NATIVE_ORDER, NAVY, ORANGE, CREAM, RUST, PARAMS, type Tier } from './chiakiData'
 import SectionTitle from './SectionTitle'
 

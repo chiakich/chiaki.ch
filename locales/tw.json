@@ -18,8 +18,7 @@
     "huninn": "粉圓",
     "terminal": "依代端末",
     "zipcode": "郵遞區號",
-    "letterpress": "活版印刷",
-    "voicebank": "千亞紀 聲庫"
+    "letterpress": "活版印刷"
   },
   "language": {
     "label": "切換語言",
@@ -108,10 +107,6 @@
     "letterpress": {
       "title": "千秋印書館 — 活版印刷質感的網頁套件 - 千秋稻荷社",
       "description": "把活版印刷的手感做回網頁上：紙的纖維、墨的濃淡、鉛字的歪斜與缺角。中文直排、中文橫排與英文橫排的活字見本帖。"
-    },
-    "voicebank": {
-      "title": "千亞紀 Chiaki DiffSinger 聲庫 - 千秋稻荷社",
-      "description": "千亞紀（Chiaki）是 DiffSinger 歌聲合成聲庫，支援 28 種語言。下載內建聲庫的 OpenUtau-Chiaki，打開就能唱。"
     },
     "chiaki": {
       "title": "千亞紀 CHIAKI - 千秋稻荷社",
@@ -1186,19 +1181,7 @@
     "toChiaKey": "關於千秋輸入法"
   },
   "voicebankPage": {
-    "subtitle": "Chiaki · DiffSinger 聲庫",
-    "languages": "支援 28 種語言",
-    "accuracyNote": "非母語語言發音可能並不準確",
-    "improveLink": "協助改善發音",
-    "downloadApp": "下載 OpenUtau-Chiaki",
-    "downloadZip": "只下載聲庫 zip",
-    "forkNote": "OpenUtau-Chiaki 是 OpenUtau 的分支版本，使用上的問題請不要回報給 OpenUtau 官方。",
     "comingSoon": "準備中",
-    "portraitAlt": "千亞紀 全身立繪",
-    "data": {
-      "title": "下載",
-      "intro": "推薦直接使用 OpenUtau-Chiaki：已內建千亞紀聲庫、專屬音素器與最佳化。已經在用官方 OpenUtau 的話，也可以只下載聲庫。"
-    },
     "app": {
       "title": "OpenUtau-Chiaki",
       "desc": "內建千亞紀聲庫、專屬音素器，以及針對千亞紀最佳化的 OpenUtau 分支。不需要另外安裝聲庫。",
@@ -1256,50 +1239,6 @@
           "note": "支援 ĉ ĝ ĥ ĵ ŝ ŭ，也支援 x 寫法（cx、gx…）。"
         }
       ]
-    },
-    "languageList": {
-      "title": "支援語言",
-      "fluent": {
-        "label": "我會的語言",
-        "desc": "我自己會說的語言，發音最自然。"
-      },
-      "other": {
-        "label": "其他語言",
-        "desc": "非母語語言，發音可能並不準確。"
-      }
-    },
-    "render": {
-      "title": "建議渲染設定"
-    },
-    "demos": {
-      "title": "試聽",
-      "intro": "每個支援語言各一首短歌。標「自編旋律」的曲子找不到可靠樂譜，旋律不是原曲。擴充語言的發音還沒經過母語者確認。",
-      "selfComposed": "自編旋律",
-      "play": "播放",
-      "pause": "暫停"
-    },
-    "improve": {
-      "title": "協助改善發音",
-      "text": "如果你願意協助改善某個語言的發音，歡迎來信。來信時請附上語言、唸不對的字詞，以及正確的唸法；有示範錄音會更好。"
-    },
-    "guidelines": {
-      "title": "使用規約",
-      "may": [
-        "作品發表、販售與商業使用",
-        "任何題材，包括 R-18 與政治題材",
-        "角色二次創作與周邊",
-        "內嵌在遊戲、App 中使用",
-        "用生成的語音訓練衍生模型（研究與非營利）"
-      ],
-      "mayNot": [
-        "冒充千亞紀、製作者本人或官方",
-        "損害千亞紀或製作者的名譽",
-        "誹謗、侮辱、騷擾真實的人或團體",
-        "對模型逆向工程、抽取權重",
-        "單獨販售或散布聲庫本身",
-        "擷取、再利用 shONe 繪製的立繪"
-      ],
-      "fullTerms": "使用規約全文"
     },
     "terms": {
       "updated": "2026-10-21",
@@ -1502,6 +1441,7 @@
       "SW": "史瓦希里語",
       "HAW": "夏威夷語",
       "MI": "毛利語"
-    }
+    },
+    "contact": "合作聯絡、發音改善建議"
   }
 }

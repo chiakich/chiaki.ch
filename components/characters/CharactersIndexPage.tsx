@@ -2,7 +2,7 @@ import { m } from 'framer-motion'
 import { Box, Container, Stack, styled } from 'styled-system/jsx'
 import DepthScrollSection from 'components/index/DepthScrollSection'
 import WorkCard, { WorkCardData } from 'components/works/index/WorkCard'
-import { PORTRAIT_SRC } from 'components/works/voicebank/voicebankData'
+import { PORTRAIT_SRC } from 'components/chiaki/voicebankData'
 import { useI18n } from 'i18n'
 
 const Heading = styled.h1

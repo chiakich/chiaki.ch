@@ -1,6 +1,6 @@
 import { Box, Flex, styled } from 'styled-system/jsx'
 import { useI18n } from 'i18n'
-import { PORTRAIT_SRC } from 'components/works/voicebank/voicebankData'
+import { PORTRAIT_SRC } from './voicebankData'
 import { INK, ORANGE, ORANGE_TEXT, NAVY } from './chiakiData'
 
 const Heading = styled.h1
