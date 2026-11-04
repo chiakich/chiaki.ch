@@ -68,6 +68,9 @@ const pageSchemaExtras: Record<string, Record<string, unknown>> = {
   '/profile': {
     mainEntity: { '@id': `${SITE_URL}/#chiaki` },
   },
+  '/character/chiaki': {
+    mainEntity: { '@id': `${SITE_URL}/character/chiaki#character` },
+  },
   '/works/chiakey': {
     operatingSystem: 'macOS',
     applicationCategory: 'UtilitiesApplication',
@@ -143,6 +146,8 @@ const PageMeta = ({ override }: { override?: PageMetaOverride }) => {
   })()
 
   const needsPerson = pagePath === '/' || pagePath === '/profile' || isArticle
+  const isCharacterChiaki = pagePath === '/character/chiaki'
+  const characterNames: Record<Locale, string> = { tw: '千亞紀', ja: '千亜紀', en: 'Chiaki' }
 
   const pageNode = isArticle
     ? {
@@ -204,6 +209,25 @@ const PageMeta = ({ override }: { override?: PageMetaOverride }) => {
               'https://instagram.com/akisakuya',
               'https://github.com/chiakich',
             ],
+          }]
+        : []),
+      // Google requires ProfilePage.mainEntity to be a Person or Organization
+      ...(isCharacterChiaki
+        ? [{
+            '@type': 'Person',
+            '@id': `${SITE_URL}/character/chiaki#character`,
+            name: characterNames[locale],
+            alternateName: ['CHIAKI', '千亞紀', '千亜紀'].filter((n) => n !== characterNames[locale]),
+            description,
+            image: `${SITE_URL}/assets/works/voicebank/portrait.webp`,
+            url: pageUrl,
+            mainEntityOfPage: pageUrl,
+            creator: {
+              '@type': 'Person',
+              '@id': `${SITE_URL}/#chiaki`,
+              name: '涼風千秋',
+              url: `${SITE_URL}/profile`,
+            },
           }]
         : []),
       pageNode,
