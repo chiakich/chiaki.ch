@@ -45,6 +45,7 @@ import { LAppWavFileHandler } from './lappwavfilehandler';
 import { CubismMoc } from '@framework/model/cubismmoc';
 import { LAppDelegate } from './lappdelegate';
 import { LAppSubdelegate } from './lappsubdelegate';
+import { nodAmount, thrustPulse } from './nightmotion';
 
 enum LoadStep {
   LoadAssets,
@@ -107,7 +108,7 @@ const IDLE_AVERTED_TARGETS = [
   { x: 0.28, y: 0.08 },
   { x: -0.16, y: 0.32 },
   { x: 0.18, y: 0.36 },
-  { x: 0.04, y: 0.43 },
+  { x: 0.04, y: 0.43 }
 ];
 
 /**
@@ -637,9 +638,21 @@ export class LAppModel extends CubismUserModel {
     // ribbon chains from them. Writing the pose afterwards left physics reacting
     // to whatever the effect updaters happened to leave behind instead.
     // "尾巴會自己動，所以心情其實藏不住" — so it has to actually follow the mood.
-    const mood = (window as Window & {
-      __chiakiTerminalTail?: { amp: number; rate: number };
-    }).__chiakiTerminalTail;
+    // The night slice's blueprint is a diagram, so idle life fades out rather than snapping off.
+    const stillTarget = (window as Window & { __chiakiStill?: boolean })
+      .__chiakiStill
+      ? 1.0
+      : 0.0;
+    this._stillness +=
+      (stillTarget - this._stillness) *
+      (1.0 - Math.exp(-4.0 * deltaTimeSeconds));
+    const live = 1.0 - this._stillness;
+
+    const mood = (
+      window as Window & {
+        __chiakiTerminalTail?: { amp: number; rate: number };
+      }
+    ).__chiakiTerminalTail;
     const tail = this._terminalTail;
     const ease = 1.0 - Math.exp(-2.5 * deltaTimeSeconds);
     tail.amp += ((mood?.amp ?? 1.0) - tail.amp) * ease;
@@ -650,7 +663,7 @@ export class LAppModel extends CubismUserModel {
       tail.amp;
     this._model.setParameterValueById(
       CubismFramework.getIdManager().getId('PARAM_TAIL_SWAY'),
-      tailSway
+      tailSway * live
     );
 
     const terminalWindow = window as Window & {
@@ -723,7 +736,7 @@ export class LAppModel extends CubismUserModel {
           tilt: mix(g.from.tilt, g.to.tilt),
           nod: mix(g.from.nod, g.to.nod),
           gaze: mix(g.from.gaze, g.to.gaze),
-          breath: mix(g.from.breath, g.to.breath),
+          breath: mix(g.from.breath, g.to.breath)
         };
       }
     }
@@ -746,7 +759,8 @@ export class LAppModel extends CubismUserModel {
       this._terminalReaction = {
         area: terminalTap.area,
         startedAt: this._userTimeSeconds,
-        endsAt: this._userTimeSeconds + (terminalTap.area === 'head' ? 2.4 : 2.8),
+        endsAt:
+          this._userTimeSeconds + (terminalTap.area === 'head' ? 2.4 : 2.8)
       };
     }
 
@@ -758,14 +772,20 @@ export class LAppModel extends CubismUserModel {
     // and separate phases keep them from ever lining up; the torso lag is what
     // reads as weight.
     const wave = (period: number, phase: number) =>
-      Math.sin(this._userTimeSeconds * (Math.PI * 2 / period) + phase);
-    const breath = wave(4.8, 0);
-    const chestLag = wave(4.8, -0.35);
-    const headBob = wave(6.7, 0.9);
-    const lean = wave(9.1, 2.1);
-    const pointer = (window as Window & {
-      __chiakiTerminalPointer?: { targetX: number; targetY: number; movedAt: number };
-    }).__chiakiTerminalPointer;
+      Math.sin(this._userTimeSeconds * ((Math.PI * 2) / period) + phase);
+    const breath = wave(4.8, 0) * live;
+    const chestLag = wave(4.8, -0.35) * live;
+    const headBob = wave(6.7, 0.9) * live;
+    const lean = wave(9.1, 2.1) * live;
+    const pointer = (
+      window as Window & {
+        __chiakiTerminalPointer?: {
+          targetX: number;
+          targetY: number;
+          movedAt: number;
+        };
+      }
+    ).__chiakiTerminalPointer;
     const pointerIsInteresting =
       pointer != null && performance.now() - pointer.movedAt < 1350;
     const idle = this._terminalIdle;
@@ -793,8 +813,10 @@ export class LAppModel extends CubismUserModel {
         idle.nextAt = this._userTimeSeconds + 3.8 + Math.random() * 3.4;
       }
     }
-    const desiredX = pointerIsInteresting ? pointer.targetX : idle.targetX;
-    const desiredY = pointerIsInteresting ? pointer.targetY : idle.targetY;
+    const desiredX =
+      (pointerIsInteresting ? pointer.targetX : idle.targetX) * live;
+    const desiredY =
+      (pointerIsInteresting ? pointer.targetY : idle.targetY) * live;
     const look = this._terminalLook;
     const damp = (current: number, target: number, seconds: number) =>
       current + (target - current) * (1.0 - Math.exp(-deltaTimeSeconds / seconds));
@@ -808,10 +830,12 @@ export class LAppModel extends CubismUserModel {
     look.bodyX = damp(look.bodyX, desiredX, 1.65);
     look.bodyY = damp(look.bodyY, desiredY, 1.8);
     const speakingNod =
-      Math.sin(this._userTimeSeconds * (Math.PI * 2 / 0.72)) * mouthOpen * 0.55;
+      Math.sin(this._userTimeSeconds * ((Math.PI * 2) / 0.72)) *
+      mouthOpen *
+      0.55;
     this._model.setParameterValueById(
       CubismFramework.getIdManager().getId('PARAM_BREATH'),
-      0.5 + breath * 0.42 + gesture.breath
+      0.5 + breath * 0.42 + gesture.breath * live
     );
     this._model.setParameterValueById(
       CubismFramework.getIdManager().getId('PARAM_BODY_ANGLE_X'),
@@ -821,7 +845,8 @@ export class LAppModel extends CubismUserModel {
       CubismFramework.getIdManager().getId('PARAM_ANGLE_Y'),
       headBob * 0.85 - look.headY * 12.0 + speakingNod + gesture.nod
     );
-    const glance = Math.sin(this._userTimeSeconds * (Math.PI * 2 / 9.2));
+    const glance =
+      Math.sin(this._userTimeSeconds * ((Math.PI * 2) / 9.2)) * live;
     this._model.setParameterValueById(
       CubismFramework.getIdManager().getId('PARAM_ANGLE_X'),
       glance * 1.15 + look.headX * 13.0
@@ -844,11 +869,11 @@ export class LAppModel extends CubismUserModel {
     }
     this._model.setParameterValueById(
       CubismFramework.getIdManager().getId('PARAM_EYE_BALL_X'),
-      glance * 0.24 + look.eyeX + saccade.x + gesture.gaze
+      glance * 0.24 + look.eyeX + saccade.x * live + gesture.gaze
     );
     this._model.setParameterValueById(
       CubismFramework.getIdManager().getId('PARAM_EYE_BALL_Y'),
-      -look.eyeY + saccade.y
+      -look.eyeY + saccade.y * live
     );
     this._model.setParameterValueById(
       CubismFramework.getIdManager().getId('PARAM_BODY_ANGLE_Y'),
@@ -859,7 +884,8 @@ export class LAppModel extends CubismUserModel {
     // rest left two thirds of the physics rig with nothing to react to. People
     // also tilt slightly into a turn, so couple part of it to the head yaw.
     // Added on top of the emotion tilt the terminal params already smoothed in.
-    const sway = Math.sin(this._userTimeSeconds * (Math.PI * 2 / 11.3));
+    const sway =
+      Math.sin(this._userTimeSeconds * ((Math.PI * 2) / 11.3)) * live;
     this._model.setParameterValueById(
       CubismFramework.getIdManager().getId('PARAM_ANGLE_Z'),
       (this._terminalParamValues.get('PARAM_ANGLE_Z') ?? 0.0) +
@@ -910,6 +936,7 @@ export class LAppModel extends CubismUserModel {
         }
       }
     }
+    blink = 1.0 - (1.0 - blink) * live;
     // Scaled by the emotion's eye aperture rather than replacing it, which is
     // what made shy's half-lidded look impossible to see.
     this._model.setParameterValueById(
@@ -969,6 +996,64 @@ export class LAppModel extends CubismUserModel {
           1.1 * blend
         );
       }
+    }
+
+    // A flinch, not a sway: fast uneven jitter that decays, layered on the pose.
+    const tremble = (
+      window as Window & {
+        __chiakiTremble?: {
+          intensity: number;
+          seconds: number;
+          startedAt: number;
+        };
+      }
+    ).__chiakiTremble;
+    if (tremble) {
+      const elapsed = (performance.now() - tremble.startedAt) / 1000;
+      if (elapsed < tremble.seconds) {
+        const decay = 1.0 - elapsed / tremble.seconds;
+        const k = tremble.intensity * decay * decay;
+        const t = elapsed * 38.0;
+        const jitter = (phase: number) =>
+          Math.sin(t + phase) * 0.6 + Math.sin(t * 1.73 + phase * 2.1) * 0.4;
+        const add = (id: string, amount: number) =>
+          this._model.addParameterValueById(
+            CubismFramework.getIdManager().getId(id),
+            amount
+          );
+        add('PARAM_BODY_ANGLE_Z', jitter(0.0) * 2.4 * k);
+        add('PARAM_BODY_ANGLE_X', jitter(1.3) * 1.6 * k);
+        add('PARAM_ANGLE_Z', jitter(2.1) * 3.0 * k);
+        add('PARAM_ANGLE_X', jitter(0.7) * 2.2 * k);
+        add('PARAM_BREATH', 0.35 * k);
+      } else {
+        (window as Window & { __chiakiTremble?: unknown }).__chiakiTremble =
+          undefined;
+      }
+    }
+
+    const now = performance.now();
+    const addParam = (id: string, amount: number) =>
+      this._model.addParameterValueById(
+        CubismFramework.getIdManager().getId(id),
+        amount
+      );
+    const nod = nodAmount(now);
+    if (nod) {
+      addParam('PARAM_ANGLE_Y', -22 * nod);
+      addParam('PARAM_BODY_ANGLE_Y', -3 * nod);
+      addParam('PARAM_EYE_L_OPEN', -0.35 * nod);
+      addParam('PARAM_EYE_R_OPEN', -0.35 * nod);
+    }
+    // The manager lifts the whole model on the same pulse; this is the body's give.
+    const shove = thrustPulse(now);
+    if (shove) {
+      addParam('PARAM_ANGLE_Y', 9 * shove);
+      addParam('PARAM_BODY_ANGLE_Y', 4 * shove);
+      addParam('PARAM_BREATH', 0.6 * shove);
+      addParam('PARAM_EYE_L_OPEN', -0.3 * shove);
+      addParam('PARAM_EYE_R_OPEN', -0.3 * shove);
+      addParam('PARAM_MOUTH_OPEN_Y', 0.25 * shove);
     }
 
     // UpdateSchedulerによる一括エフェクト更新
@@ -1409,6 +1494,7 @@ export class LAppModel extends CubismUserModel {
   private _speechCursor: number = 0;
   private _gestureCursor: number = 0;
   private _terminalTail = { amp: 1.0, rate: 1.0, phase: 0 };
+  private _stillness = 0.0;
   /** elapsed < 0 means the eyes are open and waiting for nextAt. */
   private _terminalBlink = { elapsed: -1, nextAt: 2.0, pending: 0 };
   private _terminalSaccade = { x: 0, y: 0, nextAt: 1.0 };
@@ -1420,7 +1506,7 @@ export class LAppModel extends CubismUserModel {
     // The opening beat deliberately holds centre, so she begins by looking at
     // the visitor before allowing herself to look elsewhere.
     nextAt: 4.2,
-    phase: 'meeting',
+    phase: 'meeting'
   };
   private _terminalLastTapAt: number = -Infinity;
   private _terminalReaction: {

@@ -7,6 +7,7 @@
 
 import { LAppDelegate } from './lappdelegate';
 import * as LAppDefine from './lappdefine';
+import { nightWindow, setThrust } from './nightmotion';
 
 type MouthKey = { at: number; open: number; form: number };
 type GestureKey = {
@@ -20,11 +21,23 @@ type GestureKey = {
 
 type TerminalWindow = Window & {
   __chiakiTerminalParams?: Record<string, number>;
-  __chiakiTerminalPointer?: { targetX: number; targetY: number; movedAt: number };
+  __chiakiTerminalPointer?: {
+    targetX: number;
+    targetY: number;
+    movedAt: number;
+  };
   __chiakiTerminalTap?: { area: 'head' | 'chest'; at: number };
-  __chiakiTerminalSpeech?: { keys: MouthKey[]; gestures: GestureKey[]; startedAt: number };
+  __chiakiTerminalSpeech?: {
+    keys: MouthKey[];
+    gestures: GestureKey[];
+    startedAt: number;
+  };
   __chiakiTerminalEmotionSpeed?: number;
   __chiakiTerminalTail?: { amp: number; rate: number };
+  __chiakiFraming?: { width: number; x: number; y: number };
+  __chiakiTremble?: { intensity: number; seconds: number; startedAt: number };
+  __chiakiCrt?: boolean;
+  __chiakiStill?: boolean;
 };
 
 const postStatus = (type: 'chiaki-live2d-ready' | 'chiaki-live2d-error'): void => {
@@ -53,15 +66,43 @@ window.addEventListener('message', event => {
     terminalWindow.__chiakiTerminalSpeech = {
       keys: data.keys,
       gestures: Array.isArray(data.gestures) ? data.gestures : [],
-      startedAt: performance.now(),
+      startedAt: performance.now()
     };
+    return;
+  }
+  if (data?.type === 'chiaki-night-framing') {
+    const { width, x, y } = data;
+    terminalWindow.__chiakiFraming = Number.isFinite(width)
+      ? { width, x: Number(x) || 0, y: Number(y) || 0 }
+      : undefined;
+    return;
+  }
+  if (data?.type === 'chiaki-night-style') {
+    terminalWindow.__chiakiCrt = data.crt !== false;
+    terminalWindow.__chiakiStill = data.still === true;
+    return;
+  }
+  if (data?.type === 'chiaki-night-tremble') {
+    terminalWindow.__chiakiTremble = {
+      intensity: Number(data.intensity) || 1,
+      seconds: Number(data.seconds) || 0.8,
+      startedAt: performance.now()
+    };
+    return;
+  }
+  if (data?.type === 'chiaki-night-nod') {
+    nightWindow.__chiakiNod = performance.now();
+    return;
+  }
+  if (data?.type === 'chiaki-night-thrust') {
+    setThrust(Number(data.perMinute) || 0);
     return;
   }
   if (data?.type === 'chiaki-terminal-pointer') {
     terminalWindow.__chiakiTerminalPointer = {
       targetX: Number(data.targetX) || 0,
       targetY: Number(data.targetY) || 0,
-      movedAt: performance.now(),
+      movedAt: performance.now()
     };
   }
 });
@@ -72,9 +113,15 @@ document.addEventListener(
   'pointermove',
   event => {
     terminalWindow.__chiakiTerminalPointer = {
-      targetX: Math.min(0.68, Math.max(-0.68, (event.clientX / window.innerWidth - 0.5) * 1.35)),
-      targetY: Math.min(0.5, Math.max(-0.5, (event.clientY / window.innerHeight - 0.5) * 1.1)),
-      movedAt: performance.now(),
+      targetX: Math.min(
+        0.68,
+        Math.max(-0.68, (event.clientX / window.innerWidth - 0.5) * 1.35)
+      ),
+      targetY: Math.min(
+        0.5,
+        Math.max(-0.5, (event.clientY / window.innerHeight - 0.5) * 1.1)
+      ),
+      movedAt: performance.now()
     };
   },
   { passive: true }

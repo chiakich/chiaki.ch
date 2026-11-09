@@ -170,7 +170,10 @@ export class LAppSubdelegate {
 
     const gl = this._glManager.getGl();
 
-    this._postProcess.bind();
+    // The night slice turns the tape off and draws straight to the canvas.
+    const crt = (window as Window & { __chiakiCrt?: boolean }).__chiakiCrt !== false;
+    if (crt) this._postProcess.bind();
+    else gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 
     // 画面の初期化
     gl.clearColor(0.0, 0.0, 0.0, 0.0);
@@ -192,7 +195,7 @@ export class LAppSubdelegate {
     // 描画更新
     this._view.render();
 
-    this._postProcess.render();
+    if (crt) this._postProcess.render();
 
     if (!this._readyPublished && this._live2dManager.isReady()) {
       this._readyPublished = true;
@@ -275,6 +278,7 @@ export class LAppSubdelegate {
   }
 
   public getFrameBuffer(): WebGLFramebuffer {
+    if ((window as Window & { __chiakiCrt?: boolean }).__chiakiCrt === false) return null;
     return this._frameBuffer;
   }
 

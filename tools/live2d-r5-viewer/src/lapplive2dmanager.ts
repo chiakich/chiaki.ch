@@ -13,6 +13,7 @@ import * as LAppDefine from './lappdefine';
 import { LAppModel } from './lappmodel';
 import { LAppPal } from './lapppal';
 import { LAppSubdelegate } from './lappsubdelegate';
+import { thrustPulse } from './nightmotion';
 
 /**
  * サンプルアプリケーションにおいてCubismModelを管理するクラス
@@ -100,8 +101,22 @@ export class LAppLive2DManager {
     if (model.getModel()) {
       // Height-normalised rather than width-normalised: this remains about
       // 165vh on the terminal's short, wide OG capture as well as in-browser.
-      model.getModelMatrix().setWidth(LAppDefine.TerminalPortraitWidth);
-      model.getModelMatrix().setPosition(0, LAppDefine.TerminalPortraitOffsetY);
+      // The night slice reframes the same rig: full body for the panel, face for the avatar.
+      const framing = (
+        window as Window & {
+          __chiakiFraming?: { width: number; x: number; y: number };
+        }
+      ).__chiakiFraming;
+      model
+        .getModelMatrix()
+        .setWidth(framing?.width ?? LAppDefine.TerminalPortraitWidth);
+      model
+        .getModelMatrix()
+        .setPosition(
+          framing?.x ?? 0,
+          (framing?.y ?? LAppDefine.TerminalPortraitOffsetY) +
+            0.028 * thrustPulse(performance.now())
+        );
       if (model.getModel().getCanvasWidth() > 1.0 && width < height) {
         // 横に長いモデルを縦長ウィンドウに表示する際モデルの横サイズでscaleを算出する
         projection.scale(1.0, width / height);
