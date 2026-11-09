@@ -1,81 +1,30 @@
 import type { NextPage } from 'next'
-import { useCallback, useState, type CSSProperties } from 'react'
+import Head from 'next/head'
 import { Box } from 'styled-system/jsx'
-import TerminalChat from 'components/story/terminal/TerminalChat'
-import StoryBootLoader from 'components/story/StoryBootLoader'
-import useTerminalViewport from 'components/story/terminal/useTerminalViewport'
+import NightGame from 'components/story/night/NightGame'
 import { makeStaticProps } from 'i18n/messages'
 
-const TerminalPage: NextPage = () => {
-  const [started, setStarted] = useState(false)
-  const [avatarLoaded, setAvatarLoaded] = useState(false)
-  const onComplete = useCallback(() => setStarted(true), [])
-  const onAvatarLoaded = useCallback(() => setAvatarLoaded(true), [])
-  const viewport = useTerminalViewport()
-  const viewportStyle = {
-    '--terminal-viewport-height': viewport.height
-      ? `${viewport.height}px`
-      : '100dvh',
-    // With the keyboard up the frame keeps covering the whole layout viewport
-    // — the strip that holds Safari's floating URL pill is page territory (the
-    // pill only overlays it), so painting it keeps the scene continuous
-    // instead of exposing the black body there.
-    '--terminal-frame-height':
-      viewport.keyboardOpen && viewport.height
-        ? `${viewport.height + viewport.keyboardInset}px`
-        : viewport.height
-          ? `${viewport.height}px`
-          : '100dvh',
-    '--terminal-viewport-offset-top': `${viewport.offsetTop}px`,
-    '--terminal-keyboard-inset': `${viewport.keyboardInset}px`,
-  } as CSSProperties
-
-  return (
+const TerminalPage: NextPage = () => (
+  <>
+    <Head>
+      <title>終端</title>
+      <meta name="robots" content="noindex, nofollow" />
+    </Head>
+    {/* TopBar is 44px and the desktop-only SubNav below it is another 48px. */}
     <Box
       position="fixed"
-      top="var(--terminal-viewport-offset-top)"
+      top={{ base: '44px', md: '92px' }}
       left="0"
-      width="100%"
-      height="var(--terminal-frame-height)"
-      background="radial-gradient(ellipse 72% 74% at 56% 35%, #2b1008 0%, #100704 46%, #030201 100%)"
-      // `clip`, not `hidden`: the avatar hangs far below the frame, and a hidden
-      // overflow is still scrollable — focusing the input let the browser scroll
-      // the whole scene up to reveal it, keyboard or not. onScroll covers
-      // browsers without `clip`.
+      right="0"
+      bottom="0"
+      background="#030201"
       overflow="clip"
       overscrollBehavior="none"
-      style={viewportStyle}
-      onScroll={(event) => {
-        event.currentTarget.scrollTop = 0
-      }}
     >
-      {/* TopBar is 44px and the desktop-only SubNav below it is another 48px. */}
-      <Box
-        position="absolute"
-        top={{
-          base: viewport.keyboardOpen ? '0' : '44px',
-          md: viewport.keyboardOpen ? '0' : '92px',
-        }}
-        left="0"
-        right="0"
-        // Interactive UI stops at the visual viewport's bottom edge — right
-        // above the URL pill; the frame behind keeps painting past it.
-        bottom={viewport.keyboardOpen ? 'var(--terminal-keyboard-inset)' : '0'}
-      >
-        <TerminalChat
-          started={started}
-          keyboardOpen={viewport.keyboardOpen}
-          onAvatarLoaded={onAvatarLoaded}
-        />
-      </Box>
-      <StoryBootLoader
-        variant="terminal"
-        ready={avatarLoaded}
-        onComplete={onComplete}
-      />
+      <NightGame />
     </Box>
-  )
-}
+  </>
+)
 
 export default TerminalPage
 

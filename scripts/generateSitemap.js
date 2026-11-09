@@ -9,6 +9,8 @@ const matter = require('gray-matter')
 
 const SITE_URL = 'https://chiaki.ch'
 const LEGACY_REDIRECT_ROUTES = new Set(['works/tw-fuzzy-zipcode'])
+// Adult-gated and noindex; reachable by link only.
+const UNLISTED_ROUTES = new Set(['story/terminal'])
 const LOCALES = [
   ['zh-TW', ''],
   ['ja', '/ja'],
@@ -71,7 +73,7 @@ const blogUrl = (slug, lastmod) => {
 
 const build = () => {
   const rows = readLocalizedRoutes()
-    .filter((route) => !LEGACY_REDIRECT_ROUTES.has(route))
+    .filter((route) => !LEGACY_REDIRECT_ROUTES.has(route) && !UNLISTED_ROUTES.has(route))
     .map(localizedUrl)
 
   if (existsSync(blogDir)) {
