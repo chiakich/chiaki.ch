@@ -100,10 +100,6 @@
       "title": "jf open 粉圓 - 千秋稻荷社",
       "description": "justfont 推出的一款台灣開源圓體，為台灣字形與日常閱讀調整。"
     },
-    "terminal": {
-      "title": "依代端末 - 千秋稻荷社",
-      "description": "八雲秋狐的人格檔案端末：以千秋輸入法詞庫解析語句與讀音，透過 Live2D 建立連線。"
-    },
     "letterpress": {
       "title": "千秋印書館 — 活版印刷質感的網頁套件 - 千秋稻荷社",
       "description": "把活版印刷的手感做回網頁上：紙的纖維、墨的濃淡、鉛字的歪斜與缺角。中文直排、中文橫排與英文橫排的活字見本帖。"
@@ -1157,28 +1153,6 @@
         }
       ]
     }
-  },
-  "terminalPage": {
-    "eyebrow": "千秋稻荷社 · 依代端末",
-    "title": "和秋狐說說話",
-    "intro": "這是一台留在社務所的應答端末。它沒有連上任何語言模型，只有一份千秋輸入法的詞庫和一張規則表。先把你打的句子切成詞，再去對表裡最接近的那一條。所以她回得很快，也很容易露餡。",
-    "placeholder": "對著端末說點什麼…",
-    "namePlaceholder": "寫下你的名字",
-    "nameDecline": "不告訴你",
-    "lexiconTitle": "LEXICON / 斷詞結果",
-    "lexiconEntries": "詞",
-    "lexiconLoading": "詞庫載入中…",
-    "lexiconFailed": "詞庫載入失敗，改用逐字比對",
-    "lexiconEmpty": "你說的話會先在這裡被切成一個一個詞，再拿去比對規則。",
-    "legendKnown": "詞庫收錄",
-    "legendModern": "戰後新詞",
-    "legendUnknown": "查無此詞",
-    "howTitle": "HOW IT WORKS",
-    "how1": "斷詞用的是千秋輸入法綜合詞庫的資料：國教院通用詞頻表、libchewing 詞庫，再加上從台灣網路語料整理出的現代詞層，總共七萬多筆。瀏覽器端跑最大機率路徑，和輸入法選字的原理相同。",
-    "how2": "回應是一張手寫的規則表：先用正則比對，比不到才用斷詞結果去算關鍵字重疊。都沒中的話，她會把句子裡最有意義的那個詞挑出來反問，這就是 ELIZA 那一招。",
-    "how3": "左下角的 LINK 是接得上與否的指標。她答得出來就上升，一直答不出來就會掉，掉到底時這條線會開始出現雜訊。整個頁面加起來不到 300 KB。",
-    "toCharacter": "角色介紹",
-    "toChiaKey": "關於千秋輸入法"
   },
   "voicebankPage": {
     "comingSoon": "準備中",

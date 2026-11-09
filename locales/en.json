@@ -100,10 +100,6 @@
       "title": "jf open Huninn - Chiaki Inari Shrine",
       "description": "A Taiwanese open-source rounded typeface by justfont, refined for Taiwanese forms and everyday reading. Chiaki contributed while at justfont."
     },
-    "terminal": {
-      "title": "Yorishiro Terminal - Chiaki Inari Shrine",
-      "description": "Yakumo Akitsune's personality archive terminal, using the ChiaKey Lexicon for language and pronunciation with a Live2D connection."
-    },
     "letterpress": {
       "title": "千秋印書館 — a framework-free letterpress package for the web - Chiaki Inari Shrine",
       "description": "Putting the feel of letterpress back into a web page: paper fibre, ink weight, and the lean and chipped corners of worn type. A specimen sheet in vertical Chinese, horizontal Chinese and English."
@@ -1151,28 +1147,6 @@
         }
       ]
     }
-  },
-  "terminalPage": {
-    "eyebrow": "CHIAKI INARI SHRINE · YORISHIRO TERMINAL",
-    "title": "Talk to Akitsune",
-    "intro": "A response terminal left behind in the shrine office. It is not connected to any language model — just the ChiaKey input method dictionary and a hand-written rule table. It segments what you type into words, then matches the closest rule. Fast to answer, and easy to catch out. Note: she only understands Chinese.",
-    "placeholder": "Say something to the terminal…",
-    "namePlaceholder": "Write your name",
-    "nameDecline": "Rather not",
-    "lexiconTitle": "LEXICON / SEGMENTATION",
-    "lexiconEntries": "entries",
-    "lexiconLoading": "Loading dictionary…",
-    "lexiconFailed": "Dictionary failed to load",
-    "lexiconEmpty": "What you type gets cut into words here first, then matched against the rules.",
-    "legendKnown": "in dictionary",
-    "legendModern": "post-war term",
-    "legendUnknown": "unknown",
-    "howTitle": "HOW IT WORKS",
-    "how1": "Segmentation runs on data from the ChiaKey Lexicon: the NAER word frequency table, the libchewing dictionary, and a modern layer drawn from Taiwanese web corpora — about 70,000 entries. The browser solves the maximum-probability path, the same principle the input method uses to pick characters.",
-    "how2": "Replies come from a hand-written rule table. Regex patterns first; if nothing matches, keyword overlap is scored against the segmented tokens. If that also misses, she picks the most meaningful word in your sentence and asks about it — the ELIZA move.",
-    "how3": "LINK in the bottom left tracks whether the conversation is landing. It rises when she has an answer and falls when she does not; at the bottom the line starts breaking up. The whole page is under 300 KB.",
-    "toCharacter": "Character",
-    "toChiaKey": "About ChiaKey"
   },
   "voicebankPage": {
     "comingSoon": "Coming soon",

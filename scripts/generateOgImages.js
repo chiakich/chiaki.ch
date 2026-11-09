@@ -31,7 +31,6 @@ const pages = [
   ['/', 'home'],
   ['/profile', 'profile'],
   ['/story', 'story'],
-  ['/story/terminal', 'story-terminal'],
   ['/story/character', 'story-character'],
   ['/story/character/art', 'story-character-art'],
   ['/character/chiaki', 'character-chiaki'],
@@ -66,9 +65,7 @@ if (existsSync(blogDir)) {
 // These views render their subject through WebGL. SwiftShader gives headless
 // Chrome a deterministic canvas implementation, rather than producing a
 // blank portrait when the host GPU is unavailable.
-const capturesWebGL = !routes || routes.some((route) =>
-  ['/profile', '/story/terminal'].includes(route)
-)
+const capturesWebGL = !routes || routes.includes('/profile')
 
 if (!existsSync(outputDir)) throw new Error('找不到 out 目錄。請先執行 next build。')
 if (!existsSync(chromePath)) throw new Error(`找不到 Chrome：${chromePath}`)
@@ -217,35 +214,6 @@ const waitForStableHero = async (browser) => {
   })
 }
 
-const waitForTerminalPortrait = async (browser) => {
-  await browser.send('Runtime.evaluate', {
-    awaitPromise: true,
-    expression: `new Promise((resolve, reject) => {
-      const deadline = performance.now() + 30000
-      const check = () => {
-        const frame = document.querySelector('iframe[title="Chiaki Live2D portrait"]')
-        const canvas = frame?.contentDocument?.querySelector('canvas')
-        const portraitReady = canvas && canvas.width > 0 && canvas.height > 0 &&
-          Number.parseFloat(getComputedStyle(frame.parentElement).opacity) >= 0.99
-
-        if (portraitReady) {
-          // The viewer signals readiness after model construction; give its
-          // first composited frame and the fade-in a pair of animation frames.
-          requestAnimationFrame(() => requestAnimationFrame(resolve))
-          return
-        }
-        if (performance.now() > deadline) {
-          reject(new Error('等待終端頁 Live2D canvas 與人物顯示逾時。'))
-          return
-        }
-        requestAnimationFrame(check)
-      }
-      check()
-    })`,
-  })
-}
-
-// Bottom edge of the fixed bars pinned to the top (TopBar, SubNav)
 const measureNavBottom = async (browser) => {
   const { result } = await browser.send('Runtime.evaluate', {
     returnByValue: true,
@@ -303,7 +271,6 @@ const capture = async () => {
       })
       await waitForRoute(browser, route)
       await waitForStableHero(browser)
-      if (route === '/story/terminal') await waitForTerminalPortrait(browser)
       const navBottom = await measureNavBottom(browser)
       // Grow the viewport by the nav height so the card shows a full 1200×630 below the bars
       if (navBottom) {

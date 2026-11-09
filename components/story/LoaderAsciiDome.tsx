@@ -38,7 +38,7 @@ function buildStaticGrid(): Cell[][] {
   )
 }
 
-const LoaderAsciiDome = ({ progress, tone = 'story' }: { progress: number; tone?: 'story' | 'amber' }) => {
+const LoaderAsciiDome = ({ progress }: { progress: number }) => {
   const [grid, setGrid] = useState<Cell[][]>(buildStaticGrid)
   const progressRef = useRef(progress)
   progressRef.current = progress
@@ -76,11 +76,9 @@ const LoaderAsciiDome = ({ progress, tone = 'story' }: { progress: number; tone?
               <span
                 key={x}
                 style={{
-                  color: tone === 'amber'
-                    ? `rgba(231,105,45,${cell.opacity * (cell.gold ? 1 : 0.78)})`
-                    : cell.gold
-                      ? `rgba(236,193,94,${cell.opacity})`
-                      : `rgba(135,205,211,${cell.opacity})`,
+                  color: cell.gold
+                    ? `rgba(236,193,94,${cell.opacity})`
+                    : `rgba(135,205,211,${cell.opacity})`,
                 }}
               >
                 {cell.char}
@@ -96,8 +94,8 @@ const LoaderAsciiDome = ({ progress, tone = 'story' }: { progress: number; tone?
         transform="translate(-50%, -50%)"
         fontSize={{ base: '13px', md: '17px' }}
         letterSpacing=".14em"
-        color={tone === 'amber' ? '#f19a60' : '#d7eef1'}
-        textShadow={tone === 'amber' ? '0 0 16px rgba(224,83,28,.82)' : '0 0 14px rgba(144,224,231,.8)'}
+        color="#d7eef1"
+        textShadow="0 0 14px rgba(144,224,231,.8)"
       >
         /{String(Math.min(99, Math.round(progress))).padStart(2, '0')}
       </Box>
