@@ -20,10 +20,13 @@
 // content/night-source/, which is committed so the story lives in git without
 // plain-text spoilers. A fresh clone restores the sources with --unpack.
 //
-// Usage: yarn night-script [--check | --unpack [--force]]
+// --read writes Markdown reading copies to content/night/read/ instead.
+//
+// Usage: yarn night-script [--check | --read [--force] | --unpack [--force]]
 
 const fs = require('fs')
 const path = require('path')
+const { exportReading } = require('./nightRead')
 
 const ROOT = path.resolve(__dirname, '..')
 const SOURCE_DIR = path.join(ROOT, 'content/night')
@@ -344,6 +347,12 @@ const main = () => {
     .readdirSync(SOURCE_DIR)
     .filter((file) => file.endsWith('.twee'))
     .sort()
+  if (process.argv.includes('--read')) {
+    const { dir, skipped } = exportReading(SOURCE_DIR, files, process.argv.includes('--force'))
+    console.log(`Wrote ${files.length - skipped.length} reading copies to ${path.relative(ROOT, dir)}`)
+    if (skipped.length) console.log(`Skipped (edited since export, use --force): ${skipped.join(', ')}`)
+    return
+  }
   for (const file of files)
     parseFile(file, fs.readFileSync(path.join(SOURCE_DIR, file), 'utf8'), passages)
 
