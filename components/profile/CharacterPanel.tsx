@@ -9,7 +9,7 @@ import {
 import { useEffect, useState, type CSSProperties } from 'react'
 import Barcode from 'components/profile/Barcode'
 import NtscImage from 'components/effects/NtscImage'
-import { NTSC_SPRITE } from 'lib/ntsc/params'
+import { NTSC_SPRITE, type NtscParams } from 'lib/ntsc/params'
 import { ACCENT } from 'components/profile/theme'
 import { useI18n } from 'i18n'
 
@@ -27,7 +27,22 @@ const PORTRAIT_MASK = `url(${PORTRAIT_ART})`
 // behind a chat panel where specks read as tube noise, but here the artwork is
 // the whole panel and the same density reads as dirt on the glass. Module-level
 // so its identity is stable — NtscImage rebuilds its context when it changes.
-const PORTRAIT_TAPE = { ...NTSC_SPRITE, snowChance: 0.000008 }
+//
+// Stock 600 lines upscaled ~3x on a 2x display, which is what blurred the line
+// art. Sample-denominated terms are doubled so the colour smear keeps its size.
+const PORTRAIT_LINES = 1080
+const PORTRAIT_TAPE: NtscParams = {
+  ...NTSC_SPRITE,
+  horizontalScale: 2,
+  chromaTapStride: 4,
+  chromaLag: 17,
+  spillDecay: 0.09,
+  chromaNoiseScale: 36,
+  jitter: 2,
+  headSwitchLines: 25,
+  headSwitchShift: 20,
+  snowChance: 0.000008,
+}
 
 // Gain on the artwork, the knob worth hand-tuning. The tape's luma path comes
 // out a touch darker than the source and the grille takes a little more off the
@@ -42,7 +57,7 @@ const ART_ASPECT = 1012 / 1800
 // The sticky header the panel sits under, and how much of the panel's height
 // the figure takes, so the feet clear the gradient at the bottom.
 const HEADER_HEIGHT = 44
-const PANEL_FILL = 0.88
+const PANEL_FILL = 0.86
 
 // The width the figure needs for the whole body to show, at a given viewport
 // height and as a live CSS length.
@@ -54,10 +69,14 @@ const FULL_BODY_WIDTH = `calc(${(100 * PANEL_FILL * ART_ASPECT).toFixed(2)}vh - 
 
 // The viewport height the size freezes at. Any shorter and a full body would be
 // too narrow to read, so the figure holds the size it had here and crops.
-const HOLD_SIZE_BELOW = 1000
+const HOLD_SIZE_BELOW = 940
 const MIN_FIGURE_WIDTH = `${fullBodyWidthAt(HOLD_SIZE_BELOW).toFixed(0)}px`
 
 const FIGURE_WIDTH = `max(${MIN_FIGURE_WIDTH}, ${FULL_BODY_WIDTH})`
+const FIGURE_LIFT = '8.5vh'
+// Once the figure crops, the box grows back down by up to the lift, so the cut
+// lands on the panel's bottom edge under the gradient instead of floating.
+const FIGURE_DROP = `clamp(0px, calc((${HOLD_SIZE_BELOW}px - 100vh) * ${PANEL_FILL}), ${FIGURE_LIFT})`
 // How far the figure hangs past each edge of the column, floored at zero so the
 // bottom gradient never comes in narrower than the panel itself.
 const FIGURE_OVERHANG = `min(0px, calc(50% - ${FIGURE_WIDTH} / 2))`
@@ -269,7 +288,7 @@ const CharacterPanel = ({
           fills it, so it needs the artwork's aspect to size itself. */}
       <MotionBox
         position="absolute"
-        bottom="0"
+        bottom={{ base: '0', lg: `calc(${FIGURE_LIFT} - ${FIGURE_DROP})` }}
         left="50%"
         // Height drives the size, and the figure is free to overhang the column
         // to keep the whole body in frame. Once the viewport is short enough
@@ -277,7 +296,7 @@ const CharacterPanel = ({
         // there and the cover fit crops from the feet up, leaving the upper
         // body at a readable size instead of a shrinking full figure.
         width={{ base: 'auto', lg: FIGURE_WIDTH }}
-        height={{ base: '64vh', lg: `${PANEL_FILL * 100}%` }}
+        height={{ base: '64vh', lg: `calc(${PANEL_FILL * 100}% + ${FIGURE_DROP})` }}
         aspectRatio="1012 / 1800"
         zIndex={{ base: 1, lg: 0 }}
         filter="brightness(var(--portrait-gain)) drop-shadow(0 0 40px #ff782930)"
@@ -314,6 +333,7 @@ const CharacterPanel = ({
             src={PORTRAIT_ART}
             alt={t('profilePage.characterPanel.alt')}
             params={PORTRAIT_TAPE}
+            lines={PORTRAIT_LINES}
             fit="cover"
             fitPosition="top"
             onLoad={() => setImageLoaded(true)}

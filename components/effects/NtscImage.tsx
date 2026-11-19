@@ -8,7 +8,12 @@
 import { useEffect, useRef, useState } from 'react'
 import { styled } from 'styled-system/jsx'
 import { NtscPipeline } from 'lib/ntsc/pipeline'
-import { NTSC_FULL_FRAME, ntscSurfaceSize, type NtscParams } from 'lib/ntsc/params'
+import {
+  NTSC_FULL_FRAME,
+  NTSC_LINES,
+  ntscSurfaceSize,
+  type NtscParams,
+} from 'lib/ntsc/params'
 
 // Draws the source into the pipeline's target with a cover/contain transform,
 // since the passes themselves sample straight across the surface.
@@ -47,6 +52,8 @@ type NtscImageProps = {
   alt?: string
   /** Tape settings. Defaults to the opaque-source preset. */
   params?: NtscParams
+  /** Rows the tape resolves. Cost scales with its square. */
+  lines?: number
   /** 'cover' crops to fill, 'contain' fits the whole image in. */
   fit?: 'cover' | 'contain'
   /** When cover crops vertically, pin the image to its top edge. */
@@ -77,6 +84,7 @@ const NtscImage = ({
   src,
   alt = '',
   params = NTSC_FULL_FRAME,
+  lines = NTSC_LINES,
   fit = 'cover',
   fitPosition = 'center',
   onLoad,
@@ -140,6 +148,9 @@ const NtscImage = ({
     let loaded = false
     let visible = true
     let frame = 0
+    // rAF fires at display rate, up to 120 Hz; the tape only changes per field.
+    const fieldInterval = 1000 / params.fieldRate
+    let lastDraw = 0
 
     const schedule = () => {
       if (!frame) frame = window.requestAnimationFrame(draw)
@@ -167,20 +178,25 @@ const NtscImage = ({
       const surface = ntscSurfaceSize(
         canvas.clientWidth,
         canvas.clientHeight,
-        window.devicePixelRatio
+        window.devicePixelRatio,
+        lines
       )
       canvas.width = surface.width
       canvas.height = surface.height
       pipeline.resize(surface.width, surface.height)
+      // Resizing clears the canvas, so the next frame must not be skipped.
+      lastDraw = 0
       schedule()
     }
 
-    const draw = () => {
+    const draw = (now: number) => {
       frame = 0
       // Not loaded yet: keep the frame pending. Not visible: stop, and let the
       // observer wake it back up.
       if (!loaded) return schedule()
       if (!visible) return
+      if (!still && now - lastDraw < fieldInterval - 2) return schedule()
+      lastDraw = now
 
       const surfaceAspect = canvas.width / canvas.height
       const wide = surfaceAspect > aspect
@@ -240,7 +256,7 @@ const NtscImage = ({
       // StrictMode's mount/unmount/mount, or any remount that reuses the node,
       // the second pass would draw into nothing and the canvas would stay blank.
     }
-  }, [fit, fitPosition, params, src])
+  }, [fit, fitPosition, lines, params, src])
 
   return (
     <Frame position="relative" width="100%" height="100%">
