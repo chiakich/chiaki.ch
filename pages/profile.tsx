@@ -169,7 +169,13 @@ const Profile: NextPage = () => {
         zIndex={1}
       >
         {/* Mobile-first: character hero on top for small screens */}
-        <Box display={{ base: 'block', lg: 'none' }} order={0}>
+        <Box
+          display={{ base: 'block', lg: 'none' }}
+          order={0}
+          // Contains the panel's raised labels so none of them paint over the copy.
+          position="relative"
+          zIndex={0}
+        >
           <CharacterPanel x={x} y={y} />
         </Box>
 
@@ -181,6 +187,8 @@ const Profile: NextPage = () => {
           zIndex={1}
           px={{ base: '24px', md: '40px' }}
           pt={{ base: 0, lg: 20 }}
+          // Rides up over the faded waist of the mobile bust in CharacterPanel.
+          mt={{ base: '-22vw', lg: 0 }}
           pb="80px"
         >
           {/* Header */}

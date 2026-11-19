@@ -73,6 +73,17 @@ const HOLD_SIZE_BELOW = 940
 const MIN_FIGURE_WIDTH = `${fullBodyWidthAt(HOLD_SIZE_BELOW).toFixed(0)}px`
 
 const FIGURE_WIDTH = `max(${MIN_FIGURE_WIDTH}, ${FULL_BODY_WIDTH})`
+// Below lg the figure is a bust, sized off the width so a phone's collapsing
+// toolbar cannot resize it. Height is width × 0.52 / ART_ASPECT: wider than the
+// artwork, so the cover fit shows only its top 52%, and the mask fades that out
+// from the waist down. Literals because Panda extracts these statically.
+const BUST_WIDTH = '120vw'
+const BUST_HEIGHT = '111vw'
+// How far the page copy rides up over the bust; repeated as a literal in
+// pages/profile.tsx, since Panda does not follow imports.
+const BUST_OVERLAP = '22vw'
+const BUST_MASK = 'linear-gradient(to bottom, black 64%, transparent 100%)'
+
 const FIGURE_LIFT = '8.5vh'
 // Once the figure crops, the box grows back down by up to the lift, so the cut
 // lands on the panel's bottom edge under the gradient instead of floating.
@@ -131,7 +142,10 @@ const CharacterPanel = ({
     <Box
       position="relative"
       width="100%"
-      height={{ base: '68vh', lg: `calc(100vh - ${HEADER_HEIGHT}px)` }}
+      height={{
+        base: `calc(${BUST_HEIGHT} + 24px)`,
+        lg: `calc(100vh - ${HEADER_HEIGHT}px)`,
+      }}
       // The page root clips at the viewport edge. Keep this panel open so the
       // character may overhang the narrower grid column without causing a
       // horizontal scrollbar.
@@ -255,7 +269,7 @@ const CharacterPanel = ({
           </Box>
           <Text
             fontWeight="black"
-            fontSize={{ base: '1.05rem', lg: '1.25rem' }}
+            fontSize={{ base: '0.95rem', lg: '1.25rem' }}
             letterSpacing="0.12em"
             lineHeight="1.1"
             color="white"
@@ -275,6 +289,8 @@ const CharacterPanel = ({
               px="2px"
               py={1}
               ml="0.6em"
+              // The mobile panel is a short bust; this would run into the copy.
+              display={{ base: 'none', lg: 'inline' }}
             >
               R-2.6 version
             </Span>
@@ -295,8 +311,8 @@ const CharacterPanel = ({
         // that the full body would come in under the floor, the width holds
         // there and the cover fit crops from the feet up, leaving the upper
         // body at a readable size instead of a shrinking full figure.
-        width={{ base: 'auto', lg: FIGURE_WIDTH }}
-        height={{ base: '64vh', lg: `calc(${PANEL_FILL * 100}% + ${FIGURE_DROP})` }}
+        width={{ base: BUST_WIDTH, lg: FIGURE_WIDTH }}
+        height={{ base: BUST_HEIGHT, lg: `calc(${PANEL_FILL * 100}% + ${FIGURE_DROP})` }}
         aspectRatio="1012 / 1800"
         zIndex={{ base: 1, lg: 0 }}
         filter="brightness(var(--portrait-gain)) drop-shadow(0 0 40px #ff782930)"
@@ -328,7 +344,12 @@ const CharacterPanel = ({
           } as CSSProperties
         }
       >
-        <Box position="relative" width="100%" height="100%">
+        <Box
+          position="relative"
+          width="100%"
+          height="100%"
+          maskImage={{ base: BUST_MASK, lg: 'none' }}
+        >
           <NtscImage
             src={PORTRAIT_ART}
             alt={t('profilePage.characterPanel.alt')}
@@ -390,7 +411,7 @@ const CharacterPanel = ({
       <Flex
         position="absolute"
         left={{ base: '22px', lg: '30px' }}
-        bottom={{ base: '16%', lg: '64px' }}
+        bottom={{ base: `calc(${BUST_OVERLAP} + 24px)`, lg: '64px' }}
         direction="column"
         alignItems="center"
         gap={2}
@@ -414,7 +435,7 @@ const CharacterPanel = ({
       <Box
         position="absolute"
         right={{ base: '10px', lg: '20px' }}
-        bottom={{ base: '0px', lg: '35px' }}
+        bottom={{ base: `calc(${BUST_OVERLAP} - 8px)`, lg: '35px' }}
         zIndex={3}
         aria-hidden
       >
@@ -422,7 +443,7 @@ const CharacterPanel = ({
           <Img
             src={sigSrc}
             alt=""
-            width={{ base: '130px', lg: '180px' }}
+            width={{ base: '110px', lg: '180px' }}
             filter="brightness(0) invert(1) drop-shadow(0 2px 10px rgba(0,0,0,0.5))"
             opacity={0.95}
             transform="rotate(4deg)"
