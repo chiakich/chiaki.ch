@@ -51,7 +51,7 @@ const PORTRAIT_GAIN = 1.1
 
 // How hard the projection grille reads. Its own gradient is already soft and
 // faint; this is the knob for the whole layer.
-const GRILLE_STRENGTH = 1
+const GRILLE_STRENGTH = 0.55
 
 const ART_ASPECT = 1012 / 1800
 // The sticky header the panel sits under, and how much of the panel's height
