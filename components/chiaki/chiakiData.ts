@@ -45,7 +45,7 @@ export const NATIVE_ORDER = ['JA', 'EN', 'ZH']
 export const PARAMS = ['TENC', 'GENC', 'VELC', 'PEXP', 'BREC']
 
 export type TermStatus = 'ok' | 'ask' | 'no'
-export const TERM_STATUSES: TermStatus[] = ['ok', 'ok', 'ok', 'ask', 'ask', 'no', 'no', 'no']
+export const TERM_STATUSES: TermStatus[] = ['ok', 'ok', 'ok', 'ok', 'ask', 'no', 'no', 'no']
 
 export const TERM_COLORS: Record<TermStatus, { color: string; bg: string; mark: string }> = {
   ok: { color: '#2f7d4f', bg: 'rgba(47,125,79,.12)', mark: '✓' },

@@ -17,7 +17,7 @@ const TIER_STYLE: Record<Tier, { bg: string; fg: string; bd: string; code: strin
 
 const TIERS: { tier: Tier; title: string; langs: typeof LANGS }[] = [
   { tier: 'native', title: 'Native', langs: NATIVE_ORDER.map((code) => LANGS.find((lang) => lang.code === code)!) },
-  { tier: 'fluent', title: 'Fluent', langs: LANGS.filter((lang) => lang.tier === 'fluent') },
+  { tier: 'fluent', title: 'Intermediate', langs: LANGS.filter((lang) => lang.tier === 'fluent') },
   { tier: 'learning', title: 'Learning', langs: LANGS.filter((lang) => lang.tier === 'learning') },
 ]
 
@@ -41,7 +41,7 @@ const ChiakiSpec = () => {
             <Flex key={tier} flexWrap="wrap" alignItems="baseline" columnGap={5} rowGap={2} py={4} borderBottom={index < TIERS.length - 1 ? '1px solid rgba(34,48,90,.08)' : 'none'}>
               <Box flex="0 0 200px" minW="0">
                 <Text fontSize="17px" fontWeight="bold">{title}</Text>
-                {tier === 'learning' && <Text mt="2px" fontSize="sm" color="rgba(34,48,90,.72)">{t('chiakiPage.spec.learningNote')}</Text>}
+                {tier !== 'native' && <Text mt="2px" fontSize="sm" color="rgba(34,48,90,.72)">{t(`chiakiPage.spec.${tier === 'fluent' ? 'intermediateNote' : 'learningNote'}`)}</Text>}
               </Box>
               <Flex flex="1 1 400px" minW="0" flexWrap="wrap" gap={2}>
                 {langs.map((lang) => {
@@ -68,8 +68,8 @@ const ChiakiSpec = () => {
           <Text fontFamily="'Jost', var(--cjk), sans-serif" fontSize="2xl" fontWeight="medium">OpenUtau</Text>
         </Card>
         <Card label={t('chiakiPage.spec.vocoder')}>
-          <Text fontFamily="'Jost', var(--cjk), sans-serif" fontSize="2xl" fontWeight="medium">PC-NSF-HiFiGAN</Text>
-          <Text mt={1} fontFamily="mono" fontSize="13px" color="rgba(34,48,90,.72)">44.1 kHz · hop 512</Text>
+          <Text fontFamily="'Jost', var(--cjk), sans-serif" fontSize="2xl" fontWeight="medium">chiaki_vocoder</Text>
+          <Text mt={1} fontFamily="mono" fontSize="13px" color="rgba(34,48,90,.72)">NSF-HiFiGAN · 44.1 kHz · hop 512</Text>
         </Card>
         <Card label={t('chiakiPage.spec.renderSteps')}>
           <Flex mt={1} flexWrap="wrap" columnGap={4} rowGap="6px" fontFamily="mono" fontSize="sm">

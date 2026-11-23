@@ -1161,7 +1161,7 @@
     },
     "zip": {
       "title": "Voicebank only",
-      "desc": "The voicebank zip for the official OpenUtau. No need to unzip it. Finnish and Ecclesiastical Latin need the DiffSinger Finnish / Latin Phonemizer plugins.",
+      "desc": "The voicebank zip for the official OpenUtau. No need to unzip it. Finnish, Latin and the Learning languages need the Extra Phonemizers.",
       "button": "Download Chiaki.zip",
       "steps": [
         "Drag Chiaki.zip into the OpenUtau window, or choose \"Install Singer\" from the Tools menu.",
@@ -1170,12 +1170,11 @@
       ]
     },
     "extra": {
-      "title": "Extra language plugin",
-      "desc": "The model already sings these languages, but OpenUtau has no built-in phonemizers for them, so install this plugin separately. One plugin file contains 13 phonemizers. OpenUtau-Chiaki and the official OpenUtau use different builds of the plugin.",
-      "buttonChiaki": "Plugin (for OpenUtau-Chiaki)",
-      "buttonOfficial": "Plugin (for official OpenUtau)",
+      "title": "Extra phonemizers",
+      "desc": "Phonemizers for the official OpenUtau. OpenUtau-Chiaki already has them built in.",
+      "button": "Download ChiakiPhonemizers.zip",
       "steps": [
-        "Put the plugin file in the Plugins folder.",
+        "Unzip it and put only the DLLs for the languages you need in the Plugins folder.",
         "Restart OpenUtau and choose Chiaki as the singer.",
         "Choose the phonemizer for the language, e.g. DiffSinger Indonesian Phonemizer.",
         "Write lyrics in the language's normal spelling, one syllable per note. You can also put a whole multi-syllable word on the first note and extend it with \"+\"."
@@ -1209,7 +1208,7 @@
       ]
     },
     "terms": {
-      "updated": "2026-10-21",
+      "updated": "2026-11-23",
       "intro": "These terms apply to the Chiaki voicebank (\"the voicebank\") and to any audio generated with it. By downloading or using the voicebank, you agree to these terms.",
       "sections": [
         {
@@ -1226,7 +1225,7 @@
           "title": "When you use it",
           "items": [
             "Credit the voicebank, e.g. \"Vocal: Chiaki\". If you can't credit it within the work, the description, end credits, or a related web page is fine.",
-            "When embedding the voicebank, don't let users extract its files. Contact us before embedding it in a commercial work, because the bundled vocoder's license does not allow commercial distribution.",
+            "When embedding the voicebank, don't let users extract its files.",
             "Models trained on audio from the voicebank (\"derived models\") may be used for research and non-commercial purposes only. Contact us before selling a derived model or using one to make commercial works.",
             "When releasing a derived model, state that it is derived from Chiaki, and don't name it \"Chiaki\" or anything that could be mistaken for an official release.",
             "A derived model's own terms must likewise prohibit impersonating Chiaki or the creator and damaging the reputation of Chiaki or the creator, restrict commercial use, and require the same of any further derived models."
@@ -1248,7 +1247,7 @@
         {
           "title": "Vocoder",
           "items": [
-            "The bundled vocoder PC-NSF-HiFiGAN by OpenVPI (unmodified) is licensed under CC BY-NC-SA 4.0. This license restricts the distribution and modification of the vocoder itself, not the audio generated through it, so works made with the voicebank may be used commercially. Do not sell the vocoder on its own or distribute a modified copy of it."
+            "The bundled vocoder chiaki_vocoder 2026.11 is licensed under the Apache License 2.0. You may use it commercially, modify it and redistribute it, as long as LICENSE and NOTICE.txt are kept. The reverse-engineering and stand-alone distribution restrictions above do not apply to the vocoder. Works made with the voicebank may be used commercially."
           ]
         },
         {
@@ -1298,10 +1297,11 @@
     },
     "sing": {
       "otherEditors": "Use another DiffSinger editor",
-      "pluginDesc": "The model can already sing the Learning languages, but OpenUtau has no built-in phonemizers for them, so install this plugin. OpenUtau-Chiaki and the official OpenUtau need different versions of it."
+      "pluginDesc": "OpenUtau-Chiaki has these phonemizers built in, so there is nothing to install. The official OpenUtau has no phonemizers for Finnish, Latin or the Learning languages; the zip has one DLL per language, so put only the ones you need in the Plugins folder."
     },
     "spec": {
-      "learningNote": "Still practicing, with a stronger accent",
+      "intermediateNote": "Pronunciation may be inaccurate",
+      "learningNote": "Not very familiar; pronunciation may be inaccurate",
       "engine": "Engine",
       "editor": "Editor",
       "vocoder": "Vocoder",
@@ -1351,7 +1351,7 @@
         },
         {
           "title": "Embedding in commercial works",
-          "text": "Contact us before embedding it in a game or app, and make sure users can’t extract the voicebank files."
+          "text": "You can embed it in games and apps; just make sure users can’t extract the voicebank files."
         },
         {
           "title": "Training derived models",

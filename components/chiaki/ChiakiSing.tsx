@@ -64,7 +64,7 @@ const ChiakiSing = () => {
           <Text fontFamily="'Jost', var(--cjk), sans-serif" fontSize={{ base: '2rem', md: 'clamp(2rem, 4vw, 3.25rem)' }} fontWeight="medium" lineHeight="1.1">OpenUtau-Chiaki</Text>
           <Text mt="14px" mb={7} fontSize="17px" lineHeight="1.8" maxW="30em">{t('voicebankPage.app.desc')}</Text>
           <Flex flexWrap="wrap" gap="10px">
-            <DownloadButton href={DOWNLOADS.appMac} label="macOS" primary />
+            <DownloadButton href={DOWNLOADS.appMac} label="macOS (Apple Silicon)" primary />
             <DownloadButton href={DOWNLOADS.appWindows} label="Windows" primary />
           </Flex>
         </Box>
@@ -83,12 +83,9 @@ const ChiakiSing = () => {
         <Grid gridTemplateColumns={{ base: '1fr', md: 'repeat(2, minmax(0, 1fr))' }} gap={4} px={4} pb={4}>
           <AltCard title="Chiaki.zip" desc={t('voicebankPage.zip.desc')} steps={listOf(t, 'voicebankPage.zip.steps')}>
             <DownloadButton href={DOWNLOADS.zip} label={t('voicebankPage.zip.button')} />
-            <DownloadButton href={DOWNLOADS.finnish} label="Finnish Phonemizer" />
-            <DownloadButton href={DOWNLOADS.latin} label="Latin Phonemizer" />
           </AltCard>
-          <AltCard title="Language Plugins" desc={t('chiakiPage.sing.pluginDesc')} steps={listOf(t, 'voicebankPage.extra.steps')}>
-            <DownloadButton href={DOWNLOADS.extraChiaki} label={t('voicebankPage.extra.buttonChiaki')} />
-            <DownloadButton href={DOWNLOADS.extraOfficial} label={t('voicebankPage.extra.buttonOfficial')} />
+          <AltCard title="Extra Phonemizers" desc={t('chiakiPage.sing.pluginDesc')} steps={listOf(t, 'voicebankPage.extra.steps')}>
+            <DownloadButton href={DOWNLOADS.phonemizers} label={t('voicebankPage.extra.button')} />
           </AltCard>
         </Grid>
       </Details>

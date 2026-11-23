@@ -1167,7 +1167,7 @@
     },
     "zip": {
       "title": "聲庫單獨下載",
-      "desc": "給官方 OpenUtau 使用的聲庫 zip，下載後不需解壓縮。芬蘭文與教會拉丁文需要另外安裝 DiffSinger Finnish／Latin Phonemizer 外掛。",
+      "desc": "給官方 OpenUtau 使用的聲庫 zip，下載後不需解壓縮。芬蘭文、拉丁文和 Learning 語言要另外安裝 Extra Phonemizers。",
       "button": "下載 Chiaki.zip",
       "steps": [
         "把 Chiaki.zip 拖進 OpenUtau 視窗，或從「工具」選「安裝歌手」。",
@@ -1176,12 +1176,11 @@
       ]
     },
     "extra": {
-      "title": "擴充語言外掛",
-      "desc": "模型本身已經會唱這些語言，但 OpenUtau 沒有內建它們的音素器，要另外安裝這個外掛。一個外掛檔內含 13 個音素器。OpenUtau-Chiaki 和官方 OpenUtau 要用不同版本的外掛。",
-      "buttonChiaki": "外掛（OpenUtau-Chiaki 用）",
-      "buttonOfficial": "外掛（官方 OpenUtau 用）",
+      "title": "擴充音素器",
+      "desc": "官方 OpenUtau 用的音素器。OpenUtau-Chiaki 已經內建，不用另外安裝。",
+      "button": "下載 ChiakiPhonemizers.zip",
       "steps": [
-        "把外掛檔放進 Plugins 資料夾。",
+        "解壓縮後，只把需要的語言 DLL 放進 Plugins 資料夾。",
         "重新開啟 OpenUtau，歌手選 Chiaki。",
         "音素器選對應語言，例如 DiffSinger Indonesian Phonemizer。",
         "歌詞照該語言的正常拼字寫，一個音符一個音節；多音節字也可以整個寫在第一個音符，後面用「+」延長。"
@@ -1215,7 +1214,7 @@
       ]
     },
     "terms": {
-      "updated": "2026-10-21",
+      "updated": "2026-11-23",
       "intro": "本規約適用於 Chiaki 聲庫（以下稱「本聲庫」）及用本聲庫生成的語音。下載或使用本聲庫，即表示同意本規約。",
       "sections": [
         {
@@ -1232,7 +1231,7 @@
           "title": "使用時請",
           "items": [
             "標示 credit，例如「Vocal: Chiaki」。無法在作品中標示時，標示在說明欄、製作人員名單或相關網頁即可。",
-            "內嵌本聲庫時，不得讓使用者取出聲庫檔案。內嵌在商業作品中請先聯絡，因為內附聲碼器的授權不允許商業散布。",
+            "內嵌本聲庫時，不得讓使用者取出聲庫檔案。",
             "用本聲庫語音訓練出的模型（以下稱「衍生模型」）只能用於研究與非營利目的。販售衍生模型，或用衍生模型製作商業作品，請先聯絡。",
             "公開衍生模型時，請說明它源自 Chiaki，不要取名為 Chiaki 或讓人誤以為是官方。",
             "在衍生模型的規約中，同樣禁止冒充 Chiaki 或製作者、禁止損害 Chiaki 或製作者的名譽，並限制商業使用，也要求再往下的衍生模型遵守相同條件。"
@@ -1254,7 +1253,7 @@
         {
           "title": "聲碼器",
           "items": [
-            "內附的聲碼器 PC-NSF-HiFiGAN（OpenVPI 製作，未修改）採用 CC BY-NC-SA 4.0。這份授權只限制聲碼器本身的散布與修改，不限制用它生成的音訊，所以用本聲庫做出的作品可以商用。聲碼器不得單獨販售，也不得修改後散布。"
+            "內附的聲碼器 chiaki_vocoder 2026.11 採用 Apache License 2.0。聲碼器可以商用、修改與再散布，只要保留 LICENSE 與 NOTICE.txt；上面禁止逆向工程與單獨散布的條款不適用於聲碼器。用本聲庫做出的作品可以商用。"
           ]
         },
         {
@@ -1304,10 +1303,11 @@
     },
     "sing": {
       "otherEditors": "使用其他 DiffSinger 編輯器",
-      "pluginDesc": "模型本身已經會唱 Learning 的語言，但 OpenUtau 沒有內建它們的音素器，要另外安裝這個外掛。OpenUtau-Chiaki 和官方 OpenUtau 要用不同版本的外掛。"
+      "pluginDesc": "OpenUtau-Chiaki 已經內建這些音素器，不用另外安裝。官方 OpenUtau 沒有內建芬蘭文、拉丁文和 Learning 語言的音素器；zip 裡每個語言一個 DLL，挑需要的放進 Plugins 資料夾就好。"
     },
     "spec": {
-      "learningNote": "還在練習，口音較重",
+      "intermediateNote": "發音可能不正確",
+      "learningNote": "不太熟悉，發音可能不正確",
       "engine": "引擎",
       "editor": "編輯器",
       "vocoder": "聲碼器",
@@ -1357,7 +1357,7 @@
         },
         {
           "title": "內嵌在商業作品",
-          "text": "遊戲、App 內嵌請先聯絡，而且不能讓人取出聲庫檔案。"
+          "text": "遊戲、App 都可以內嵌，只是不能讓人取出聲庫檔案。"
         },
         {
           "title": "訓練衍生模型",

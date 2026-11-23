@@ -27,7 +27,7 @@ const CREDITS: [string, string][] = [
   ['VOICE', 'Chiaki'],
   ['ILLUSTRATION', 'shONe'],
   ['EDITOR', 'OpenUtau-Chiaki — based on OpenUtau'],
-  ['VOCODER', 'PC-NSF-HiFiGAN — OpenVPI'],
+  ['VOCODER', 'chiaki_vocoder — Chiaki.C (Apache-2.0)'],
   ['ENGINE', 'DiffSinger — Team OpenVPI'],
 ]
 
