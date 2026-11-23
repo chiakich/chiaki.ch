@@ -38,6 +38,7 @@ type TerminalWindow = Window & {
   __chiakiTremble?: { intensity: number; seconds: number; startedAt: number };
   __chiakiCrt?: boolean;
   __chiakiStill?: boolean;
+  __chiakiSignal?: number;
 };
 
 const postStatus = (type: 'chiaki-live2d-ready' | 'chiaki-live2d-error'): void => {
@@ -80,6 +81,10 @@ window.addEventListener('message', event => {
   if (data?.type === 'chiaki-night-style') {
     terminalWindow.__chiakiCrt = data.crt !== false;
     terminalWindow.__chiakiStill = data.still === true;
+    return;
+  }
+  if (data?.type === 'chiaki-night-signal') {
+    terminalWindow.__chiakiSignal = Number.isFinite(data.quality) ? data.quality : undefined;
     return;
   }
   if (data?.type === 'chiaki-night-tremble') {

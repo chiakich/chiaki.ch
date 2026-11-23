@@ -6,7 +6,7 @@ import {
   useSyncExternalStore,
 } from 'react'
 import { Box, Flex, styled } from 'styled-system/jsx'
-import { CHANNEL_GOAL } from 'lib/night/engine'
+import { CHANNEL_GOAL, channelOf } from 'lib/night/engine'
 import { NightPlayer } from 'lib/night/player'
 import type { Snapshot } from 'lib/night/types'
 import NightChoices from './NightChoices'
@@ -16,18 +16,20 @@ import NightStage, { type Rect } from './NightStage'
 import NightWhisper from './NightWhisper'
 
 const Button = styled.button
-const Link = styled.a
 const MONO = 'ui-monospace, "SFMono-Regular", Menlo, monospace'
 const NAME = '千亞紀'
 const GATE_KEY = 'night-slice-adult'
 
 const START_LABEL: Record<string, string> = {
   'pre.start': '前日談 · 兩天（終端接通 → 監視器事件 → N1）',
-  'n1.seed': 'N1 · 第一天（朝會 → 深夜 → 私人頻道）',
+  'n1.seed': 'N1 · 第一天（朝會 → 頭目 → 分歧）',
   'n2.start': 'N2 · 第二夜（頭目 → 打手，撞見）',
   'n3.start': 'N3 · 第三夜（攝影機、高潮時機）',
   'n4.start': 'N4 · 第四夜（標記夜，崩潰）',
   'n5.start': 'N5 · 第五夜（深夜 → 私人頻道）',
+  'n6.start': 'N6 · 最終夜（第七條線 → 結局）',
+  'w2.start': '支線 · 第二天（年輕的、歌）',
+  'w3.start': '支線 · 第三天（最後一晚）',
 }
 
 // Each scene has its own light: daylight through the station, a darkroom safelight at night,
@@ -110,8 +112,13 @@ const SummaryPanel = ({
       color="rgba(238,150,98,.7)"
       style={{ fontFamily: MONO }}
     >
-      DAY {summary.day} · END
+      {summary.ending ? 'ENDING' : `DAY ${summary.day} · END`}
     </Box>
+    {summary.ending && (
+      <Box mt="8px" fontSize="18px" color="#fff">
+        {summary.ending}
+      </Box>
+    )}
     <Box
       mt="14px"
       display="grid"
@@ -152,24 +159,19 @@ const SummaryPanel = ({
 
 const NightGame = () => {
   const [player, setPlayer] = useState<NightPlayer | null>(null)
-  const [adult, setAdult] = useState(false)
   const [debug, setDebug] = useState(false)
   const [speed, setSpeed] = useState(1)
 
   useEffect(() => {
-    setAdult(readGate())
-    setPlayer(new NightPlayer())
+    const next = new NightPlayer()
+    next.adult = readGate()
+    setPlayer(next)
   }, [])
 
   if (!player) return null
   return (
     <Game
       player={player}
-      adult={adult}
-      onAdult={() => {
-        writeGate()
-        setAdult(true)
-      }}
       debug={debug}
       setDebug={setDebug}
       speed={speed}
@@ -183,8 +185,6 @@ const NightGame = () => {
 
 type GameProps = {
   player: NightPlayer
-  adult: boolean
-  onAdult: () => void
   debug: boolean
   setDebug: (value: boolean) => void
   speed: number
@@ -193,8 +193,6 @@ type GameProps = {
 
 const Game = ({
   player,
-  adult,
-  onAdult,
   debug,
   setDebug,
   speed,
@@ -354,6 +352,7 @@ const Game = ({
           tremble={snapshot.tremble}
           nod={snapshot.nod}
           thrust={snapshot.thrust}
+          signal={Math.min(1, channelOf(state) / CHANNEL_GOAL)}
           hots={snapshot.hots}
           onPress={player.pressHot}
         />
@@ -413,7 +412,7 @@ const Game = ({
         </Flex>
       </Flex>
 
-      {!adult && (
+      {snapshot.gate && (
         <Panel>
           <Box fontSize="16px" color="#fff">
             成人內容
@@ -424,26 +423,36 @@ const Game = ({
             lineHeight="1.8"
             color="rgba(255,236,220,.8)"
           >
-            這是《終端》改版的試玩切片，含有露骨的性描寫。登場角色皆為成年人。請確認你已滿
-            18 歲，且所在地區允許瀏覽此類內容。
+            接下來的內容含有露骨的性描寫。登場角色皆為成年人。請確認你已滿 18
+            歲，且所在地區允許瀏覽此類內容。
           </Box>
           <Flex mt="20px" gap="10px" flexWrap="wrap">
-            <PrimaryButton onClick={onAdult}>我已滿 18 歲</PrimaryButton>
-            <Link
-              href="/story"
+            <PrimaryButton
+              onClick={() => {
+                writeGate()
+                player.confirmGate(true)
+              }}
+            >
+              我已滿 18 歲
+            </PrimaryButton>
+            <Button
+              type="button"
+              onClick={() => player.confirmGate(false)}
               px="16px"
               py="10px"
               border="1px solid rgba(255,255,255,.3)"
+              background="transparent"
               color="rgba(255,255,255,.8)"
               fontSize="14px"
+              cursor="pointer"
             >
-              離開
-            </Link>
+              {snapshot.gate.fallback ? '改走另一條路' : '回到選單'}
+            </Button>
           </Flex>
         </Panel>
       )}
 
-      {adult && !playing && (
+      {!playing && (
         <Panel>
           <Box
             fontSize="10px"
@@ -457,7 +466,7 @@ const Game = ({
             試玩切片
           </Box>
           <Box mt="18px" display="grid" gap="10px">
-            {jump && (
+            {jump && player.adult && (
               <PrimaryButton onClick={() => player.start(jump)}>
                 從 #{jump} 開始（測試）
               </PrimaryButton>

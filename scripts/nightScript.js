@@ -20,13 +20,14 @@
 // content/night-source/, which is committed so the story lives in git without
 // plain-text spoilers. A fresh clone restores the sources with --unpack.
 //
-// --read writes Markdown reading copies to content/night/read/ instead.
+// --read writes Markdown reading copies to content/night/read/ instead, and
+// --apply writes text edits made in those copies back into the .twee files.
 //
-// Usage: yarn night-script [--check | --read [--force] | --unpack [--force]]
+// Usage: yarn night-script [--check | --read [--force] | --apply | --unpack [--force]]
 
 const fs = require('fs')
 const path = require('path')
-const { exportReading } = require('./nightRead')
+const { applyAll, exportReading } = require('./nightRead')
 
 const ROOT = path.resolve(__dirname, '..')
 const SOURCE_DIR = path.join(ROOT, 'content/night')
@@ -40,6 +41,9 @@ const OPS = {
   goto: 1,
   end: 0,
   summary: 0,
+  ending: 1,
+  adult: 0,
+  warm: 1,
   bpm: 1,
   battery: 1,
   trust: 1,
@@ -258,6 +262,10 @@ const validate = (passages) => {
       ...passage.ops
         .filter((op) => op.t === 'op' && (op.op === 'goto' || op.op === 'timeout'))
         .map((op) => (op.op === 'goto' ? op.args[0] : op.args[1])),
+      // Declining the 18+ gate falls through to this passage.
+      ...passage.ops
+        .filter((op) => op.t === 'op' && op.op === 'adult' && op.args[0])
+        .map((op) => op.args[0]),
       // `@var stop <passage>` arms the always-on 〔先停在這裡〕 button.
       ...passage.ops
         .filter((op) => op.t === 'op' && op.op === 'var' && op.args[0] === 'stop' && op.args[1] !== 'none')
@@ -268,7 +276,7 @@ const validate = (passages) => {
       visit(target)
     }
     const ends = passage.ops.some(
-      (op) => op.t === 'op' && ['goto', 'end', 'summary'].includes(op.op)
+      (op) => op.t === 'op' && ['goto', 'end', 'summary', 'ending'].includes(op.op)
     )
     if (!passage.choices.length && !ends) fail(name, 'dead end: no choices, @goto or @end')
   }
@@ -347,6 +355,12 @@ const main = () => {
     .readdirSync(SOURCE_DIR)
     .filter((file) => file.endsWith('.twee'))
     .sort()
+  if (process.argv.includes('--apply')) {
+    const report = applyAll(SOURCE_DIR, files)
+    console.log(report.length ? report.join('\n') : 'No reading-copy edits to apply')
+    if (report.some((line) => line.includes('只能在 twee 改'))) process.exitCode = 1
+    return
+  }
   if (process.argv.includes('--read')) {
     const { dir, skipped } = exportReading(SOURCE_DIR, files, process.argv.includes('--force'))
     console.log(`Wrote ${files.length - skipped.length} reading copies to ${path.relative(ROOT, dir)}`)

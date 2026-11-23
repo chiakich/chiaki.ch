@@ -290,3 +290,31 @@ export const NTSC_FULL_FRAME: NtscParams = {
   // so the head-switching tear is fully visible and reads much stronger.
   headSwitchShift: 6,
 }
+
+// The weakest link that still reads as a face; colour is the first thing a thin line drops.
+const NTSC_WEAK_SIGNAL: Partial<NtscTape> = {
+  saturation: 0.25,
+  phaseNoise: 0.3,
+  gainNoise: 0.35,
+  chromaLoss: 0.3,
+  chromaNoise: 0.22,
+  grain: 0.2,
+  snowChance: 0.004,
+  jitter: 9,
+  dropoutChance: 0.04,
+  headSwitchLines: 40,
+  headSwitchShift: 26,
+  historyMix: 0.22,
+}
+
+// quality 0..1: 0 is the weak preset, 1 is the base tape untouched.
+export const ntscSignalTape = (
+  quality: number,
+  base: NtscTape = NTSC_SPRITE
+): Partial<NtscTape> => {
+  const weak = (1 - Math.min(1, Math.max(0, quality))) ** 1.5
+  const tape: Partial<NtscTape> = {}
+  for (const key of Object.keys(NTSC_WEAK_SIGNAL) as (keyof NtscTape)[])
+    tape[key] = base[key] + ((NTSC_WEAK_SIGNAL[key] ?? base[key]) - base[key]) * weak
+  return tape
+}

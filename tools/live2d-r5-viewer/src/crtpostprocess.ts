@@ -14,7 +14,7 @@
  */
 
 import { NtscPipeline } from '../../../lib/ntsc/pipeline';
-import { NTSC_SPRITE } from '../../../lib/ntsc/params';
+import { NTSC_SPRITE, ntscSignalTape } from '../../../lib/ntsc/params';
 
 export class CrtPostProcess {
   public initialize(
@@ -27,6 +27,10 @@ export class CrtPostProcess {
       depth: true
     });
     return this._pipeline.initialize(gl, width, height);
+  }
+
+  public setSignal(quality: number): void {
+    this._pipeline?.setTape(ntscSignalTape(quality));
   }
 
   public resize(width: number, height: number): void {

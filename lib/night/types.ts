@@ -61,6 +61,8 @@ export type GameState = {
   vars: Record<string, string>
   men: Record<Man, Feelings>
   list: string[]
+  // Goodwill the channel takes on its own, apart from the men's heat.
+  warmth: number
   channelAtDayStart: number
   waves: Record<Man, number[]>
 }
@@ -87,6 +89,7 @@ export type VisibleChoice = { index: number; label: string; group: string | null
 
 export type Summary = {
   day: number
+  ending: string | null
   channel: number
   delta: number
   battery: number
@@ -95,7 +98,13 @@ export type Summary = {
   men: Record<Man, Feelings>
 }
 
-export type PlayerStatus = 'idle' | 'running' | 'choosing' | 'input' | 'summary'
+export type PlayerStatus =
+  | 'idle'
+  | 'running'
+  | 'choosing'
+  | 'input'
+  | 'gate'
+  | 'summary'
 
 export type Snapshot = {
   status: PlayerStatus
@@ -105,6 +114,8 @@ export type Snapshot = {
   input: { prompt: string } | null
   timeout: { deadline: number; total: number } | null
   summary: Summary | null
+  // Set while the script waits for the 18+ confirmation; fallback means declining has somewhere to go.
+  gate: { fallback: boolean } | null
   shake: number
   tremble: number
   nod: number

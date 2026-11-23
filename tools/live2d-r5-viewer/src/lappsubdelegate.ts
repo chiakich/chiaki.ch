@@ -172,6 +172,12 @@ export class LAppSubdelegate {
 
     // The night slice turns the tape off and draws straight to the canvas.
     const crt = (window as Window & { __chiakiCrt?: boolean }).__chiakiCrt !== false;
+    // The night slice ties tape quality to the channel; ease so a jump reads as the line settling.
+    const signal = (window as Window & { __chiakiSignal?: number }).__chiakiSignal ?? 1;
+    if (Math.abs(signal - this._signal) > 0.001) {
+      this._signal += (signal - this._signal) * 0.04;
+      this._postProcess.setSignal(this._signal);
+    }
     if (crt) this._postProcess.bind();
     else gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 
@@ -401,6 +407,7 @@ export class LAppSubdelegate {
    */
   private _textureManager: LAppTextureManager;
   private _postProcess: CrtPostProcess;
+  private _signal = 1;
   private _frameBuffer: WebGLFramebuffer;
   private _readyPublished: boolean;
   private _contextLostEventListener: (event: Event) => void;

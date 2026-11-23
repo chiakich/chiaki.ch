@@ -130,6 +130,7 @@ type Props = {
   tremble: number
   nod: number
   thrust: number
+  signal: number
   hots: HotSpot[]
   onPress: (flag: string) => void
 }
@@ -142,6 +143,7 @@ const NightStage = ({
   tremble,
   nod,
   thrust,
+  signal,
   hots,
   onPress,
 }: Props) => {
@@ -174,7 +176,8 @@ const NightStage = ({
         type: 'chiaki-night-framing',
         ...(blueprint ? FRAMING.full : FRAMING.face),
       })
-      post({ type: 'chiaki-night-style', crt: false, still: blueprint })
+      // The blueprint is a diagram; only the live feed goes through the tape.
+      post({ type: 'chiaki-night-style', crt: !blueprint, still: blueprint })
       shown.current = true
       setVisible(true)
     }, glide)
@@ -209,6 +212,10 @@ const NightStage = ({
   useEffect(() => {
     if (ready) post({ type: 'chiaki-night-thrust', perMinute: thrust })
   }, [ready, thrust, post])
+
+  useEffect(() => {
+    if (ready) post({ type: 'chiaki-night-signal', quality: signal })
+  }, [ready, signal, post])
 
   const point = (part: Part) => {
     const { dx, v } = PART_POINT[part]

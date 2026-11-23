@@ -31,6 +31,7 @@ export const initialState = (): GameState => ({
   vars: {},
   men: { boss: emptyFeelings(), guard: emptyFeelings(), young: emptyFeelings() },
   list: [],
+  warmth: 0,
   channelAtDayStart: 0,
   waves: { boss: [], guard: [], young: [] },
 })
@@ -38,7 +39,7 @@ export const initialState = (): GameState => ({
 export const channelOf = (state: GameState) =>
   MEN.reduce(
     (sum, man) => sum + Math.min(Math.max(state.men[man].desire, 0), CHANNEL_CAP[man]),
-    0
+    state.warmth
   )
 
 let script: NightScript | null = null

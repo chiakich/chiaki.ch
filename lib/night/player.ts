@@ -46,6 +46,8 @@ export class NightPlayer {
   private input: Snapshot['input'] = null
   private timeout: Snapshot['timeout'] = null
   private summary: Summary | null = null
+  private ending: string | null = null
+  private gate: Snapshot['gate'] = null
   private shake = 0
   private tremble = 0
   private nod = 0
@@ -64,6 +66,8 @@ export class NightPlayer {
   private armedTimeout: { seconds: number; target: string } | null = null
   private timer: ReturnType<typeof setTimeout> | null = null
   speed = 1
+  // Confirmed once per tab; the script asks again only if this is false.
+  adult = false
 
   constructor() {
     this.script = loadScript()
@@ -96,6 +100,7 @@ export class NightPlayer {
       input: this.input,
       timeout: this.timeout,
       summary: this.summary,
+      gate: this.gate,
       shake: this.shake,
       tremble: this.tremble,
       nod: this.nod,
@@ -183,6 +188,7 @@ export class NightPlayer {
     this.status = 'idle'
     this.choices = []
     this.input = null
+    this.gate = null
     this.emit()
   }
 
@@ -201,6 +207,7 @@ export class NightPlayer {
     this.state = initialState()
     this.log = []
     this.summary = null
+    this.ending = null
     this.thrust = 0
     this.blackout = false
     this.armedTimeout = null
@@ -215,6 +222,12 @@ export class NightPlayer {
   choose = (index: number) => {
     if (this.status !== 'choosing' || !this.answer) return
     this.answer(index)
+  }
+
+  confirmGate = (yes: boolean) => {
+    if (this.status !== 'gate' || !this.answer) return
+    if (yes) this.adult = true
+    this.answer(yes ? 1 : 0)
   }
 
   submitInput = (text: string) => {
@@ -376,6 +389,26 @@ export class NightPlayer {
       case 'summary':
         this.showSummary()
         return null
+      case 'ending':
+        this.ending = args.join(' ')
+        this.showSummary()
+        return null
+      case 'adult': {
+        if (this.adult) break
+        const yes = await this.ask(() => {
+          this.status = 'gate'
+          this.gate = { fallback: Boolean(arg) }
+        }, token)
+        this.gate = null
+        this.status = 'running'
+        if (yes) break
+        if (arg) return arg
+        this.reset()
+        return null
+      }
+      case 'warm':
+        this.setState({ warmth: Math.max(0, applyAmount(state.warmth, arg)) })
+        break
       case 'bpm':
         this.setState({
           bpm: /^[+-]/.test(arg) ? state.bpm + Number(arg) : Number(arg),
@@ -594,6 +627,7 @@ export class NightPlayer {
     const channel = channelOf(this.state)
     this.summary = {
       day: this.state.day,
+      ending: this.ending,
       channel,
       delta: channel - this.state.channelAtDayStart,
       battery: this.state.battery,
