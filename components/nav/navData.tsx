@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react'
 import {
   AkitraIcon,
-  CharacterIcon,
   ChiaKeyIcon,
   CollectionIcon,
   HuninnIcon,
@@ -32,7 +31,7 @@ export type Translate = (key: string) => string
 // Home is reachable via the logo, so it is intentionally absent here to keep the top bar compact.
 export const getMainLinks = (t: Translate): [string, string][] => [
   [t('nav.profile'), '/profile'],
-  [t('nav.characters'), '/character'],
+  [t('nav.chiaki'), '/character/chiaki'],
   [t('nav.works'), '/works'],
   [t('nav.fonts'), '/fonts'],
   [t('nav.blog'), '/blog'],
@@ -40,17 +39,6 @@ export const getMainLinks = (t: Translate): [string, string][] => [
 
 // 有 flyout 的區段。每個區段的第一個項目就是該區的 landing page。
 export const getNavSections = (t: Translate): Record<string, NavSection> => ({
-  [t('nav.characters')]: {
-    title: t('nav.characters'),
-    items: [
-      {
-        id: 'chiaki',
-        title: t('nav.chiaki'),
-        path: '/character/chiaki',
-        icon: <CharacterIcon />,
-      },
-    ],
-  },
   [t('nav.works')]: {
     title: t('nav.works'),
     items: [
