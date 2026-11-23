@@ -8,7 +8,7 @@ const { join, resolve } = require('node:path')
 const matter = require('gray-matter')
 
 const SITE_URL = 'https://chiaki.ch'
-const LEGACY_REDIRECT_ROUTES = new Set(['works/tw-fuzzy-zipcode'])
+const LEGACY_REDIRECT_ROUTES = new Set(['works/tw-fuzzy-zipcode', 'character'])
 // Adult-gated and noindex; reachable by link only.
 const UNLISTED_ROUTES = new Set(['story/terminal'])
 const LOCALES = [

@@ -3,7 +3,6 @@ import { useI18n } from 'i18n'
 import { PORTRAIT_SRC } from './voicebankData'
 import { INK, ORANGE, ORANGE_TEXT, NAVY } from './chiakiData'
 
-const Heading = styled.h1
 const Text = styled.p
 const Span = styled.span
 const Ruby = styled.ruby
@@ -70,14 +69,15 @@ const ChiakiHero = () => {
       </Flex>
 
       <Box flex="1 1 440px" minW="0" position="relative" zIndex={{ base: 3, md: 1 }} mt={{ base: '-130%', md: 0 }} px={{ base: 6, md: 'clamp(24px, 4vw, 64px)' }} pt={{ base: 0, md: 14 }} pb={{ base: 6, md: 14 }}>
-        <Heading mb={5} fontFamily="'Jost', var(--cjk), sans-serif" fontWeight="medium" fontSize={{ base: '2.75rem', md: 'clamp(2.75rem, 5vw, 5rem)' }} lineHeight="1.02" letterSpacing=".04em">
+        <Text mb={5} fontFamily="'Jost', var(--cjk), sans-serif" fontWeight="medium" fontSize={{ base: '2.75rem', md: 'clamp(2.75rem, 5vw, 5rem)' }} lineHeight="1.02" letterSpacing=".04em">
           DIFFSINGER<br /><Span color={ORANGE_TEXT}>VOICE ARCHIVE</Span>
-        </Heading>
-        <Flex flexWrap="wrap" alignItems="flex-end" columnGap={5} rowGap={1}>
-          <Text lang={nameLang} fontSize={{ base: '2.75rem', md: '3.5rem' }} fontWeight="black" lineHeight="1.2" letterSpacing=".12em">
+        </Text>
+        {/* The character name is the page's h1 so search engines key on it, not the decorative kicker */}
+        <Flex as="h1" flexWrap="wrap" alignItems="flex-end" columnGap={5} rowGap={1}>
+          <Span lang={nameLang} fontSize={{ base: '2.75rem', md: '3.5rem' }} fontWeight="black" lineHeight="1.2" letterSpacing=".12em">
             <Ruby>{t('chiakiPage.name')}<Rt fontSize=".875rem" fontWeight="medium" letterSpacing=".3em" color={ORANGE_TEXT}>チアキ</Rt></Ruby>
-          </Text>
-          <Text mb="6px" fontFamily="'Jost', var(--cjk), sans-serif" fontSize={{ base: '2rem', md: '2.75rem' }} fontWeight="medium" lineHeight="1.1" letterSpacing=".1em">CHIAKI</Text>
+          </Span>
+          <Span mb="6px" fontFamily="'Jost', var(--cjk), sans-serif" fontSize={{ base: '2rem', md: '2.75rem' }} fontWeight="medium" lineHeight="1.1" letterSpacing=".1em">CHIAKI</Span>
         </Flex>
         <Text lang="ja" mt={6} mb={4} fontSize={{ base: 'xl', md: '1.625rem' }} fontWeight="bold" color={ORANGE_TEXT}>どこにいても、歌を届けるね。</Text>
         <Text mb={7} fontSize={{ base: 'md', md: 'lg' }} lineHeight="1.9" maxW="32em">{t('chiakiPage.intro')}</Text>

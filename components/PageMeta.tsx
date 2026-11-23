@@ -2,6 +2,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { localizedPath, pagePathFromLocalePath, type Locale, useI18n } from 'i18n'
 import { getMainLinks, getNavSections } from 'components/nav/navData'
+import { DOWNLOADS } from 'components/chiaki/voicebankData'
 
 const SITE_URL = 'https://chiaki.ch'
 const SITE_NAME = '千秋稻荷社'
@@ -34,7 +35,6 @@ export type PageMetaOverride = {
 const pageMetadata: Record<string, PageMeta> = {
   '/': { key: 'home', image: '/og/home.jpeg' },
   '/profile': { key: 'profile', image: '/og/profile.jpeg' },
-  '/character': { key: 'characters', image: '/og/story.jpeg' },
   '/character/chiaki': { key: 'chiaki', image: '/og/character-chiaki.jpeg' },
   '/story': { key: 'story', image: '/og/story.jpeg' },
   '/story/character': { key: 'character', image: '/og/story-character.jpeg' },
@@ -137,6 +137,8 @@ const PageMeta = ({ override }: { override?: PageMetaOverride }) => {
     segments.forEach((segment, index) => {
       acc += `/${segment}`
       const isLast = index === segments.length - 1
+      // Skip path prefixes that are not pages of their own (e.g. /character)
+      if (!isLast && !titleByPath.has(acc) && !(acc in pageMetadata)) return
       const name =
         titleByPath.get(acc) ?? (isLast ? override?.breadcrumbName ?? title : segment)
       crumbs.push({ name, url: `${SITE_URL}${localizedPath(acc, locale)}` })
@@ -144,7 +146,7 @@ const PageMeta = ({ override }: { override?: PageMetaOverride }) => {
     return crumbs
   })()
 
-  const needsPerson = pagePath === '/' || pagePath === '/profile' || isArticle
+  const needsPerson = pagePath === '/' || pagePath === '/profile' || pagePath === '/character/chiaki' || isArticle
   const isCharacterChiaki = pagePath === '/character/chiaki'
   const characterNames: Record<Locale, string> = { tw: '千亞紀', ja: '千亜紀', en: 'Chiaki' }
 
@@ -227,6 +229,29 @@ const PageMeta = ({ override }: { override?: PageMetaOverride }) => {
               name: '涼風千秋',
               url: `${SITE_URL}/profile`,
             },
+          },
+          {
+            '@type': 'SoftwareApplication',
+            '@id': `${SITE_URL}/character/chiaki#openutau-chiaki`,
+            name: 'OpenUtau-Chiaki',
+            applicationCategory: 'MultimediaApplication',
+            operatingSystem: 'Windows, macOS',
+            offers: { '@type': 'Offer', price: 0, priceCurrency: 'TWD' },
+            downloadUrl: [DOWNLOADS.appWindows, DOWNLOADS.appMac].filter(Boolean),
+            url: 'https://github.com/chiakich/OpenUtau-chiaki',
+            isBasedOn: 'https://github.com/stakira/OpenUtau',
+            author: { '@id': `${SITE_URL}/#chiaki` },
+          },
+          {
+            '@type': 'CreativeWork',
+            '@id': `${SITE_URL}/character/chiaki#voicebank`,
+            name: 'Chiaki DiffSinger voicebank',
+            about: { '@id': `${SITE_URL}/character/chiaki#character` },
+            isAccessibleForFree: true,
+            offers: { '@type': 'Offer', price: 0, priceCurrency: 'TWD' },
+            encoding: { '@type': 'MediaObject', contentUrl: DOWNLOADS.zip, encodingFormat: 'application/zip' },
+            url: `${pageUrl}#download`,
+            author: { '@id': `${SITE_URL}/#chiaki` },
           }]
         : []),
       pageNode,
