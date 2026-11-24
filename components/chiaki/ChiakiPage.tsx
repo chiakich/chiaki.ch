@@ -20,6 +20,10 @@ const Span = styled.span
 const Link = styled.a
 
 // Han glyphs differ between TC and JP, so Japanese text (and the whole ja locale) swaps the CJK faces
+// font-family inherits already resolved, so the swapped --cjk only takes effect where it is declared again.
+// Zero specificity lets any element's own fontFamily (mono, Jost) still win; Panda's key type doesn't allow & mid-selector, hence the spread
+const JA_FAMILY = { ':where(&) :where([lang=ja])': { fontFamily: 'var(--cjk), sans-serif' } }
+
 const pageFont = css({
   '--cjk': "'Noto Sans TC'",
   fontFamily: 'var(--cjk), sans-serif',
@@ -28,6 +32,7 @@ const pageFont = css({
   'html:lang(en) &': { '--cjk': "'Noto Sans', 'Noto Sans TC'" },
   '& [lang=ja]': { '--cjk': "'Noto Sans JP', 'Noto Sans TC'" },
 })
+  ...JA_FAMILY,
 
 const QUOTES = encodeURIComponent('‘’“”')
 
