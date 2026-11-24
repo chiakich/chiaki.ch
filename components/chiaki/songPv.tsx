@@ -618,7 +618,8 @@ const PvLine = ({ line, time }: { line: Line; time: number }) => {
 
   const align = side === 'l' ? 'flex-start' : side === 'c' ? 'center' : 'flex-end'
   return (
-    <Box lang={tagOf(line)} position="relative" fontWeight="black" style={{ fontSize: `${scene.size ?? 1}em` }}>
+    // A flex parent makes the lockup a flex item; as an inline in a block, WebKit sizes the vertical reprise to zero width and it spills past the right edge
+    <Box lang={tagOf(line)} position="relative" display={scene.render ? 'flex' : undefined} fontWeight="black" style={{ fontSize: `${scene.size ?? 1}em` }}>
       {scene.deco?.(c)}
       {scene.render ? scene.render(c) : scene.layout === 'tateYoko' ? (
         <Flex flexDirection="row-reverse" alignItems="flex-end" gap=".2em">
