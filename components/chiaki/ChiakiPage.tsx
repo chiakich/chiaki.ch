@@ -3,7 +3,8 @@ import { css } from 'styled-system/css'
 import { Box, Flex, Grid, styled } from 'styled-system/jsx'
 import { IMPROVE_EMAIL } from './voicebankData'
 import { useI18n } from 'i18n'
-import { INK, JOST, LINE_LIGHT, MIST, NIGHT, ORANGE, RUINS_FAR, SNOW } from './chiakiData'
+import { INK, JOST, LANGS, LINE_LIGHT, MIST, NIGHT, ORANGE, RUINS_FAR, SNOW } from './chiakiData'
+import { LINES } from './songData'
 import { Container, Reveal, Snow } from './parts'
 import ChiakiHero from './ChiakiHero'
 import ChiakiProfile from './ChiakiProfile'
@@ -19,11 +20,11 @@ const Text = styled.p
 const Span = styled.span
 const Link = styled.a
 
-// Han glyphs differ between TC and JP, so Japanese text (and the whole ja locale) swaps the CJK faces
 // font-family inherits already resolved, so the swapped --cjk only takes effect where it is declared again.
 // Zero specificity lets any element's own fontFamily (mono, Jost) still win; Panda's key type doesn't allow & mid-selector, hence the spread
 const JA_FAMILY = { ':where(&) :where([lang=ja])': { fontFamily: 'var(--cjk), sans-serif' } }
 
+// Han glyphs differ between TC and JP, so Japanese text (and the whole ja locale) swaps the CJK faces
 const pageFont = css({
   '--cjk': "'Noto Sans TC'",
   fontFamily: 'var(--cjk), sans-serif',
@@ -31,10 +32,19 @@ const pageFont = css({
   // Noto CJK draws curly quotes full-width, so English pulls just those glyphs from Latin Noto Sans
   'html:lang(en) &': { '--cjk': "'Noto Sans', 'Noto Sans TC'" },
   '& [lang=ja]': { '--cjk': "'Noto Sans JP', 'Noto Sans TC'" },
-})
   ...JA_FAMILY,
+})
 
 const QUOTES = encodeURIComponent('‘’“”')
+
+const WEIGHTS = 'wght@400;600;700;900'
+// Off the ja locale, Japanese only appears in these fixed strings, so JP comes as one small text= subset
+// instead of every unicode-range slice; a glyph missing here just falls back to TC
+const JA_TEXT = encodeURIComponent([...new Set([
+  'どこにいても、歌をお届けします。チアキ渡し歌わたしうた私',
+  ...LINES.filter((line) => !line.code).map((line) => line.text),
+  ...LANGS.filter((lang) => lang.tag === 'ja').map((lang) => lang.native + lang.song),
+].join('').replace(/\s/g, ''))].join(''))
 
 const CREDITS: [string, string][] = [
   ['VOICE', 'Chiaki'],
@@ -93,8 +103,11 @@ const ChiakiPage = () => {
       <Head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* Only the locale's own CJK family is loaded in full; JP alone covers everything on the ja page */}
         {/* eslint-disable-next-line @next/next/no-page-custom-font -- Jost and the Noto faces are only used on this page */}
-        <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;600;700;900&family=Noto+Sans+JP:wght@400;600;700;900&display=swap" rel="stylesheet" />
+        <link href={`https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&family=Noto+Sans+${locale === 'ja' ? 'JP' : 'TC'}:${WEIGHTS}&display=swap`} rel="stylesheet" />
+        {/* eslint-disable-next-line @next/next/no-page-custom-font -- see above */}
+        {locale !== 'ja' && <link href={`https://fonts.googleapis.com/css2?family=Noto+Sans+JP:${WEIGHTS}&text=${JA_TEXT}&display=swap`} rel="stylesheet" />}
         {/* eslint-disable-next-line @next/next/no-page-custom-font -- see above */}
         {locale === 'en' && <link href={`https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700;900&text=${QUOTES}&display=swap`} rel="stylesheet" />}
       </Head>
