@@ -118,10 +118,10 @@ const ChiakiSong = () => {
   const progress = Math.min(1, time / duration)
 
   return (
-    <Box as="section" id="song" scrollMarginTop="72px" position="relative" overflow="hidden" pt={{ base: '320px', md: '500px' }} pb={{ base: 20, md: '120px' }} style={{ color: SNOW, backgroundColor: NIGHT }}>
-      {/* Continues the sky the terms section started: sunset, blue hour, then the night footer */}
-      <Box aria-hidden position="absolute" left="0" right="0" top="0" height={{ base: '380px', md: '580px' }} style={{ backgroundImage: DUSK_SONG }} />
-      <Box aria-hidden position="absolute" inset="0" pointerEvents="none" maskImage={{ base: 'linear-gradient(180deg, transparent 200px, black 380px)', md: 'linear-gradient(180deg, transparent 300px, black 580px)' }} style={{ backgroundImage: STARS.image, backgroundSize: `${STARS.width}px ${STARS.height}px` }} />
+    <Box as="section" id="song" scrollMarginTop="72px" position="relative" overflow="hidden" pt={{ base: '110px', md: '140px' }} pb={{ base: 20, md: '120px' }} style={{ color: SNOW, backgroundColor: NIGHT }}>
+      {/* Finishes the sky the terms section started: blue hour, then the night footer */}
+      <Box aria-hidden position="absolute" left="0" right="0" top="0" height={{ base: '170px', md: '240px' }} style={{ backgroundImage: DUSK_SONG }} />
+      <Box aria-hidden position="absolute" inset="0" pointerEvents="none" maskImage={{ base: 'linear-gradient(180deg, transparent 60px, black 170px)', md: 'linear-gradient(180deg, transparent 80px, black 240px)' }} style={{ backgroundImage: STARS.image, backgroundSize: `${STARS.width}px ${STARS.height}px` }} />
       <audio
         ref={audioRef}
         src={SONG_SRC}

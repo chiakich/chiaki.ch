@@ -20,8 +20,8 @@ const FullTerms = () => {
   const [open, setOpen] = useState(false)
   const sections = listOf(t, 'voicebankPage.terms.sections', '.title')
   return (
-    <Box mt={6} px={{ base: 5, md: 7 }} pt={7} pb={5} style={{ border: '1.5px solid rgba(22,28,38,.3)' }}>
-      {/* A mask, not a coloured overlay, since the dusk gradient sits behind this box */}
+    <Box mt={6} px={{ base: 5, md: 7 }} pt={7} pb={5} style={{ border: '1.5px solid rgba(22,28,38,.3)', backgroundColor: 'rgba(247,249,250,.6)' }}>
+      {/* A mask, not a coloured overlay, since the dusk gradient still shows through the translucent panel */}
       <Box id="chiaki-terms" position="relative" maxW="46em" overflow="hidden" fontSize="15px" lineHeight="1.8" style={{ maxHeight: open ? 'none' : 360, maskImage: open ? undefined : 'linear-gradient(180deg, black 200px, transparent)' }}>
         <Text fontFamily="mono" fontSize="xs">{t('voicebankPage.terms.updated')}</Text>
         <Text mt={2}>{t('voicebankPage.terms.intro')}</Text>

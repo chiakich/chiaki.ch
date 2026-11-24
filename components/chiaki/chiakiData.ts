@@ -40,8 +40,9 @@ export const SNOW_LAYERS = [
 ]
 
 // One continuous sky split across two sections: day to golden hour behind the terms, sunset to night in the song
-export const DUSK_TERMS = 'linear-gradient(180deg, transparent 0%, transparent 42%, #e6edf4 58%, #e0e6ec 70%, #ece0d0 82%, #f2d3b2 92%, #f3c79c 100%)'
-export const DUSK_SONG = 'linear-gradient(180deg, #f3c79c 0%, #eea56f 12%, #da8469 24%, #b56b7b 37%, #825c88 50%, #524a7a 63%, #2e2f5a 77%, #1a1f38 89%, #10151d 100%)'
+// The sunset runs the whole height of the terms, starting at their title; the text panel carries its own translucent ground, so the song section only has to finish the fall into night
+export const DUSK_TERMS = 'linear-gradient(180deg, transparent 0%, transparent 6%, #e6edf4 16%, #e0e6ec 28%, #ece0d0 42%, #f2d3b2 55%, #f3c79c 66%, #eea56f 78%, #da8469 88%, #b56b7b 95%, #825c88 100%)'
+export const DUSK_SONG = 'linear-gradient(180deg, #825c88 0%, #524a7a 28%, #2e2f5a 56%, #1a1f38 80%, #10151d 100%)'
 
 export const STARS ={ width: 900, height: 360, image: flakes(97, 70, 900, 360, [0.5, 1.3], [0.3, 0.85]) }
 
