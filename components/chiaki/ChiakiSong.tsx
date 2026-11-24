@@ -62,13 +62,15 @@ const StillLine = ({ line }: { line: SongLine }) => (
 )
 
 const ChiakiSong = () => {
-  const { t } = useI18n()
+  const { t, locale } = useI18n()
   const audioRef = useRef<HTMLAudioElement>(null)
   const [playing, setPlaying] = useState(false)
   const [time, setTime] = useState(0)
   const [duration, setDuration] = useState(DURATION)
 
   const translate = (stanzaId: string, index: number) => {
+    // The song is sung in Japanese, and a missing ja key would otherwise fall back to the tw translation
+    if (locale === 'ja') return ''
     const key = `chiakiPage.song.lyrics.${stanzaId}.${index}`
     const value = t(key)
     return value === key ? '' : value
