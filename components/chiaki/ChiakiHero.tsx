@@ -11,7 +11,10 @@ const Link = styled.a
 
 const NAV = ['listen', 'languages', 'download', 'spec', 'design', 'terms', 'song']
 
-const FIGURE = { position: 'absolute', left: { base: '76px', md: '52%' }, bottom: { base: '22px', md: '44px' }, height: { base: '720px', md: 'clamp(560px, 68vw, 980px)' }, aspectRatio: '609 / 1200' } as const
+// Sized from the section height rather than vw, so her head stays at the same height whatever the width; a vw height in a taller section left it sinking.
+// The slot starts at 52%, and when she is wider than what is left she overflows leftward instead of being cropped at the right edge.
+const SLOT = { position: 'absolute', left: { base: '76px', md: '52%' }, right: { md: '12px' }, top: { md: '76px' }, bottom: { base: '22px', md: '44px' }, height: { base: '720px', md: 'auto' }, display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end' } as const
+const FIGURE = { position: 'relative', flexShrink: 0, marginRight: 'auto', height: '100%', maxHeight: '980px', aspectRatio: '609 / 1200' } as const
 
 const drift = (x: number, y: number) => ({ translate: `calc(var(--mx, 0) * ${x}px) calc(var(--my, 0) * ${y}px)`, transition: 'translate .5s ease-out' })
 
@@ -23,11 +26,13 @@ const Stage = () => {
   const { t } = useI18n()
   return (
     <Box position={{ base: 'relative', md: 'absolute' }} inset={{ md: '0' }} height={{ base: '820px', md: 'auto' }} overflow="hidden" backgroundImage="linear-gradient(180deg, #a3b1c0 0%, #c6d0da 46%, #e3e8ed 80%, #eef2f5 100%)">
-      <Box aria-hidden {...FIGURE} zIndex={0}>
-        <Box position="absolute" left="50%" top="36%" width={{ base: '118%', md: '126%' }} aspectRatio="1 / 1" transform="translate(-50%, -50%)" style={drift(10, 6)}>
-          <Box width="100%" height="100%" borderRadius="50%" animation="chiakiDiscIn 1.6s cubic-bezier(.2,.7,.2,1) both" _motionReduce={{ animation: 'none' }} style={{ backgroundColor: ORANGE }} />
+      <Box aria-hidden {...SLOT} zIndex={0}>
+        <Box {...FIGURE}>
+          <Box position="absolute" left="50%" top="36%" width={{ base: '118%', md: '126%' }} aspectRatio="1 / 1" transform="translate(-50%, -50%)" style={drift(10, 6)}>
+            <Box width="100%" height="100%" borderRadius="50%" animation="chiakiDiscIn 1.6s cubic-bezier(.2,.7,.2,1) both" _motionReduce={{ animation: 'none' }} style={{ backgroundColor: ORANGE }} />
+          </Box>
+          <Box position="absolute" left="50%" top="36%" width={{ base: '138%', md: '146%' }} aspectRatio="1 / 1" borderRadius="50%" border="1px solid rgba(22,28,38,.55)" transform="translate(-50%, -50%)" style={drift(22, 12)} />
         </Box>
-        <Box position="absolute" left="50%" top="36%" width={{ base: '138%', md: '146%' }} aspectRatio="1 / 1" borderRadius="50%" border="1px solid rgba(22,28,38,.55)" transform="translate(-50%, -50%)" style={drift(22, 12)} />
       </Box>
 
       <Text
@@ -65,18 +70,20 @@ const Stage = () => {
       </styled.svg>
 
       {/* Parallax lives on the wrapper because breathe animates the image's own translate */}
-      <Box {...FIGURE} zIndex={3} pointerEvents="none" style={drift(-14, -6)}>
-        <Span aria-hidden position="absolute" left="16%" right="12%" bottom="-1.2%" height="3.4%" borderRadius="50%" backgroundColor="rgba(22,28,38,.2)" filter="blur(7px)" />
-        <styled.img
-          src={PORTRAIT_SRC}
-          alt={t('chiakiPage.portraitAlt')}
-          display="block"
-          width="100%"
-          height="100%"
-          transformOrigin="50% 100%"
-          animation="chiakiFadeUp 1.4s .3s cubic-bezier(.2,.7,.2,1) both, breathe 5.5s 2s ease-in-out infinite"
-          _motionReduce={{ animation: 'none' }}
-        />
+      <Box {...SLOT} zIndex={3} pointerEvents="none">
+        <Box {...FIGURE} style={drift(-14, -6)}>
+          <Span aria-hidden position="absolute" left="16%" right="12%" bottom="-1.2%" height="3.4%" borderRadius="50%" backgroundColor="rgba(22,28,38,.2)" filter="blur(7px)" />
+          <styled.img
+            src={PORTRAIT_SRC}
+            alt={t('chiakiPage.portraitAlt')}
+            display="block"
+            width="100%"
+            height="100%"
+            transformOrigin="50% 100%"
+            animation="chiakiFadeUp 1.4s .3s cubic-bezier(.2,.7,.2,1) both, breathe 5.5s 2s ease-in-out infinite"
+            _motionReduce={{ animation: 'none' }}
+          />
+        </Box>
       </Box>
 
     </Box>
@@ -109,7 +116,7 @@ const ChiakiHero = () => {
   }
 
   return (
-    <Box as="section" id="top" position="relative" overflow="hidden" minH={{ md: '1100px' }} onMouseMove={onMove} data-ready={ready || undefined} style={{ backgroundColor: SNOW, color: INK }}>
+    <Box as="section" id="top" position="relative" overflow="hidden" minH={{ md: 'min(1100px, calc(350px + 58vw))' }} onMouseMove={onMove} data-ready={ready || undefined} style={{ backgroundColor: SNOW, color: INK }}>
       <noscript><style>{'.chiaki-block > * { opacity: 1 !important }'}</style></noscript>
       <Stage />
 
@@ -164,7 +171,8 @@ const ChiakiHero = () => {
 
         <Text lang="ja" fontWeight="medium" fontSize={{ base: 'xl', md: 'clamp(22px, 2.2vw, 31px)' }} lineHeight="1.6" letterSpacing={{ base: '.04em', md: '.08em' }}>どこにいても、歌をお届けします。</Text>
 
-        <Text maxW={{ md: '29em' }} fontSize={{ base: '15px', md: '17px' }} lineHeight="2">{t('chiakiPage.intro')}</Text>
+        {/* Kept left of the figure's 52% slot so on narrow screens the copy doesn't run under her */}
+        <Text maxW={{ md: 'min(29em, calc(52vw - 64px))' }} fontSize={{ base: '15px', md: '17px' }} lineHeight="2">{t('chiakiPage.intro')}</Text>
 
         <Flex flexDirection={{ base: 'column', md: 'row' }} flexWrap="wrap" alignItems={{ base: 'stretch', md: 'center' }} gap={{ base: 3, md: '14px 18px' }} pt="6px">
           <Pill href="#download" icon={<DownArrow />}>{t('chiakiPage.freeDownload')}</Pill>
