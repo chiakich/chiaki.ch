@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState, type CSSProperties } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Box, Flex, Grid, styled } from 'styled-system/jsx'
 import { useI18n } from 'i18n'
-import { DUSK_SONG, INK, LANGS, LINE_LIGHT, MIST, NIGHT, ORANGE, PLAY_EVENT, SNOW, STARS } from './chiakiData'
-import { LINE_FX, SONG_ART, SONG_SRC, STANZAS, type Fx, type SongLine } from './songData'
+import { DUSK_SONG, INK, LINE_LIGHT, MIST, NIGHT, ORANGE, PLAY_EVENT, SNOW, STARS } from './chiakiData'
+import { LINES, SONG_ART, SONG_SRC, STANZAS, type SongLine } from './songData'
+import { GLOW, LANTERN, LyricStage, SHADOW, charStyle, tagOf } from './songPv'
 import { Container, Reveal } from './parts'
 import SectionTitle from './SectionTitle'
 
@@ -20,10 +21,6 @@ const DURATION = 259.5
 const LEAD_IN = 0.25
 // How long a finished line stays lit before it fades
 const HOLD = 1.2
-const LANTERN = '#ffb46b'
-const GLOW = '0 0 18px rgba(255,170,90,.5), 0 2px 6px rgba(8,10,24,.85)'
-const IGNITE = '0 0 26px rgba(255,170,90,.95), 0 0 8px rgba(255,200,130,.9)'
-const SHADOW = '0 1px 4px rgba(8,10,24,.85)'
 
 // Seeded so server and client scatter the same motes over the whole illustration
 const MOTES = (() => {
@@ -45,7 +42,6 @@ const MOTES = (() => {
   })
 })()
 
-const LINES = STANZAS.flatMap((stanza) => stanza.lines.map((line, index) => ({ ...line, stanzaId: stanza.id, index })))
 const LAST = LINES.length - 1
 
 const lineAt = (time: number) => {
@@ -56,119 +52,7 @@ const lineAt = (time: number) => {
 
 const clock = (seconds: number) => `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, '0')}`
 
-const tagOf = (line: SongLine) => (line.code ? LANGS.find((lang) => lang.code === line.code)?.tag : 'ja')
-
-const fxOf = (line: SongLine): Fx => (line.code ? 'scatter' : LINE_FX[line.text] ?? 'drift')
-
-const EASE = 'cubic-bezier(.2,.8,.2,1)'
-const TRANSITIONS: Record<Fx, string> = {
-  drift: `opacity .5s ease, filter .7s ease, translate .7s ${EASE}`,
-  glow: `opacity .3s ease, filter .5s ease, scale .7s cubic-bezier(.2,1.3,.4,1), color 1.8s ease, text-shadow 1.8s ease`,
-  pass: `opacity .5s ease, filter .6s ease, translate .8s ${EASE}`,
-  scatter: `opacity .5s ease, filter .8s ease, translate 1s ${EASE}, rotate 1s ${EASE}`,
-  pop: 'opacity .2s ease, filter .3s ease, scale .5s cubic-bezier(.2,1.6,.4,1)',
-  rise: `opacity .6s ease, filter .8s ease, translate .9s ${EASE}`,
-}
-
-// The pose a character waits in before it is sung; showing it transitions back to rest
-const hidden = (fx: Fx, k: number): CSSProperties => {
-  switch (fx) {
-    case 'glow': return { opacity: 0, scale: '.4', filter: 'blur(4px)' }
-    case 'pass': return { opacity: 0, translate: '1.4em 0', filter: 'blur(3px)' }
-    case 'scatter': {
-      const angle = ((k * 137) % 360) * (Math.PI / 180)
-      return { opacity: 0, translate: `${(Math.cos(angle) * 1.6).toFixed(2)}em ${(Math.sin(angle) * 1.6).toFixed(2)}em`, rotate: `${((k * 53) % 80) - 40}deg`, filter: 'blur(4px)' }
-    }
-    case 'pop': return { opacity: 0, scale: '1.9', filter: 'blur(2px)' }
-    case 'rise': return { opacity: 0, translate: '0 .9em', filter: 'blur(5px)' }
-    default: return { opacity: 0, translate: '0 -.45em', filter: 'blur(6px)' }
-  }
-}
-
-const REST: CSSProperties = { opacity: 1, translate: '0 0', scale: '1', rotate: '0deg', filter: 'blur(0)' }
-
-// Kanji carry the meaning so they stand largest; particles shrink back, as in PV lettering
-const PARTICLES = new Set([...'のがにをはへもでとねよ'])
-const charStyle = (char: string): CSSProperties => {
-  if (/[一-鿿]/.test(char)) return { fontSize: '1.18em' }
-  if (PARTICLES.has(char)) return { fontSize: '.6em', fontWeight: 700 }
-  if (/[぀-ゟ]/.test(char)) return { fontSize: '.84em' }
-  return {}
-}
-
-type Layout = 'single' | 'stack' | 'yokoTate' | 'tateYoko'
-const LAYOUTS: Layout[] = ['yokoTate', 'stack', 'tateYoko']
-
-// Consecutive lines rotate through layouts so the composition keeps changing
-const layoutOf = (line: SongLine, order: number): Layout => {
-  const parts = line.text.split(' ').length
-  if (parts === 1 || line.code) return 'single'
-  if (parts > 2) return 'stack'
-  return LAYOUTS[order % LAYOUTS.length]
-}
-
-const PvLine = ({ line, time, order }: { line: SongLine; time: number; order: number }) => {
-  const fx = fxOf(line)
-  const layout = layoutOf(line, order)
-  let k = 0
-  const segment = (text: string, s: number, vertical: boolean) => (
-    <Span key={s} writingMode={vertical ? 'vertical-rl' : undefined} whiteSpace="nowrap" lineHeight={vertical ? '1.05' : '1.15'} letterSpacing=".04em" style={{ marginRight: layout === 'stack' && s % 2 === 1 ? '1.6em' : undefined }}>
-      {[...text].map((char) => {
-        const index = k
-        k += 1
-        const shown = time >= line.times[index]
-        const first = index === 0
-        // Glow lines catch fire in lantern colour, then cool to white
-        const color = first ? LANTERN : fx === 'glow' && !shown ? LANTERN : SNOW
-        const textShadow = fx === 'glow' && !shown ? IGNITE : first ? GLOW : SHADOW
-        return (
-          <Span
-            key={index}
-            display="inline-block"
-            style={{
-              ...charStyle(char),
-              ...(first ? { fontSize: '1.4em' } : null),
-              ...(shown ? REST : hidden(fx, index)),
-              transition: TRANSITIONS[fx],
-              color,
-              textShadow,
-            }}
-          >
-            {char}
-          </Span>
-        )
-      })}
-    </Span>
-  )
-  const parts = line.text.split(' ')
-
-  if (layout === 'tateYoko') {
-    return (
-      <Flex lang={tagOf(line)} flexDirection="row-reverse" alignItems="flex-end" gap=".2em" fontWeight="black" fontSize={{ lg: '34px', xl: '44px' }}>
-        {segment(parts[0], 0, true)}
-        {segment(parts[1], 1, false)}
-      </Flex>
-    )
-  }
-  return (
-    <Flex lang={tagOf(line)} flexDirection="column" alignItems="flex-end" gap=".1em" fontWeight="black" fontSize={layout === 'single' ? { lg: '42px', xl: '56px' } : { lg: '34px', xl: '44px' }}>
-      {parts.map((text, s) => segment(text, s, layout === 'yokoTate' && s === 1))}
-    </Flex>
-  )
-}
-
-// The outgoing line uses the same card so it fades in place instead of losing its label and shifting
-const LyricCard = ({ order, time }: { order: number; time: number }) => {
-  const line = LINES[order]
-  return (
-    <Flex flexDirection="column" alignItems="flex-end" gap={3}>
-      {line.code && <Span fontFamily="mono" fontSize="13px" letterSpacing=".2em" style={{ color: ORANGE, textShadow: SHADOW }}>{line.code}</Span>}
-      <PvLine line={line} time={time} order={order} />
-    </Flex>
-  )
-}
-
-// Phones have no room for the PV card, so the subtitle keeps its lettering without the motion
+// Phones have no room for the PV stage, so the subtitle keeps its lettering without the motion
 const StillLine = ({ line }: { line: SongLine }) => (
   <>
     {[...line.text].map((char, index) => (
@@ -230,7 +114,6 @@ const ChiakiSong = () => {
   const active = lineAt(lyricTime)
   // The closing おやすみ stays up through the outro
   const cur = active >= 0 && (lyricTime <= LINES[active].end + HOLD || active === LAST) ? active : -1
-  const leaving = cur >= 0 ? cur - 1 : active
   const line = cur >= 0 ? LINES[cur] : null
   const progress = Math.min(1, time / duration)
 
@@ -261,7 +144,7 @@ const ChiakiSong = () => {
         </Reveal>
 
         <Reveal>
-          <Box position="relative" overflow="hidden" style={{ border: `1px solid ${LINE_LIGHT}` }}>
+          <Box position="relative" overflow="hidden" containerType="inline-size" style={{ border: `1px solid ${LINE_LIGHT}` }}>
             <picture>
               <source media="(max-width: 767px)" srcSet={SONG_ART.small} />
               <styled.img src={SONG_ART.large} alt={t('chiakiPage.song.artAlt')} display="block" width="100%" height="auto" aspectRatio="2000 / 1116" objectFit="cover" />
@@ -291,32 +174,16 @@ const ChiakiSong = () => {
               ))}
             </Box>
 
-            {/* PV-style lyrics in the open sky below the moon; visual only, the full text lives in the details below */}
-            <Box aria-hidden display={{ base: 'none', lg: 'block' }} position="absolute" inset="0" pointerEvents="none" backgroundImage="linear-gradient(270deg, rgba(8,10,24,.6) 0%, rgba(8,10,24,.3) 22%, transparent 42%)" />
-            <Grid aria-hidden display={{ base: 'none', lg: 'grid' }} position="absolute" top="25%" right="11%" bottom="22%" justifyItems="end" alignItems="start" pointerEvents="none">
-              {leaving >= 0 && leaving !== cur && (
-                <Box key={`out-${leaving}`} gridArea="1 / 1" animation="chiakiFadeOut .5s ease forwards">
-                  <LyricCard order={leaving} time={Infinity} />
-                </Box>
-              )}
-              {line ? (
-                <Box key={`in-${cur}`} gridArea="1 / 1">
-                  <LyricCard order={cur} time={lyricTime} />
-                </Box>
-              ) : active < 0 && (
-                <Flex key="title" gridArea="1 / 1" flexDirection="row-reverse" alignItems="flex-start" gap={4} animation="chiakiFadeIn .8s ease both" _motionReduce={{ animation: 'none' }} style={{ textShadow: SHADOW }}>
-                  <Span lang="ja" writingMode="vertical-rl" fontWeight="black" fontSize={{ lg: '48px', xl: '60px' }} letterSpacing=".3em" lineHeight="1">渡し歌</Span>
-                  <Span writingMode="vertical-rl" fontFamily="mono" fontSize="12px" letterSpacing=".4em" mt="6px" style={{ color: LANTERN }}>WATASHI-UTA</Span>
-                </Flex>
-              )}
-            </Grid>
+            {/* PV-style lyrics across the open sky; visual only, the full text lives in the details below */}
+            <Box aria-hidden display={{ base: 'none', lg: { base: 'block', _motionReduce: 'none' } }} position="absolute" inset="0" pointerEvents="none" backgroundImage="linear-gradient(270deg, rgba(8,10,24,.6) 0%, rgba(8,10,24,.34) 30%, transparent 56%)" />
+            <LyricStage cur={cur} active={active} time={lyricTime} />
 
             {/* One scrim under the subtitles and the controls keeps both readable over the grass */}
             <Box aria-hidden position="absolute" left="0" right="0" bottom="0" height={{ base: '72%', md: '46%' }} pointerEvents="none" backgroundImage="linear-gradient(180deg, transparent, rgba(10,12,22,.5) 45%, rgba(10,12,22,.85))" />
 
             {/* Every subtitle is stacked in one grid cell so a change crossfades instead of popping */}
             <Box aria-hidden position="absolute" left="0" right="0" bottom={{ base: '62px', md: '118px' }} px={{ base: 4, md: 16 }} pointerEvents="none" transition="opacity .6s ease" style={{ opacity: line ? 1 : 0 }}>
-              <Grid display={{ base: 'grid', lg: 'none' }} justifyItems="center" textAlign="center">
+              <Grid display={{ base: 'grid', lg: { base: 'none', _motionReduce: 'grid' } }} justifyItems="center" textAlign="center">
                 {LINES.map((item, index) => (
                   <Text key={index} lang={tagOf(item)} gridArea="1 / 1" fontWeight="black" fontSize={{ base: '19px', md: '28px' }} lineHeight="1.3" letterSpacing=".06em" transition="opacity .6s ease" style={{ opacity: index === cur ? 1 : 0, textShadow: SHADOW }}><StillLine line={item} /></Text>
                 ))}

@@ -276,6 +276,22 @@ export default defineConfig({
           '70%': { opacity: 0.85 },
           '100%': { opacity: 0, translate: 'var(--dx) var(--dy)' },
         },
+        chiakiPvOut: {
+          to: { opacity: 0, filter: 'blur(8px)', translate: '0 -.4em' },
+        },
+        // The PV ambient loops animate transform so they compose with the per-character entrance properties
+        chiakiPvSway: {
+          '0%, 100%': { transform: 'rotate(calc(var(--sway, 3deg) * -1)) translateY(.03em)' },
+          '50%': { transform: 'rotate(var(--sway, 3deg)) translateY(-.04em)' },
+        },
+        chiakiPvFlow: {
+          from: { transform: 'translateX(0)' },
+          to: { transform: 'translateX(-50%)' },
+        },
+        chiakiPvBreath: {
+          '0%, 100%': { opacity: 1 },
+          '50%': { opacity: 0.62 },
+        },
         chiakiDiscIn: {
           from: { opacity: 0, scale: '.7' },
           to: { opacity: 1, scale: '1' },

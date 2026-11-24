@@ -76,32 +76,6 @@ export const STANZAS: Stanza[] = [
   ] },
 ]
 
-// How each line enters, picked from its imagery; lines not listed drift down softly
-export type Fx = 'drift' | 'glow' | 'pass' | 'scatter' | 'pop' | 'rise'
+export type Line = SongLine & { stanzaId: string; index: number }
 
-export const LINE_FX: Record<string, Fx> = {
-  '窓の灯りが ついてるね': 'glow',
-  '言わなくたって わかるから': 'drift',
-  '遠い港の 子守唄': 'scatter',
-  '人から人へ 渡されて': 'pass',
-  '今 私まで 届いたの': 'glow',
-  'わたしうた わたしうた': 'pop',
-  'あなたへ渡す この歌を': 'pass',
-  '言葉が違う 街にでも': 'scatter',
-  'まだ生まれない 明日にも': 'rise',
-  'いつか誰かに 渡してね': 'pass',
-  '帰り道ほら 夕焼けが': 'glow',
-  '遠くの国で 朝になる': 'rise',
-  '小さな声の 私でも': 'drift',
-  'みんなに歌うと 決めたんだ': 'pop',
-  'この声だけは 老いないよ': 'rise',
-  '百年先の 夜にでも': 'scatter',
-  'あなたのことを 歌うから': 'glow',
-  'あの人の声を 借りている': 'pass',
-  'なりたかった 私になる': 'rise',
-  '優しくなれた 分だけは': 'drift',
-  'あなたに全部 あげるから': 'pass',
-  '窓の灯りが 消えるまで': 'glow',
-  'どこにいても 歌を届けるね': 'pass',
-  'おやすみ': 'glow',
-}
+export const LINES: Line[] = STANZAS.flatMap((stanza) => stanza.lines.map((line, index) => ({ ...line, stanzaId: stanza.id, index })))
