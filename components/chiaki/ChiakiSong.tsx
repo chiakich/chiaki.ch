@@ -147,58 +147,61 @@ const ChiakiSong = () => {
 
         <Reveal>
           <Box position="relative" overflow="hidden" containerType="inline-size" style={{ border: `1px solid ${LINE_LIGHT}` }}>
-            <picture>
-              <source media="(max-width: 767px)" srcSet={SONG_ART.small} />
-              <styled.img src={SONG_ART.large} alt={t('chiakiPage.song.artAlt')} display="block" width="100%" height="auto" aspectRatio="2000 / 1116" objectFit="cover" />
-            </picture>
-            {/* Positions are percentages of the illustration so they stay on the lantern at any width */}
-            <Box aria-hidden position="absolute" inset="0" pointerEvents="none" mixBlendMode="screen" animation="chiakiFlicker 2.6s linear infinite" _motionReduce={{ animation: 'none' }} backgroundImage="radial-gradient(circle at 41.5% 14%, rgba(255,205,130,.6) 0%, rgba(255,175,95,.26) 6%, rgba(255,150,80,.1) 15%, transparent 30%), radial-gradient(38% 48% at 34% 46%, rgba(255,170,95,.14), transparent 70%)" />
-            <Box aria-hidden position="absolute" inset="0" pointerEvents="none" _motionReduce={{ display: 'none' }}>
-              {MOTES.map((mote, index) => (
-                <Span
-                  key={index}
-                  position="absolute"
-                  borderRadius="50%"
-                  mixBlendMode="screen"
-                  style={{
-                    left: `${mote.left}%`,
-                    top: `${mote.top}%`,
-                    width: `${mote.size}px`,
-                    height: `${mote.size}px`,
-                    background: mote.bokeh ? 'radial-gradient(circle, rgba(255,214,160,.45), transparent 70%)' : '#fff1d8',
-                    boxShadow: mote.bokeh ? undefined : '0 0 5px 1px rgba(255,185,110,.75), 0 0 12px 2px rgba(255,160,80,.25)',
-                    filter: mote.bokeh ? 'blur(1px)' : undefined,
-                    animation: `chiakiMote ${mote.seconds}s ${mote.delay}s ease-in-out infinite`,
-                    ['--dx' as string]: mote.dx,
-                    ['--dy' as string]: mote.dy,
-                  }}
-                />
-              ))}
-            </Box>
-
-            {/* PV-style lyrics across the open sky; visual only, the full text lives in the details below */}
-            <Box aria-hidden display={{ base: 'none', lg: { base: 'block', _motionReduce: 'none' } }} position="absolute" inset="0" pointerEvents="none" backgroundImage="linear-gradient(270deg, rgba(8,10,24,.6) 0%, rgba(8,10,24,.34) 30%, transparent 56%)" />
-            <LyricStage cur={cur} active={active} time={lyricTime} />
-
-            {/* One scrim under the subtitles and the controls keeps both readable over the grass */}
-            <Box aria-hidden position="absolute" left="0" right="0" bottom="0" height={{ base: '72%', md: '46%' }} pointerEvents="none" backgroundImage="linear-gradient(180deg, transparent, rgba(10,12,22,.5) 45%, rgba(10,12,22,.85))" />
-
-            {/* Every subtitle is stacked in one grid cell so a change crossfades instead of popping */}
-            <Box aria-hidden position="absolute" left="0" right="0" bottom={{ base: '62px', md: '118px' }} px={{ base: 4, md: 16 }} pointerEvents="none" transition="opacity .6s ease" style={{ opacity: line ? 1 : 0 }}>
-              <Grid display={{ base: 'grid', lg: { base: 'none', _motionReduce: 'grid' } }} justifyItems="center" textAlign="center">
-                {LINES.map((item, index) => (
-                  <Text key={index} lang={tagOf(item)} gridArea="1 / 1" fontWeight="black" fontSize={{ base: '19px', md: '28px' }} lineHeight="1.3" letterSpacing=".06em" transition="opacity .6s ease" style={{ opacity: index === cur ? 1 : 0, textShadow: SHADOW }}><StillLine line={item} /></Text>
+            {/* The frame is everything drawn over the illustration; on phones the controls sit under it, as in a video player */}
+            <Box position="relative">
+              <picture>
+                <source media="(max-width: 767px)" srcSet={SONG_ART.small} />
+                <styled.img src={SONG_ART.large} alt={t('chiakiPage.song.artAlt')} display="block" width="100%" height="auto" aspectRatio="2000 / 1116" objectFit="cover" />
+              </picture>
+              {/* Positions are percentages of the illustration so they stay on the lantern at any width */}
+              <Box aria-hidden position="absolute" inset="0" pointerEvents="none" mixBlendMode="screen" animation="chiakiFlicker 2.6s linear infinite" _motionReduce={{ animation: 'none' }} backgroundImage="radial-gradient(circle at 41.5% 14%, rgba(255,205,130,.6) 0%, rgba(255,175,95,.26) 6%, rgba(255,150,80,.1) 15%, transparent 30%), radial-gradient(38% 48% at 34% 46%, rgba(255,170,95,.14), transparent 70%)" />
+              <Box aria-hidden position="absolute" inset="0" pointerEvents="none" _motionReduce={{ display: 'none' }}>
+                {MOTES.map((mote, index) => (
+                  <Span
+                    key={index}
+                    position="absolute"
+                    borderRadius="50%"
+                    mixBlendMode="screen"
+                    style={{
+                      left: `${mote.left}%`,
+                      top: `${mote.top}%`,
+                      width: `${mote.size}px`,
+                      height: `${mote.size}px`,
+                      background: mote.bokeh ? 'radial-gradient(circle, rgba(255,214,160,.45), transparent 70%)' : '#fff1d8',
+                      boxShadow: mote.bokeh ? undefined : '0 0 5px 1px rgba(255,185,110,.75), 0 0 12px 2px rgba(255,160,80,.25)',
+                      filter: mote.bokeh ? 'blur(1px)' : undefined,
+                      animation: `chiakiMote ${mote.seconds}s ${mote.delay}s ease-in-out infinite`,
+                      ['--dx' as string]: mote.dx,
+                      ['--dy' as string]: mote.dy,
+                    }}
+                  />
                 ))}
-              </Grid>
-              <Grid justifyItems="center" textAlign="center">
-                {LINES.map((item, index) => {
-                  const tr = translate(item.stanzaId, item.index)
-                  return tr && <Text key={index} gridArea="1 / 1" fontSize={{ base: '14px', md: '24px' }} fontWeight="medium" lineHeight="1.5" letterSpacing=".04em" transition="opacity .6s ease" style={{ opacity: index === cur ? 1 : 0, color: '#f6e6d2', textShadow: SHADOW }}>{tr}</Text>
-                })}
-              </Grid>
+              </Box>
+
+              {/* PV-style lyrics across the open sky; visual only, the full text lives in the details below */}
+              <Box aria-hidden display={{ base: 'block', _motionReduce: 'none' }} position="absolute" inset="0" pointerEvents="none" backgroundImage="linear-gradient(270deg, rgba(8,10,24,.6) 0%, rgba(8,10,24,.34) 30%, transparent 56%)" />
+              <LyricStage cur={cur} active={active} time={lyricTime} />
+
+              {/* One scrim under the subtitles and the controls keeps both readable over the grass */}
+              <Box aria-hidden position="absolute" left="0" right="0" bottom="0" height={{ base: '34%', md: '46%' }} pointerEvents="none" backgroundImage="linear-gradient(180deg, transparent, rgba(10,12,22,.5) 45%, rgba(10,12,22,.85))" />
+
+              {/* Every subtitle is stacked in one grid cell so a change crossfades instead of popping */}
+              <Box aria-hidden position="absolute" left="0" right="0" bottom={{ base: '8px', md: '118px' }} px={{ base: 4, md: 16 }} pointerEvents="none" transition="opacity .6s ease" style={{ opacity: line ? 1 : 0 }}>
+                <Grid display={{ base: 'none', _motionReduce: 'grid' }} justifyItems="center" textAlign="center">
+                  {LINES.map((item, index) => (
+                    <Text key={index} lang={tagOf(item)} gridArea="1 / 1" fontWeight="black" fontSize={{ base: '19px', md: '28px' }} lineHeight="1.3" letterSpacing=".06em" transition="opacity .6s ease" style={{ opacity: index === cur ? 1 : 0, textShadow: SHADOW }}><StillLine line={item} /></Text>
+                  ))}
+                </Grid>
+                <Grid justifyItems="center" textAlign="center">
+                  {LINES.map((item, index) => {
+                    const tr = translate(item.stanzaId, item.index)
+                    return tr && <Text key={index} gridArea="1 / 1" fontSize={{ base: '14px', md: '24px' }} fontWeight="medium" lineHeight="1.5" letterSpacing=".04em" transition="opacity .6s ease" style={{ opacity: index === cur ? 1 : 0, color: '#f6e6d2', textShadow: SHADOW }}>{tr}</Text>
+                  })}
+                </Grid>
+              </Box>
             </Box>
 
-            <Flex position="absolute" left="0" right="0" bottom="0" alignItems="center" gap={{ base: 3, md: 6 }} px={{ base: 3, md: 7 }} pb={{ base: 3, md: 6 }}>
+            <Flex position={{ base: 'relative', md: 'absolute' }} left="0" right="0" bottom="0" alignItems="center" gap={{ base: 3, md: 6 }} px={{ base: 3, md: 7 }} pt={{ base: 3, md: 0 }} pb={{ base: 3, md: 6 }}>
               <Button type="button" onClick={toggle} aria-label={t(playing ? 'chiakiPage.song.pause' : 'chiakiPage.song.play')} flexShrink={0} width={{ base: '44px', md: '72px' }} height={{ base: '44px', md: '72px' }} borderRadius="50%" display="flex" alignItems="center" justifyContent="center" cursor="pointer" boxShadow="0 6px 24px rgba(8,10,24,.45)" animation={playing ? 'chiakiPulse 1.8s ease-out infinite' : 'none'} _motionReduce={{ animation: 'none' }} style={{ backgroundColor: ORANGE, color: INK }}>
                 <styled.svg width={{ base: '18px', md: '26px' }} height={{ base: '18px', md: '26px' }} viewBox="0 0 22 22" aria-hidden>
                   <path d={playing ? 'M5 3h4v16H5zM13 3h4v16h-4z' : 'M6 3v16l13-8z'} fill="currentColor" />

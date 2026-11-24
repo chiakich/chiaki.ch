@@ -726,7 +726,7 @@ export const LyricStage = ({ cur, active, time }: { cur: number; active: number;
   const night = slots.find((slot) => LINES[slot.index].code)
 
   return (
-    <Grid aria-hidden display={{ base: 'none', lg: { base: 'grid', _motionReduce: 'none' } }} position="absolute" top="25%" left="48%" right="7%" bottom="33%" pointerEvents="none" fontSize="3.6cqw">
+    <Grid aria-hidden display={{ base: 'grid', _motionReduce: 'none' }} position="absolute" top="25%" left="48%" right="7%" bottom="33%" pointerEvents="none" fontSize="3.6cqw">
       {night && (
         <Box key="stars" position="absolute" inset="0" style={{ animation: night.leaving ? OUT : undefined }}>
           <Constellation time={time} />
