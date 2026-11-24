@@ -47,7 +47,9 @@ const ChiakiDesign = () => {
                   <Img
                     key={item.id}
                     src={item.src}
-                    alt={on ? t('chiakiPage.looks.alt').replace('{look}', label(item.id)) : ''}
+                    loading="lazy"
+                    decoding="async"
+                    alt={on ?t('chiakiPage.looks.alt').replace('{look}', label(item.id)) : ''}
                     aria-hidden={!on}
                     position="absolute"
                     inset="0"
@@ -83,7 +85,7 @@ const ChiakiDesign = () => {
                 cursor="pointer"
                 style={{ borderTop: `2px solid ${on ? INK : 'rgba(22,28,38,.35)'}`, color: on ? INK : STEEL }}
               >
-                <Img src={item.src} alt="" width="104px" height="64px" objectFit="cover" flexShrink={0} display={{ base: 'none', md: 'block' }} style={{ backgroundColor: item.bg }} />
+                <Img src={item.src} loading="lazy" decoding="async" alt="" width="104px" height="64px" objectFit="cover" flexShrink={0} display={{ base: 'none', md: 'block' }} style={{ backgroundColor: item.bg }} />
                 <Span flex="1" minW="0">
                   <Span display="block" fontWeight="medium" fontSize="sm" letterSpacing=".1em" style={{ fontFamily: JOST }}>{String(index + 1).padStart(2, '0')}</Span>
                   <Span display="block" fontSize={{ base: 'md', md: '22px' }} fontWeight="black" letterSpacing={{ md: '.1em', _en: '0' }} lineHeight="1.3" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">{label(item.id)}</Span>

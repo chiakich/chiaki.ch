@@ -161,7 +161,7 @@ const ChiakiSong = () => {
             <Box position="relative">
               <picture>
                 <source media="(max-width: 767px)" srcSet={SONG_ART.small} />
-                <styled.img src={SONG_ART.large} alt={t('chiakiPage.song.artAlt')} display="block" width="100%" height="auto" aspectRatio="2000 / 1116" objectFit="cover" />
+                <styled.img src={SONG_ART.large} loading="lazy" decoding="async" alt={t('chiakiPage.song.artAlt')} display="block" width="100%" height="auto" aspectRatio="2000 / 1116" objectFit="cover" />
               </picture>
               {/* Positions are percentages of the illustration so they stay on the lantern at any width */}
               <Box aria-hidden position="absolute" inset="0" pointerEvents="none" mixBlendMode="screen" animation="chiakiFlicker 2.6s linear infinite" _motionReduce={{ animation: 'none' }} backgroundImage="radial-gradient(circle at 41.5% 14%, rgba(255,205,130,.6) 0%, rgba(255,175,95,.26) 6%, rgba(255,150,80,.1) 15%, transparent 30%), radial-gradient(38% 48% at 34% 46%, rgba(255,170,95,.14), transparent 70%)" />
