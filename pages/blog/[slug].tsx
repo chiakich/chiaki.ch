@@ -5,6 +5,7 @@ import { Box, Flex, HStack, styled } from 'styled-system/jsx'
 import { css } from 'styled-system/css'
 import { LetterpressStyles } from 'kappan/react'
 import { getPost, getPostSlugs, type Post } from 'lib/blog'
+import { useTrackOnView } from 'lib/analytics'
 import { getMessages } from 'i18n/messages'
 import type { PageMetaOverride } from 'components/PageMeta'
 import BlogWidgets from 'components/blog/widgets'
@@ -131,6 +132,8 @@ const formatDate = (iso: string) => iso.replace(/-/g, '.')
 
 const BlogPost: NextPage<{ post: Post }> = ({ post }) => {
   const proseRef = useRef<HTMLDivElement>(null)
+  const endRef = useRef<HTMLDivElement>(null)
+  useTrackOnView(endRef, 'blog-read-end', { slug: post.slug })
 
   return (
     <Box className={SHEET_CLASS} data-jf-skip minHeight="100vh" overflowX="clip" position="relative">
@@ -182,7 +185,7 @@ const BlogPost: NextPage<{ post: Post }> = ({ post }) => {
         <div ref={proseRef} className={prose} dangerouslySetInnerHTML={{ __html: post.html }} />
         <BlogWidgets containerRef={proseRef} />
 
-        <Box mt={16} pt={6} style={{ borderTop: '1px solid color-mix(in srgb, var(--ink) 25%, transparent)' }}>
+        <Box ref={endRef} mt={16} pt={6} style={{ borderTop: '1px solid color-mix(in srgb, var(--ink) 25%, transparent)' }}>
           <Flex justify="space-between" alignItems="baseline" flexWrap="wrap" gap={3}>
             <NextLink href="/blog" style={{ textDecoration: 'none' }}>
               <Span className="lbl" _hover={{ color: 'var(--red)' }}>◂ BACK TO BLOG</Span>

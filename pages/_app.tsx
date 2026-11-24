@@ -1,11 +1,13 @@
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
+import Script from 'next/script'
 import { useRouter } from 'next/router'
 import { LazyMotion } from 'framer-motion'
 import { useEffect } from 'react'
 import PageMeta from 'components/PageMeta'
 import TopBar from 'components/TopBar'
 import { LocaleProvider, type Locale, locales } from 'i18n'
+import { UMAMI_DOMAINS, UMAMI_SCRIPT_URL, UMAMI_WEBSITE_ID } from 'lib/analytics'
 import '../styled-system/styles.css'
 
 declare global {
@@ -58,6 +60,14 @@ function MyApp({ Component, pageProps }: AppProps) {
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
         />
       </Head>
+      {UMAMI_WEBSITE_ID && (
+        <Script
+          src={UMAMI_SCRIPT_URL}
+          data-website-id={UMAMI_WEBSITE_ID}
+          data-domains={UMAMI_DOMAINS}
+          strategy="afterInteractive"
+        />
+      )}
       <LocaleProvider locale={locale} messages={pageProps.messages}>
         {/*
           Components use `m` rather than `motion`, so the feature set is supplied

@@ -96,6 +96,9 @@ const LanguageSwitcher: React.FC = () => {
                 itemLocale
               )}
               role="menuitem"
+              data-umami-event="language-switch"
+              data-umami-event-from={locale}
+              data-umami-event-to={itemLocale}
               onClick={() => setOpen(false)}
               tabIndex={isOpen ? 0 : -1}
               style={{

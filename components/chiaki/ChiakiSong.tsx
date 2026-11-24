@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Box, Flex, Grid, styled } from 'styled-system/jsx'
 import { useI18n } from 'i18n'
+import { track } from 'lib/analytics'
 import { DUSK_SONG, INK, LINE_LIGHT, MIST, NIGHT, ORANGE, PLAY_EVENT, SNOW, STARS } from './chiakiData'
 import { LINES, SONG_ART, SONG_SRC, STANZAS, type SongLine } from './songData'
 import { GLOW, LANTERN, LyricStage, SHADOW, charStyle, tagOf } from './songPv'
@@ -64,6 +65,8 @@ const StillLine = ({ line }: { line: SongLine }) => (
 const ChiakiSong = () => {
   const { t, locale } = useI18n()
   const audioRef = useRef<HTMLAudioElement>(null)
+  // Counts listeners, not every pause/resume
+  const playedRef = useRef(false)
   const [playing, setPlaying] = useState(false)
   const [time, setTime] = useState(0)
   const [duration, setDuration] = useState(DURATION)
@@ -100,6 +103,10 @@ const ChiakiSong = () => {
     const audio = audioRef.current
     if (!audio) return
     if (audio.paused) {
+      if (!playedRef.current) {
+        playedRef.current = true
+        track('song-play')
+      }
       window.dispatchEvent(new CustomEvent(PLAY_EVENT, { detail: PLAYER_ID }))
       audio.play().catch(() => setPlaying(false))
     } else {
@@ -131,7 +138,10 @@ const ChiakiSong = () => {
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
         onLoadedMetadata={(event) => setDuration(event.currentTarget.duration || DURATION)}
-        onEnded={() => setTime(duration)}
+        onEnded={() => {
+          setTime(duration)
+          track('song-complete')
+        }}
       />
 
       <Container position="relative">
