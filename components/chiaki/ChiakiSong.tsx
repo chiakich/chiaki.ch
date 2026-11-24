@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { Box, Flex, Grid, styled } from 'styled-system/jsx'
 import { useI18n } from 'i18n'
 import { track } from 'lib/analytics'
@@ -50,6 +50,13 @@ const lineAt = (time: number) => {
   LINES.forEach((line, i) => { if (line.start <= time) found = i })
   return found
 }
+
+// Safari can leave a faded-out subtitle painted, so once the fade ends it is hidden outright
+const fade = (on: boolean): CSSProperties => ({
+  opacity: on ? 1 : 0,
+  visibility: on ? 'visible' : 'hidden',
+  transition: on ? 'opacity .6s ease' : 'opacity .6s ease, visibility 0s .6s',
+})
 
 const clock = (seconds: number) => `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, '0')}`
 
@@ -199,13 +206,13 @@ const ChiakiSong = () => {
               <Box aria-hidden position="absolute" left="0" right="0" bottom={{ base: '8px', md: '118px' }} px={{ base: 4, md: 16 }} pointerEvents="none" transition="opacity .6s ease" style={{ opacity: line ? 1 : 0 }}>
                 <Grid display={{ base: 'none', _motionReduce: 'grid' }} justifyItems="center" textAlign="center">
                   {LINES.map((item, index) => (
-                    <Text key={index} lang={tagOf(item)} gridArea="1 / 1" fontWeight="black" fontSize={{ base: '19px', md: '28px' }} lineHeight="1.3" letterSpacing=".06em" transition="opacity .6s ease" style={{ opacity: index === cur ? 1 : 0, textShadow: SHADOW }}><StillLine line={item} /></Text>
+                    <Text key={index} lang={tagOf(item)} gridArea="1 / 1" fontWeight="black" fontSize={{ base: '19px', md: '28px' }} lineHeight="1.3" letterSpacing=".06em" style={{ ...fade(index === cur), textShadow: SHADOW }}><StillLine line={item} /></Text>
                   ))}
                 </Grid>
                 <Grid justifyItems="center" textAlign="center">
                   {LINES.map((item, index) => {
                     const tr = translate(item.stanzaId, item.index)
-                    return tr && <Text key={index} gridArea="1 / 1" fontSize={{ base: '14px', md: '24px' }} fontWeight="medium" lineHeight="1.5" letterSpacing=".04em" transition="opacity .6s ease" style={{ opacity: index === cur ? 1 : 0, color: '#f6e6d2', textShadow: SHADOW }}>{tr}</Text>
+                    return tr && <Text key={index} gridArea="1 / 1" fontSize={{ base: '14px', md: '24px' }} fontWeight="medium" lineHeight="1.5" letterSpacing=".04em" style={{ ...fade(index === cur), color: '#f6e6d2', textShadow: SHADOW }}>{tr}</Text>
                   })}
                 </Grid>
               </Box>
