@@ -279,6 +279,9 @@ export default defineConfig({
         chiakiPvOut: {
           to: { opacity: 0, filter: 'blur(8px)', translate: '0 -.4em' },
         },
+        chiakiPvIn: {
+          from: { opacity: 0, filter: 'blur(8px)', translate: '0 .4em' },
+        },
         // The PV ambient loops animate transform so they compose with the per-character entrance properties
         chiakiPvSway: {
           '0%, 100%': { transform: 'rotate(calc(var(--sway, 3deg) * -1)) translateY(.03em)' },

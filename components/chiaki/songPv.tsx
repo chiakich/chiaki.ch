@@ -684,6 +684,39 @@ const groupStart = (index: number) => {
 }
 
 // Sized in cqw, so the nearest container-type ancestor (the illustration) scales the lettering
+const COVER_SHADOW = '0 2px 10px rgba(8,10,24,.7), 0 0 34px rgba(255,170,90,.28)'
+
+// The title card before the first verse. The intro plays out as an ember running down the rule,
+// so the light reaches the bottom just as it is handed to the first line
+const Cover = ({ time, leaving }: { time: number; leaving: boolean }) => {
+  const fuse = span(time, 0.4, LINES[0].start - 0.2)
+  const rise = (delay: number): CSSProperties => ({ animation: `chiakiPvIn 1.1s ${delay}s ${EASE} both` })
+  const rt: CSSProperties = { fontSize: '.19em', fontWeight: 700, letterSpacing: '.3em', color: 'rgba(238,242,245,.82)' }
+
+  return (
+    <Flex gridArea="1 / 1" justifySelf="end" flexDirection="row-reverse" alignItems="flex-start" gap=".5em" style={{ animation: leaving ? OUT_SLOW : undefined }}>
+      <Span lang="ja" position="relative" writingMode="vertical-rl" fontWeight="black" lineHeight="1.05" style={{ textShadow: COVER_SHADOW }}>
+        <Span position="absolute" left="50%" top="50%" width="9em" height="11em" borderRadius="50%" mixBlendMode="screen" animation="chiakiPvBreath 4.4s ease-in-out infinite" style={{ translate: '-50% -50%', backgroundImage: 'radial-gradient(closest-side, rgba(255,170,90,.2), transparent)' }} />
+        <Span display="inline-block" fontSize="2.3em" style={{ ...rise(0.1), color: SNOW }}><ruby>渡<rt style={rt}>わた</rt></ruby></Span>
+        <Span display="inline-block" fontSize="1.15em" style={{ ...rise(0.3), color: SNOW }}>し</Span>
+        <Span display="inline-block" fontSize="2.3em" style={{ ...rise(0.5), color: SNOW }}><ruby>歌<rt style={rt}>うた</rt></ruby></Span>
+      </Span>
+
+      <Span position="relative" display="block" width=".04em" height="5.4em" mt=".35em" style={{ ...rise(0.75), backgroundColor: 'rgba(238,242,245,.22)' }}>
+        <Span position="absolute" left="0" top="0" width="100%" style={{ height: `${fuse * 100}%`, backgroundImage: `linear-gradient(180deg, transparent, ${LANTERN})` }} />
+        <Span position="absolute" inset="0" animation={fuse > 0 ? undefined : 'chiakiPvBreath 2.4s ease-in-out infinite'}>
+          <Orb x="50%" y={`${(fuse * 100).toFixed(2)}%`} size={0.26} />
+        </Span>
+      </Span>
+
+      <Flex flexDirection="row-reverse" gap=".25em" mt=".3em" fontFamily="mono" letterSpacing=".4em" whiteSpace="nowrap" style={{ ...rise(0.9), fontSize: '.27em', textShadow: SHADOW }}>
+        <Span writingMode="vertical-rl" style={{ color: LANTERN }}>WATASHI-UTA</Span>
+        <Span writingMode="vertical-rl" style={{ color: 'rgba(238,242,245,.7)' }}>VO. CHIAKI</Span>
+      </Flex>
+    </Flex>
+  )
+}
+
 export const LyricStage = ({ cur, active, time }: { cur: number; active: number; time: number }) => {
   const from = cur >= 0 ? groupStart(cur) : -1
   const gone = cur >= 0 ? from - 1 : active
@@ -708,12 +741,7 @@ export const LyricStage = ({ cur, active, time }: { cur: number; active: number;
           </Box>
         )
       })}
-      {active < 0 && (
-        <Flex gridArea="1 / 1" justifySelf="end" flexDirection="row-reverse" alignItems="flex-start" gap=".35em" animation="chiakiFadeIn .8s ease both" style={{ textShadow: SHADOW }}>
-          <Span lang="ja" writingMode="vertical-rl" fontWeight="black" fontSize="1.4em" letterSpacing=".3em" lineHeight="1">渡し歌</Span>
-          <Span writingMode="vertical-rl" fontFamily="mono" fontSize="12px" letterSpacing=".4em" mt="6px" style={{ color: LANTERN }}>WATASHI-UTA</Span>
-        </Flex>
-      )}
+      {(active < 0 || time < LINES[0].start + 1.1) && <Cover time={time} leaving={active >= 0} />}
     </Grid>
   )
 }
