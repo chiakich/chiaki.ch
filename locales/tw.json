@@ -106,7 +106,7 @@
     },
     "chiaki": {
       "title": "千亞紀 CHIAKI｜28 語言 DiffSinger 免費聲庫 - 千秋稻荷社",
-      "description": "千亞紀是以涼風千秋的聲音為原型製作的虛擬歌手，DiffSinger 聲庫支援 28 種語言，免費、可商用。"
+      "description": "千亞紀是以涼風千秋的聲音為原型製作的 AI 歌聲合成聲庫，可在 DiffSinger 與 OpenUtau 使用，支援 28 種語言，以日文、英文、中文最拿手，免費、可商用。"
     },
     "characters": {
       "title": "角色介紹 - 千秋稻荷社",
@@ -1285,7 +1285,7 @@
   "chiakiPage": {
     "name": "千亞紀",
     "portraitAlt": "千亞紀 全身立繪",
-    "intro": "千亞紀是以涼風千秋的聲音為原型，後製調整的虛擬歌手，自用、商用完全免費。不管你在哪裡、說什麼語言，她都想用你的語言，唱一首歌給你聽。",
+    "intro": "千亞紀是以涼風千秋的聲音為原型的多語言 DiffSinger 聲庫，OpenUtau 就能用，商用也免費。不管你在哪裡，她都想用你的語言唱首歌給你聽。",
     "freeDownload": "免費下載",
     "profile": {
       "birthday": "2月27日",

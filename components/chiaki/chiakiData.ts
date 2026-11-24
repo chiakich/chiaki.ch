@@ -1,3 +1,5 @@
+import { LANGS, type Tier } from './langs'
+
 export const INK = '#161c26'
 export const STEEL = '#4f5c6a'
 export const SNOW = '#eef2f5'
@@ -49,39 +51,7 @@ export const STARS ={ width: 900, height: 360, image: flakes(97, 70, 900, 360, [
 export const RUINS_FAR = 'M0 360V250h40v-60h26v-40h18v100h30v-70l22-14v84h40V170h12l10-30 10 30h14v190zM300 360V230l40-20v-30h24v170zM420 360V150h22l6-40 8 40h20v40l30 10v160zM600 360V240h60v-50l14-8 16 20v158zM760 360V180l26-30 24 18v40h40v152zM930 360V120h8v-30h6v30h8v40h30v200zM1060 360V220h36l18-40h22v70l40 10v100zM1180 360V200h60v160z'
 export const RUINS_NEAR = 'M0 360V300h120v-30h80v90zM240 360v-50l70-20 60 10v60zM470 360v-70h90l20 30h60v40zM700 360v-40l80-30 90 20v50zM900 360v-60h140v60zM1080 360v-40l80-10 80 10v40z'
 
-export type Tier = 'native' | 'fluent' | 'learning'
-
-// Demo order doubles as the radio's station order
-export const LANGS: { code: string; native: string; song: string; tag: string; tier: Tier }[] = [
-  { code: 'JA', native: '日本語', song: 'さくらさくら', tag: 'ja', tier: 'native' },
-  { code: 'ZH', native: '中文', song: '茉莉花', tag: 'zh-Hant', tier: 'native' },
-  { code: 'EN', native: 'English', song: 'Scarborough Fair', tag: 'en', tier: 'native' },
-  { code: 'KO', native: '한국어', song: '아리랑', tag: 'ko', tier: 'fluent' },
-  { code: 'FR', native: 'Français', song: 'Au clair de la lune', tag: 'fr', tier: 'fluent' },
-  { code: 'ES', native: 'Español', song: 'La cucaracha', tag: 'es', tier: 'fluent' },
-  { code: 'IT', native: 'Italiano', song: 'Fra Martino', tag: 'it', tier: 'fluent' },
-  { code: 'PT', native: 'Português', song: 'Noite Feliz', tag: 'pt', tier: 'fluent' },
-  { code: 'DE', native: 'Deutsch', song: 'Hänschen klein', tag: 'de', tier: 'fluent' },
-  { code: 'RU', native: 'Русский', song: 'Во поле берёза', tag: 'ru', tier: 'fluent' },
-  { code: 'PL', native: 'Polski', song: 'Wlazł kotek na płotek', tag: 'pl', tier: 'fluent' },
-  { code: 'UK', native: 'Українська', song: 'Щедрик', tag: 'uk', tier: 'fluent' },
-  { code: 'TH', native: 'ไทย', song: 'จันทร์เจ้าขา', tag: 'th', tier: 'fluent' },
-  { code: 'FI', native: 'Suomi', song: 'Ukko Nooa', tag: 'fi', tier: 'learning' },
-  { code: 'LA', native: 'Latina', song: 'Gaudeamus igitur', tag: 'la', tier: 'learning' },
-  { code: 'BE', native: 'Беларуская', song: 'Купалінка', tag: 'be', tier: 'learning' },
-  { code: 'BG', native: 'Български', song: 'Хубава си, моя горо', tag: 'bg', tier: 'learning' },
-  { code: 'MK', native: 'Македонски', song: 'Јовано, Јованке', tag: 'mk', tier: 'learning' },
-  { code: 'HBS', native: 'Srpskohrvatski', song: 'Ajde Jano', tag: 'sh', tier: 'learning' },
-  { code: 'LO', native: 'ລາວ', song: 'ດອກຈຳປາຫອມ', tag: 'lo', tier: 'learning' },
-  { code: 'CA', native: 'Català', song: 'El cant dels ocells', tag: 'ca', tier: 'learning' },
-  { code: 'GL', native: 'Galego', song: 'Negra sombra', tag: 'gl', tier: 'learning' },
-  { code: 'ID', native: 'Bahasa Indonesia', song: 'Burung Kakatua', tag: 'id', tier: 'learning' },
-  { code: 'MS', native: 'Bahasa Melayu', song: 'Rasa Sayang', tag: 'ms', tier: 'learning' },
-  { code: 'EO', native: 'Esperanto', song: 'Brilu, brilu', tag: 'eo', tier: 'learning' },
-  { code: 'SW', native: 'Kiswahili', song: 'Lala mtoto', tag: 'sw', tier: 'learning' },
-  { code: 'HAW', native: 'ʻŌlelo Hawaiʻi', song: 'Aloha ʻOe', tag: 'haw', tier: 'learning' },
-  { code: 'MI', native: 'Te Reo Māori', song: 'Pōkarekare Ana', tag: 'mi', tier: 'learning' },
-]
+export { LANGS, type Tier }
 
 // The mother tongues are listed in the order she'd introduce them
 export const NATIVE_ORDER = ['JA', 'EN', 'ZH']

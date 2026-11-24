@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { localizedPath, pagePathFromLocalePath, type Locale, useI18n } from 'i18n'
 import { getMainLinks, getNavSections } from 'components/nav/navData'
 import { DOWNLOADS } from 'components/chiaki/voicebankData'
+import { LANGS } from 'components/chiaki/langs'
 
 const SITE_URL = 'https://chiaki.ch'
 const SITE_NAME = '千秋稻荷社'
@@ -247,6 +248,8 @@ const PageMeta = ({ override }: { override?: PageMetaOverride }) => {
             '@id': `${SITE_URL}/character/chiaki#voicebank`,
             name: 'Chiaki DiffSinger voicebank',
             about: { '@id': `${SITE_URL}/character/chiaki#character` },
+            inLanguage: LANGS.map((lang) => lang.tag),
+            keywords: 'DiffSinger, OpenUtau, voicebank, singing voice synthesis, multilingual',
             isAccessibleForFree: true,
             offers: { '@type': 'Offer', price: 0, priceCurrency: 'TWD' },
             encoding: { '@type': 'MediaObject', contentUrl: DOWNLOADS.zip, encodingFormat: 'application/zip' },

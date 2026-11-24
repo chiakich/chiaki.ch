@@ -106,7 +106,7 @@
     },
     "chiaki": {
       "title": "Chiaki – Free DiffSinger Voicebank in 28 Languages - Chiaki Inari Shrine",
-      "description": "Chiaki is a virtual singer built from the voice of Suzukaze Chiaki. Her DiffSinger voicebank sings in 28 languages and is free to use, including commercially."
+      "description": "Chiaki is an AI singing voicebank for DiffSinger and OpenUtau, built from the voice of Suzukaze Chiaki. She sings in 28 languages, strongest in Japanese, English and Chinese, and is free to use, including commercially."
     },
     "characters": {
       "title": "Characters - Chiaki Inari Shrine",
@@ -1279,7 +1279,7 @@
   "chiakiPage": {
     "name": "千亞紀",
     "portraitAlt": "Full-body portrait of Chiaki",
-    "intro": "Chiaki is a virtual singer built from Suzukaze Chiaki’s voice, free for personal and commercial use. Wherever you are, she wants to sing you a song in your language.",
+    "intro": "Chiaki is a multilingual DiffSinger voicebank for OpenUtau, built from Suzukaze Chiaki’s voice and free even for commercial use. Wherever you are, she wants to sing you a song in your language.",
     "freeDownload": "Free download",
     "profile": {
       "birthday": "Feb 27",
