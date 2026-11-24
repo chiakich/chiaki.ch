@@ -224,10 +224,73 @@ export default defineConfig({
           from: { transform: 'translateY(0)' },
           to: { transform: 'translateY(var(--fall))' },
         },
+        // The origin flips at the midpoint so the block wipes in from one side and out the other
+        chiakiBlockX: {
+          '0%': { transform: 'scaleX(0)', transformOrigin: 'left' },
+          '45%': { transform: 'scaleX(1)', transformOrigin: 'left' },
+          '55%': { transform: 'scaleX(1)', transformOrigin: 'right' },
+          '100%': { transform: 'scaleX(0)', transformOrigin: 'right' },
+        },
+        chiakiBlockY: {
+          '0%': { transform: 'scaleY(0)', transformOrigin: 'top' },
+          '45%': { transform: 'scaleY(1)', transformOrigin: 'top' },
+          '55%': { transform: 'scaleY(1)', transformOrigin: 'bottom' },
+          '100%': { transform: 'scaleY(0)', transformOrigin: 'bottom' },
+        },
+        chiakiBlockText: {
+          '0%, 49%': { opacity: 0 },
+          '50%, 100%': { opacity: 1 },
+        },
+        snowSway: {
+          from: { translate: 'calc(var(--sway) * -1) 0' },
+          to: { translate: 'var(--sway) 0' },
+        },
         // Uses the standalone scale/translate properties so it composes with an element's own transform
         breathe: {
           '0%, 100%': { scale: '1 1', translate: '0 0' },
           '50%': { scale: '1.001 1.004', translate: '0 -1px' },
+        },
+        // Uneven steps read as a live flame rather than a pulse
+        chiakiFlicker: {
+          '0%, 100%': { opacity: 0.55 },
+          '8%': { opacity: 0.9 },
+          '14%': { opacity: 0.68 },
+          '30%': { opacity: 1 },
+          '46%': { opacity: 0.6 },
+          '58%': { opacity: 0.95 },
+          '72%': { opacity: 0.72 },
+          '86%': { opacity: 1 },
+        },
+        chiakiFadeIn: {
+          from: { opacity: 0 },
+          to: { opacity: 1 },
+        },
+        chiakiFadeOut: {
+          from: { opacity: 1 },
+          to: { opacity: 0 },
+        },
+        // Each mote sets its own --dx/--dy so they don't all drift the same way
+        chiakiMote: {
+          '0%': { opacity: 0, translate: '0 0' },
+          '25%': { opacity: 1 },
+          '70%': { opacity: 0.85 },
+          '100%': { opacity: 0, translate: 'var(--dx) var(--dy)' },
+        },
+        chiakiDiscIn: {
+          from: { opacity: 0, scale: '.7' },
+          to: { opacity: 1, scale: '1' },
+        },
+        chiakiFadeUp: {
+          from: { opacity: 0, transform: 'translateY(22px)' },
+          to: { opacity: 1, transform: 'none' },
+        },
+        chiakiLed: {
+          '0%, 100%': { opacity: 1 },
+          '50%': { opacity: 0.3 },
+        },
+        chiakiPulse: {
+          '0%': { boxShadow: '0 0 0 0 rgba(223,138,66,.55)' },
+          '100%': { boxShadow: '0 0 0 26px rgba(223,138,66,0)' },
         },
         artReveal: {
           '0%': { opacity: 0, filter: 'blur(6px)', transform: 'translateY(6px)' },
@@ -323,6 +386,10 @@ export default defineConfig({
     },
     button: {
       WebkitTapHighlightColor: 'transparent',
+    },
+    // Opt-in per page so other routes keep instant jumps
+    'html:has([data-smooth-scroll])': {
+      scrollBehavior: { base: 'smooth', _motionReduce: 'auto' },
     },
   },
 })

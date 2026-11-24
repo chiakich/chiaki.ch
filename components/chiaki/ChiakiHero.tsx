@@ -1,143 +1,184 @@
+import { useEffect, useState, type MouseEvent } from 'react'
 import { Box, Flex, styled } from 'styled-system/jsx'
 import { useI18n } from 'i18n'
 import { PORTRAIT_SRC } from './voicebankData'
-import { INK, ORANGE, ORANGE_TEXT, NAVY } from './chiakiData'
+import { INK, JOST, ORANGE, ORANGE_TEXT, RUINS_FAR, RUINS_NEAR, SNOW, TITLE_ORANGE } from './chiakiData'
+import { BlockReveal, DownArrow, Gauge, Pill, Snow } from './parts'
 
 const Text = styled.p
 const Span = styled.span
-const Ruby = styled.ruby
-const Rt = styled.rt
-const Img = styled.img
 const Link = styled.a
 
-const PROFILE_KEYS = ['birthday', 'age', 'height', 'voice', 'illust', 'design']
+const NAV = ['listen', 'languages', 'download', 'spec', 'design', 'terms', 'song']
 
-// Each fall distance is a multiple of its tile height so the loop is seamless
-const SNOW_LAYERS = [
-  { dot: 'rgba(255,255,255,.95) 1.6px, transparent 2.2px', size: '120px 100px', x: 0, fall: 400 },
-  { dot: 'rgba(255,255,255,.75) 1.1px, transparent 1.6px', size: '80px 65px', x: 40, fall: 260 },
-  { dot: 'rgba(255,255,255,.55) .8px, transparent 1.2px', size: '46px 45px', x: 10, fall: 180 },
-]
+const FIGURE = { position: 'absolute', left: { base: '76px', md: '52%' }, bottom: { base: '22px', md: '44px' }, height: { base: '720px', md: 'clamp(560px, 68vw, 980px)' }, aspectRatio: '609 / 1200' } as const
 
-const Ruins = () => (
-  <svg aria-hidden viewBox="0 0 1240 360" preserveAspectRatio="none" style={{ position: 'absolute', left: 0, right: 0, bottom: 120, width: '100%', height: 340 }}>
-    <path fill="#9fadbb" opacity=".55" d="M0 360V250h40v-60h26v-40h18v100h30v-70l22-14v84h40V170h12l10-30 10 30h14v190zM300 360V230l40-20v-30h24v170zM420 360V150h22l6-40 8 40h20v40l30 10v160zM600 360V240h60v-50l14-8 16 20v158zM760 360V180l26-30 24 18v40h40v152zM930 360V120h8v-30h6v30h8v40h30v200zM1060 360V220h36l18-40h22v70l40 10v100zM1180 360V200h60v160z" />
-    <path fill="#b5c1cc" opacity=".7" d="M0 360V300h120v-30h80v90zM240 360v-50l70-20 60 10v60zM470 360v-70h90l20 30h60v40zM700 360v-40l80-30 90 20v50zM900 360v-60h140v60zM1080 360v-40l80-10 80 10v40z" />
-  </svg>
+const drift = (x: number, y: number) => ({ translate: `calc(var(--mx, 0) * ${x}px) calc(var(--my, 0) * ${y}px)`, transition: 'translate .5s ease-out' })
+
+const PlayIcon = () => (
+  <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden><path d="M8 5v14l11-7z" fill="currentColor" /></svg>
 )
 
-const Backdrop = () => (
-  <Box aria-hidden position="absolute" inset="0" borderRadius="40px" overflow="hidden" backgroundImage="linear-gradient(180deg, #a9b7c5 0%, #c9d3dc 55%, #e6ecf0 78%)">
-    <Box position="absolute" top="-5%" right="-3%" width="44%" height="115%" background="linear-gradient(200deg, rgba(223,138,66,.34) 0%, rgba(223,138,66,.08) 65%, transparent 100%)" clipPath="polygon(28% 0, 100% 0, 100% 100%, 0 100%)" />
-    <Box position="absolute" inset="0" backgroundImage="radial-gradient(rgba(27,36,48,.14) 1px, transparent 1.5px)" backgroundSize="22px 22px" maskImage="linear-gradient(115deg, transparent 45%, black 85%)" />
-    <Ruins />
-    {/* Animating background-position repaints every frame and makes the blurred top bar flicker on scroll */}
-    {SNOW_LAYERS.map((layer) => (
-      <Box
-        key={layer.size}
-        position="absolute"
-        left="0"
-        right="0"
-        bottom="0"
-        willChange="transform"
-        animation="snowDrift 14s linear infinite"
-        _motionReduce={{ animation: 'none' }}
-        style={{ top: -layer.fall, backgroundImage: `radial-gradient(circle, ${layer.dot})`, backgroundSize: layer.size, backgroundPosition: `${layer.x}px 0`, ['--fall' as string]: `${layer.fall}px` }}
-      />
-    ))}
-    <svg viewBox="0 0 1240 180" preserveAspectRatio="none" style={{ position: 'absolute', left: 0, right: 0, bottom: 0, width: '100%', height: 180 }}>
-      <path fill="#dfe6ec" d="M0 70C160 30 300 60 460 48s320-40 480-10 220 20 300 10V180H0z" />
-      <path fill="#f6f8fa" d="M0 120c140-30 280-10 420-20s260-40 420-24 260 30 400 4V180H0z" />
-    </svg>
-    <Text position="absolute" top="40px" right="84px" fontFamily="'Jost', var(--cjk), sans-serif" fontWeight="bold" fontSize={{ base: '5rem', md: '7.5rem' }} lineHeight=".95" letterSpacing=".02em" color="transparent" whiteSpace="nowrap" style={{ WebkitTextStroke: '1px rgba(169,79,15,.5)', writingMode: 'vertical-rl' }}>CHIAKI</Text>
-  </Box>
-)
-
-const ChiakiHero = () => {
-  const { t, locale } = useI18n()
-  const nameLang = locale === 'tw' ? undefined : 'ja'
+const Stage = () => {
+  const { t } = useI18n()
   return (
-    <Flex as="section" position="relative" mt={{ base: 6, md: '96px' }} mb={{ base: 16, md: '112px' }} flexWrap="wrap" alignItems="stretch" color={INK}>
-      <Backdrop />
-
-      <Flex aria-hidden position="absolute" right={{ base: '16px', md: '28px' }} top={{ base: '16px', md: '28px' }} zIndex={3} gap={2} alignItems="flex-start" pointerEvents="none">
-        <Span lang={nameLang} backgroundColor="white" fontWeight="bold" letterSpacing=".22em" fontSize="xs" px="3px" py={2} whiteSpace="nowrap" style={{ writingMode: 'vertical-rl' }}>{t('chiakiPage.name')}</Span>
-        <Span fontFamily="'Jost', var(--cjk), sans-serif" fontWeight="bold" fontSize="1.25rem" letterSpacing=".12em" lineHeight="1.1" whiteSpace="nowrap" style={{ writingMode: 'vertical-rl' }}>
-          CHIAKI.CH
-          <Span color="#4a5563" mt=".4em">VOICE ARCHIVE</Span>
-        </Span>
-      </Flex>
-
-      <Box flex="1 1 440px" minW="0" position="relative" zIndex={{ base: 3, md: 1 }} mt={{ base: '-130%', md: 0 }} px={{ base: 6, md: 'clamp(24px, 4vw, 64px)' }} pt={{ base: 0, md: 14 }} pb={{ base: 6, md: 14 }}>
-        <Text mb={5} fontFamily="'Jost', var(--cjk), sans-serif" fontWeight="medium" fontSize={{ base: '2.75rem', md: 'clamp(2.75rem, 5vw, 5rem)' }} lineHeight="1.02" letterSpacing=".04em">
-          DIFFSINGER<br /><Span color={ORANGE_TEXT}>VOICE ARCHIVE</Span>
-        </Text>
-        {/* The character name is the page's h1 so search engines key on it, not the decorative kicker */}
-        <Flex as="h1" flexWrap="wrap" alignItems="flex-end" columnGap={5} rowGap={1}>
-          <Span lang={nameLang} fontSize={{ base: '2.75rem', md: '3.5rem' }} fontWeight="black" lineHeight="1.2" letterSpacing=".12em">
-            <Ruby>{t('chiakiPage.name')}<Rt fontSize=".875rem" fontWeight="medium" letterSpacing=".3em" color={ORANGE_TEXT}>チアキ</Rt></Ruby>
-          </Span>
-          <Span mb="6px" fontFamily="'Jost', var(--cjk), sans-serif" fontSize={{ base: '2rem', md: '2.75rem' }} fontWeight="medium" lineHeight="1.1" letterSpacing=".1em">CHIAKI</Span>
-        </Flex>
-        <Text lang="ja" mt={6} mb={4} fontSize={{ base: 'xl', md: '1.625rem' }} fontWeight="bold" color={ORANGE_TEXT}>どこにいても、歌を届けるね。</Text>
-        <Text mb={7} fontSize={{ base: 'md', md: 'lg' }} lineHeight="1.9" maxW="32em">{t('chiakiPage.intro')}</Text>
-
-        <Link href="#download" display="inline-flex" alignItems="center" gap="10px" minH="52px" mb={10} pl="18px" pr={6} borderRadius="26px" fontWeight="bold" textDecoration="none" style={{ backgroundColor: ORANGE, color: NAVY }}>
-          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 3v12M7 10l5 5 5-5M4 20h16" /></svg>
-          {t('chiakiPage.freeDownload')}
-        </Link>
-
-        <Box as="dl" maxW={{ base: 'none', md: '420px' }} display="grid" gridTemplateColumns={{ base: 'repeat(3, minmax(0, 1fr))', md: '1fr' }} borderTop="1px solid rgba(27,36,48,.18)" borderBottom="1px solid rgba(27,36,48,.18)">
-          {PROFILE_KEYS.map((key, index) => (
-            <Box
-              key={key}
-              display={{ base: 'block', md: 'grid' }}
-              gridTemplateColumns="120px minmax(0, 1fr)"
-              alignItems="baseline"
-              gap={4}
-              py={{ base: 4, md: 3 }}
-              px={{ base: 4, md: 0 }}
-              borderBottom={{ base: index < 3 ? '1px solid rgba(27,36,48,.08)' : 'none', md: index < PROFILE_KEYS.length - 1 ? '1px solid rgba(27,36,48,.10)' : 'none' }}
-            >
-              <Box as="dt" fontFamily="'Jost', var(--cjk), sans-serif" fontSize="xs" letterSpacing=".18em" color="rgba(27,36,48,.65)">{key.toUpperCase()}</Box>
-              <Box as="dd" mt={{ base: 1, md: 0 }} fontSize={index < 3 ? 'xl' : 'md'} fontWeight="bold">{t(`chiakiPage.profile.${key}`)}</Box>
-            </Box>
-          ))}
+    <Box position={{ base: 'relative', md: 'absolute' }} inset={{ md: '0' }} height={{ base: '820px', md: 'auto' }} overflow="hidden" backgroundImage="linear-gradient(180deg, #a3b1c0 0%, #c6d0da 46%, #e3e8ed 80%, #eef2f5 100%)">
+      <Box aria-hidden {...FIGURE} zIndex={0}>
+        <Box position="absolute" left="50%" top="36%" width={{ base: '118%', md: '126%' }} aspectRatio="1 / 1" transform="translate(-50%, -50%)" style={drift(10, 6)}>
+          <Box width="100%" height="100%" borderRadius="50%" animation="chiakiDiscIn 1.6s cubic-bezier(.2,.7,.2,1) both" _motionReduce={{ animation: 'none' }} style={{ backgroundColor: ORANGE }} />
         </Box>
+        <Box position="absolute" left="50%" top="36%" width={{ base: '138%', md: '146%' }} aspectRatio="1 / 1" borderRadius="50%" border="1px solid rgba(22,28,38,.55)" transform="translate(-50%, -50%)" style={drift(22, 12)} />
       </Box>
 
-      <Box
-        flex={{ base: '1 1 100%', md: '1 1 380px' }}
-        order={{ base: -1, md: 0 }}
-        minW="0"
-        position="relative"
-        zIndex={2}
-        pointerEvents="none"
-        minH={{ md: '1020px' }}
-        aspectRatio={{ base: '1 / 2', md: 'auto' }}
-        overflow={{ base: 'hidden', md: 'visible' }}
-        borderTopRadius={{ base: '40px', md: '0' }}
+      <Text
+        aria-hidden
+        position="absolute"
+        zIndex={1}
+        left={{ base: '14px', md: '64px' }}
+        top={{ base: '54px', md: '76px' }}
+        fontWeight="bold"
+        fontSize={{ base: '34px', md: 'clamp(40px, 6.6vw, 96px)' }}
+        lineHeight="0.94"
+        letterSpacing=".01em"
+        whiteSpace="nowrap"
+        display="flex"
+        flexDirection="column"
+        alignItems="flex-start"
+        style={{ fontFamily: JOST }}
       >
-        <Img
+        <BlockReveal delay={0.1}><span>DIFFSINGER</span></BlockReveal>
+        <BlockReveal delay={0.22} color={TITLE_ORANGE}><span>VOICE</span></BlockReveal>
+        <BlockReveal delay={0.34} color={TITLE_ORANGE}><span>ARCHIVE</span></BlockReveal>
+      </Text>
+
+      <styled.svg aria-hidden viewBox="0 0 1240 360" preserveAspectRatio="none" position="absolute" zIndex={1} left="0" bottom={{ base: '56px', md: '84px' }} width="100%" height={{ base: '170px', md: '320px' }} maskImage={{ md: 'linear-gradient(90deg, transparent 0%, transparent 34%, black 56%)' }}>
+        <path fill="#8695a5" opacity=".55" d={RUINS_FAR} />
+        <path fill="#a7b4c1" opacity=".7" d={RUINS_NEAR} />
+      </styled.svg>
+
+      {/* Snow falls behind the drift and the figure so it never lands on her */}
+      <Box position="absolute" inset="0" zIndex={1} pointerEvents="none"><Snow /></Box>
+
+      <styled.svg aria-hidden viewBox="0 0 1240 180" preserveAspectRatio="none" position="absolute" zIndex={2} left="0" bottom="0" width="100%" height={{ base: '86px', md: '150px' }}>
+        <path fill="#dfe5ea" d="M0 70C160 30 300 60 460 48s320-40 480-10 220 20 300 10V180H0z" />
+        <path fill={SNOW} d="M0 120c140-30 280-10 420-20s260-40 420-24 260 30 400 4V180H0z" />
+      </styled.svg>
+
+      {/* Parallax lives on the wrapper because breathe animates the image's own translate */}
+      <Box {...FIGURE} zIndex={3} pointerEvents="none" style={drift(-14, -6)}>
+        <Span aria-hidden position="absolute" left="16%" right="12%" bottom="-1.2%" height="3.4%" borderRadius="50%" backgroundColor="rgba(22,28,38,.2)" filter="blur(7px)" />
+        <styled.img
           src={PORTRAIT_SRC}
           alt={t('chiakiPage.portraitAlt')}
-          position="absolute"
-          left="50%"
-          transform={{ base: 'translateX(-38%)', md: 'translateX(-50%)' }}
           display="block"
-          maxW="none"
-          top={{ base: '24px', md: 'auto' }}
-          bottom={{ base: 'auto', md: '32px' }}
-          width={{ base: '100%', md: 'auto' }}
-          height={{ base: 'auto', md: 'calc(100% - 56px)' }}
-          aspectRatio="609 / 1200"
-          maskImage={{ base: 'linear-gradient(180deg, black 22%, rgba(0,0,0,.3) 50%)', md: 'none' }}
+          width="100%"
+          height="100%"
           transformOrigin="50% 100%"
-          animation="breathe 4.8s ease-in-out infinite"
+          animation="chiakiFadeUp 1.4s .3s cubic-bezier(.2,.7,.2,1) both, breathe 5.5s 2s ease-in-out infinite"
           _motionReduce={{ animation: 'none' }}
         />
       </Box>
-    </Flex>
+
+    </Box>
+  )
+}
+
+const ChiakiHero = () => {
+  const { t, locale } = useI18n()
+  const nameLang = locale === 'ja' ? 'ja' : undefined
+  const [ready, setReady] = useState(false)
+
+  useEffect(() => {
+    const cjk = locale === 'ja' ? 'Noto Sans JP' : 'Noto Sans TC'
+    const reveal = () => setReady(true)
+    // A slow font shouldn't hold the title hidden for long
+    const timer = setTimeout(reveal, 1500)
+    Promise.all([
+      document.fonts.load('700 1em Jost'),
+      document.fonts.load('600 1em Jost'),
+      document.fonts.load(`900 1em "${cjk}"`, '千亞亜紀'),
+    ]).then(reveal, reveal)
+    return () => clearTimeout(timer)
+  }, [locale])
+
+  const onMove = (event: MouseEvent<HTMLElement>) => {
+    const el = event.currentTarget
+    const box = el.getBoundingClientRect()
+    el.style.setProperty('--mx', ((event.clientX - box.left) / box.width - 0.5).toFixed(3))
+    el.style.setProperty('--my', ((event.clientY - box.top) / box.height - 0.5).toFixed(3))
+  }
+
+  return (
+    <Box as="section" id="top" position="relative" overflow="hidden" minH={{ md: '1100px' }} onMouseMove={onMove} data-ready={ready || undefined} style={{ backgroundColor: SNOW, color: INK }}>
+      <noscript><style>{'.chiaki-block > * { opacity: 1 !important }'}</style></noscript>
+      <Stage />
+
+      <Flex as="nav" aria-label="Chiaki" display={{ base: 'none', md: 'flex' }} position="absolute" zIndex={6} top="14px" right="64px" flexWrap="wrap" columnGap={7} fontSize="sm" fontWeight="medium" style={{ fontFamily: JOST }}>
+        {NAV.map((id) => (
+          <Link key={id} href={`#${id}`} py={3} letterSpacing=".12em" textDecoration="none" _hover={{ color: '#9a4609' }}>{id.toUpperCase()}</Link>
+        ))}
+      </Flex>
+
+      <Flex aria-hidden position="absolute" zIndex={5} right={{ base: '16px', md: '56px' }} top={{ base: '18px', md: '92px' }} gap={{ base: '6px', md: 2 }} alignItems="flex-start" pointerEvents="none">
+        <BlockReveal axis="y" delay={0.5}>
+          <Span lang={nameLang} backgroundColor="white" fontWeight="bold" letterSpacing=".22em" fontSize={{ base: '10px', md: 'xs' }} px={{ base: '2px', md: '3px' }} py={{ base: '6px', md: 2 }} whiteSpace="nowrap" style={{ writingMode: 'vertical-rl' }}>{t('chiakiPage.name')}</Span>
+        </BlockReveal>
+        <BlockReveal axis="y" delay={0.6}>
+          <Span fontWeight="bold" fontSize={{ base: 'sm', md: '1.25rem' }} letterSpacing=".12em" lineHeight="1.1" whiteSpace="nowrap" style={{ fontFamily: JOST, writingMode: 'vertical-rl' }}>
+            CHIAKI.CH
+            <Span color="#3f4b58" mt=".4em">VOICE ARCHIVE</Span>
+          </Span>
+        </BlockReveal>
+      </Flex>
+
+      <Flex
+        position={{ base: 'static', md: 'relative' }}
+        zIndex={5}
+        maxW="1440px"
+        mx="auto"
+        px={{ base: 5, md: 16 }}
+        pt={{ base: '6px', md: 'calc(58px + clamp(150px, 24.5vw, 352px))' }}
+        pb={{ base: '30px', md: '150px' }}
+        flexDirection="column"
+        alignItems={{ base: 'stretch', md: 'flex-start' }}
+        gap={{ base: 4, md: '22px' }}
+      >
+        <Flex position={{ base: 'absolute', md: 'static' }} zIndex={6} left="20px" top="26px" flexWrap="wrap" alignItems="center" columnGap="18px" rowGap="6px" fontFamily="mono" fontSize={{ base: '10px', md: 'xs' }} letterSpacing=".2em">
+          <Span>VIRTUAL SINGER</Span>
+          <Gauge />
+          <Span display={{ base: 'none', md: 'inline' }}>28 LANGUAGES</Span>
+        </Flex>
+
+        {/* The character name is the page's h1 so search engines key on it, not the decorative title */}
+        <Flex as="h1" position={{ base: 'absolute', md: 'static' }} zIndex={5} left="22px" top="196px" flexDirection={{ base: 'row', md: 'column' }} alignItems="flex-start" gap={{ base: 2, md: '6px' }}>
+          <Span lang="ja" display={{ base: 'none', md: 'block' }} fontFamily="mono" fontSize="13px" fontWeight="regular" letterSpacing=".5em" style={{ color: ORANGE_TEXT }}>チアキ</Span>
+          <Flex as="span" flexWrap="wrap" alignItems={{ base: 'flex-start', md: 'baseline' }} columnGap={{ base: 2, md: 7 }}>
+            <BlockReveal axis="y-mobile" delay={0.42}>
+              <Span lang={nameLang} fontWeight="black" fontSize={{ base: '58px', md: 'clamp(64px, 6.6vw, 96px)' }} lineHeight="1.1" letterSpacing=".1em" writingMode={{ base: 'vertical-rl', md: 'horizontal-tb' }}>{t('chiakiPage.name')}</Span>
+            </BlockReveal>
+            <BlockReveal axis="y-mobile" delay={0.54}>
+              <Span fontWeight="medium" fontSize={{ base: '22px', md: 'clamp(44px, 4.6vw, 66px)' }} lineHeight={{ base: '1', md: '1.1' }} letterSpacing={{ base: '.24em', md: '.1em' }} writingMode={{ base: 'vertical-rl', md: 'horizontal-tb' }} style={{ fontFamily: JOST }}>CHIAKI</Span>
+            </BlockReveal>
+          </Flex>
+        </Flex>
+
+        <Text lang="ja" fontWeight="medium" fontSize={{ base: 'xl', md: 'clamp(22px, 2.2vw, 31px)' }} lineHeight="1.6" letterSpacing={{ base: '.04em', md: '.08em' }}>どこにいても、歌をお届けします。</Text>
+
+        <Text maxW={{ md: '29em' }} fontSize={{ base: '15px', md: '17px' }} lineHeight="2">{t('chiakiPage.intro')}</Text>
+
+        <Flex flexDirection={{ base: 'column', md: 'row' }} flexWrap="wrap" alignItems={{ base: 'stretch', md: 'center' }} gap={{ base: 3, md: '14px 18px' }} pt="6px">
+          <Pill href="#download" icon={<DownArrow />}>{t('chiakiPage.freeDownload')}</Pill>
+          <Pill href="#listen" tone="outline" icon={<PlayIcon />}>{t('chiakiPage.listen')}</Pill>
+        </Flex>
+
+        <Link href="#song" display="inline-flex" alignItems="center" alignSelf="flex-start" gap="14px" minH="44px" fontFamily="mono" fontSize="xs" letterSpacing=".2em" textDecoration="none" _hover={{ color: '#9a4609' }}>
+          THEME SONG
+          <Span aria-hidden width="28px" height="1px" backgroundColor="currentColor" />
+          <Span lang="ja" fontFamily="var(--cjk), sans-serif" fontSize="sm" fontWeight="bold" letterSpacing=".2em">渡し歌</Span>
+          <PlayIcon />
+        </Link>
+      </Flex>
+    </Box>
   )
 }
 

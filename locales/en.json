@@ -1152,7 +1152,7 @@
     "comingSoon": "Coming soon",
     "app": {
       "title": "OpenUtau-Chiaki",
-      "desc": "A fork of OpenUtau tuned for Chiaki, with the voicebank and dedicated phonemizers built in. No separate voicebank install needed.",
+      "desc": "OpenUtau tuned for Chiaki, with her voicebank and phonemizers built in. Nothing else to install.",
       "steps": [
         "Download and open OpenUtau-Chiaki.",
         "Click \"Select singer\" on a track and choose Chiaki.",
@@ -1247,7 +1247,7 @@
         {
           "title": "Vocoder",
           "items": [
-            "The bundled vocoder chiaki_vocoder 2026.11 is licensed under the Apache License 2.0. You may use it commercially, modify it and redistribute it, as long as LICENSE and NOTICE.txt are kept. The reverse-engineering and stand-alone distribution restrictions above do not apply to the vocoder. Works made with the voicebank may be used commercially."
+            "The bundled vocoder Chiaki_Vocoder 2026.11 is licensed under the Apache License 2.0. You may use it commercially, modify it and redistribute it, as long as LICENSE and NOTICE.txt are kept. The reverse-engineering and stand-alone distribution restrictions above do not apply to the vocoder. Works made with the voicebank may be used commercially."
           ]
         },
         {
@@ -1277,9 +1277,9 @@
     }
   },
   "chiakiPage": {
-    "name": "千亜紀",
+    "name": "千亞紀",
     "portraitAlt": "Full-body portrait of Chiaki",
-    "intro": "Chiaki is a virtual singer built from the voice of Suzukaze Chiaki. She is free to use, including commercially. She loves learning the languages of different places — wherever you are and whatever language you speak, she wants to sing you a song in yours.",
+    "intro": "Chiaki is a virtual singer built from Suzukaze Chiaki’s voice, free for personal and commercial use. Wherever you are, she wants to sing you a song in your language.",
     "freeDownload": "Free download",
     "profile": {
       "birthday": "Feb 27",
@@ -1297,37 +1297,49 @@
     },
     "sing": {
       "otherEditors": "Use another DiffSinger editor",
-      "pluginDesc": "OpenUtau-Chiaki has these phonemizers built in, so there is nothing to install. The official OpenUtau has no phonemizers for Finnish, Latin or the Learning languages; the zip has one DLL per language, so put only the ones you need in the Plugins folder."
+      "pluginDesc": "Built into OpenUtau-Chiaki. Official OpenUtau lacks phonemizers for Finnish, Latin and the Learning languages; copy just the DLLs you need into its Plugins folder.",
+      "heading": "Let me sing\nthe songs you write.",
+      "free": "Free / Commercial OK / No sign-up"
     },
     "spec": {
-      "intermediateNote": "Pronunciation may be inaccurate",
-      "learningNote": "Not very familiar; pronunciation may be inaccurate",
+      "intermediateNote": "Mostly right; may be inaccurate.",
+      "learningNote": "Still unfamiliar; may be inaccurate.",
       "engine": "Engine",
       "editor": "Editor",
       "vocoder": "Vocoder",
-      "renderSteps": "Recommended render steps",
-      "params": "Adjustable parameters"
+      "renderSteps": "Render steps",
+      "params": "Parameters"
     },
     "params": {
       "TENC": {
         "name": "Tension",
-        "desc": "Higher sounds stronger and more piercing; lower sounds relaxed and soft."
+        "desc": "Up for a stronger, piercing voice; down for a relaxed, soft one.",
+        "low": "Relaxed",
+        "high": "Powerful"
       },
       "GENC": {
         "name": "Gender",
-        "desc": "Adjusts the thickness of the voice: positive sounds more mature, negative more youthful."
+        "desc": "Voice thickness: up is more mature, down more youthful.",
+        "low": "Youthful",
+        "high": "Mature"
       },
       "VELC": {
-        "name": "Consonant velocity",
-        "desc": "Changes consonant length, from crisp to drawn-out articulation."
+        "name": "Consonant speed",
+        "desc": "Consonant length, from crisp to drawn-out.",
+        "low": "Drawn-out",
+        "high": "Crisp"
       },
       "PEXP": {
-        "name": "Pitch expressiveness",
-        "desc": "Controls how much the automatic pitch moves, from steady to expressive."
+        "name": "Pitch expression",
+        "desc": "How much the auto pitch moves, from steady to expressive.",
+        "low": "Steady",
+        "high": "Expressive"
       },
       "BREC": {
         "name": "Breathiness",
-        "desc": "Adds or reduces breathiness."
+        "desc": "Adds or reduces breathiness.",
+        "low": "Less",
+        "high": "More"
       }
     },
     "terms": {
@@ -1339,44 +1351,43 @@
       "cards": [
         {
           "title": "Commercial use",
-          "text": "Selling songs, commissions, games, and ads are all fine. No application needed."
+          "text": "Song sales, commissions, games and ads are all fine. No sign-up."
         },
         {
           "title": "Fan works and merch",
-          "text": "You can make and sell fan works, covers, and merchandise of the character."
+          "text": "Make and sell fan works, covers and merch."
         },
         {
-          "title": "R-18 and political content",
-          "text": "Subject matter itself is not restricted."
+          "title": "R-18 & political themes",
+          "text": "No limits on subject matter."
         },
         {
-          "title": "Embedding in commercial works",
-          "text": "You can embed it in games and apps; just make sure users can’t extract the voicebank files."
+          "title": "Embedding in products",
+          "text": "Fine in games and apps, as long as the voicebank can’t be extracted."
         },
         {
-          "title": "Training derived models",
-          "text": "Fine for research and non-commercial use. Contact us for commercial use."
+          "title": "Training models",
+          "text": "OK for research and non-profit. Ask first for commercial use."
         },
         {
-          "title": "Impersonation and fake recordings",
-          "text": "Don’t fake statements by Chiaki or the creator, and don’t use it for fraud."
+          "title": "Impersonation & fakes",
+          "text": "No faking statements by Chiaki or the creator, and no fraud."
         },
         {
-          "title": "Redistributing the voicebank",
-          "text": "If you want to share it, link to the official download page instead."
+          "title": "Redistributing",
+          "text": "To share it, link to the official download page."
         },
         {
           "title": "Extracting the portrait",
-          "text": "shONe’s portrait is licensed only for display inside OpenUtau."
+          "text": "shONe’s portrait is licensed for display in OpenUtau only."
         }
       ],
-      "credit": "When you publish a work, credit it as",
+      "credit": "When publishing, credit as",
       "readMore": "+ Read the full terms",
       "collapse": "− Collapse"
     },
     "looks": {
       "default": "Default outfit",
-      "newOutfit": "New outfit",
       "birthday": "Birthday outfit",
       "alt": "Chiaki {look} design sheet"
     },
@@ -1410,6 +1421,86 @@
       "HAW": "Hawaiian",
       "MI": "Māori"
     },
-    "contact": "Collaborations & pronunciation feedback"
+    "contact": "Collaborations & pronunciation feedback",
+    "listen": "Listen",
+    "sections": {
+      "profile": "Basics",
+      "listen": "Demo songs",
+      "languages": "28 languages",
+      "download": "Get the voicebank",
+      "spec": "Technical",
+      "design": "Outfits",
+      "terms": "Terms of use",
+      "song": "Theme song"
+    },
+    "profileLabel": {
+      "birthday": "Birthday",
+      "age": "Age",
+      "height": "Height",
+      "voice": "Voice",
+      "illust": "Illustration",
+      "design": "Design"
+    },
+    "tier": {
+      "native": "Native",
+      "fluent": "Intermediate",
+      "learning": "Learning"
+    },
+    "languages": {
+      "lead": "Chiaki is practicing songs in {total} languages."
+    },
+    "song": {
+      "desc": "Watashi-uta means both “a song handed on” and “a song of my own.”",
+      "fullLyrics": "Full lyrics",
+      "play": "Play the theme song",
+      "pause": "Pause the theme song",
+      "seek": "Playback position",
+      "artAlt": "Chiaki singing with her eyes closed beside a lantern, under a tree on a hill above a harbor town",
+      "lyrics": {
+        "verse1": [
+          "Your window light is still on",
+          "A sleepless night — what’s wrong?",
+          "You don’t have to say it, I know",
+          "I’ll sit beside you and sing"
+        ],
+        "verse2": [
+          "A lullaby from a distant harbor",
+          "Once sung by someone I never knew",
+          "Handed on from person to person",
+          "Until at last it reached me"
+        ],
+        "chorus": [
+          "A song handed on, a song of my own",
+          "This song, I’m handing it to you",
+          "Even to towns that speak another tongue",
+          "Even to tomorrows not yet born",
+          "A song handed on, a song of my own",
+          "Someday, pass it on to someone"
+        ],
+        "verse3": [
+          "On the way home — look, that sunset",
+          "Turns to morning in a faraway land",
+          "Even I, with my small voice",
+          "Decided I would sing for everyone"
+        ],
+        "verse4": [
+          "This voice alone will never grow old",
+          "Even on a night a hundred years from now",
+          "Even on the day you’re gone",
+          "I’ll still be singing of you"
+        ],
+        "verse5": [
+          "I’m borrowing that person’s voice",
+          "To become the me I wanted to be",
+          "Whatever kindness I have learned",
+          "I’ll give all of it to you"
+        ],
+        "outro": [
+          "Until your window light goes out",
+          "Wherever you are, I’ll bring you my song",
+          "Good night"
+        ]
+      }
+    }
   }
 }

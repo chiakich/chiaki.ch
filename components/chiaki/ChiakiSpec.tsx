@@ -1,95 +1,81 @@
 import type { ReactNode } from 'react'
-import { Box, Flex, Grid, styled } from 'styled-system/jsx'
+import { Box, Flex, styled } from 'styled-system/jsx'
 import { useI18n } from 'i18n'
 import { RENDER_STEPS } from './voicebankData'
-import { LANGS, NATIVE_ORDER, NAVY, ORANGE, CREAM, RUST, PARAMS, type Tier } from './chiakiData'
+import { INK, JOST, LINE, ORANGE, ORANGE_TEXT, PARAMS, STEEL } from './chiakiData'
+import { Container, Reveal } from './parts'
 import SectionTitle from './SectionTitle'
 
 const Text = styled.p
 const Span = styled.span
-const Heading3 = styled.h3
 
-const TIER_STYLE: Record<Tier, { bg: string; fg: string; bd: string; code: string }> = {
-  native: { bg: ORANGE, fg: NAVY, bd: ORANGE, code: NAVY },
-  fluent: { bg: NAVY, fg: CREAM, bd: NAVY, code: '#f2b47e' },
-  learning: { bg: 'transparent', fg: NAVY, bd: 'rgba(34,48,90,.22)', code: RUST },
-}
+const border = (index: number, last: number) => ({ borderTop: index === 0 ? `2px solid ${INK}` : `1px solid ${LINE}`, borderBottom: index === last ? `1px solid ${LINE}` : undefined })
 
-const TIERS: { tier: Tier; title: string; langs: typeof LANGS }[] = [
-  { tier: 'native', title: 'Native', langs: NATIVE_ORDER.map((code) => LANGS.find((lang) => lang.code === code)!) },
-  { tier: 'fluent', title: 'Intermediate', langs: LANGS.filter((lang) => lang.tier === 'fluent') },
-  { tier: 'learning', title: 'Learning', langs: LANGS.filter((lang) => lang.tier === 'learning') },
-]
+const Row = ({ label, index, children }: { label: string; index: number; children: ReactNode }) => (
+  <Flex flexWrap="wrap" alignItems="baseline" columnGap={6} rowGap="2px" py="22px" style={border(index, 3)}>
+    <Box as="dt" flex="0 0 140px" fontSize="sm" fontWeight="bold" letterSpacing={{ base: '.08em', _en: '.01em' }} style={{ color: STEEL }}>{label}</Box>
+    <Box as="dd" minW="0">{children}</Box>
+  </Flex>
+)
 
-const Card = ({ label, children }: { label: string; children: ReactNode }) => (
-  <Box backgroundColor="white" borderRadius="20px" p={6}>
-    <Text mb="6px" fontSize="sm" color="rgba(34,48,90,.72)">{label}</Text>
-    {children}
-  </Box>
+const Value = ({ children }: { children: ReactNode }) => (
+  <Span display="block" fontWeight="medium" fontSize="28px" lineHeight="1.3" style={{ fontFamily: JOST }}>{children}</Span>
+)
+
+// Purely illustrative: every parameter rests at zero and bends both ways
+const Fader = () => (
+  <Span aria-hidden flex="1 1 0" position="relative" height="28px">
+    <Span position="absolute" left="0" right="0" top="8px" height="12px" backgroundImage="repeating-linear-gradient(90deg, rgba(22,28,38,.5) 0 1px, transparent 1px 10%)" borderRight="1px solid rgba(22,28,38,.5)" />
+    <Span position="absolute" left="0" right="0" top="13.5px" height="1px" style={{ backgroundColor: INK }} />
+    <Span position="absolute" left="50%" top="7px" width="14px" height="14px" ml="-7px" transform="rotate(45deg)" style={{ backgroundColor: ORANGE }} />
+  </Span>
 )
 
 const ChiakiSpec = () => {
   const { t } = useI18n()
   return (
-    <Box as="section" mt={{ base: 24, md: '140px' }}>
-      <SectionTitle>SPEC</SectionTitle>
+    <Box as="section" id="spec" scrollMarginTop="72px">
+      <Container py={{ base: 20, md: '130px' }} pb={{ md: '140px' }}>
+        <Reveal>
+          <SectionTitle index="04" sub={t('chiakiPage.sections.spec')}>SPEC</SectionTitle>
+        </Reveal>
 
-      <Box backgroundColor="white" borderRadius="24px" px={7} py={3} boxShadow="0 10px 32px rgba(34,48,90,.06)">
-        {TIERS.map(({ tier, title, langs }, index) => {
-          const style = TIER_STYLE[tier]
-          return (
-            <Flex key={tier} flexWrap="wrap" alignItems="baseline" columnGap={5} rowGap={2} py={4} borderBottom={index < TIERS.length - 1 ? '1px solid rgba(34,48,90,.08)' : 'none'}>
-              <Box flex="0 0 200px" minW="0">
-                <Text fontSize="17px" fontWeight="bold">{title}</Text>
-                {tier !== 'native' && <Text mt="2px" fontSize="sm" color="rgba(34,48,90,.72)">{t(`chiakiPage.spec.${tier === 'fluent' ? 'intermediateNote' : 'learningNote'}`)}</Text>}
-              </Box>
-              <Flex flex="1 1 400px" minW="0" flexWrap="wrap" gap={2}>
-                {langs.map((lang) => {
-                  const name = t(`chiakiPage.lang.${lang.code}`)
-                  return (
-                    <Span key={lang.code} display="inline-flex" alignItems="center" gap={2} minH="40px" px="14px" borderRadius="20px" fontSize="15px" style={{ backgroundColor: style.bg, color: style.fg, border: `1px solid ${style.bd}` }}>
-                      <Span fontFamily="mono" fontSize="xs" style={{ color: style.code }}>{lang.code}</Span>
-                      {name}
-                      {name !== lang.native && <Span lang={lang.tag} fontSize="13px" opacity={.6}>{lang.native}</Span>}
-                    </Span>
-                  )
-                })}
+        <Flex flexWrap="wrap" alignItems="flex-start" columnGap="96px" rowGap={14}>
+          <Reveal as="dl" flex="1 1 400px" minW="0">
+            <Row index={0} label={t('chiakiPage.spec.engine')}><Value>DiffSinger</Value></Row>
+            <Row index={1} label={t('chiakiPage.spec.editor')}><Value>OpenUtau</Value></Row>
+            <Row index={2} label={t('chiakiPage.spec.vocoder')}>
+              <Value>Chiaki_Vocoder</Value>
+              <Span display="block" mt={1} fontFamily="mono" fontSize="13px" style={{ color: STEEL }}>NSF-HiFiGAN · 44.1 kHz · hop 512</Span>
+            </Row>
+            <Row index={3} label={t('chiakiPage.spec.renderSteps')}>
+              <Flex flexWrap="wrap" alignItems="baseline" columnGap="26px" rowGap={1} fontFamily="mono" fontSize="xs" letterSpacing=".14em">
+                {RENDER_STEPS.map(([label, value]) => (
+                  <Span key={label}>{label.replace(' STEPS', '')} <Span fontWeight="medium" fontSize="26px" letterSpacing="0" style={{ fontFamily: JOST }}>{value}</Span></Span>
+                ))}
               </Flex>
-            </Flex>
-          )
-        })}
-      </Box>
+            </Row>
+          </Reveal>
 
-      <Grid gridTemplateColumns="repeat(auto-fill, minmax(240px, 1fr))" gap={4} mt={4}>
-        <Card label={t('chiakiPage.spec.engine')}>
-          <Text fontFamily="'Jost', var(--cjk), sans-serif" fontSize="2xl" fontWeight="medium">DiffSinger</Text>
-        </Card>
-        <Card label={t('chiakiPage.spec.editor')}>
-          <Text fontFamily="'Jost', var(--cjk), sans-serif" fontSize="2xl" fontWeight="medium">OpenUtau</Text>
-        </Card>
-        <Card label={t('chiakiPage.spec.vocoder')}>
-          <Text fontFamily="'Jost', var(--cjk), sans-serif" fontSize="2xl" fontWeight="medium">chiaki_vocoder</Text>
-          <Text mt={1} fontFamily="mono" fontSize="13px" color="rgba(34,48,90,.72)">NSF-HiFiGAN · 44.1 kHz · hop 512</Text>
-        </Card>
-        <Card label={t('chiakiPage.spec.renderSteps')}>
-          <Flex mt={1} flexWrap="wrap" columnGap={4} rowGap="6px" fontFamily="mono" fontSize="sm">
-            {RENDER_STEPS.map(([label, value]) => (
-              <Span key={label}>{label.replace(' STEPS', '')} <b>{value}</b></Span>
+          <Reveal flex="1.3 1 520px" minW="0" delay={0.15}>
+            <Text mb="14px" fontSize="sm" fontWeight="bold" letterSpacing={{ base: '.08em', _en: '.01em' }} style={{ color: STEEL }}>{t('chiakiPage.spec.params')}</Text>
+            {PARAMS.map((code, index) => (
+              <Flex key={code} flexWrap="wrap" alignItems="center" columnGap={6} rowGap="6px" py="17px" style={border(index, PARAMS.length - 1)}>
+                <Box flex={{ base: '0 0 140px', _en: '0 0 180px' }}>
+                  <Span display="block" fontFamily="mono" fontSize="11px" letterSpacing=".2em" style={{ color: ORANGE_TEXT }}>{code}</Span>
+                  <Span display="block" fontSize="xl" fontWeight="black" letterSpacing={{ base: '.1em', _en: '0' }} lineHeight="1.4">{t(`chiakiPage.params.${code}.name`)}</Span>
+                </Box>
+                <Flex flex="1 1 320px" minW="0" alignItems="center" gap={4} fontSize="sm">
+                  <Span flex="0 0 5.5em" textAlign="right">{t(`chiakiPage.params.${code}.low`)}</Span>
+                  <Fader />
+                  <Span flex="0 0 5.5em">{t(`chiakiPage.params.${code}.high`)}</Span>
+                </Flex>
+                <Text flex="1 1 100%" pl={{ md: '164px', _en: { md: '204px' } }} fontSize="sm" lineHeight="1.8" style={{ color: STEEL }}>{t(`chiakiPage.params.${code}.desc`)}</Text>
+              </Flex>
             ))}
-          </Flex>
-        </Card>
-      </Grid>
-
-      <Heading3 mt={12} mb={4} fontSize="lg" fontWeight="bold">{t('chiakiPage.spec.params')}</Heading3>
-      <Grid gridTemplateColumns="repeat(auto-fill, minmax(240px, 1fr))" gap={4}>
-        {PARAMS.map((code) => (
-          <Box key={code} backgroundColor="white" borderRadius="20px" p={6} style={{ border: '1.5px solid rgba(34,48,90,.25)' }}>
-            <Span display="block" mb={1} fontFamily="mono" fontSize="13px" style={{ color: RUST }}>{code}</Span>
-            <Text mb={2} fontSize="xl" fontWeight="bold">{t(`chiakiPage.params.${code}.name`)}</Text>
-            <Text fontSize="15px" lineHeight="1.7" color="rgba(34,48,90,.75)">{t(`chiakiPage.params.${code}.desc`)}</Text>
-          </Box>
-        ))}
-      </Grid>
+          </Reveal>
+        </Flex>
+      </Container>
     </Box>
   )
 }
