@@ -16,6 +16,9 @@ const NAV = ['listen', 'languages', 'download', 'spec', 'design', 'terms', 'song
 const SLOT = { position: 'absolute', left: { base: '76px', md: '52%' }, right: { md: '12px' }, top: { md: '76px' }, bottom: { base: '22px', md: '44px' }, height: { base: '720px', md: 'auto' }, display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end' } as const
 const FIGURE = { position: 'relative', flexShrink: 0, marginRight: 'auto', height: '100%', maxHeight: '980px', aspectRatio: '609 / 1200' } as const
 
+// The stage keeps this height even when longer copy stretches the section, so the figure never resizes with the text; the extra space below is plain snow
+const STAGE_H = 'min(1100px, calc(350px + 58vw))'
+
 const drift = (x: number, y: number) => ({ translate: `calc(var(--mx, 0) * ${x}px) calc(var(--my, 0) * ${y}px)`, transition: 'translate .5s ease-out' })
 
 const PlayIcon = () => (
@@ -25,7 +28,7 @@ const PlayIcon = () => (
 const Stage = () => {
   const { t } = useI18n()
   return (
-    <Box position={{ base: 'relative', md: 'absolute' }} inset={{ md: '0' }} height={{ base: '820px', md: 'auto' }} overflow="hidden" backgroundImage="linear-gradient(180deg, #a3b1c0 0%, #c6d0da 46%, #e3e8ed 80%, #eef2f5 100%)">
+    <Box position={{ base: 'relative', md: 'absolute' }} top={{ md: '0' }} left={{ md: '0' }} right={{ md: '0' }} height={{ base: '820px', md: STAGE_H }} overflow="hidden" backgroundImage="linear-gradient(180deg, #a3b1c0 0%, #c6d0da 46%, #e3e8ed 80%, #eef2f5 100%)">
       <Box aria-hidden {...SLOT} zIndex={0}>
         <Box {...FIGURE}>
           <Box position="absolute" left="50%" top="36%" width={{ base: '118%', md: '126%' }} aspectRatio="1 / 1" transform="translate(-50%, -50%)" style={drift(10, 6)}>
@@ -117,7 +120,7 @@ const ChiakiHero = () => {
   }
 
   return (
-    <Box as="section" id="top" position="relative" overflow="hidden" minH={{ md: 'min(1100px, calc(350px + 58vw))' }} onMouseMove={onMove} data-ready={ready || undefined} style={{ backgroundColor: SNOW, color: INK }}>
+    <Box as="section" id="top" position="relative" overflow="hidden" minH={{ md: STAGE_H }} onMouseMove={onMove} data-ready={ready || undefined} style={{ backgroundColor: SNOW, color: INK }}>
       <noscript><style>{'.chiaki-block > * { opacity: 1 !important }'}</style></noscript>
       <Stage />
 
