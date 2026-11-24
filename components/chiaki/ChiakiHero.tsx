@@ -172,7 +172,8 @@ const ChiakiHero = () => {
         <Text lang="ja" fontWeight="medium" fontSize={{ base: 'xl', md: 'clamp(22px, 2.2vw, 31px)' }} lineHeight="1.6" letterSpacing={{ base: '.04em', md: '.08em' }}>どこにいても、歌をお届けします。</Text>
 
         {/* Kept left of the figure's 52% slot so on narrow screens the copy doesn't run under her */}
-        <Text maxW={{ md: 'min(29em, calc(52vw - 64px))' }} fontSize={{ base: '15px', md: '17px' }} lineHeight="2">{t('chiakiPage.intro')}</Text>
+        {/* The extra top margin splits name and tagline from the copy, and at 1200px wide keeps the copy just below the 630px OG capture */}
+        <Text mt={{ md: '40px' }} maxW={{ md: 'min(29em, calc(52vw - 64px))' }} fontSize={{ base: '15px', md: '17px' }} lineHeight="2">{t('chiakiPage.intro')}</Text>
 
         <Flex flexDirection={{ base: 'column', md: 'row' }} flexWrap="wrap" alignItems={{ base: 'stretch', md: 'center' }} gap={{ base: 3, md: '14px 18px' }} pt="6px">
           <Pill href="#download" icon={<DownArrow />}>{t('chiakiPage.freeDownload')}</Pill>
