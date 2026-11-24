@@ -35,11 +35,12 @@ const Stage = () => {
         </Box>
       </Box>
 
+      {/* Follows the copy column's left edge once it stops growing at 1440px and centres */}
       <Text
         aria-hidden
         position="absolute"
         zIndex={1}
-        left={{ base: '14px', md: '64px' }}
+        left={{ base: '14px', md: 'calc(max(0px, (100% - 1440px) / 2) + 64px)' }}
         top={{ base: '54px', md: '76px' }}
         fontWeight="bold"
         fontSize={{ base: '34px', md: 'clamp(40px, 6.6vw, 96px)' }}
