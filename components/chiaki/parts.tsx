@@ -3,6 +3,7 @@ import { m } from 'framer-motion'
 import { css, cx } from 'styled-system/css'
 import { Box, styled } from 'styled-system/jsx'
 import { INK, ORANGE, SNOW, SNOW_LAYERS } from './chiakiData'
+import { umamiAttrs } from 'lib/analytics'
 
 const Span = styled.span
 const Link = styled.a
@@ -99,7 +100,7 @@ const TONES: Record<PillTone, { pill: Record<string, string>; dot: Record<string
   outline: { pill: { backgroundColor: 'rgba(238,242,245,.7)', color: INK, border: `1px solid ${INK}` }, dot: { border: `1px solid ${INK}` } },
 }
 
-export const Pill = ({ href, tone = 'ink', dot, icon, children }: { href: string | null; tone?: PillTone; dot?: Record<string, string>; icon: ReactNode; children: ReactNode }) => {
+export const Pill = ({ href, tone = 'ink', dot, icon, track, children }: { href: string | null; tone?: PillTone; dot?: Record<string, string>; icon: ReactNode; track?: [event: string, data?: Record<string, string>]; children: ReactNode }) => {
   const shared = { display: 'inline-flex', alignItems: 'center', justifyContent: 'space-between', gap: '22px', minH: '60px', pl: '30px', pr: '10px', borderRadius: '999px', fontWeight: 'bold', letterSpacing: { base: '.06em', _en: '.01em' }, textDecoration: 'none' } as const
   const mark = (
     <Span className="dot" aria-hidden display="inline-flex" alignItems="center" justifyContent="center" width="40px" height="40px" borderRadius="50%" transition="translate .3s cubic-bezier(.2,.7,.2,1)" style={dot ?? TONES[tone].dot}>{icon}</Span>
@@ -107,5 +108,5 @@ export const Pill = ({ href, tone = 'ink', dot, icon, children }: { href: string
   if (!href) {
     return <Span {...shared} opacity={.5} cursor="not-allowed" aria-disabled="true" style={TONES[tone].pill}>{children}{mark}</Span>
   }
-  return <Link href={href} {...shared} css={{ '&:hover .dot': { translate: '5px 0' } }} style={TONES[tone].pill}>{children}{mark}</Link>
+  return <Link href={href} {...shared} {...(track && umamiAttrs(...track))} css={{ '&:hover .dot': { translate: '5px 0' } }} style={TONES[tone].pill}>{children}{mark}</Link>
 }

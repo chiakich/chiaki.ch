@@ -27,12 +27,12 @@ const Steps = ({ steps, large = false }: { steps: string[]; large?: boolean }) =
   </OrderedList>
 )
 
-const AltBlock = ({ title, desc, steps, href, label }: { title: string; desc: string; steps: string[]; href: string | null; label: string }) => (
+const AltBlock = ({ title, desc, steps, href, label, file }: { title: string; desc: string; steps: string[]; href: string | null; label: string; file: string }) => (
   <Flex flexDirection="column" alignItems="flex-start" gap={4}>
     <Heading3 fontWeight="medium" fontSize="1.75rem" lineHeight="1.2" style={{ fontFamily: JOST }}>{title}</Heading3>
     <Text fontSize="15px" lineHeight="1.8">{desc}</Text>
     <Box alignSelf="stretch"><Steps steps={steps} /></Box>
-    <Pill href={href} dot={LIGHT_DOT} icon={<DownArrow />}>{label}</Pill>
+    <Pill href={href} dot={LIGHT_DOT} track={['voicebank-download', { file }]} icon={<DownArrow />}>{label}</Pill>
   </Flex>
 )
 
@@ -51,8 +51,8 @@ const ChiakiSing = () => {
             </Flex>
             <Heading fontWeight="black" fontSize={{ base: '2.125rem', md: 'clamp(2.125rem, 4.6vw, 4rem)' }} lineHeight="1.4" letterSpacing={{ base: '.06em', _en: '0' }} whiteSpace="pre-line">{t('chiakiPage.sing.heading')}</Heading>
             <Flex flexDirection={{ base: 'column', md: 'row' }} flexWrap="wrap" gap={{ base: 3, md: '14px 16px' }} mt={4} style={{ fontFamily: JOST }}>
-              <Pill href={DOWNLOADS.appMac} dot={LIGHT_DOT} icon={<DownArrow />}>macOS (Apple Silicon)</Pill>
-              <Pill href={DOWNLOADS.appWindows} dot={LIGHT_DOT} icon={<DownArrow />}>Windows</Pill>
+              <Pill href={DOWNLOADS.appMac} dot={LIGHT_DOT} track={['voicebank-download', { file: 'app-mac' }]} icon={<DownArrow />}>macOS (Apple Silicon)</Pill>
+              <Pill href={DOWNLOADS.appWindows} dot={LIGHT_DOT} track={['voicebank-download', { file: 'app-windows' }]} icon={<DownArrow />}>Windows</Pill>
             </Flex>
             <Text mt={-2} fontFamily="mono" fontSize="xs" letterSpacing={{ base: '.18em', _en: '.04em' }}>{t('chiakiPage.sing.free')}</Text>
           </Reveal>
@@ -73,8 +73,8 @@ const ChiakiSing = () => {
               </Span>
             </Summary>
             <Grid gridTemplateColumns={{ base: '1fr', md: 'repeat(2, minmax(0, 1fr))' }} columnGap={16} rowGap={10} pt={4} pb={10}>
-              <AltBlock title="Chiaki.zip" desc={t('voicebankPage.zip.desc')} steps={listOf(t, 'voicebankPage.zip.steps')} href={DOWNLOADS.zip} label={t('voicebankPage.zip.button')} />
-              <AltBlock title="Extra Phonemizers" desc={t('chiakiPage.sing.pluginDesc')} steps={listOf(t, 'voicebankPage.extra.steps')} href={DOWNLOADS.phonemizers} label={t('voicebankPage.extra.button')} />
+              <AltBlock title="Chiaki.zip" desc={t('voicebankPage.zip.desc')} steps={listOf(t, 'voicebankPage.zip.steps')} href={DOWNLOADS.zip} label={t('voicebankPage.zip.button')} file="zip" />
+              <AltBlock title="Extra Phonemizers" desc={t('chiakiPage.sing.pluginDesc')} steps={listOf(t, 'voicebankPage.extra.steps')} href={DOWNLOADS.phonemizers} label={t('voicebankPage.extra.button')} file="phonemizers" />
             </Grid>
           </Details>
         </Reveal>

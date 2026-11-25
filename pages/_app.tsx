@@ -65,6 +65,8 @@ function MyApp({ Component, pageProps }: AppProps) {
           src={UMAMI_SCRIPT_URL}
           data-website-id={UMAMI_WEBSITE_ID}
           data-domains={UMAMI_DOMAINS}
+          // In-page anchors like #download would otherwise count as extra pageviews
+          data-exclude-hash="true"
           strategy="afterInteractive"
         />
       )}

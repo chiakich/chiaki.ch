@@ -14,6 +14,12 @@ declare global {
   }
 }
 
+// Declarative form for links; Umami's click listener reads these attributes
+export const umamiAttrs = (event: string, data: Record<string, string> = {}) => ({
+  'data-umami-event': event,
+  ...Object.fromEntries(Object.entries(data).map(([key, value]) => [`data-umami-event-${key}`, value])),
+})
+
 export const track = (event: string, data?: EventData) => {
   window.umami?.track(event, data)
 }

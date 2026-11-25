@@ -180,8 +180,8 @@ const ChiakiHero = () => {
         <Text mt={{ md: '40px' }} maxW={{ md: 'min(29em, calc(52vw - 64px))' }} fontSize={{ base: '15px', md: '17px' }} lineHeight="2">{t('chiakiPage.intro')}</Text>
 
         <Flex flexDirection={{ base: 'column', md: 'row' }} flexWrap="wrap" alignItems={{ base: 'stretch', md: 'center' }} gap={{ base: 3, md: '14px 18px' }} pt="6px">
-          <Pill href="#download" icon={<DownArrow />}>{t('chiakiPage.freeDownload')}</Pill>
-          <Pill href="#listen" tone="outline" icon={<PlayIcon />}>{t('chiakiPage.listen')}</Pill>
+          <Pill href="#download" track={['hero-cta', { target: 'download' }]} icon={<DownArrow />}>{t('chiakiPage.freeDownload')}</Pill>
+          <Pill href="#listen" tone="outline" track={['hero-cta', { target: 'listen' }]} icon={<PlayIcon />}>{t('chiakiPage.listen')}</Pill>
         </Flex>
 
         <Link href="#song" display="inline-flex" alignItems="center" alignSelf="flex-start" gap="14px" minH="44px" fontFamily="mono" fontSize="xs" letterSpacing=".2em" textDecoration="none" _hover={{ color: '#9a4609' }}>
