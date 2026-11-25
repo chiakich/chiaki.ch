@@ -1208,7 +1208,7 @@
       ]
     },
     "terms": {
-      "updated": "2026-11-23",
+      "updated": "2026-11-25",
       "intro": "These terms apply to the Chiaki voicebank (\"the voicebank\") and to any audio generated with it. By downloading or using the voicebank, you agree to these terms.",
       "sections": [
         {
@@ -1218,7 +1218,8 @@
             "Create works on any subject, including R-18 and political content.",
             "Make derivative works of the Chiaki character, and make and sell merchandise.",
             "Embed the voicebank in games, apps, and other works.",
-            "Train or build new models (singing, speech TTS, or voice conversion) from audio generated with the voicebank, and release them for free."
+            "Train or build new models (singing, speech TTS, or voice conversion) from audio generated with the voicebank, and release them for free.",
+            "Use the portrait drawn by shONe on pages and works related to the voicebank, such as wiki entries and the cover art or music video of a song made with Chiaki."
           ]
         },
         {
@@ -1239,7 +1240,7 @@
             "Defame, insult, or harass real people, groups, or products.",
             "Reverse engineer, decompile, or disassemble the voicebank's model files, extract or modify their weights, or publish methods for doing so.",
             "Sell or distribute the voicebank itself on its own, modified or not. Link to the official download page instead.",
-            "Extract or reuse the portrait and icon drawn by shONe. They are copyrighted by shONe and licensed only for display with the voicebank inside OpenUtau.",
+            "Use the portrait drawn by shONe for anything unrelated to the voicebank, or extract or reuse the icon. Both are copyrighted by shONe.",
             "Claim the voicebank as your own work.",
             "Use the voicebank for anything illegal."
           ]
@@ -1378,8 +1379,8 @@
           "text": "To share it, link to the official download page."
         },
         {
-          "title": "Extracting the portrait",
-          "text": "shONe’s portrait is licensed for display in OpenUtau only."
+          "title": "Other uses of the portrait",
+          "text": "Wiki pages and songs made with Chiaki may use shONe’s portrait; uses unrelated to the voicebank may not."
         }
       ],
       "credit": "When publishing, credit as",
