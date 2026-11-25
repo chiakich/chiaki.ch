@@ -7,6 +7,7 @@ import { LANGS } from 'components/chiaki/langs'
 
 const SITE_URL = 'https://chiaki.ch'
 const SITE_NAME = '千秋稻荷社'
+const BREADCRUMB_ROOT: Record<Locale, string> = { tw: SITE_NAME, ja: '千秋稲荷社', en: 'Chiaki Inari Shrine' }
 
 type PageMeta = {
   key: string
@@ -132,7 +133,7 @@ const PageMeta = ({ override }: { override?: PageMetaOverride }) => {
     Object.values(getNavSections(t)).forEach((section) =>
       section.items.forEach((item) => titleByPath.set(item.path, item.title))
     )
-    const crumbs = [{ name: SITE_NAME, url: `${SITE_URL}${localizedPath('/', locale)}` }]
+    const crumbs = [{ name: BREADCRUMB_ROOT[locale], url: `${SITE_URL}${localizedPath('/', locale)}` }]
     let acc = ''
     const segments = pagePath.split('/').filter(Boolean)
     segments.forEach((segment, index) => {
