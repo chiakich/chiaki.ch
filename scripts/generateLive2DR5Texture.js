@@ -16,8 +16,15 @@ const ROOT = path.join(
   'Resources',
   'chiaki'
 )
+// The master stays out of public/ so the deploy never serves it
 const SRC = path.join(
-  ROOT,
+  __dirname,
+  '..',
+  'assets-src',
+  'story',
+  'character',
+  'live2d',
+  'r5',
   'chiakiL2Dv2-cubism5-target.8192',
   'texture_00.png'
 )
