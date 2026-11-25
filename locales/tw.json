@@ -1169,6 +1169,7 @@
       "title": "聲庫單獨下載",
       "desc": "給官方 OpenUtau 使用的聲庫 zip，下載後不需解壓縮。芬蘭文、拉丁文和 Learning 語言要另外安裝 Extra Phonemizers。",
       "button": "下載 Chiaki.zip",
+      "mirror": "也可以從 Hugging Face 下載，包含舊版本",
       "steps": [
         "把 Chiaki.zip 拖進 OpenUtau 視窗，或從「工具」選「安裝歌手」。",
         "點軌道上的「選擇歌手」，選 Chiaki。",

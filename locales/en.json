@@ -1163,6 +1163,7 @@
       "title": "Voicebank only",
       "desc": "The voicebank zip for the official OpenUtau. No need to unzip it. Finnish, Latin and the Learning languages need the Extra Phonemizers.",
       "button": "Download Chiaki.zip",
+      "mirror": "Also on Hugging Face, including past versions",
       "steps": [
         "Drag Chiaki.zip into the OpenUtau window, or choose \"Install Singer\" from the Tools menu.",
         "Click \"Select singer\" on a track and choose Chiaki.",

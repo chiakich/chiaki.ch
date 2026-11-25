@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { localizedPath, pagePathFromLocalePath, type Locale, useI18n } from 'i18n'
 import { getMainLinks, getNavSections } from 'components/nav/navData'
-import { DOWNLOADS } from 'components/chiaki/voicebankData'
+import { DOWNLOADS, HF_REPO } from 'components/chiaki/voicebankData'
 import { LANGS } from 'components/chiaki/langs'
 
 const SITE_URL = 'https://chiaki.ch'
@@ -211,6 +211,7 @@ const PageMeta = ({ override }: { override?: PageMetaOverride }) => {
               'https://www.plurk.com/chiakich',
               'https://instagram.com/akisakuya',
               'https://github.com/chiakich',
+              'https://huggingface.co/chiakic',
             ],
           }]
         : []),
@@ -255,6 +256,7 @@ const PageMeta = ({ override }: { override?: PageMetaOverride }) => {
             offers: { '@type': 'Offer', price: 0, priceCurrency: 'TWD' },
             encoding: { '@type': 'MediaObject', contentUrl: DOWNLOADS.zip, encodingFormat: 'application/zip' },
             url: `${pageUrl}#download`,
+            sameAs: [HF_REPO],
             author: { '@id': `${SITE_URL}/#chiaki` },
           }]
         : []),

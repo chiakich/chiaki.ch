@@ -1,6 +1,6 @@
 import { Box, Flex, Grid, styled } from 'styled-system/jsx'
 import { useI18n } from 'i18n'
-import { DOWNLOADS, listOf } from './voicebankData'
+import { DOWNLOADS, HF_REPO, listOf } from './voicebankData'
 import { INK, JOST, ORANGE, SNOW } from './chiakiData'
 import { Container, DownArrow, Gauge, Pill, Reveal } from './parts'
 
@@ -27,12 +27,13 @@ const Steps = ({ steps, large = false }: { steps: string[]; large?: boolean }) =
   </OrderedList>
 )
 
-const AltBlock = ({ title, desc, steps, href, label, file }: { title: string; desc: string; steps: string[]; href: string | null; label: string; file: string }) => (
+const AltBlock = ({ title, desc, steps, href, label, file, mirror }: { title: string; desc: string; steps: string[]; href: string | null; label: string; file: string; mirror?: { href: string; label: string } }) => (
   <Flex flexDirection="column" alignItems="flex-start" gap={4}>
     <Heading3 fontWeight="medium" fontSize="1.75rem" lineHeight="1.2" style={{ fontFamily: JOST }}>{title}</Heading3>
     <Text fontSize="15px" lineHeight="1.8">{desc}</Text>
     <Box alignSelf="stretch"><Steps steps={steps} /></Box>
     <Pill href={href} dot={LIGHT_DOT} track={['voicebank-download', { file }]} icon={<DownArrow />}>{label}</Pill>
+    {mirror && <styled.a href={mirror.href} target="_blank" rel="noreferrer" fontSize="14px" textDecoration="underline" textUnderlineOffset="4px" _hover={{ opacity: 0.7 }}>{mirror.label}</styled.a>}
   </Flex>
 )
 
@@ -73,7 +74,7 @@ const ChiakiSing = () => {
               </Span>
             </Summary>
             <Grid gridTemplateColumns={{ base: '1fr', md: 'repeat(2, minmax(0, 1fr))' }} columnGap={16} rowGap={10} pt={4} pb={10}>
-              <AltBlock title="Chiaki.zip" desc={t('voicebankPage.zip.desc')} steps={listOf(t, 'voicebankPage.zip.steps')} href={DOWNLOADS.zip} label={t('voicebankPage.zip.button')} file="zip" />
+              <AltBlock title="Chiaki.zip" desc={t('voicebankPage.zip.desc')} steps={listOf(t, 'voicebankPage.zip.steps')} href={DOWNLOADS.zip} label={t('voicebankPage.zip.button')} file="zip" mirror={{ href: HF_REPO, label: t('voicebankPage.zip.mirror') }} />
               <AltBlock title="Extra Phonemizers" desc={t('chiakiPage.sing.pluginDesc')} steps={listOf(t, 'voicebankPage.extra.steps')} href={DOWNLOADS.phonemizers} label={t('voicebankPage.extra.button')} file="phonemizers" />
             </Grid>
           </Details>

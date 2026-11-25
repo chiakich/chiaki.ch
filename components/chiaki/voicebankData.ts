@@ -2,6 +2,9 @@ export const PORTRAIT_SRC = '/assets/works/voicebank/portrait.webp'
 
 const RELEASES = 'https://github.com/chiakich/OpenUtau-chiaki/releases'
 
+// Mirrors Chiaki.zip with every version tagged
+export const HF_REPO = 'https://huggingface.co/chiakic/chiaki-diffsinger'
+
 // A null URL renders the button as "coming soon".
 export const DOWNLOADS: Record<'appWindows' | 'appMac' | 'zip' | 'phonemizers', string | null> = {
   appWindows: `${RELEASES}/latest/download/OpenUtau-Chiaki-win-x64-Setup.exe`,
