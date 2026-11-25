@@ -57,7 +57,7 @@
       "description": "Software, tools, and interfaces designed and developed by Chiaki, including open-source tools, font editors, and React components."
     },
     "chiakey": {
-      "title": "ChiaKey — Yahoo! KeyKey, Evolving for Modern macOS - Chiaki Inari Shrine",
+      "title": "ChiaKey — Yahoo! KeyKey, Evolving for Modern macOS",
       "description": "A macOS input method for typing Traditional Chinese with Bopomofo (also known as Zhuyin), the phonetic script commonly used in Taiwan. Built from Yahoo! KeyKey’s open-source code, it supports Apple Silicon and Intel Macs while its lexicon and language model keep evolving for Taiwanese usage."
     },
     "kumiko": {
@@ -73,7 +73,7 @@
       "description": "A React component that recreates station split-flap displays. It also animates large boards of flaps smoothly for station and airport-style displays."
     },
     "zipcode": {
-      "title": "tw-address-tools — Taiwan Address Lookup & English Translation - Chiaki Inari Shrine",
+      "title": "tw-address-tools — Taiwan Address Lookup & English Translation",
       "description": "A JavaScript package for fuzzy Taiwan address lookup, ZIP-code resolution, and English translation. It normalizes 台/臺 and full-width characters, fills in the city when a road name is unique nationwide, and covers P.O. boxes — all client-side."
     },
     "tokyonoSora": {
@@ -101,11 +101,11 @@
       "description": "A Taiwanese open-source rounded typeface by justfont, refined for Taiwanese forms and everyday reading. Chiaki contributed while at justfont."
     },
     "letterpress": {
-      "title": "千秋印書館 — a framework-free letterpress package for the web - Chiaki Inari Shrine",
+      "title": "千秋印書館 — a framework-free letterpress package for the web",
       "description": "Putting the feel of letterpress back into a web page: paper fibre, ink weight, and the lean and chipped corners of worn type. A specimen sheet in vertical Chinese, horizontal Chinese and English."
     },
     "chiaki": {
-      "title": "Chiaki – Free DiffSinger Voicebank in 28 Languages - Chiaki Inari Shrine",
+      "title": "Chiaki – Free DiffSinger Voicebank in 28 Languages",
       "description": "Chiaki is an AI singing voicebank for DiffSinger and OpenUtau, built from the voice of Suzukaze Chiaki. She sings in 28 languages, strongest in Japanese, English and Chinese, and is free to use, including commercially."
     },
     "characters": {
