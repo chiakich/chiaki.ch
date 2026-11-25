@@ -3,8 +3,10 @@
 //   - localized pages: the `routes` map in pages/[locale]/[[...slug]].tsx
 //     (the authority for which paths actually have /ja and /en versions)
 //   - blog posts: the markdown files in content/blog (single-language, TW only)
+// Page lastmod comes from git history of the page file and the component folders it imports.
+const { execFileSync } = require('node:child_process')
 const { existsSync, readdirSync, readFileSync, writeFileSync } = require('node:fs')
-const { join, resolve } = require('node:path')
+const { dirname, join, resolve } = require('node:path')
 const matter = require('gray-matter')
 
 const SITE_URL = 'https://chiaki.ch'
@@ -26,7 +28,8 @@ const localeRoutesFile = resolve(
 const blogDir = resolve(process.cwd(), 'content', 'blog')
 const outFile = resolve(process.cwd(), 'public', 'sitemap.xml')
 
-// Pull the localized route keys straight from the catch-all's `routes` map.
+// Pull the localized route keys (and the page module each one loads) straight
+// from the catch-all's `routes` map.
 const readLocalizedRoutes = () => {
   const source = readFileSync(localeRoutesFile, 'utf-8')
   const body = source.slice(
@@ -34,13 +37,57 @@ const readLocalizedRoutes = () => {
     source.indexOf('const LocalePage')
   )
   const routes = []
-  const entry = /(?:'([^']*)'|([A-Za-z0-9_]+))\s*:\s*dynamic/g
+  const entry = /(?:'([^']*)'|([A-Za-z0-9_]+))\s*:\s*dynamic\(\(\)\s*=>\s*import\('([^']+)'\)/g
   let match
   while ((match = entry.exec(body)) !== null) {
-    routes.push(match[1] !== undefined ? match[1] : match[2])
+    routes.push({ route: match[1] !== undefined ? match[1] : match[2], module: match[3] })
   }
   return routes
 }
+
+// Content that a page renders but does not import directly
+const EXTRA_SOURCES = { blog: ['content/blog'] }
+
+const resolvePageFile = (module) =>
+  [`${module}.tsx`, `${module}/index.tsx`].map((file) => resolve(process.cwd(), file)).find(existsSync)
+
+const pageSources = ({ route, module }) => {
+  const file = resolvePageFile(module)
+  if (!file) return []
+  const imports = [...readFileSync(file, 'utf-8').matchAll(/from '(components\/[^']+)'/g)]
+  return [file, ...new Set(imports.map((m) => dirname(m[1]))), ...(EXTRA_SOURCES[route] ?? [])]
+}
+
+// A shallow clone (e.g. on the CI builder) only knows the tip commit, so every
+// page would get the same date; reuse the dates committed in the sitemap instead.
+const gitHistoryAvailable = (() => {
+  try {
+    return execFileSync('git', ['rev-parse', '--is-shallow-repository'], { encoding: 'utf-8', stdio: ['ignore', 'pipe', 'ignore'] }).trim() === 'false'
+  } catch {
+    return false
+  }
+})()
+
+const committedLastmods = (() => {
+  if (!existsSync(outFile)) return new Map()
+  const xml = readFileSync(outFile, 'utf-8')
+  return new Map([...xml.matchAll(/<loc>([^<]+)<\/loc>.*?<lastmod>([^<]+)<\/lastmod>/g)].map((m) => [m[1], m[2]]))
+})()
+
+const gitLastmod = (paths) => {
+  if (!paths.length) return null
+  try {
+    const out = execFileSync('git', ['log', '-1', '--format=%cs', '--', ...paths], { encoding: 'utf-8', stdio: ['ignore', 'pipe', 'ignore'] }).trim()
+    return out || null
+  } catch {
+    return null
+  }
+}
+
+const pageLastmod = (page) =>
+  gitHistoryAvailable
+    ? gitLastmod(pageSources(page))
+    : committedLastmods.get(hrefFor('', page.route)) ?? null
 
 // Mirror of i18n's localizedPath: home -> `${prefix}` (tw:'/', ja:'/ja'),
 // sub-page -> `${prefix}/${route}`. Keeps sitemap URLs byte-identical to the
@@ -48,7 +95,7 @@ const readLocalizedRoutes = () => {
 const hrefFor = (prefix, route) =>
   route ? `${SITE_URL}${prefix}/${route}` : `${SITE_URL}${prefix || '/'}`
 
-const localizedUrl = (route) => {
+const localizedUrl = (route, lastmod) => {
   const alternates = LOCALES.map(
     ([hreflang, prefix]) =>
       `<xhtml:link rel="alternate" hreflang="${hreflang}" href="${hrefFor(prefix, route)}"/>`
@@ -57,7 +104,8 @@ const localizedUrl = (route) => {
   alternates.push(
     `<xhtml:link rel="alternate" hreflang="x-default" href="${hrefFor('', route)}"/>`
   )
-  return `  <url><loc>${hrefFor('', route)}</loc>${alternates.join('')}</url>`
+  const mod = lastmod ? `<lastmod>${lastmod}</lastmod>` : ''
+  return `  <url><loc>${hrefFor('', route)}</loc>${mod}${alternates.join('')}</url>`
 }
 
 const toISODate = (value) => {
@@ -73,8 +121,8 @@ const blogUrl = (slug, lastmod) => {
 
 const build = () => {
   const rows = readLocalizedRoutes()
-    .filter((route) => !LEGACY_REDIRECT_ROUTES.has(route) && !UNLISTED_ROUTES.has(route))
-    .map(localizedUrl)
+    .filter(({ route }) => !LEGACY_REDIRECT_ROUTES.has(route) && !UNLISTED_ROUTES.has(route))
+    .map((page) => localizedUrl(page.route, pageLastmod(page)))
 
   if (existsSync(blogDir)) {
     for (const file of readdirSync(blogDir)) {
