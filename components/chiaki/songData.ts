@@ -1,4 +1,4 @@
-export const SONG_SRC = '/assets/works/voicebank/theme/watashiuta.m4a'
+export const SONG_SRC = '/assets/works/voicebank/theme/watashiuta.m4a?v=23-2'
 export const SONG_ART = { large: '/assets/works/voicebank/theme/watashiuta-2000.webp', small: '/assets/works/voicebank/theme/watashiuta-1200.webp' }
 
 // times holds when each non-space character is sung, for the per-character reveal
