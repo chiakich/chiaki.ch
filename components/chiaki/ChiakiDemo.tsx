@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { Box, Flex, styled } from 'styled-system/jsx'
 import { useI18n } from 'i18n'
+import { track } from 'lib/analytics'
 import { demoSrc } from './voicebankData'
 import { INK, JOST, LANGS, LINE_LIGHT, MIST, NIGHT, ORANGE, PICK_EVENT, PLAY_EVENT, SNOW, type Tier } from './chiakiData'
 import { Container, Reveal, Snow } from './parts'
@@ -53,16 +54,18 @@ const ChiakiDemo = () => {
 
   useEffect(() => () => audioRef.current?.pause(), [])
 
-  const play = (next: number) => {
+  const play = (next: number, auto = false) => {
     const audio = audioRef.current ?? (audioRef.current = new Audio())
     if (loadedRef.current !== next) {
+      // Counted once per language load; resuming the same track is not a new listen
+      track('demo-play', { lang: LANGS[next].code, auto })
       audio.src = demoSrc(LANGS[next].code)
       loadedRef.current = next
       setProgress(0)
     }
     setIdx(next)
     audio.ontimeupdate = () => setProgress(audio.duration ? audio.currentTime / audio.duration : 0)
-    audio.onended = () => play((next + 1) % LANGS.length)
+    audio.onended = () => play((next + 1) % LANGS.length, true)
     window.dispatchEvent(new CustomEvent(PLAY_EVENT, { detail: 'demo' }))
     audio.play().then(() => setPlaying(true), () => setPlaying(false))
   }
