@@ -1301,7 +1301,12 @@
       "otherEditors": "Use another DiffSinger editor",
       "pluginDesc": "Built into OpenUtau-Chiaki. Official OpenUtau lacks phonemizers for Finnish, Latin and the Learning languages; copy just the DLLs you need into its Plugins folder.",
       "heading": "Let me sing\nthe songs you write.",
-      "free": "Free / Commercial OK / No sign-up"
+      "free": "Free / Commercial OK / No sign-up",
+      "moreVersions": "More versions",
+      "voicebankOnly": "Voicebank only",
+      "support": "Chiaki is my personal project. I spent countless hours recording her training data, and many more training her on GPUs. She is free, including for commercial use.",
+      "supportAsk": "If you like her singing, you can support her on Ko-fi!",
+      "supportButton": "Support on Ko-fi"
     },
     "spec": {
       "intermediateNote": "Mostly right; may be inaccurate.",

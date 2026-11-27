@@ -1,8 +1,11 @@
 import { Box, Flex, Grid, styled } from 'styled-system/jsx'
 import { useI18n } from 'i18n'
-import { DOWNLOADS, HF_REPO, listOf } from './voicebankData'
+import { DOWNLOADS, HF_REPO, RELEASES, listOf } from './voicebankData'
+import { umamiAttrs } from 'lib/analytics'
 import { INK, JOST, ORANGE, SNOW } from './chiakiData'
-import { Container, DownArrow, Gauge, Pill, Reveal } from './parts'
+import { Container, DownArrow, Gauge, Pill, Reveal, RightArrow } from './parts'
+
+const KOFI = 'https://ko-fi.com/chiakic'
 
 const Text = styled.p
 const Span = styled.span
@@ -12,6 +15,12 @@ const OrderedList = styled.ol
 const ListItem = styled.li
 const Details = styled.details
 const Summary = styled.summary
+
+// Opened before the hash jump so the zip steps are visible where it lands
+const openOtherEditors = () => {
+  const details = document.getElementById('other-editors')
+  if (details instanceof HTMLDetailsElement) details.open = true
+}
 
 const RULE = 'rgba(22,28,38,.5)'
 const LIGHT_DOT = { backgroundColor: SNOW, color: INK }
@@ -55,7 +64,11 @@ const ChiakiSing = () => {
               <Pill href={DOWNLOADS.appMac} dot={LIGHT_DOT} track={['voicebank-download', { file: 'app-mac' }]} icon={<DownArrow />}>macOS (Apple Silicon)</Pill>
               <Pill href={DOWNLOADS.appWindows} dot={LIGHT_DOT} track={['voicebank-download', { file: 'app-windows' }]} icon={<DownArrow />}>Windows</Pill>
             </Flex>
-            <Text mt={-2} fontFamily="mono" fontSize="xs" letterSpacing={{ base: '.18em', _en: '.04em' }}>{t('chiakiPage.sing.free')}</Text>
+            <Flex mt={-5} flexWrap="wrap" columnGap={7} rowGap={1} fontSize="14px" fontWeight="bold">
+              <styled.a href={RELEASES} target="_blank" rel="noreferrer" display="inline-flex" alignItems="center" minH="44px" textDecoration="underline" textUnderlineOffset="4px" _hover={{ opacity: 0.7 }} {...umamiAttrs('voicebank-more', { target: 'releases' })}>{t('chiakiPage.sing.moreVersions')} ↗</styled.a>
+              <styled.a href="#other-editors" onClick={openOtherEditors} display="inline-flex" alignItems="center" minH="44px" textDecoration="underline" textUnderlineOffset="4px" _hover={{ opacity: 0.7 }} {...umamiAttrs('voicebank-more', { target: 'voicebank-only' })}>{t('chiakiPage.sing.voicebankOnly')} ↓</styled.a>
+            </Flex>
+            <Text mt={-4} fontFamily="mono" fontSize="xs" letterSpacing={{ base: '.18em', _en: '.04em' }}>{t('chiakiPage.sing.free')}</Text>
           </Reveal>
 
           <Reveal flex="1 1 420px" minW="0" delay={0.15}>
@@ -66,7 +79,7 @@ const ChiakiSing = () => {
         </Flex>
 
         <Reveal mt={{ base: 12, md: 16 }}>
-          <Details style={{ borderTop: `1px solid ${RULE}`, borderBottom: `1px solid ${RULE}` }}>
+          <Details id="other-editors" scrollMarginTop="72px" style={{ borderTop: `1px solid ${RULE}`, borderBottom: `1px solid ${RULE}` }}>
             <Summary display="flex" alignItems="center" justifyContent="space-between" gap={4} minH="64px" fontSize="17px" fontWeight="bold" cursor="pointer" listStyle="none" css={{ '&::-webkit-details-marker': { display: 'none' } }}>
               {t('chiakiPage.sing.otherEditors')}
               <Span aria-hidden display="flex" transition="transform .3s ease" css={{ 'details[open] &': { transform: 'rotate(180deg)' } }}>
@@ -78,6 +91,24 @@ const ChiakiSing = () => {
               <AltBlock title="Extra Phonemizers" desc={t('chiakiPage.sing.pluginDesc')} steps={listOf(t, 'voicebankPage.extra.steps')} href={DOWNLOADS.phonemizers} label={t('voicebankPage.extra.button')} file="phonemizers" />
             </Grid>
           </Details>
+        </Reveal>
+
+        {/* Last in the section so it never reads as a paywall, and the other-editors fold stays attached to the downloads */}
+        <Reveal mt={{ base: 14, md: 20 }}>
+          <Flex flexDirection={{ base: 'column', md: 'row' }} alignItems={{ base: 'stretch', md: 'center' }} justifyContent="space-between" gap={{ base: 6, md: 12 }} px={{ base: 6, md: 12 }} py={{ base: 8, md: 10 }} clipPath="polygon(0 0, 100% 0, 100% 100%, 28px 100%, 0 calc(100% - 28px))" style={{ backgroundColor: INK, color: SNOW }}>
+            <Flex flexDirection="column" gap={4} maxW="50em">
+              <Flex alignItems="center" columnGap="18px" fontFamily="mono" fontSize="13px" letterSpacing=".2em" style={{ color: ORANGE }}>
+                <Span>SUPPORT</Span>
+                <Gauge />
+                <Span>KO-FI</Span>
+              </Flex>
+              <Text fontSize="15px" lineHeight="1.9">{t('chiakiPage.sing.support')}</Text>
+              <Text fontSize="15px" lineHeight="1.9" fontWeight="bold">{t('chiakiPage.sing.supportAsk')}</Text>
+            </Flex>
+            <Flex flexShrink={0} flexDirection="column" style={{ fontFamily: JOST }}>
+              <Pill href={KOFI} tone="outline" dot={{ backgroundColor: ORANGE, color: INK }} track={['support-click', { target: 'ko-fi' }]} icon={<RightArrow />}>{t('chiakiPage.sing.supportButton')}</Pill>
+            </Flex>
+          </Flex>
         </Reveal>
       </Container>
     </Box>

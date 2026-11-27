@@ -1295,7 +1295,12 @@
       "otherEditors": "ほかの DiffSinger エディターで使う",
       "pluginDesc": "OpenUtau-Chiaki には内蔵済みです。公式 OpenUtau にはフィンランド語・ラテン語・学習中の言語の音素器がないため、必要な言語の DLL だけを Plugins フォルダに入れてください。",
       "heading": "あなたの歌を、\nわたくしに歌わせてください。",
-      "free": "無料 / 商用可 / 申請不要"
+      "free": "無料 / 商用可 / 申請不要",
+      "moreVersions": "ほかのバージョン",
+      "voicebankOnly": "音源のみ",
+      "support": "千亜紀はわたしの個人プロジェクトです。数えきれない時間をかけて学習データを録音し、GPU でも何時間もかけて学習させました。無料で、商用利用もできます。",
+      "supportAsk": "千亜紀の歌を気に入っていただけたら、Ko-fi で応援してもらえるとうれしいです！",
+      "supportButton": "Ko-fi で応援する"
     },
     "spec": {
       "intermediateNote": "おおむね発音できますが、不正確なことも。",

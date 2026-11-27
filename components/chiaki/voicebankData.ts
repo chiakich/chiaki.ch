@@ -1,6 +1,6 @@
 export const PORTRAIT_SRC = '/assets/works/voicebank/portrait.webp'
 
-const RELEASES = 'https://github.com/chiakich/OpenUtau-chiaki/releases'
+export const RELEASES = 'https://github.com/chiakich/OpenUtau-chiaki/releases'
 
 // Mirrors Chiaki.zip with every version tagged
 export const HF_REPO = 'https://huggingface.co/chiakic/chiaki-diffsinger'

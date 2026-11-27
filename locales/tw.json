@@ -1307,7 +1307,12 @@
       "otherEditors": "使用其他 DiffSinger 編輯器",
       "pluginDesc": "OpenUtau-Chiaki 已經內建這些音素器，不用另外安裝。官方 OpenUtau 沒有內建芬蘭文、拉丁文和 Learning 語言的音素器；zip 裡每個語言一個 DLL，挑需要的放進 Plugins 資料夾就好。",
       "heading": "請讓我來唱，\n您寫的歌。",
-      "free": "免費 / 可商用 / 不需申請"
+      "free": "免費 / 可商用 / 不需申請",
+      "moreVersions": "更多版本",
+      "voicebankOnly": "只下載聲庫",
+      "support": "千亞紀是我的個人專案，錄了無數小時的訓練資料以及數小時的 GPU 訓練。她免費，也可以商用。",
+      "supportAsk": "如果你喜歡她唱的歌，歡迎到 Ko-fi 贊助！",
+      "supportButton": "到 Ko-fi 支持"
     },
     "spec": {
       "intermediateNote": "大致會發音，但可能不正確。",
