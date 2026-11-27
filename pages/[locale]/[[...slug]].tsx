@@ -2,11 +2,12 @@ import type { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import type { ComponentType } from 'react'
 import type { Locale, TranslationTree } from 'i18n'
 import { getMessages } from 'i18n/messages'
+import type { LocalizedRoute } from 'i18n/routes'
 import dynamic from 'next/dynamic'
 
 // Each route stays SSR'd (default ssr:true) for static export output,
 // but split into its own chunk so one locale page doesn't bundle every route's JS.
-const routes: Record<string, ComponentType> = {
+const routes: Record<LocalizedRoute, ComponentType> = {
   '': dynamic(() => import('pages/index')),
   profile: dynamic(() => import('pages/profile')),
   character: dynamic(() => import('pages/character')),
@@ -34,7 +35,7 @@ const routes: Record<string, ComponentType> = {
 type LocalePageProps = { locale: Locale; route: string; messages: TranslationTree }
 
 const LocalePage: NextPage<LocalePageProps> = ({ route }) => {
-  const Page = routes[route]
+  const Page = routes[route as LocalizedRoute]
   return <Page />
 }
 

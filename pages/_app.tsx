@@ -6,6 +6,7 @@ import { LazyMotion } from 'framer-motion'
 import { useEffect } from 'react'
 import PageMeta from 'components/PageMeta'
 import TopBar from 'components/TopBar'
+import LanguageSuggest from 'components/nav/LanguageSuggest'
 import { LocaleProvider, type Locale, locales } from 'i18n'
 import { UMAMI_DOMAINS, UMAMI_SCRIPT_URL, UMAMI_WEBSITE_ID } from 'lib/analytics'
 import '../styled-system/styles.css'
@@ -85,6 +86,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             <Component {...pageProps} />
           </main>
           <PageMeta override={pageProps.pageMeta} />
+          <LanguageSuggest />
         </LazyMotion>
       </LocaleProvider>
     </>

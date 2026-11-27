@@ -10,6 +10,7 @@ import {
   pagePathFromLocalePath,
   useI18n,
 } from 'i18n'
+import { saveLangPref } from 'i18n/preference'
 
 const LanguageSwitcher: React.FC = () => {
   const [isOpen, setOpen] = useState(false)
@@ -99,7 +100,10 @@ const LanguageSwitcher: React.FC = () => {
               data-umami-event="language-switch"
               data-umami-event-from={locale}
               data-umami-event-to={itemLocale}
-              onClick={() => setOpen(false)}
+              onClick={() => {
+                saveLangPref(itemLocale)
+                setOpen(false)
+              }}
               tabIndex={isOpen ? 0 : -1}
               style={{
                 display: 'block',

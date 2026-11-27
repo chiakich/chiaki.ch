@@ -100,8 +100,10 @@ const pageSchemaType: Record<string, string> = {
 }
 
 const PageMeta = ({ override }: { override?: PageMetaOverride }) => {
-  const { asPath } = useRouter()
+  const { asPath, pathname: route } = useRouter()
   const { locale, t } = useI18n()
+  // Served for any missing URL, so it must not claim a canonical or join the hreflang cluster.
+  const isNotFound = route === '/404'
   const pathname = asPath.split(/[?#]/, 1)[0] || '/'
   const pagePath = pagePathFromLocalePath(pathname)
   const metadata = pageMetadata[pagePath] ?? fallbackMetadata
@@ -280,8 +282,12 @@ const PageMeta = ({ override }: { override?: PageMetaOverride }) => {
     <Head>
       <title key="title">{title}</title>
       <meta key="description" name="description" content={description} />
-      <link key="canonical" rel="canonical" href={canonicalUrl} />
-      {isLocalized ? (
+      {isNotFound ? (
+        <meta key="robots" name="robots" content="noindex" />
+      ) : (
+        <link key="canonical" rel="canonical" href={canonicalUrl} />
+      )}
+      {isNotFound ? null : isLocalized ? (
         <>
           {(['tw', 'ja', 'en'] as Locale[]).map((alternateLocale) => (
             <link

@@ -1,4 +1,5 @@
 import { cloneElement, createContext, useCallback, useContext, useEffect, useMemo } from 'react'
+import { LOCALIZED_ROUTES as LOCALIZED_ROUTE_LIST } from 'i18n/routes'
 
 export const locales = ['tw', 'ja', 'en'] as const
 export type Locale = (typeof locales)[number]
@@ -90,29 +91,7 @@ export const pagePathFromLocalePath = (path: string) => {
     : path
 }
 
-// Must mirror the `routes` keys in pages/[locale]/[[...slug]].tsx —
-// only these paths actually exist under /ja and /en.
-const LOCALIZED_ROUTES = new Set([
-  '',
-  'profile',
-  'character',
-  'character/chiaki',
-  'story',
-  'story/character',
-  'story/character/art',
-  'works',
-  'works/chiakey',
-  'works/kumiko',
-  'works/tg-jpg',
-  'works/split-flap',
-  'works/letterpress',
-  'works/tokyono-sora',
-  'fonts',
-  'fonts/akitra',
-  'fonts/huninn',
-  'fonts/nixie',
-  'blog',
-])
+const LOCALIZED_ROUTES = new Set<string>(LOCALIZED_ROUTE_LIST)
 
 export const isLocalizedRoute = (pagePath: string) =>
   LOCALIZED_ROUTES.has(pagePath.replace(/^\//, ''))

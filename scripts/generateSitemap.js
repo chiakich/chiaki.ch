@@ -105,7 +105,10 @@ const localizedUrl = (route, lastmod) => {
     `<xhtml:link rel="alternate" hreflang="x-default" href="${hrefFor('', route)}"/>`
   )
   const mod = lastmod ? `<lastmod>${lastmod}</lastmod>` : ''
-  return `  <url><loc>${hrefFor('', route)}</loc>${mod}${alternates.join('')}</url>`
+  // Google wants every language version as its own <url>, each carrying the full alternate set.
+  return LOCALES.map(
+    ([, prefix]) => `  <url><loc>${hrefFor(prefix, route)}</loc>${mod}${alternates.join('')}</url>`
+  )
 }
 
 const toISODate = (value) => {
@@ -122,7 +125,7 @@ const blogUrl = (slug, lastmod) => {
 const build = () => {
   const rows = readLocalizedRoutes()
     .filter(({ route }) => !LEGACY_REDIRECT_ROUTES.has(route) && !UNLISTED_ROUTES.has(route))
-    .map((page) => localizedUrl(page.route, pageLastmod(page)))
+    .flatMap((page) => localizedUrl(page.route, pageLastmod(page)))
 
   if (existsSync(blogDir)) {
     for (const file of readdirSync(blogDir)) {
