@@ -5,7 +5,7 @@ export const RELEASES = 'https://github.com/chiakich/OpenUtau-chiaki/releases'
 // Chiaki.zip is published only here; GitHub Releases carries the app and phonemizers
 export const HF_REPO = 'https://huggingface.co/chiakic/chiaki-diffsinger'
 
-export const ZIP_HISTORY = `${HF_REPO}/commits/main/Chiaki.zip`
+export const ZIP_HISTORY = `${HF_REPO}#versions`
 
 // A null URL renders the button as "coming soon".
 export const DOWNLOADS: Record<'appWindows' | 'appMac' | 'zip' | 'phonemizers', string | null> = {
