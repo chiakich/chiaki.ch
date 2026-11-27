@@ -18,7 +18,8 @@ const OUT_SLOW = 'chiakiPvOut 1.1s ease forwards'
 
 const LIT: CSSProperties = { color: LANTERN, textShadow: GLOW }
 // Outline-only lettering stands for what is unsaid, unborn or gone
-const HOLLOW: CSSProperties = { color: 'transparent', WebkitTextStroke: '1px rgba(238,242,245,.8)', textShadow: 'none' }
+// The PV page thickens the stroke and adds a faint fill, since a hairline vanishes against a busy picture
+const HOLLOW: CSSProperties = { color: 'var(--hollow-fill, transparent)', WebkitTextStroke: 'var(--hollow, 1px) rgba(238,242,245,.8)', textShadow: 'none' }
 
 export const tagOf = (line: SongLine) => (line.code ? LANGS.find((lang) => lang.code === line.code)?.tag : 'ja')
 
@@ -252,6 +253,8 @@ const Burst = ({ u }: { u: number }) => (
 
 type Layout = 'stack' | 'yokoTate' | 'tateYoko' | 'lead' | 'tate'
 type Place = 'lt' | 'lm' | 'rt' | 'rm' | 'rb' | 'cm'
+// A per-line override of where and how a lyric sits, for full-frame layouts outside the song section
+export type Look = { x: number; y: number; layout?: Layout; place?: Place; size?: number; opacity?: number }
 
 type Scene = {
   // One entry per segment when the halves of a line enter differently
@@ -508,16 +511,11 @@ const SCENES: Record<string, Scene> = {
   '百年先の 夜にでも': {
     fx: ['scatter', 'drift'], layout: 'yokoTate', place: 'rm',
     char: (i) => (i < 2 ? { fontSize: '1.5em', ...LIT } : undefined),
-    segDeco: (s, c) => s === 0 && (
-      <Span position="absolute" right="0" bottom="100%" fontFamily="mono" fontSize=".3em" fontWeight="regular" letterSpacing=".25em" animation="chiakiFadeIn .6s ease both" style={{ color: ORANGE, textShadow: SHADOW }}>
-        +{String(Math.round(ease(span(c.time, c.line.times[0], c.line.times[2])) * 100)).padStart(3, '0')} YEARS
-      </Span>
-    ),
   },
   // あなた thins to an outline once いなく is sung
   'あなたがいなく なる日にも': {
     fx: 'drift', layout: 'stack', place: 'lm',
-    char: (i, _, c) => (i < 3 && c.at(6) ? { ...HOLLOW, WebkitTextStroke: '1px rgba(238,242,245,.6)', translate: '0 -.14em' } : undefined),
+    char: (i, _, c) => (i < 3 && c.at(6) ? { ...HOLLOW, WebkitTextStroke: 'var(--hollow, 1px) rgba(238,242,245,.6)', translate: '0 -.14em' } : undefined),
   },
   // Same spot as the line before, so あなた is lit again exactly where it faded
   'あなたのことを 歌うから': {
@@ -575,8 +573,8 @@ const SCENES: Record<string, Scene> = {
 const PLAIN: Scene = { fx: 'drift', layout: 'stack', place: 'rm' }
 const sceneOf = (line: Line) => (line.text === 'わたしうた わたしうた' && line.index > 0 ? REPRISE : SCENES[line.text] ?? PLAIN)
 
-const PvLine = ({ line, time }: { line: Line; time: number }) => {
-  const scene = sceneOf(line)
+const PvLine = ({ line, time, look }: { line: Line; time: number; look?: Look }) => {
+  const scene = look ? { ...sceneOf(line), ...look } : sceneOf(line)
   const c: Ctx = { line, time, count: line.times.filter((at) => time >= at).length, at: (index) => time >= line.times[index] }
   const side = scene.place[0]
   const parts = line.text.split(' ')
@@ -689,7 +687,7 @@ const COVER_SHADOW = '0 2px 10px rgba(8,10,24,.7), 0 0 34px rgba(255,170,90,.28)
 
 // The title card before the first verse. The intro plays out as an ember running down the rule,
 // so the light reaches the bottom just as it is handed to the first line
-const Cover = ({ time, leaving }: { time: number; leaving: boolean }) => {
+export const Cover = ({ time, leaving }: { time: number; leaving: boolean }) => {
   const fuse = span(time, 0.4, LINES[0].start - 0.2)
   const rise = (delay: number): CSSProperties => ({ animation: `chiakiPvIn 1.1s ${delay}s ${EASE} both` })
   const rt: CSSProperties = { fontSize: '.19em', fontWeight: 700, letterSpacing: '.3em', color: 'rgba(238,242,245,.82)' }
@@ -718,31 +716,45 @@ const Cover = ({ time, leaving }: { time: number; leaving: boolean }) => {
   )
 }
 
-export const LyricStage = ({ cur, active, time }: { cur: number; active: number; time: number }) => {
+export const LyricStage = ({ cur, active, time, direct, scale = 1, cover = true }: { cur: number; active: number; time: number; direct?: (index: number) => Look | undefined; scale?: number; cover?: boolean }) => {
   const from = cur >= 0 ? groupStart(cur) : -1
   const gone = cur >= 0 ? from - 1 : active
   const slots: { index: number; leaving: boolean }[] = []
   if (gone >= 0) for (let index = groupStart(gone); index <= gone; index += 1) slots.push({ index, leaving: true })
   if (cur >= 0) for (let index = from; index <= cur; index += 1) slots.push({ index, leaving: false })
   const night = slots.find((slot) => LINES[slot.index].code)
+  const looks = slots.map(({ index }) => (LINES[index].code ? undefined : direct?.(index)))
 
   return (
-    <Grid aria-hidden display={{ base: 'grid', _motionReduce: 'none' }} position="absolute" top="25%" left="48%" right="7%" bottom="33%" pointerEvents="none" fontSize="3.6cqw">
-      {night && (
-        <Box key="stars" position="absolute" inset="0" style={{ animation: night.leaving ? OUT : undefined }}>
-          <Constellation time={time} />
-        </Box>
-      )}
-      {slots.map(({ index, leaving }) => {
-        const line = LINES[index]
-        const spot = line.code ? spotOf(line) : null
+    <>
+      <Grid aria-hidden display={{ base: 'grid', _motionReduce: 'none' }} position="absolute" top="25%" left="48%" right="7%" bottom="33%" pointerEvents="none" fontSize="3.6cqw">
+        {night && (
+          <Box key="stars" position="absolute" inset="0" style={{ animation: night.leaving ? OUT : undefined }}>
+            <Constellation time={time} />
+          </Box>
+        )}
+        {slots.map(({ index, leaving }, n) => {
+          if (looks[n]) return null
+          const line = LINES[index]
+          const spot = line.code ? spotOf(line) : null
+          return (
+            <Box key={index} gridArea="1 / 1" style={{ ...(spot ? { position: 'absolute', left: `${spot[0]}%`, top: `${spot[1]}%` } : PLACES[sceneOf(line).place]), animation: leaving ? (sceneOf(line).render ? OUT_SLOW : OUT) : undefined }}>
+              {line.code ? <NightLine line={line} time={time} /> : <PvLine line={line} time={time} />}
+            </Box>
+          )
+        })}
+        {cover && (active < 0 || time < LINES[0].start + 1.1) && <Cover time={time} leaving={active >= 0} />}
+      </Grid>
+      {slots.map(({ index, leaving }, n) => {
+        const look = looks[n]
+        if (!look) return null
+        const side = (look.place ?? sceneOf(LINES[index]).place)[0]
         return (
-          <Box key={index} gridArea="1 / 1" style={{ ...(spot ? { position: 'absolute', left: `${spot[0]}%`, top: `${spot[1]}%` } : PLACES[sceneOf(line).place]), animation: leaving ? (sceneOf(line).render ? OUT_SLOW : OUT) : undefined }}>
-            {line.code ? <NightLine line={line} time={time} /> : <PvLine line={line} time={time} />}
+          <Box key={index} aria-hidden position="absolute" pointerEvents="none" style={{ fontSize: `${3.6 * scale}cqw`, left: `${look.x}%`, top: `${look.y}%`, translate: side === 'r' ? '-100% 0' : side === 'c' ? '-50% 0' : undefined, opacity: look.opacity, animation: leaving ? (sceneOf(LINES[index]).render ? OUT_SLOW : OUT) : undefined }}>
+            <PvLine line={LINES[index]} time={time} look={look} />
           </Box>
         )
       })}
-      {(active < 0 || time < LINES[0].start + 1.1) && <Cover time={time} leaving={active >= 0} />}
-    </Grid>
+    </>
   )
 }
