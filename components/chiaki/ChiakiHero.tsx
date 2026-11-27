@@ -13,7 +13,8 @@ const NAV = ['listen', 'languages', 'download', 'spec', 'design', 'terms', 'song
 
 // Sized from the section height rather than vw, so her head stays at the same height whatever the width; a vw height in a taller section left it sinking.
 // The slot starts at 52%, and when she is wider than what is left she overflows leftward instead of being cropped at the right edge.
-const SLOT = { position: 'absolute', left: { base: '76px', md: '52%' }, right: { md: '12px' }, top: { md: '76px' }, bottom: { base: '22px', md: '44px' }, height: { base: '720px', md: 'auto' }, display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end' } as const
+// On mobile she sits off-centre to the right as at 375px, tracking the centre on wider phones instead of staying pinned left.
+const SLOT = { position: 'absolute', left: { base: 'max(76px, calc(50% - 112px))', md: '52%' }, right: { md: '12px' }, top: { md: '76px' }, bottom: { base: '22px', md: '44px' }, height: { base: '720px', md: 'auto' }, display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end' } as const
 const FIGURE = { position: 'relative', flexShrink: 0, marginRight: 'auto', height: '100%', maxHeight: '980px', aspectRatio: '609 / 1200' } as const
 
 // The stage keeps this height even when longer copy stretches the section, so the figure never resizes with the text; the extra space below is plain snow
