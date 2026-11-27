@@ -1,5 +1,5 @@
 export const SONG_SRC = '/assets/works/voicebank/theme/watashiuta.m4a?v=23-2'
-export const SONG_ART = { large: '/assets/works/voicebank/theme/watashiuta-2000.webp', small: '/assets/works/voicebank/theme/watashiuta-1200.webp' }
+export const SONG_ART = { large: '/assets/works/voicebank/theme/watashiuta-2000.webp?v=2', small: '/assets/works/voicebank/theme/watashiuta-1200.webp?v=2' }
 
 // times holds when each non-space character is sung, for the per-character reveal
 export type SongLine = { start: number; end: number; text: string; times: number[]; code?: string }
