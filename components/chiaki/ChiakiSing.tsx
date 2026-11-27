@@ -1,6 +1,6 @@
 import { Box, Flex, Grid, styled } from 'styled-system/jsx'
 import { useI18n } from 'i18n'
-import { DOWNLOADS, HF_REPO, RELEASES, listOf } from './voicebankData'
+import { DOWNLOADS, RELEASES, ZIP_HISTORY, listOf } from './voicebankData'
 import { umamiAttrs } from 'lib/analytics'
 import { INK, JOST, ORANGE, SNOW } from './chiakiData'
 import { Container, DownArrow, Gauge, Pill, Reveal, RightArrow } from './parts'
@@ -87,7 +87,7 @@ const ChiakiSing = () => {
               </Span>
             </Summary>
             <Grid gridTemplateColumns={{ base: '1fr', md: 'repeat(2, minmax(0, 1fr))' }} columnGap={16} rowGap={10} pt={4} pb={10}>
-              <AltBlock title="Chiaki.zip" desc={t('voicebankPage.zip.desc')} steps={listOf(t, 'voicebankPage.zip.steps')} href={DOWNLOADS.zip} label={t('voicebankPage.zip.button')} file="zip" mirror={{ href: HF_REPO, label: t('voicebankPage.zip.mirror') }} />
+              <AltBlock title="Chiaki.zip" desc={t('voicebankPage.zip.desc')} steps={listOf(t, 'voicebankPage.zip.steps')} href={DOWNLOADS.zip} label={t('voicebankPage.zip.button')} file="zip" mirror={{ href: ZIP_HISTORY, label: t('voicebankPage.zip.mirror') }} />
               <AltBlock title="Extra Phonemizers" desc={t('chiakiPage.sing.pluginDesc')} steps={listOf(t, 'voicebankPage.extra.steps')} href={DOWNLOADS.phonemizers} label={t('voicebankPage.extra.button')} file="phonemizers" />
             </Grid>
           </Details>

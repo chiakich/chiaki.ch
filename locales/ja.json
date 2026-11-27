@@ -1157,7 +1157,7 @@
       "title": "音源のみダウンロード",
       "desc": "公式 OpenUtau 用の音源 zip です。解凍せずにそのままインストールできます。フィンランド語・ラテン語・Learning の言語には Extra Phonemizers が別途必要です。",
       "button": "Chiaki.zip をダウンロード",
-      "mirror": "Hugging Face でも配布しています（過去のバージョンも）",
+      "mirror": "過去のバージョン",
       "steps": [
         "Chiaki.zip を OpenUtau のウィンドウにドラッグするか、「ツール」から「シンガーをインストール」を選びます。",
         "トラックの「シンガーを選択」から Chiaki を選びます。",

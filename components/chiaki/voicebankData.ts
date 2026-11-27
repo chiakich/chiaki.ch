@@ -2,14 +2,16 @@ export const PORTRAIT_SRC = '/assets/works/voicebank/portrait.webp'
 
 export const RELEASES = 'https://github.com/chiakich/OpenUtau-chiaki/releases'
 
-// Mirrors Chiaki.zip with every version tagged
+// Chiaki.zip is published only here; GitHub Releases carries the app and phonemizers
 export const HF_REPO = 'https://huggingface.co/chiakic/chiaki-diffsinger'
+
+export const ZIP_HISTORY = `${HF_REPO}/commits/main/Chiaki.zip`
 
 // A null URL renders the button as "coming soon".
 export const DOWNLOADS: Record<'appWindows' | 'appMac' | 'zip' | 'phonemizers', string | null> = {
   appWindows: `${RELEASES}/latest/download/OpenUtau-Chiaki-win-x64-Setup.exe`,
   appMac: `${RELEASES}/latest/download/OpenUtau-Chiaki-osx-arm64.dmg`,
-  zip: `${RELEASES}/download/voicebank-v7/Chiaki.zip`,
+  zip: `${HF_REPO}/resolve/main/Chiaki.zip?download=true`,
   phonemizers: `${RELEASES}/download/phonemizers-v2/ChiakiPhonemizers.zip`,
 }
 
